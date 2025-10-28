@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fights.cfd: register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @font-face {
+            font-family: 'regular';
+            src: url('https://fights.cfd/assets/fonts/regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'bold';
+            src: url('https://fights.cfd/assets/fonts/bold.woff2') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'regular', Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'regular', Arial, sans-serif;
+            background-color: #1E2025;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 100px 20px;
+            box-sizing: border-box;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            justify-content: center;
+            text-align: left;
+        }
+
+        header {
+            padding: 16px 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .input-container {
+            width: 100%;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+            border-radius: 6px;
+            background-color: #1E2025;
+            border: 2px solid #2B2D32;
+            color: white;
+            box-sizing: border-box;
+        }
+
+        input::placeholder {
+            color: #8e8e8e;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px 16px;
+            margin: 8px 0;
+            background-color: #1E2025;
+            border: 2px solid #2B2D32;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        button:hover {
+            background-color: #2B2D32;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .signup-text {
+            margin-top: 16px;
+            font-size: 14px;
+            color: #8e8e8e;
+            text-align: center;
+        }
+
+        .signup-text a {
+            color: #e2e2e2;
+            text-decoration: none;
+        }
+
+        .password-input-container {
+            position: relative;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #8e8e8e;
+            border-top: 1px solid #2B2D32;
+            margin-top: auto;
+        }
+
+        footer a {
+            color: #8e8e8e;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+
+        .validation-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8e8e8e;
+            cursor: pointer;
+        }
+
+        .valid-icon {
+            color: #4caf50;
+        }
+
+        .invalid-icon {
+            color: #f44336;
+        }
+
+        .requirements-box {
+            margin-top: 16px;
+            margin-bottom: 16px;
+            padding: 16px;
+            border-radius: 6px;
+            border: 2px solid #2B2D32;
+            background-color: #1E2025;
+        }
+
+        .requirements-title {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #e2e2e2;
+        }
+
+        .requirements-list {
+            list-style-type: none;
+        }
+
+        .requirements-list li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            color: #8e8e8e;
+        }
+
+        .requirements-list li::before {
+            content: "•";
+            margin-right: 10px;
+        }
+
+        .username-requirements-box {
+            margin-top: 16px;
+            margin-bottom: 16px;
+            padding: 16px;
+            border-radius: 6px;
+            border: 2px solid #2B2D32;
+            background-color: #1E2025;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div>fights.cfd</div>
+    </header>
+
+    <div class="container">
+        <h1>Sign Up</h1>
+        <div class="input-container">
+            <input type="email" id="email" placeholder="Email address*" required>
+        </div>
+        <div class="input-container">
+            <input type="text" id="username" placeholder="Username*" required>
+            <span class="validation-icon" id="username-icon"><i class="fas fa-times invalid-icon"></i></span>
+        </div>
+
+
+        <div class="input-container password-input-container">
+            <input type="password" id="password" placeholder="Password*" required>
+            <span class="validation-icon" id="password-icon"><i class="fas fa-times invalid-icon"></i></span>
+        </div>
+
+        <div class="input-container password-input-container">
+            <input type="invite" id="invite" placeholder="Invite*" required>
+        </div>
+
+        <div class="username-requirements-box" id="username-requirements-box">
+            <div class="requirements-title">Your username must contain:</div>
+            <ul class="requirements-list">
+                <li id="username-length">3-12 characters</li>
+            </ul>
+        </div>
+
+
+        <div class="requirements-box" id="password-requirements-box">
+            <div class="requirements-title">Your password must contain:</div>
+            <ul class="requirements-list">
+                <li id="length-requirement">At least 16 characters</li>
+                <li id="uppercase-requirement">At least 1 uppercase letter</li>
+                <li id="lowercase-requirement">At least 1 lowercase letter</li>
+                <li id="digit-requirement">At least 1 digit</li>
+                <li id="special-requirement">At least 1 special character</li>
+            </ul>
+        </div>
+
+        <button id="login-button" disabled>Register</button>
+
+        <div class="signup-text">
+            Already have an account? <a href="login">Login</a>
+        </div>
+    </div>
+
+    <script>
+        function validatePassword(password) {
+            const minLength = 16;
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasDigit = /\d/.test(password);
+            const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+
+            document.getElementById('length-requirement').style.color =
+                password.length >= minLength ? '#4caf50' : '#8e8e8e';
+
+            document.getElementById('uppercase-requirement').style.color =
+                hasUpperCase ? '#4caf50' : '#8e8e8e';
+
+            document.getElementById('lowercase-requirement').style.color =
+                hasLowerCase ? '#4caf50' : '#8e8e8e';
+
+            document.getElementById('digit-requirement').style.color =
+                hasDigit ? '#4caf50' : '#8e8e8e';
+
+            document.getElementById('special-requirement').style.color =
+                hasSpecial ? '#4caf50' : '#8e8e8e';
+
+            return password.length >= minLength && hasUpperCase && hasLowerCase && hasDigit && hasSpecial;
+        }
+
+        function validateUsername(username) {
+            const isValid = username.length >= 3 && username.length <= 12;
+
+            document.getElementById('username-length').style.color =
+                isValid ? '#4caf50' : '#8e8e8e';
+
+            return isValid;
+        }
+
+        function updateValidationStatus() {
+            const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const invite = document.getElementById('invite').value;
+
+            const usernameReqBox = document.getElementById('username-requirements-box');
+            if (username.length > 0) {
+                usernameReqBox.style.display = 'block';
+            } else {
+                usernameReqBox.style.display = 'none';
+            }
+
+            const usernameValid = validateUsername(username);
+            const usernameIcon = document.getElementById('username-icon');
+            if (username.length > 0) {
+                usernameIcon.innerHTML = usernameValid ?
+                    '<i class="fas fa-check valid-icon"></i>' :
+                    '<i class="fas fa-times invalid-icon"></i>';
+            } else {
+                usernameIcon.innerHTML = '<i class="fas fa-times invalid-icon"></i>';
+            }
+
+            const passwordValid = validatePassword(password);
+            const passwordIcon = document.getElementById('password-icon');
+            if (password.length > 0) {
+                passwordIcon.innerHTML = passwordValid ?
+                    '<i class="fas fa-check valid-icon"></i>' :
+                    '<i class="fas fa-times invalid-icon"></i>';
+            } else {
+                passwordIcon.innerHTML = '<i class="fas fa-times invalid-icon"></i>';
+            }
+
+            const allValid = email.length > 0 && usernameValid && passwordValid && invite.length > 0;
+            document.getElementById('login-button').disabled = !allValid;
+        }
+
+        document.getElementById('email').addEventListener('input', updateValidationStatus);
+        document.getElementById('username').addEventListener('input', updateValidationStatus);
+        document.getElementById('password').addEventListener('input', updateValidationStatus);
+        document.getElementById('invite').addEventListener('input', updateValidationStatus);
+
+        document.getElementById('login-button').addEventListener('click', function () {
+            const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const invite = document.getElementById('invite').value;
+
+            const responseMessage = document.getElementById('response-message');
+            if (responseMessage) {
+                responseMessage.remove();
+            }
+
+            fetch("https://fights.cfd/api/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: email,
+                    username: username,
+                    password: password,
+                    invite_code: invite
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    const responseMessage = document.createElement('div');
+                    responseMessage.id = 'response-message';
+                    responseMessage.style.backgroundColor = data.success ? '#4caf50' : '#f44336';
+                    responseMessage.style.color = '#fff';
+                    responseMessage.style.padding = '10px';
+                    responseMessage.style.textAlign = 'center';
+                    responseMessage.style.marginBottom = '20px';
+                    responseMessage.innerText = data.error || 'Registration successful!';
+
+                    document.querySelector('.container').prepend(responseMessage);
+
+                    if (data.success) {
+                        document.cookie = `auth_token=${data.token};path=/`;
+                        window.location.href = "login";
+                    } else {
+                        console.error("Registration failed:", data);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error during registration:", error);
+                });
+        });
+
+
+        updateValidationStatus();
+        function updateRequirementBoxVisibility() {
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const usernameReqBox = document.getElementById('username-requirements-box');
+            const passwordReqBox = document.getElementById('password-requirements-box');
+
+            if (usernameInput.value.length > 0) {
+                usernameReqBox.style.display = 'block';
+            } else {
+                usernameReqBox.style.display = 'none';
+            }
+
+            if (passwordInput.value.length > 0) {
+                passwordReqBox.style.display = 'block';
+            } else {
+                passwordReqBox.style.display = 'none';
+            }
+        }
+
+        document.getElementById('username').addEventListener('input', updateRequirementBoxVisibility);
+        document.getElementById('password').addEventListener('input', updateRequirementBoxVisibility);
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('username-requirements-box').style.display = 'none';
+            document.getElementById('password-requirements-box').style.display = 'none';
+        });
+
+        updateRequirementBoxVisibility();
+
+    </script>
+</body>
+
+</html>

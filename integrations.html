@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://fights.cfd/assets/t.js"></script>
+    <title>fights.cfd: integrations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @font-face {
+            font-family: 'regular';
+            src: url('https://fights.cfd/assets/fonts/regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'bold';
+            src: url('https://fights.cfd/assets/fonts/bold.woff2') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'regular', Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            background-color: #18191E;
+            min-height: 100vh;
+            color: white;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: #1E2025;
+            border-right: 2px solid #2B2D32;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar-menu {
+            list-style-type: none;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            color: #A0A0A0;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .sidebar-menu-item:hover {
+            background-color: #2B2D32;
+            color: white;
+        }
+
+        .sidebar-menu-item.active {
+            background-color: #2B2D32;
+            color: white;
+        }
+
+        .sidebar-menu-item i {
+            font-size: 20px;
+            width: 25px;
+            text-align: center;
+        }
+
+        .sidebar-category {
+            color: #A0A0A0;
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin: 20px 15px 10px;
+            letter-spacing: 1px;
+        }
+
+        .user-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #1e1f23;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #2B2D32;
+            margin-top: auto;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #555;
+            border-radius: 50%;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .username {
+            color: white;
+            font-size: 16px;
+            flex: 1;
+            margin-left: 10px;
+            font-family: 'bold', Arial, sans-serif;
+        }
+
+        .menu-dots {
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 50px;
+        }
+
+        .page-header {
+            width: 1040px;
+            text-align: left;
+        }
+
+        .page-title {
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .page-description {
+            color: #A0A0A0;
+            font-size: 16px;
+            margin-bottom: 20px;
+            max-width: 500px;
+        }
+
+        .row-container {
+            border-radius: 10px;
+            width: 1040px;
+            display: flex;
+            gap: 20px;
+            position: relative;
+        }
+
+        .half-container {
+            background-color: #1E2025;
+            border: 2px solid #2B2D32;
+            height: 300px;
+            padding: 30px;
+            border-radius: 10px;
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            text-align: left;
+        }
+
+        .social-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #2B2D32;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .social-title {
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .social-description {
+            color: #A0A0A0;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .connect-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #2B2D32;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'bold', Arial, sans-serif;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: auto;
+        }
+
+        .connect-button:hover {
+            background-color: #3A3C41;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div>
+            <h3 class="sidebar-category">home</h3>
+            <ul class="sidebar-menu">
+                <a href="/dashboard" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item">
+                        <i class="fas fa-user"></i>
+                        Profile
+                    </li>
+                </a>
+                <a href="/collectibles" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item">
+                        <i class="fas fa-at"></i>
+                        Collectibles
+                    </li>
+                </a>
+                <a href="/integrations" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item active">
+                        <i class="fas fa-plug"></i>
+                        Integrations
+                    </li>
+                </a>
+            </ul>
+
+            <h3 class="sidebar-category">Image</h3>
+            <ul class="sidebar-menu">
+                <a href="/images" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item">
+                        <i class="fas fa-image"></i>
+                        Host
+                    </li>
+                </a>
+                <li class="sidebar-menu-item">
+                    <i class="fas fa-user"></i>
+                    Page
+                </li>
+            </ul>
+
+            <h3 class="sidebar-category">Settings</h3>
+            <ul class="sidebar-menu">
+                <a href="/account" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item">
+                        <i class="fas fa-cog"></i>
+                        Account
+                    </li>
+                </a>
+                <li class="sidebar-menu-item">
+                    <i class="fas fa-lock"></i>
+                    Privacy
+                </li>
+                <li class="sidebar-menu-item">
+                    <i class="fas fa-shield-alt"></i>
+                    Security
+                </li>
+            </ul>
+        </div>
+
+        <div class="user-box">
+            <div class="avatar">
+                <img src="https://fights.cfd/assets/avatar.png" alt="User Avatar">
+            </div>
+            <div class="username">Username</div>
+            <div class="menu-dots">
+                <i class="fas fa-ellipsis-v"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Integrations</h1>
+            <p class="page-description">Connect your apps via oauth2</p>
+        </div>
+        <div class="row-container">
+            <div class="half-container">
+                <div class="social-icon">
+                    <i class="fab fa-discord" style="color: #7289da;"></i>
+                </div>
+                <h3 class="social-title">Discord</h3>
+                <p class="social-description">Connect your Discord account</p>
+                <button class="connect-button" onclick="window.location.href='/discord/login'">Connect</button>
+            </div>
+
+            <div class="half-container">
+                <div class="social-icon">
+                    <i class="fab fa-twitch" style="color: #9146FF;"></i>
+                </div>
+                <h3 class="social-title">Twitch</h3>
+                <p class="social-description">Connect your Twitch account</p>
+                <button class="connect-button">Connect</button>
+            </div>
+            <div class="half-container">
+                <div class="social-icon" style="color: #d23838;">
+                    <i class="fab fa-lastfm"></i>
+                </div>
+                <h3 class="social-title">Last.fm</h3>
+                <p class="social-description">Connect your Last.fm account</p>
+                <button class="connect-button">Connect</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        async function exchange() {
+            let t = document.cookie.split("; ").find(t => t.startsWith("auth_token="))?.split("=")[1];
+            if (!t) return null;
+            try {
+                let e = await fetch("https://fights.cfd/api/token/exchange", {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${t}`
+                    }
+                });
+                if (400 === e.status || 401 === e.status) throw Error("Invalid token");
+                let a = await e.json();
+                return a.success ? a.user : null;
+            } catch (n) {
+                return null
+            }
+        }
+
+        async function fetchProfileData() {
+            try {
+                const tokenUser = await exchange();
+                if (!tokenUser) {
+                    console.error('No authenticated user found');
+                    return;
+                }
+
+                const response = await fetch(`https://fights.cfd/api/${tokenUser.id}`);
+
+                if (!response.ok) {
+                    throw new Error('API response was not ok');
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    updateProfile(data.user);
+                } else {
+                    console.error('API returned error:', data);
+                }
+            } catch (error) {
+                console.error('Failed to fetch profile data:', error);
+            }
+        }
+
+        function updateProfile(user) {
+            if (user.avatar) {
+                const avatarImg = document.querySelector('.user-box .avatar img');
+                if (avatarImg) {
+                    avatarImg.src = user.avatar;
+                }
+
+                const profileAvatar = document.querySelector('.profile-avatar');
+                if (profileAvatar) {
+                    profileAvatar.style.backgroundImage = `url('${user.avatar}')`;
+                }
+            }
+
+            if (user.banner) {
+                const profileBanner = document.querySelector('.profile-banner');
+                if (profileBanner) {
+                    profileBanner.style.backgroundImage = `url('${user.banner}')`;
+                }
+            }
+
+            if (user.display_name) {
+                const profileNames = document.querySelectorAll('.profile-name');
+                profileNames.forEach(nameEl => {
+                    nameEl.textContent = user.display_name;
+                });
+            }
+
+            if (user.username) {
+                const usernameEl = document.querySelector('.profile-username span');
+                if (usernameEl) {
+                    usernameEl.textContent = `@${user.username}`;
+                }
+
+                const sidebarUsername = document.querySelector('.user-box .username');
+                if (sidebarUsername) {
+                    sidebarUsername.textContent = user.display_name;
+                }
+            }
+
+            if (user.bio) {
+                const bioEl = document.querySelector('.profile-bio');
+                if (bioEl) {
+                    bioEl.textContent = user.bio;
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchProfileData);
+    </script>
+</body>
+
+</html>

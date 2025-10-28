@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://fights.cfd/assets/t.js"></script>
+    <title>fights.cfd: image host</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @font-face {
+            font-family: 'regular';
+            src: url('https://fights.cfd/assets/fonts/regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'bold';
+            src: url('https://fights.cfd/assets/fonts/bold.woff2') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'regular', Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            background-color: #18191E;
+            min-height: 100vh;
+            color: white;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: #1E2025;
+            border-right: 2px solid #2B2D32;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar-menu {
+            list-style-type: none;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            color: #A0A0A0;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .sidebar-menu-item:hover {
+            background-color: #2B2D32;
+            color: white;
+        }
+
+        .sidebar-menu-item.active {
+            background-color: #2B2D32;
+            color: white;
+        }
+
+        .sidebar-menu-item i {
+            font-size: 20px;
+            width: 25px;
+            text-align: center;
+        }
+
+        .sidebar-category {
+            color: #A0A0A0;
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin: 20px 15px 10px;
+            letter-spacing: 1px;
+        }
+
+        .user-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #1e1f23;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #2B2D32;
+            margin-top: auto;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #555;
+            border-radius: 50%;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .username {
+            color: white;
+            font-size: 16px;
+            flex: 1;
+            margin-left: 10px;
+            font-family: 'bold', Arial, sans-serif;
+        }
+
+        .menu-dots {
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 50px;
+        }
+
+        .page-header {
+            width: 1040px;
+            text-align: left;
+        }
+
+        .page-title {
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .page-description {
+            color: #A0A0A0;
+            font-size: 16px;
+            margin-bottom: 20px;
+            max-width: 500px;
+        }
+
+        .upload-container {
+            width: 1040px;
+            background-color: #1E2025;
+            border: 2px solid #2B2D32;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .upload-title {
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .upload-form {
+            display: flex;
+            gap: 15px;
+        }
+
+        .file-input-container {
+            flex: 1;
+            position: relative;
+        }
+
+        .file-input {
+            width: 100%;
+            padding: 12px;
+            background-color: #2B2D32;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'regular', Arial, sans-serif;
+            cursor: pointer;
+        }
+
+        .custom-file-input {
+            color: #A0A0A0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            background-color: #2B2D32;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .custom-file-input:hover {
+            background-color: #3A3C41;
+        }
+
+        .custom-file-input i {
+            margin-right: 10px;
+        }
+
+        .file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-button {
+            padding: 12px 20px;
+            background-color: #2B2D32;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            height: 110%;
+            font-family: 'bold', Arial, sans-serif;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .upload-button:hover {
+            background-color: #3A3C41;
+        }
+
+        .upload-button i {
+            margin-right: 8px;
+        }
+
+        .gallery-container {
+            width: 1040px;
+            background-color: #1E2025;
+            border: 2px solid #2B2D32;
+            padding: 30px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .gallery-title {
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .image-card {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #2B2D32;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .image-card:hover {
+            transform: scale(1.02);
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 5px;
+            margin-top: 20px;
+        }
+
+        .pagination-button {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #2B2D32;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .pagination-button:hover {
+            background-color: #3A3C41;
+        }
+
+        .pagination-button.active {
+            background-color: #3A3C41;
+        }
+
+        .pagination-text {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            color: #A0A0A0;
+            font-size: 1rem;
+            margin-right: 10px;
+        }
+
+        .pagination-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #1E2025;
+            border: 2px solid #2B2D32;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 2px solid #2B2D32;
+        }
+
+        .modal-title {
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 18px;
+        }
+
+        .modal-close {
+            font-size: 20px;
+            cursor: pointer;
+            color: #A0A0A0;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: white;
+        }
+
+        .modal-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .modal-image {
+            width: 100%;
+            max-height: 60vh;
+            object-fit: contain;
+            border-radius: 8px;
+            background-color: #2B2D32;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-button {
+            flex: 1;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background-color: #2B2D32;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'bold', Arial, sans-serif;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-button:hover {
+            background-color: #3A3C41;
+        }
+
+        .modal-button.delete {
+            background-color: #3f2b2b;
+        }
+
+        .modal-button.delete:hover {
+            background-color: #5a3333;
+        }
+
+        .no-images {
+            text-align: center;
+            padding: 40px 0;
+            color: #A0A0A0;
+            font-size: 16px;
+        }
+
+        .loading-indicator {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .selected-file-name {
+            margin-top: 10px;
+            color: #A0A0A0;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-family: 'bold', Arial, sans-serif;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 2px solid #2B2D32;
+            background-color: #1e1f23;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast i {
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div>
+            <h3 class="sidebar-category">home</h3>
+            <ul class="sidebar-menu">
+                <a href="/dashboard" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item">
+                        <i class="fas fa-user"></i>
+                        Profile
+                    </li>
+                </a>
+                <a href="/analytics" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item">
+                        <i class="fas fa-chart-pie"></i>
+                        Analytics
+                    </li>
+                </a>
+                <a href="/integrations" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item">
+                        <i class="fas fa-plug"></i>
+                        Integrations
+                    </li>
+                </a>
+            </ul>
+
+            <h3 class="sidebar-category">Image</h3>
+            <ul class="sidebar-menu">
+                <a href="/images" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item active">
+                        <i class="fas fa-image"></i>
+                        Host
+                    </li>
+                </a>
+                <li class="sidebar-menu-item">
+                    <i class="fas fa-user"></i>
+                    Page
+                </li>
+            </ul>
+
+            <h3 class="sidebar-category">Settings</h3>
+            <ul class="sidebar-menu">
+                <a href="/account" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item">
+                        <i class="fas fa-cog"></i>
+                        Account
+                    </li>
+                </a>
+                <li class="sidebar-menu-item">
+                    <i class="fas fa-lock"></i>
+                    Privacy
+                </li>
+                <li class="sidebar-menu-item">
+                    <i class="fas fa-shield-alt"></i>
+                    Security
+                </li>
+            </ul>
+        </div>
+
+        <div class="user-box">
+            <div class="avatar">
+                <img src="https://fights.cfd/assets/avatar.png" alt="User Avatar">
+            </div>
+            <div class="username">Username</div>
+            <div class="menu-dots">
+                <i class="fas fa-ellipsis-v"></i>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Image Host</h1>
+            <p class="page-description">Upload and manage your images</p>
+        </div>
+        <div class="upload-container">
+            <h3 class="upload-title">Upload New Image</h3>
+            <div class="upload-form">
+                <div class="file-input-container">
+                    <div class="custom-file-input">
+                        <i class="fas fa-file-image"></i>
+                        <span>Choose a file</span>
+                    </div>
+                    <input type="file" id="file-input" class="file-input" accept="image/*">
+                    <div id="selected-file-name" class="selected-file-name"></div>
+                </div>
+                <button id="upload-button" class="upload-button">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    Upload
+                </button>
+            </div>
+        </div>
+        <div class="gallery-container">
+            <h3 class="gallery-title">Your Images</h3>
+            <div id="gallery-grid" class="gallery-grid">
+                <div class="loading-indicator">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+            <div class="pagination-container">
+                <div class="pagination-text"><span id="current-page"></span>/<span id="total-pages"></span>
+                </div>
+                <div id="pagination" class="pagination">
+                    <!-- Pagination buttons will be added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="image-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Image Details</div>
+                <div class="modal-close" id="modal-close">&times;</div>
+            </div>
+            <div class="modal-body">
+                <img id="modal-image" class="modal-image" src="" alt="Image">
+                <div class="modal-actions">
+                    <button id="copy-url-button" class="modal-button">
+                        <i class="fas fa-copy"></i>
+                        Copy URL
+                    </button>
+                    <button id="delete-button" class="modal-button delete">
+                        <i class="fas fa-trash"></i>
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <i id="toast-icon" class="fas"></i>
+        <span id="toast-message"></span>
+    </div>
+
+    <script>
+        let images = [];
+        let currentPage = 1;
+        let imagesPerPage = 8;
+        let currentImageId = null;
+
+        const fileInput = document.getElementById('file-input');
+        const selectedFileName = document.getElementById('selected-file-name');
+        const uploadButton = document.getElementById('upload-button');
+        const galleryGrid = document.getElementById('gallery-grid');
+        const pagination = document.getElementById('pagination');
+        const currentPageSpan = document.getElementById('current-page');
+        const totalPagesSpan = document.getElementById('total-pages');
+        const imageModal = document.getElementById('image-modal');
+        const modalImage = document.getElementById('modal-image');
+        const modalClose = document.getElementById('modal-close');
+        const copyUrlButton = document.getElementById('copy-url-button');
+        const deleteButton = document.getElementById('delete-button');
+        const toast = document.getElementById('toast');
+        const toastIcon = document.getElementById('toast-icon');
+        const toastMessage = document.getElementById('toast-message');
+
+        async function exchange() {
+            let t = document.cookie.split("; ").find(t => t.startsWith("auth_token="))?.split("=")[1];
+            if (!t) return null;
+            try {
+                let e = await fetch("https://fights.cfd/api/token/exchange", {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${t}`
+                    }
+                });
+                if (400 === e.status || 401 === e.status) throw Error("Invalid token");
+                let a = await e.json();
+                return a.success ? a.user : null;
+            } catch (n) {
+                return null
+            }
+        }
+
+        async function getToken() {
+            return document.cookie.split("; ").find(t => t.startsWith("auth_token="))?.split("=")[1];
+        }
+
+        async function loadImages() {
+            const token = await getToken();
+            if (!token) {
+                showToast('error', 'Authentication failed. Please log in again.');
+                return;
+            }
+
+            try {
+                const response = await fetch("https://fights.cfd/api/images", {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch images');
+                }
+
+                const data = await response.json();
+                if (data.success) {
+                    images = data.images.sort((a, b) => b.uploaded_at - a.uploaded_at);
+                    updatePagination();
+                    displayImages();
+                } else {
+                    showToast('error', 'Failed to load images');
+                }
+            } catch (error) {
+                console.error('Error loading images:', error);
+                showToast('error', 'Error loading images');
+            }
+        }
+
+        function displayImages() {
+            galleryGrid.innerHTML = '';
+
+            if (images.length === 0) {
+                galleryGrid.innerHTML = '<div class="no-images">No images uploaded yet</div>';
+                return;
+            }
+
+            const startIndex = (currentPage - 1) * imagesPerPage;
+            const endIndex = Math.min(startIndex + imagesPerPage, images.length);
+            const displayedImages = images.slice(startIndex, endIndex);
+
+            displayedImages.forEach(image => {
+                const imageCard = document.createElement('div');
+                imageCard.className = 'image-card';
+                imageCard.dataset.id = image.id;
+                imageCard.dataset.url = image.url;
+
+                const img = document.createElement('img');
+                img.src = image.url;
+                img.alt = 'Uploaded image';
+                img.onerror = function () {
+                    this.src = 'https://fights.cfd/assets/placeholder.png';
+                };
+
+                imageCard.appendChild(img);
+                galleryGrid.appendChild(imageCard);
+
+                imageCard.addEventListener('click', () => {
+                    openImageModal(image);
+                });
+            });
+        }
+
+        function updatePagination() {
+            const totalPages = Math.max(1, Math.ceil(images.length / imagesPerPage));
+            totalPagesSpan.textContent = totalPages;
+            currentPageSpan.textContent = currentPage;
+
+            pagination.innerHTML = '';
+
+            if (totalPages > 1) {
+                const prevButton = document.createElement('button');
+                prevButton.className = 'pagination-button';
+                prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
+                prevButton.disabled = currentPage === 1;
+                if (currentPage > 1) {
+                    prevButton.addEventListener('click', () => {
+                        currentPage--;
+                        updatePagination();
+                        displayImages();
+                    });
+                }
+                pagination.appendChild(prevButton);
+            }
+
+            const maxButtons = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+            let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+
+            if (endPage - startPage + 1 < maxButtons) {
+                startPage = Math.max(1, endPage - maxButtons + 1);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.className = 'pagination-button';
+                if (i === currentPage) {
+                    pageButton.classList.add('active');
+                }
+                pageButton.textContent = i;
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    updatePagination();
+                    displayImages();
+                });
+                pagination.appendChild(pageButton);
+            }
+
+            if (totalPages > 1) {
+                const nextButton = document.createElement('button');
+                nextButton.className = 'pagination-button';
+                nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                nextButton.disabled = currentPage === totalPages;
+                if (currentPage < totalPages) {
+                    nextButton.addEventListener('click', () => {
+                        currentPage++;
+                        updatePagination();
+                        displayImages();
+                    });
+                }
+                pagination.appendChild(nextButton);
+            }
+        }
+
+        function openImageModal(image) {
+            modalImage.src = image.url;
+            currentImageId = image.id;
+            imageModal.style.display = 'flex';
+        }
+
+        function closeImageModal() {
+            imageModal.style.display = 'none';
+            currentImageId = null;
+        }
+
+        async function uploadImage() {
+            const token = await getToken();
+            if (!token) {
+                showToast('error', 'Authentication failed. Please log in again.');
+                return;
+            }
+
+            const fileInput = document.getElementById('file-input');
+            if (!fileInput.files || fileInput.files.length === 0) {
+                showToast('error', 'Please select a file first');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            if (!file.type.startsWith('image/')) {
+                showToast('error', 'Please select an image file');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            uploadButton.disabled = true;
+            uploadButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+
+            try {
+                const response = await fetch("https://fights.cfd/api/image/upload", {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    fileInput.value = '';
+                    selectedFileName.textContent = '';
+                    showToast('success', 'Image uploaded successfully');
+                    images.unshift(data.image);
+                    currentPage = 1;
+                    updatePagination();
+                    displayImages();
+                } else {
+                    showToast('error', data.message || 'Failed to upload image');
+                }
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                showToast('error', 'Error uploading image');
+            } finally {
+                uploadButton.disabled = false;
+                uploadButton.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Upload';
+            }
+        }
+
+        async function deleteImage(imageId) {
+            const token = await getToken();
+            if (!token) {
+                showToast('error', 'Authentication failed! Please log in again!');
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://fights.cfd/api/image/delete/${imageId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showToast('success', 'Image deleted successfully');
+                    images = images.filter(img => img.id !== imageId);
+                    closeImageModal();
+
+                    const totalPages = Math.max(1, Math.ceil(images.length / imagesPerPage));
+                    if (currentPage > totalPages) {
+                        currentPage = totalPages;
+                    }
+
+                    updatePagination();
+                    displayImages();
+                } else {
+                    showToast('error', data.message || 'Failed to delete image');
+                }
+            } catch (error) {
+                console.error('Error deleting image:', error);
+                showToast('error', 'Error deleting image');
+            }
+        }
+
+        function copyImageUrl(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                showToast('success', 'URL copied to clipboard');
+            }).catch(err => {
+                console.error('Failed to copy URL:', err);
+                showToast('error', 'Failed to copy URL');
+            });
+        }
+
+        function showToast(type, message) {
+            toast.className = 'toast';
+            toast.classList.add(type);
+
+            if (type === 'success') {
+                toastIcon.className = 'fas fa-check-circle';
+            } else {
+                toastIcon.className = 'fas fa-exclamation-circle';
+            }
+
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        async function updateProfile(user) {
+            if (user.avatar) {
+                const avatarImg = document.querySelector('.user-box .avatar img');
+                if (avatarImg) {
+                    avatarImg.src = user.avatar;
+                }
+            }
+
+            if (user.display_name) {
+                const sidebarUsername = document.querySelector('.user-box .username');
+                if (sidebarUsername) {
+                    sidebarUsername.textContent = user.display_name;
+                }
+            }
+        }
+
+        async function fetchProfileData() {
+            try {
+                const tokenUser = await exchange();
+                if (!tokenUser) {
+                    console.error('No authenticated user found');
+                    return;
+                }
+
+                const response = await fetch(`https://fights.cfd/api/${tokenUser.id}`);
+
+                if (!response.ok) {
+                    throw new Error('API response was not ok');
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    updateProfile(data.user);
+                } else {
+                    console.error('API returned error:', data);
+                }
+            } catch (error) {
+                console.error('Failed to fetch profile data:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchProfileData();
+            loadImages();
+
+            fileInput.addEventListener('change', (e) => {
+                if (fileInput.files && fileInput.files.length > 0) {
+                    selectedFileName.textContent = fileInput.files[0].name;
+                } else {
+                    selectedFileName.textContent = '';
+                }
+            });
+
+            uploadButton.addEventListener('click', uploadImage);
+            modalClose.addEventListener('click', closeImageModal);
+
+            copyUrlButton.addEventListener('click', () => {
+                const imageUrl = modalImage.src;
+                copyImageUrl(imageUrl);
+            });
+
+            deleteButton.addEventListener('click', () => {
+                if (currentImageId) {
+                    if (confirm('Are you sure you want to delete this image?')) {
+                        deleteImage(currentImageId);
+                    }
+                }
+            });
+
+            imageModal.addEventListener('click', (e) => {
+                if (e.target === imageModal) {
+                    closeImageModal();
+                }
+            });
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && imageModal.style.display === 'flex') {
+                    closeImageModal();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

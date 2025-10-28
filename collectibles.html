@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://fights.cfd/assets/t.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fights.cfd: usernames</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @font-face {
+            font-family: 'regular';
+            src: url('https://fights.cfd/assets/fonts/regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'bold';
+            src: url('https://fights.cfd/assets/fonts/bold.woff2') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'regular', Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            background-color: #18191E;
+            min-height: 100vh;
+            color: white;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: #1E2025;
+            border-right: 2px solid #2B2D32;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar-menu {
+            list-style-type: none;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            color: #A0A0A0;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .sidebar-menu-item:hover {
+            background-color: #2B2D32;
+            color: white;
+        }
+
+        .sidebar-menu-item.active {
+            background-color: #2B2D32;
+            color: white;
+        }
+
+        .sidebar-menu-item i {
+            font-size: 20px;
+            width: 25px;
+            text-align: center;
+        }
+
+        .sidebar-category {
+            color: #A0A0A0;
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin: 20px 15px 10px;
+            letter-spacing: 1px;
+        }
+
+        .user-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #2B2D32;
+            background-color: #1e1f23;
+            margin-top: auto;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #555;
+            border-radius: 50%;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .username {
+            color: white;
+            font-size: 16px;
+            flex: 1;
+            margin-left: 10px;
+            font-family: 'bold', Arial, sans-serif;
+        }
+
+        .menu-dots {
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 50px;
+        }
+
+        .page-header {
+            width: 1040px;
+            text-align: left;
+        }
+
+        .page-title {
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .page-description {
+            color: #A0A0A0;
+            font-size: 16px;
+            margin-bottom: 20px;
+            max-width: 500px;
+        }
+
+        .container {
+            background-color: #1E2025;
+            border: 2px solid #2B2D32;
+            padding: 30px;
+            border-radius: 10px;
+            width: 1040px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .username-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .username-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #1E2025;
+            border: 2px solid #2B2D32;
+            transition: background-color 0.3s ease;
+        }
+
+        .username-item:hover {
+            background-color: #2B2D32;
+        }
+
+        .username-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #2B2D32;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .username-icon i {
+            font-size: 24px;
+            color: #A0A0A0;
+        }
+
+        .username-content {
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        .username-name {
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .username-date {
+            color: #A0A0A0;
+            font-size: 14px;
+        }
+
+        .username-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .action-button {
+            background-color: #2B2D32;
+            color: #A0A0A0;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .action-button:hover {
+            background-color: #3A3C41;
+            color: white;
+        }
+
+        .action-button.delete:hover {
+            color: #F44336;
+        }
+
+        .action-button.edit:hover {
+            color: #2196F3;
+        }
+
+        .action-button.up:hover,
+        .action-button.down:hover {
+            color: #4CAF50;
+        }
+
+        .add-username-button {
+            background-color: #2B2D32;
+            color: white;
+            border: 2px solid #3A3C41;
+            padding: 15px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: 'bold', Arial, sans-serif;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            margin-top: 20px;
+            align-self: flex-start;
+        }
+
+        .add-username-button:hover {
+            background-color: #3A3C41;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal h2 {
+            font-size: 1rem;
+        }
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #1E2025;
+            border: 2px solid #2B2D32;
+            border-radius: 10px;
+            width: 400px;
+            padding: 30px;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            position: relative;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #A0A0A0;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #2B2D32;
+            border: 1px solid #3A3C41;
+            border-radius: 5px;
+            color: white;
+        }
+
+        .modal-buttons {
+            display: flex;
+            margin-top: 20px;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-family: 'bold', Arial, sans-serif;
+        }
+
+        .modal-btn-cancel {
+            background-color: #2B2D32;
+            border: 1px solid #3A3C41;
+            color: white;
+        }
+
+        .modal-btn-confirm {
+            background-color: #2B2D32;
+            border: 1px solid #3A3C41;
+            color: white;
+        }
+
+        .modal-btn:hover {
+            background-color: #3A3C41;
+        }
+
+        .modal-btn-confirm:hover {
+            background-color: #fff;
+            color: #1E2025;
+        }
+
+        /* Loading Skeleton Animation CSS */
+        @keyframes pulse {
+            0% {
+                background-position: 0% 0%;
+            }
+
+            100% {
+                background-position: -135% 0%;
+            }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #2B2D32 25%, #353740 50%, #2B2D32 75%);
+            background-size: 400% 100%;
+            animation: pulse 1.5s ease-in-out infinite;
+            color: transparent !important;
+            border-color: transparent !important;
+            user-select: none;
+        }
+
+        .skeleton-text {
+            border-radius: 4px;
+            display: inline-block;
+            height: 1em;
+            width: 70%;
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .empty-state i {
+            font-size: 60px;
+            color: #2B2D32;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #A0A0A0;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div>
+            <h3 class="sidebar-category">home</h3>
+            <ul class="sidebar-menu">
+                <a href="/dashboard" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item">
+                        <i class="fas fa-user"></i>
+                        Profile
+                    </li>
+                </a>
+                <a href="/collectibles" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item active">
+                        <i class="fas fa-at"></i>
+                        Collectibles
+                    </li>
+                </a>
+                <a href="/integrations" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item">
+                        <i class="fas fa-plug"></i>
+                        Integrations
+                    </li>
+                </a>
+            </ul>
+
+            <h3 class="sidebar-category">Image</h3>
+            <ul class="sidebar-menu">
+                <a href="/images" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item">
+                        <i class="fas fa-image"></i>
+                        Host
+                    </li>
+                </a>
+                <li class="sidebar-menu-item">
+                    <i class="fas fa-user"></i>
+                    Page
+                </li>
+            </ul>
+
+            <h3 class="sidebar-category">Settings</h3>
+            <ul class="sidebar-menu">
+                <a href="/account" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item">
+                        <i class="fas fa-cog"></i>
+                        Account
+                    </li>
+                </a>
+                <li class="sidebar-menu-item">
+                    <i class="fas fa-lock"></i>
+                    Privacy
+                </li>
+                <li class="sidebar-menu-item">
+                    <i class="fas fa-shield-alt"></i>
+                    Security
+                </li>
+            </ul>
+        </div>
+
+        <div class="user-box">
+            <div class="avatar">
+                <img src="https://fights.cfd/assets/avatar.png" alt="User Avatar">
+            </div>
+            <div class="username">Username</div>
+            <div class="menu-dots">
+                <i class="fas fa-ellipsis-v"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Collectible Usernames</h1>
+            <p class="page-description">Claim, manage and organize your exclusive usernames</p>
+        </div>
+
+        <div class="container">
+            <div class="username-container" id="usernameContainer">
+                <!-- Username items will be added here dynamically -->
+                <div class="username-item">
+                    <div class="username-icon">
+                        <i class="fas fa-at"></i>
+                    </div>
+                    <div class="username-content">
+                        <div class="username-name">masochist</div>
+                        <div class="username-date">Claimed on: March 15, 2025</div>
+                    </div>
+                    <div class="username-actions">
+                        <button class="action-button up" title="Move Up">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                        <button class="action-button down" title="Move Down">
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
+                        <button class="action-button edit" title="Edit"
+                            onclick="openModal('edit-username', 'masochist')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-button delete" title="Delete"
+                            onclick="openModal('delete-username', 'masochist')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="username-item">
+                    <div class="username-icon">
+                        <i class="fas fa-at"></i>
+                    </div>
+                    <div class="username-content">
+                        <div class="username-name">bloxl</div>
+                        <div class="username-date">Claimed on: March 20, 2025</div>
+                    </div>
+                    <div class="username-actions">
+                        <button class="action-button up" title="Move Up">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                        <button class="action-button down" title="Move Down">
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
+                        <button class="action-button edit" title="Edit" onclick="openModal('edit-username', 'bloxl')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-button delete" title="Delete"
+                            onclick="openModal('delete-username', 'bloxl')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="username-item">
+                    <div class="username-icon">
+                        <i class="fas fa-at"></i>
+                    </div>
+                    <div class="username-content">
+                        <div class="username-name">nightcore</div>
+                        <div class="username-date">Claimed on: March 28, 2025</div>
+                    </div>
+                    <div class="username-actions">
+                        <button class="action-button up" title="Move Up">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                        <button class="action-button down" title="Move Down">
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
+                        <button class="action-button edit" title="Edit"
+                            onclick="openModal('edit-username', 'nightcore')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-button delete" title="Delete"
+                            onclick="openModal('delete-username', 'nightcore')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="add-username-button" onclick="openModal('claim-username')">
+                <i class="fas fa-plus"></i> Claim New Username
+            </button>
+        </div>
+
+        <!-- Empty state (initially hidden) -->
+        <div class="container" id="emptyState" style="display: none;">
+            <div class="empty-state">
+                <i class="fas fa-at"></i>
+                <h3>No Usernames Claimed Yet</h3>
+                <p>Start your collection by claiming your first exclusive username.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for username actions -->
+    <div id="usernameModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h2 id="modalTitle">Claim New Username</h2>
+            <input type="text" id="usernameInput" class="modal-input" placeholder="Enter username">
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="modal-btn modal-btn-confirm" id="modalConfirmBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function getAuthToken() {
+            const token = document.cookie.split("; ")
+                .find(t => t.startsWith("auth_token="))
+                ?.split("=")[1];
+            if (!token) throw new Error("No authentication token found");
+            return token;
+        }
+
+        async function exchangeToken() {
+            const token = await getAuthToken();
+            try {
+                const response = await fetch("https://fights.cfd/api/token/exchange", {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.status === 400 || response.status === 401) {
+                    throw new Error("Invalid token");
+                }
+
+                const data = await response.json();
+                return data.success ? data.user : null;
+            } catch (error) {
+                console.error("Token exchange error:", error);
+                return null;
+            }
+        }
+
+        async function fetchProfileData() {
+            try {
+                const tokenUser = await exchangeToken();
+                if (!tokenUser) {
+                    console.error('No authenticated user found');
+                    return;
+                }
+
+                const response = await fetch(`https://fights.cfd/api/${tokenUser.id}`);
+
+                if (!response.ok) {
+                    throw new Error('API response was not ok');
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    updateProfile(data.user);
+                } else {
+                    console.error('API returned error:', data);
+                }
+            } catch (error) {
+                console.error('Failed to fetch profile data:', error);
+            }
+        }
+
+        function updateProfile(user) {
+            if (user.avatar) {
+                const avatarImg = document.querySelector('.user-box .avatar img');
+                if (avatarImg) {
+                    avatarImg.src = user.avatar;
+                }
+            }
+
+            if (user.username) {
+                const sidebarUsername = document.querySelector('.user-box .username');
+                if (sidebarUsername) {
+                    sidebarUsername.textContent = user.display_name;
+                }
+            }
+
+        }
+
+        async function getUserCollectibles(userId) {
+            const token = await getAuthToken();
+            try {
+                const response = await fetch(`https://fights.cfd/api/${userId}/collectibles`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+                return data.success ? data.collectibles : [];
+            } catch (error) {
+                console.error("Error fetching collectibles:", error);
+                return [];
+            }
+        }
+
+        async function createCollectible(name) {
+            const token = await getAuthToken();
+            try {
+                const response = await fetch("https://fights.cfd/api/collectibles", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        type: "username",
+                        description: "None"
+                    })
+                });
+
+                return await response.json();
+            } catch (error) {
+                console.error("Error creating collectible:", error);
+                throw error;
+            }
+        }
+
+        async function addCollectibleToUser(username) {
+            const token = await getAuthToken();
+            try {
+                const response = await fetch("https://fights.cfd/api/collectibles/add", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        username: username
+                    })
+                });
+
+                return await response.json();
+            } catch (error) {
+                console.error("Error adding collectible to user:", error);
+                throw error;
+            }
+        }
+
+        async function deleteCollectible(collectibleId) {
+            const token = await getAuthToken();
+            try {
+                const response = await fetch(`https://fights.cfd/api/collectibles/${collectibleId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                return await response.json();
+            } catch (error) {
+                console.error("Error deleting collectible:", error);
+                throw error;
+            }
+        }
+
+        async function updateCollectible(collectibleId, newName) {
+            const token = await getAuthToken();
+            try {
+                const response = await fetch(`https://fights.cfd/api/collectibles/${collectibleId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        name: newName
+                    })
+                });
+
+                return await response.json();
+            } catch (error) {
+                console.error("Error updating collectible:", error);
+                throw error;
+            }
+        }
+
+        function renderUsernameItem(collectible) {
+            const [id, name, type, description] = collectible;
+
+            const currentDate = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = currentDate.toLocaleDateString('en-US', options);
+
+            const newItem = document.createElement('div');
+            newItem.className = 'username-item';
+            newItem.dataset.id = id;
+
+            newItem.innerHTML = `
+        <div class="username-icon">
+            <i class="fas fa-at"></i>
+        </div>
+        <div class="username-content">
+            <div class="username-name">${name}</div>
+            <div class="username-date">Claimed on: ${formattedDate}</div>
+        </div>
+        <div class="username-actions">
+            <button class="action-button up" title="Move Up">
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            <button class="action-button down" title="Move Down">
+                <i class="fas fa-arrow-down"></i>
+            </button>
+            <button class="action-button edit" title="Edit" onclick="openModal('edit-username', '${name}', ${id})">
+                <i class="fas fa-edit"></i>
+            </button>
+            <button class="action-button delete" title="Delete" onclick="openModal('delete-username', '${name}', ${id})">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
+
+            const container = document.getElementById('usernameContainer');
+
+            const upButton = newItem.querySelector('.action-button.up');
+            const downButton = newItem.querySelector('.action-button.down');
+
+            upButton.addEventListener('click', function () {
+                const item = this.closest('.username-item');
+                if (item.previousElementSibling) {
+                    container.insertBefore(item, item.previousElementSibling);
+                }
+            });
+
+            downButton.addEventListener('click', function () {
+                const item = this.closest('.username-item');
+                if (item.nextElementSibling) {
+                    container.insertBefore(item.nextElementSibling, item);
+                }
+            });
+
+            return newItem;
+        }
+
+        let currentUsername = '';
+        let currentCollectibleId = null;
+        let modalAction = '';
+
+        function openModal(action, username = '', id = null) {
+            const modal = document.getElementById('usernameModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalInput = document.getElementById('usernameInput');
+            const confirmBtn = document.getElementById('modalConfirmBtn');
+
+            modalAction = action;
+            currentUsername = username;
+            currentCollectibleId = id;
+
+            switch (action) {
+                case 'claim-username':
+                    modalTitle.textContent = 'Claim New Username';
+                    modalInput.placeholder = 'Enter username to claim';
+                    modalInput.value = '';
+                    modalInput.style.display = 'block';
+                    break;
+                case 'edit-username':
+                    modalTitle.textContent = 'Edit Username';
+                    modalInput.placeholder = 'Enter new username';
+                    modalInput.value = username;
+                    modalInput.style.display = 'block';
+                    break;
+                case 'delete-username':
+                    modalTitle.textContent = `Delete Username: ${username}`;
+                    modalInput.style.display = 'none';
+                    break;
+            }
+
+            modal.classList.add('show');
+            confirmBtn.onclick = handleModalConfirm;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('usernameModal');
+            modal.classList.remove('show');
+        }
+
+        async function handleModalConfirm() {
+            const inputValue = document.getElementById('usernameInput').value;
+
+            try {
+                switch (modalAction) {
+                    case 'claim-username':
+                        if (inputValue.trim()) {
+                            await claimNewUsername(inputValue);
+                        }
+                        break;
+                    case 'edit-username':
+                        if (inputValue.trim()) {
+                            await updateUsername(currentCollectibleId, inputValue);
+                        }
+                        break;
+                    case 'delete-username':
+                        await deleteUsername(currentCollectibleId);
+                        break;
+                }
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            } finally {
+                closeModal();
+            }
+        }
+
+        async function claimNewUsername(username) {
+            try {
+                const createResult = await createCollectible(username);
+                if (!createResult.success) {
+                    throw new Error(createResult.message || "Failed to create collectible");
+                }
+
+                const addResult = await addCollectibleToUser(username);
+                if (!addResult.success) {
+                    throw new Error(addResult.message || "Failed to add collectible to user");
+                }
+
+                await loadUserCollectibles();
+            } catch (error) {
+                console.error("Error claiming username:", error);
+                alert(`Error claiming username: ${error.message}`);
+            }
+        }
+
+        async function updateUsername(collectibleId, newUsername) {
+            try {
+                const result = await updateCollectible(collectibleId, newUsername);
+                if (!result.success) {
+                    throw new Error(result.message || "Failed to update username");
+                }
+
+                await loadUserCollectibles();
+            } catch (error) {
+                console.error("Error updating username:", error);
+                alert(`Error updating username: ${error.message}`);
+            }
+        }
+
+        async function deleteUsername(collectibleId) {
+            try {
+                const result = await deleteCollectible(collectibleId);
+                if (!result.success) {
+                    throw new Error(result.message || "Failed to delete username");
+                }
+
+                await loadUserCollectibles();
+            } catch (error) {
+                console.error("Error deleting username:", error);
+                alert(`Error deleting username: ${error.message}`);
+            }
+        }
+
+        function checkEmptyState() {
+            const container = document.getElementById('usernameContainer');
+            const emptyState = document.getElementById('emptyState');
+
+            if (container.children.length === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+            }
+        }
+
+        async function loadUserCollectibles() {
+            try {
+                const container = document.getElementById('usernameContainer');
+                container.innerHTML = '<div class="username-item skeleton"><div class="username-icon skeleton"></div><div class="username-content"><div class="username-name skeleton-text"></div><div class="username-date skeleton-text"></div></div></div>';
+
+                const user = await exchangeToken();
+                if (!user) {
+                    throw new Error("Failed to authenticate user");
+                }
+
+                document.querySelector('.username').textContent = user.username;
+
+                const collectibles = await getUserCollectibles(user.id);
+
+                container.innerHTML = '';
+
+                const usernameCollectibles = collectibles.filter(item => item[2] === "username");
+
+                if (usernameCollectibles.length > 0) {
+                    usernameCollectibles.forEach(collectible => {
+                        const item = renderUsernameItem(collectible);
+                        container.appendChild(item);
+                    });
+                }
+
+                checkEmptyState();
+
+            } catch (error) {
+                console.error("Error loading collectibles:", error);
+                alert(`Error: ${error.message}`);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {loadUserCollectibles();});
+        document.addEventListener('DOMContentLoaded', fetchProfileData);
+    </script>
+</body>
+
+</html>
