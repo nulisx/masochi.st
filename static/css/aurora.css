@@ -4,29 +4,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 :root {
-    /* Aurora Colors */
-    --aurora-primary: #6366f1;
-    --aurora-secondary: #8b5cf6;
-    --aurora-accent: #ec4899;
+    /* og.email Colors */
+    --aurora-primary: #ff69eb;
+    --aurora-secondary: #ff1bd4;
+    --aurora-accent: #ea00ff;
     --aurora-success: #10b981;
     --aurora-warning: #f59e0b;
     --aurora-danger: #ef4444;
     
     /* Dark Theme */
-    --bg-primary: #0a0a0f;
-    --bg-secondary: #13131a;
-    --bg-tertiary: #1a1a24;
-    --bg-glass: rgba(26, 26, 36, 0.7);
-    --bg-glass-hover: rgba(26, 26, 36, 0.9);
+    --bg-primary: #000000;
+    --bg-secondary: #0a0a0a;
+    --bg-tertiary: #141414;
+    --bg-glass: rgba(20, 20, 20, 0.7);
+    --bg-glass-hover: rgba(20, 20, 20, 0.9);
     
     /* Text Colors */
     --text-primary: #ffffff;
-    --text-secondary: #a1a1aa;
-    --text-muted: #71717a;
+    --text-secondary: #b4b4b4;
+    --text-muted: #808080;
     
     /* Borders */
     --border-primary: rgba(255, 255, 255, 0.1);
-    --border-glow: rgba(99, 102, 241, 0.3);
+    --border-glow: rgba(255, 105, 235, 0.3);
     
     /* Shadows */
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -146,7 +146,7 @@ body {
 .orb-1 {
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, var(--aurora-primary), transparent);
+    background: radial-gradient(circle, rgba(255, 105, 235, 0.4), transparent);
     top: -10%;
     left: -10%;
     animation-delay: 0s;
@@ -155,7 +155,7 @@ body {
 .orb-2 {
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, var(--aurora-secondary), transparent);
+    background: radial-gradient(circle, rgba(255, 27, 212, 0.3), transparent);
     bottom: -10%;
     right: -10%;
     animation-delay: -5s;
@@ -164,7 +164,7 @@ body {
 .orb-3 {
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, var(--aurora-accent), transparent);
+    background: radial-gradient(circle, rgba(234, 0, 255, 0.2), transparent);
     top: 50%;
     left: 50%;
     animation-delay: -10s;

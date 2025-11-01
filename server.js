@@ -82,11 +82,18 @@ function initializeDatabase() {
             theme TEXT DEFAULT 'aurora',
             custom_url TEXT UNIQUE,
             verified INTEGER DEFAULT 0,
+            role TEXT DEFAULT 'user',
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )`, (err) => {
             if (err) console.error("Error creating users table:", err);
             else console.log("Users table ready");
+            
+            db.run(`ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'user'`, (err) => {
+                if (err && !err.message.includes('duplicate column')) {
+                    console.error("Error adding role column:", err);
+                }
+            });
         });
 
         db.run(`CREATE TABLE IF NOT EXISTS profiles (
@@ -165,13 +172,30 @@ function initializeDatabase() {
             created_by INTEGER,
             used_by INTEGER,
             used INTEGER DEFAULT 0,
+            max_uses INTEGER DEFAULT 1,
+            uses_count INTEGER DEFAULT 0,
+            role TEXT DEFAULT 'user',
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             used_at DATETIME,
+            expires_at DATETIME,
             FOREIGN KEY (created_by) REFERENCES users (id) ON DELETE SET NULL,
             FOREIGN KEY (used_by) REFERENCES users (id) ON DELETE SET NULL
         )`, (err) => {
             if (err) console.error("Error creating invites table:", err);
             else console.log("Invites table ready");
+            
+            db.run(`ALTER TABLE invites ADD COLUMN max_uses INTEGER DEFAULT 1`, (err) => {
+                if (err && !err.message.includes('duplicate column')) console.log("Column may exist");
+            });
+            db.run(`ALTER TABLE invites ADD COLUMN uses_count INTEGER DEFAULT 0`, (err) => {
+                if (err && !err.message.includes('duplicate column')) console.log("Column may exist");
+            });
+            db.run(`ALTER TABLE invites ADD COLUMN role TEXT DEFAULT 'user'`, (err) => {
+                if (err && !err.message.includes('duplicate column')) console.log("Column may exist");
+            });
+            db.run(`ALTER TABLE invites ADD COLUMN expires_at DATETIME`, (err) => {
+                if (err && !err.message.includes('duplicate column')) console.log("Column may exist");
+            });
         });
     });
 }
@@ -193,30 +217,28 @@ const authMiddleware = (req, res, next) => {
 };
 
 app.post('/api/auth/register', [
-    body('username').isLength({ min: 3, max: 20 }).matches(/^[a-zA-Z0-9_]+$/),
+    body('username').isLength({ min: 1, max: 20 }).matches(/^[a-zA-Z0-9_]+$/),
     body('email').isEmail().normalizeEmail(),
     body('password').isLength({ min: 8 }),
-    body('inviteCode').optional().isString()
+    body('inviteCode').notEmpty().isString()
 ], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { username, email, password, inviteCode, displayName } = req.body;
+    const { username, email, password, inviteCode } = req.body;
 
     try {
-        if (inviteCode) {
-            const invite = await new Promise((resolve, reject) => {
-                db.get('SELECT * FROM invites WHERE code = ? AND used = 0', [inviteCode], (err, row) => {
-                    if (err) reject(err);
-                    else resolve(row);
-                });
+        const invite = await new Promise((resolve, reject) => {
+            db.get('SELECT * FROM invites WHERE code = ? AND (used = 0 OR uses_count < max_uses) AND (expires_at IS NULL OR expires_at > CURRENT_TIMESTAMP)', [inviteCode], (err, row) => {
+                if (err) reject(err);
+                else resolve(row);
             });
+        });
 
-            if (!invite) {
-                return res.status(400).json({ error: 'Invalid or used invite code' });
-            }
+        if (!invite) {
+            return res.status(400).json({ error: 'Invalid, expired, or fully used invite code' });
         }
 
         const existingUser = await new Promise((resolve, reject) => {
@@ -232,10 +254,11 @@ app.post('/api/auth/register', [
 
         const passwordHash = await bcrypt.hash(password, 12);
         const customUrl = username.toLowerCase();
+        const userRole = invite.role || 'user';
 
         db.run(
-            'INSERT INTO users (username, email, password_hash, display_name, custom_url) VALUES (?, ?, ?, ?, ?)',
-            [username, email, passwordHash, displayName || username, customUrl],
+            'INSERT INTO users (username, email, password_hash, display_name, custom_url, role) VALUES (?, ?, ?, ?, ?, ?)',
+            [username, email, passwordHash, username, customUrl, userRole],
             function(err) {
                 if (err) {
                     return res.status(500).json({ error: 'Failed to create user' });
@@ -245,10 +268,8 @@ app.post('/api/auth/register', [
 
                 db.run('INSERT INTO profiles (user_id) VALUES (?)', [userId]);
 
-                if (inviteCode) {
-                    db.run('UPDATE invites SET used = 1, used_by = ?, used_at = CURRENT_TIMESTAMP WHERE code = ?',
-                        [userId, inviteCode]);
-                }
+                db.run('UPDATE invites SET uses_count = uses_count + 1, used_by = ?, used_at = CURRENT_TIMESTAMP WHERE code = ?',
+                    [userId, inviteCode]);
 
                 const token = jwt.sign({ userId }, JWT_SECRET, { expiresIn: '7d' });
                 req.session.token = token;
@@ -331,7 +352,7 @@ app.post('/api/auth/logout', (req, res) => {
 
 app.get('/api/auth/me', authMiddleware, (req, res) => {
     db.get(
-        'SELECT id, username, email, display_name, bio, avatar_url, theme, custom_url, verified FROM users WHERE id = ?',
+        'SELECT id, username, email, display_name, bio, avatar_url, theme, custom_url, verified, role FROM users WHERE id = ?',
         [req.userId],
         (err, user) => {
             if (err || !user) {
@@ -507,18 +528,69 @@ app.post('/api/track/:linkId', (req, res) => {
     });
 });
 
-app.post('/api/admin/generate-invite', authMiddleware, (req, res) => {
-    const inviteCode = crypto.randomBytes(4).toString('hex');
-    db.run(
-        'INSERT INTO invites (code, created_by) VALUES (?, ?)',
-        [inviteCode, req.userId],
-        function(err) {
-            if (err) {
-                return res.status(500).json({ error: 'Failed to generate invite code' });
-            }
-            res.json({ code: inviteCode });
+app.post('/api/invites/create', authMiddleware, (req, res) => {
+    db.get('SELECT role FROM users WHERE id = ?', [req.userId], (err, user) => {
+        if (err || !user || !['owner', 'manager', 'admin', 'mod'].includes(user.role)) {
+            return res.status(403).json({ error: 'Insufficient permissions' });
         }
-    );
+
+        const { role = 'user', maxUses = 1, expiresIn } = req.body;
+        const inviteCode = crypto.randomBytes(4).toString('hex');
+        let expiresAt = null;
+
+        if (expiresIn) {
+            const expiryDate = new Date();
+            expiryDate.setHours(expiryDate.getHours() + parseInt(expiresIn));
+            expiresAt = expiryDate.toISOString();
+        }
+
+        db.run(
+            'INSERT INTO invites (code, created_by, role, max_uses, expires_at) VALUES (?, ?, ?, ?, ?)',
+            [inviteCode, req.userId, role, maxUses, expiresAt],
+            function(err) {
+                if (err) {
+                    return res.status(500).json({ error: 'Failed to generate invite code' });
+                }
+                res.json({ 
+                    code: inviteCode, 
+                    role, 
+                    maxUses, 
+                    expiresAt,
+                    id: this.lastID 
+                });
+            }
+        );
+    });
+});
+
+app.get('/api/invites', authMiddleware, (req, res) => {
+    db.get('SELECT role FROM users WHERE id = ?', [req.userId], (err, user) => {
+        if (err || !user || !['owner', 'manager', 'admin', 'mod'].includes(user.role)) {
+            return res.status(403).json({ error: 'Insufficient permissions' });
+        }
+
+        db.all(
+            'SELECT i.*, u.username as creator_username FROM invites i LEFT JOIN users u ON i.created_by = u.id WHERE i.created_by = ? ORDER BY i.created_at DESC',
+            [req.userId],
+            (err, invites) => {
+                if (err) {
+                    return res.status(500).json({ error: 'Failed to fetch invites' });
+                }
+                res.json({ invites });
+            }
+        );
+    });
+});
+
+app.delete('/api/invites/:id', authMiddleware, (req, res) => {
+    const { id } = req.params;
+    
+    db.run('DELETE FROM invites WHERE id = ? AND created_by = ?', [id, req.userId], function(err) {
+        if (err || this.changes === 0) {
+            return res.status(404).json({ error: 'Invite not found or unauthorized' });
+        }
+        res.json({ success: true });
+    });
 });
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
