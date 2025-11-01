@@ -12,42 +12,74 @@
         }
 
         .sidebar {
-            width: 280px;
+            width: 250px;
             background: var(--bg-secondary);
             border-right: 1px solid var(--border-primary);
             padding: var(--spacing-xl);
             display: flex;
             flex-direction: column;
-            gap: var(--spacing-xl);
+            gap: var(--spacing-md);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
         }
 
-        .sidebar-logo {
-            font-size: 1.5rem;
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.125rem;
+        }
+
+        .brand-name {
+            font-size: 1.25rem;
             font-weight: 800;
             font-family: var(--font-display);
-            background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: var(--spacing-lg);
         }
 
         .sidebar-nav {
             display: flex;
             flex-direction: column;
-            gap: var(--spacing-sm);
+            gap: var(--spacing-xs);
+            flex: 1;
+        }
+
+        .nav-section {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .nav-section-title {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            padding: var(--spacing-sm) var(--spacing-md);
+            margin-bottom: var(--spacing-xs);
         }
 
         .nav-item {
-            padding: var(--spacing-md);
+            padding: var(--spacing-sm) var(--spacing-md);
             border-radius: var(--radius-md);
             color: var(--text-secondary);
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: var(--spacing-sm);
-            transition: all var(--transition-base);
+            transition: all var(--transition-fast);
             font-weight: 500;
+            font-size: 0.9375rem;
             cursor: pointer;
         }
 
@@ -61,238 +93,297 @@
             color: white;
         }
 
-        .sidebar-footer {
-            margin-top: auto;
-            padding-top: var(--spacing-xl);
-            border-top: 1px solid var(--border-primary);
-        }
-
-        .user-profile {
+        .nav-icon {
+            font-size: 1.125rem;
+            width: 20px;
             display: flex;
             align-items: center;
-            gap: var(--spacing-md);
-            padding: var(--spacing-md);
-            background: var(--bg-tertiary);
-            border-radius: var(--radius-md);
+            justify-content: center;
         }
 
-        .user-avatar {
-            width: 40px;
-            height: 40px;
+        .sidebar-footer {
+            border-top: 1px solid var(--border-primary);
+            padding-top: var(--spacing-md);
+        }
+
+        .user-profile-card {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm);
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: background var(--transition-fast);
+        }
+
+        .user-profile-card:hover {
+            background: var(--bg-primary);
+        }
+
+        .user-avatar-sm {
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-        }
-
-        .user-info {
-            flex: 1;
-        }
-
-        .user-name {
-            font-weight: 600;
             font-size: 0.875rem;
         }
 
-        .user-role {
+        .user-info-sm {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-name-sm {
+            font-weight: 600;
+            font-size: 0.8125rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-email-sm {
             font-size: 0.75rem;
-            color: var(--aurora-primary);
-            text-transform: uppercase;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .main-content {
+            margin-left: 250px;
             flex: 1;
             padding: var(--spacing-2xl);
             overflow-y: auto;
+            background: var(--bg-primary);
         }
 
         .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: var(--spacing-2xl);
         }
 
-        .page-title {
+        .page-title-section h1 {
             font-size: 2rem;
             font-weight: 800;
             font-family: var(--font-display);
-            margin-bottom: var(--spacing-sm);
+            margin-bottom: var(--spacing-xs);
         }
 
         .page-subtitle {
             color: var(--text-secondary);
+            font-size: 0.9375rem;
         }
 
-        .role-panels {
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: var(--spacing-xl);
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: var(--spacing-lg);
             margin-bottom: var(--spacing-2xl);
         }
 
-        .role-panel {
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            background: rgba(99, 102, 241, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            font-family: var(--font-display);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .stat-change {
+            font-size: 0.8125rem;
+            color: var(--aurora-success);
+        }
+
+        .section-card {
             background: var(--bg-secondary);
             border: 1px solid var(--border-primary);
             border-radius: var(--radius-lg);
             padding: var(--spacing-xl);
-            display: none;
-        }
-
-        .role-panel.visible {
-            display: block;
-        }
-
-        .panel-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
             margin-bottom: var(--spacing-lg);
-            padding-bottom: var(--spacing-md);
-            border-bottom: 1px solid var(--border-primary);
         }
 
-        .panel-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            font-family: var(--font-display);
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .section-title {
             display: flex;
             align-items: center;
             gap: var(--spacing-sm);
-        }
-
-        .panel-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: var(--radius-full);
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .badge-owner {
-            background: rgba(255, 105, 235, 0.2);
-            color: var(--aurora-primary);
-        }
-
-        .badge-manager {
-            background: rgba(255, 27, 212, 0.2);
-            color: var(--aurora-secondary);
-        }
-
-        .badge-admin {
-            background: rgba(234, 0, 255, 0.2);
-            color: var(--aurora-accent);
-        }
-
-        .badge-mod {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--aurora-success);
-        }
-
-        .panel-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: var(--spacing-md);
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .stat-item {
-            background: var(--bg-tertiary);
-            padding: var(--spacing-md);
-            border-radius: var(--radius-md);
-        }
-
-        .stat-value {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
-            color: var(--aurora-primary);
+            font-family: var(--font-display);
         }
 
-        .stat-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
+        .profile-info-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: var(--spacing-xl);
+            align-items: start;
         }
 
-        .invite-section {
-            background: var(--bg-tertiary);
-            padding: var(--spacing-lg);
-            border-radius: var(--radius-md);
-            margin-bottom: var(--spacing-lg);
+        .profile-avatar-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 3rem;
         }
 
-        .invite-form {
+        .profile-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+        }
+
+        .profile-field {
             display: flex;
             flex-direction: column;
-            gap: var(--spacing-md);
+            gap: var(--spacing-xs);
         }
 
-        .form-row {
-            display: flex;
-            gap: var(--spacing-md);
+        .profile-field-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-weight: 500;
         }
 
-        .invite-list {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .invite-item {
-            background: var(--bg-secondary);
-            padding: var(--spacing-md);
-            border-radius: var(--radius-md);
-            margin-bottom: var(--spacing-sm);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .invite-code {
-            font-family: monospace;
-            background: var(--bg-primary);
-            padding: 0.25rem 0.5rem;
-            border-radius: var(--radius-sm);
-            color: var(--aurora-primary);
+        .profile-field-value {
+            font-size: 1rem;
             font-weight: 600;
         }
 
-        .invite-info {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        .quick-actions {
+        .action-buttons {
             display: flex;
             gap: var(--spacing-md);
             flex-wrap: wrap;
+            margin-top: var(--spacing-lg);
         }
 
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .quick-action-item {
+            background: var(--bg-tertiary);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            border: 1px solid transparent;
+        }
+
+        .quick-action-item:hover {
+            background: var(--bg-secondary);
+            border-color: var(--border-primary);
+            transform: translateX(4px);
+        }
+
+        .quick-action-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
+            display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .quick-action-content h4 {
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .quick-action-content p {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .analytics-item {
+            text-align: center;
             padding: var(--spacing-lg);
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
         }
 
-        .modal.active {
-            display: flex;
+        .analytics-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-family: var(--font-display);
+            background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .modal-content {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius-xl);
-            padding: var(--spacing-2xl);
-            max-width: 500px;
-            width: 100%;
-            animation: scaleIn 0.3s ease-out;
+        .analytics-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: var(--spacing-sm);
         }
 
         .hidden {
@@ -300,21 +391,37 @@
         }
 
         @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
-
             .sidebar {
                 width: 100%;
+                height: auto;
+                position: relative;
                 border-right: none;
                 border-bottom: 1px solid var(--border-primary);
             }
 
             .main-content {
+                margin-left: 0;
                 padding: var(--spacing-lg);
             }
 
-            .role-panels {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-info-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .profile-avatar-large {
+                margin: 0 auto;
+            }
+
+            .profile-details {
+                grid-template-columns: 1fr;
+            }
+
+            .analytics-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -330,243 +437,347 @@
     <div class="noise-overlay"></div>
 
     <aside class="sidebar">
-        <div>
-            <div class="sidebar-logo">og.email</div>
-            <nav class="sidebar-nav">
-                <div class="nav-item active" data-page="overview">
-                    <span>📊</span> Overview
-                </div>
-                <div class="nav-item" data-page="admin" id="nav-admin" style="display: none;">
-                    <span>👑</span> Admin Panels
-                </div>
-                <div class="nav-item" data-page="links">
-                    <span>🔗</span> My Links
-                </div>
-                <div class="nav-item" data-page="profile">
-                    <span>👤</span> Profile
-                </div>
-            </nav>
+        <div class="sidebar-brand">
+            <div class="brand-icon">W</div>
+            <div class="brand-name">og.email</div>
         </div>
 
-        <div class="sidebar-footer">
-            <div class="user-profile">
-                <div class="user-avatar" id="user-avatar">U</div>
-                <div class="user-info">
-                    <div class="user-name" id="user-name">Loading...</div>
-                    <div class="user-role" id="user-role">user</div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-item active" data-page="home">
+                    <span class="nav-icon">🏠</span>
+                    Home
+                </div>
+                <div class="nav-item" data-page="analytics">
+                    <span class="nav-icon">📊</span>
+                    Analytics
                 </div>
             </div>
-            <button class="btn btn-ghost mt-md" style="width: 100%;" onclick="logout()">Logout</button>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Profile</div>
+                <div class="nav-item" data-page="customize">
+                    <span class="nav-icon">🎨</span>
+                    Customize
+                </div>
+                <div class="nav-item" data-page="templates">
+                    <span class="nav-icon">📄</span>
+                    Templates
+                </div>
+                <div class="nav-item" data-page="domains">
+                    <span class="nav-icon">🌐</span>
+                    Domains
+                </div>
+                <div class="nav-item" data-page="socials">
+                    <span class="nav-icon">🔗</span>
+                    Socials
+                </div>
+                <div class="nav-item" data-page="widgets">
+                    <span class="nav-icon">🧩</span>
+                    Widgets
+                </div>
+                <div class="nav-item" data-page="badges">
+                    <span class="nav-icon">🏅</span>
+                    Badges
+                </div>
+                <div class="nav-item" data-page="settings">
+                    <span class="nav-icon">⚙️</span>
+                    Settings
+                </div>
+            </div>
+
+            <div class="nav-section" id="admin-section" style="display: none;">
+                <div class="nav-section-title">Admin</div>
+                <div class="nav-item" data-page="admin">
+                    <span class="nav-icon">👑</span>
+                    Admin Panels
+                </div>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile-card" onclick="logout()">
+                <div class="user-avatar-sm" id="sidebar-avatar">U</div>
+                <div class="user-info-sm">
+                    <div class="user-name-sm" id="sidebar-username">Loading...</div>
+                    <div class="user-email-sm" id="sidebar-email">loading...</div>
+                </div>
+            </div>
         </div>
     </aside>
 
     <main class="main-content">
-        <!-- Overview Page -->
-        <div id="overview-page" class="page">
+        <!-- Home Page -->
+        <div id="home-page" class="page">
             <div class="page-header">
-                <h1 class="page-title">
-                    Welcome back, <span class="gradient-text" id="welcome-name">User</span>
-                </h1>
-                <p class="page-subtitle">Manage your links and profile</p>
+                <div class="page-title-section">
+                    <h1>Dashboard</h1>
+                    <p class="page-subtitle">Welcome back! Here's your overview.</p>
+                </div>
+                <button class="btn btn-primary" onclick="viewProfile()">
+                    👁️ View Profile
+                </button>
             </div>
 
-            <div class="quick-actions">
-                <button class="btn btn-primary" onclick="viewProfile()">👁️ View Profile</button>
-                <button class="btn btn-secondary" onclick="shareProfile()">📤 Share</button>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-label">UID</div>
+                        <div class="stat-icon">👁️</div>
+                    </div>
+                    <div class="stat-value" id="uid-stat">0</div>
+                    <div class="stat-change">The 34,612th to join the journey.</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-label">Profile Views</div>
+                        <div class="stat-icon">👁️</div>
+                    </div>
+                    <div class="stat-value" id="views-stat">0</div>
+                    <div class="stat-change">+ 8 this week</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-label">Social Links</div>
+                        <div class="stat-icon">🔗</div>
+                    </div>
+                    <div class="stat-value" id="links-stat">0</div>
+                    <div class="stat-change">Connected social platforms</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-label">Subscription</div>
+                        <div class="stat-icon">👤</div>
+                    </div>
+                    <div class="stat-value">Free</div>
+                    <div class="stat-change">Upgrade for more features</div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span>👤</span>
+                        Profile Information
+                    </div>
+                </div>
+                <p style="color: var(--text-secondary); margin-bottom: var(--spacing-lg);">
+                    Manage your profile details and settings
+                </p>
+
+                <div class="profile-info-grid">
+                    <div class="profile-avatar-large" id="profile-avatar">U</div>
+                    <div class="profile-details">
+                        <div class="profile-field">
+                            <div class="profile-field-label">Username</div>
+                            <div class="profile-field-value" id="profile-username">Loading...</div>
+                        </div>
+                        <div class="profile-field">
+                            <div class="profile-field-label">Custom URL</div>
+                            <div class="profile-field-value" id="profile-url">og.email/...</div>
+                        </div>
+                        <div class="profile-field">
+                            <div class="profile-field-label">Email</div>
+                            <div class="profile-field-value" id="profile-email">loading...</div>
+                        </div>
+                        <div class="profile-field">
+                            <div class="profile-field-label">Member Since</div>
+                            <div class="profile-field-value" id="profile-created">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="editProfile()">✏️ Edit Profile</button>
+                    <button class="btn btn-secondary" onclick="viewProfile()">👁️ View Public Profile</button>
+                    <button class="btn btn-secondary" onclick="customizeProfile()">🎨 Customize</button>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span>⚡</span>
+                        Quick Actions
+                    </div>
+                </div>
+                <p style="color: var(--text-secondary); margin-bottom: var(--spacing-lg);">
+                    Frequently used features and settings
+                </p>
+
+                <div class="quick-actions-grid">
+                    <div class="quick-action-item" onclick="customizeProfile()">
+                        <div class="quick-action-icon">🎨</div>
+                        <div class="quick-action-content">
+                            <h4>Customize Profile</h4>
+                            <p>Edit your profile appearance</p>
+                        </div>
+                    </div>
+
+                    <div class="quick-action-item" onclick="manageLinks()">
+                        <div class="quick-action-icon">🔗</div>
+                        <div class="quick-action-content">
+                            <h4>Manage Links</h4>
+                            <p>Add or edit social links</p>
+                        </div>
+                    </div>
+
+                    <div class="quick-action-item" onclick="viewTemplates()">
+                        <div class="quick-action-icon">📄</div>
+                        <div class="quick-action-content">
+                            <h4>View Templates</h4>
+                            <p>Browse profile templates</p>
+                        </div>
+                    </div>
+
+                    <div class="quick-action-item" onclick="accountSettings()">
+                        <div class="quick-action-icon">⚙️</div>
+                        <div class="quick-action-content">
+                            <h4>Account Settings</h4>
+                            <p>Manage your account</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span>📊</span>
+                        Profile Analytics
+                    </div>
+                    <button class="btn btn-ghost btn-sm" onclick="viewAnalytics()">View Detailed Analytics</button>
+                </div>
+                <p style="color: var(--text-secondary); margin-bottom: var(--spacing-lg);">
+                    Your profile performance overview
+                </p>
+
+                <div class="analytics-grid">
+                    <div class="analytics-item">
+                        <div class="analytics-value" id="this-week-views">0</div>
+                        <div class="analytics-label">This Week</div>
+                    </div>
+                    <div class="analytics-item">
+                        <div class="analytics-value" id="this-month-views">0</div>
+                        <div class="analytics-label">This Month</div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Admin Panels Page -->
+        <!-- Analytics Page (Stub for now) -->
+        <div id="analytics-page" class="page hidden">
+            <div class="page-header">
+                <div class="page-title-section">
+                    <h1>Analytics</h1>
+                    <p class="page-subtitle">Track your profile's performance</p>
+                </div>
+            </div>
+            <div class="section-card">
+                <p style="color: var(--text-secondary);">Analytics page coming soon...</p>
+            </div>
+        </div>
+
+        <!-- Customize Page (Stub) -->
+        <div id="customize-page" class="page hidden">
+            <div class="page-header">
+                <div class="page-title-section">
+                    <h1>Customize Your Profile</h1>
+                    <p class="page-subtitle">Personalize your bio link page</p>
+                </div>
+            </div>
+            <div class="section-card">
+                <p style="color: var(--text-secondary);">Customization options coming soon...</p>
+            </div>
+        </div>
+
+        <!-- Templates Page (Stub) -->
+        <div id="templates-page" class="page hidden">
+            <div class="page-header">
+                <div class="page-title-section">
+                    <h1>Templates</h1>
+                    <p class="page-subtitle">Discover and manage bio-link templates</p>
+                </div>
+            </div>
+            <div class="section-card">
+                <p style="color: var(--text-secondary);">Templates page coming soon...</p>
+            </div>
+        </div>
+
+        <!-- Other stub pages -->
+        <div id="domains-page" class="page hidden">
+            <div class="page-header">
+                <div class="page-title-section">
+                    <h1>Domains</h1>
+                    <p class="page-subtitle">Manage your custom domains</p>
+                </div>
+            </div>
+            <div class="section-card">
+                <p style="color: var(--text-secondary);">Domains management coming soon...</p>
+            </div>
+        </div>
+
+        <div id="socials-page" class="page hidden">
+            <div class="page-header">
+                <div class="page-title-section">
+                    <h1>Social Links</h1>
+                    <p class="page-subtitle">Add or edit social links</p>
+                </div>
+            </div>
+            <div class="section-card">
+                <p style="color: var(--text-secondary);">Social links management coming soon...</p>
+            </div>
+        </div>
+
+        <div id="widgets-page" class="page hidden">
+            <div class="page-header">
+                <div class="page-title-section">
+                    <h1>Widgets</h1>
+                    <p class="page-subtitle">Add widgets to your profile</p>
+                </div>
+            </div>
+            <div class="section-card">
+                <p style="color: var(--text-secondary);">Widgets coming soon...</p>
+            </div>
+        </div>
+
+        <div id="badges-page" class="page hidden">
+            <div class="page-header">
+                <div class="page-title-section">
+                    <h1>Badges</h1>
+                    <p class="page-subtitle">Manage your profile badges</p>
+                </div>
+            </div>
+            <div class="section-card">
+                <p style="color: var(--text-secondary);">Badges management coming soon...</p>
+            </div>
+        </div>
+
+        <div id="settings-page" class="page hidden">
+            <div class="page-header">
+                <div class="page-title-section">
+                    <h1>Settings</h1>
+                    <p class="page-subtitle">Manage your account settings</p>
+                </div>
+            </div>
+            <div class="section-card">
+                <p style="color: var(--text-secondary);">Settings page coming soon...</p>
+            </div>
+        </div>
+
+        <!-- Admin Page (reuse existing structure) -->
         <div id="admin-page" class="page hidden">
             <div class="page-header">
-                <h1 class="page-title">Admin Panels</h1>
-                <p class="page-subtitle">Manage roles and invite codes</p>
-            </div>
-
-            <div class="role-panels">
-                <!-- Owner Panel -->
-                <div class="role-panel" id="owner-panel">
-                    <div class="panel-header">
-                        <div class="panel-title">
-                            <span>👑</span> Owner Panel
-                        </div>
-                        <span class="panel-badge badge-owner">Owner</span>
-                    </div>
-
-                    <div class="panel-stats">
-                        <div class="stat-item">
-                            <div class="stat-value" id="owner-invites">0</div>
-                            <div class="stat-label">Invites Created</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="owner-used">0</div>
-                            <div class="stat-label">Invites Used</div>
-                        </div>
-                    </div>
-
-                    <div class="invite-section">
-                        <h3 style="margin-bottom: var(--spacing-md);">Create Invite Code</h3>
-                        <form class="invite-form" onsubmit="createInvite(event, 'owner')">
-                            <div class="form-row">
-                                <select class="input-field" id="owner-role" required>
-                                    <option value="owner">Owner</option>
-                                    <option value="manager">Manager</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="mod">Moderator</option>
-                                    <option value="user">User</option>
-                                </select>
-                                <input type="number" class="input-field" id="owner-max-uses" placeholder="Max Uses" min="1" value="1" required>
-                            </div>
-                            <input type="number" class="input-field" id="owner-expires" placeholder="Expires in (hours, optional)" min="1">
-                            <button type="submit" class="btn btn-primary">Generate Invite</button>
-                        </form>
-                    </div>
-
-                    <div>
-                        <h3 style="margin-bottom: var(--spacing-md);">My Invite Codes</h3>
-                        <div class="invite-list" id="owner-invites-list"></div>
-                    </div>
-                </div>
-
-                <!-- Manager Panel -->
-                <div class="role-panel" id="manager-panel">
-                    <div class="panel-header">
-                        <div class="panel-title">
-                            <span>💼</span> Manager Panel
-                        </div>
-                        <span class="panel-badge badge-manager">Manager</span>
-                    </div>
-
-                    <div class="panel-stats">
-                        <div class="stat-item">
-                            <div class="stat-value" id="manager-invites">0</div>
-                            <div class="stat-label">Invites Created</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="manager-used">0</div>
-                            <div class="stat-label">Invites Used</div>
-                        </div>
-                    </div>
-
-                    <div class="invite-section">
-                        <h3 style="margin-bottom: var(--spacing-md);">Create Invite Code</h3>
-                        <form class="invite-form" onsubmit="createInvite(event, 'manager')">
-                            <div class="form-row">
-                                <select class="input-field" id="manager-role" required>
-                                    <option value="admin">Admin</option>
-                                    <option value="mod">Moderator</option>
-                                    <option value="user">User</option>
-                                </select>
-                                <input type="number" class="input-field" id="manager-max-uses" placeholder="Max Uses" min="1" value="1" required>
-                            </div>
-                            <input type="number" class="input-field" id="manager-expires" placeholder="Expires in (hours, optional)" min="1">
-                            <button type="submit" class="btn btn-primary">Generate Invite</button>
-                        </form>
-                    </div>
-
-                    <div>
-                        <h3 style="margin-bottom: var(--spacing-md);">My Invite Codes</h3>
-                        <div class="invite-list" id="manager-invites-list"></div>
-                    </div>
-                </div>
-
-                <!-- Admin Panel -->
-                <div class="role-panel" id="admin-panel">
-                    <div class="panel-header">
-                        <div class="panel-title">
-                            <span>⚙️</span> Admin Panel
-                        </div>
-                        <span class="panel-badge badge-admin">Admin</span>
-                    </div>
-
-                    <div class="panel-stats">
-                        <div class="stat-item">
-                            <div class="stat-value" id="admin-invites">0</div>
-                            <div class="stat-label">Invites Created</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="admin-used">0</div>
-                            <div class="stat-label">Invites Used</div>
-                        </div>
-                    </div>
-
-                    <div class="invite-section">
-                        <h3 style="margin-bottom: var(--spacing-md);">Create Invite Code</h3>
-                        <form class="invite-form" onsubmit="createInvite(event, 'admin')">
-                            <div class="form-row">
-                                <select class="input-field" id="admin-role" required>
-                                    <option value="mod">Moderator</option>
-                                    <option value="user">User</option>
-                                </select>
-                                <input type="number" class="input-field" id="admin-max-uses" placeholder="Max Uses" min="1" value="1" required>
-                            </div>
-                            <input type="number" class="input-field" id="admin-expires" placeholder="Expires in (hours, optional)" min="1">
-                            <button type="submit" class="btn btn-primary">Generate Invite</button>
-                        </form>
-                    </div>
-
-                    <div>
-                        <h3 style="margin-bottom: var(--spacing-md);">My Invite Codes</h3>
-                        <div class="invite-list" id="admin-invites-list"></div>
-                    </div>
-                </div>
-
-                <!-- Mod Panel -->
-                <div class="role-panel" id="mod-panel">
-                    <div class="panel-header">
-                        <div class="panel-title">
-                            <span>🛡️</span> Moderator Panel
-                        </div>
-                        <span class="panel-badge badge-mod">Moderator</span>
-                    </div>
-
-                    <div class="panel-stats">
-                        <div class="stat-item">
-                            <div class="stat-value" id="mod-invites">0</div>
-                            <div class="stat-label">Invites Created</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="mod-used">0</div>
-                            <div class="stat-label">Invites Used</div>
-                        </div>
-                    </div>
-
-                    <div class="invite-section">
-                        <h3 style="margin-bottom: var(--spacing-md);">Create Invite Code</h3>
-                        <form class="invite-form" onsubmit="createInvite(event, 'mod')">
-                            <div class="form-row">
-                                <select class="input-field" id="mod-role" required>
-                                    <option value="user">User</option>
-                                </select>
-                                <input type="number" class="input-field" id="mod-max-uses" placeholder="Max Uses" min="1" value="1" required>
-                            </div>
-                            <input type="number" class="input-field" id="mod-expires" placeholder="Expires in (hours, optional)" min="1">
-                            <button type="submit" class="btn btn-primary">Generate Invite</button>
-                        </form>
-                    </div>
-
-                    <div>
-                        <h3 style="margin-bottom: var(--spacing-md);">My Invite Codes</h3>
-                        <div class="invite-list" id="mod-invites-list"></div>
-                    </div>
+                <div class="page-title-section">
+                    <h1>Admin Panels</h1>
+                    <p class="page-subtitle">Manage roles and invite codes</p>
                 </div>
             </div>
-        </div>
-
-        <!-- Links Page -->
-        <div id="links-page" class="page hidden">
-            <div class="page-header">
-                <h1 class="page-title">My Links</h1>
-                <p class="page-subtitle">Manage your profile links</p>
-            </div>
-            <button class="btn btn-primary">+ Add New Link</button>
-        </div>
-
-        <!-- Profile Page -->
-        <div id="profile-page" class="page hidden">
-            <div class="page-header">
-                <h1 class="page-title">Profile Settings</h1>
-                <p class="page-subtitle">Customize your profile</p>
+            <div class="section-card">
+                <p style="color: var(--text-secondary);">Admin features will be loaded here based on your role...</p>
             </div>
         </div>
     </main>
@@ -591,148 +802,40 @@
                 const data = await response.json();
                 currentUser = data.user;
 
-                document.getElementById('user-name').textContent = currentUser.username;
-                document.getElementById('user-role').textContent = currentUser.role || 'user';
-                document.getElementById('user-avatar').textContent = currentUser.username.charAt(0).toUpperCase();
-                document.getElementById('welcome-name').textContent = currentUser.username;
+                const firstLetter = currentUser.username.charAt(0).toUpperCase();
+                
+                document.getElementById('sidebar-avatar').textContent = firstLetter;
+                document.getElementById('sidebar-username').textContent = currentUser.username;
+                document.getElementById('sidebar-email').textContent = currentUser.email;
+                
+                document.getElementById('profile-avatar').textContent = firstLetter;
+                document.getElementById('profile-username').textContent = currentUser.username;
+                document.getElementById('profile-email').textContent = currentUser.email;
+                document.getElementById('profile-url').textContent = `og.email/${currentUser.custom_url || currentUser.username}`;
+                
+                document.getElementById('uid-stat').textContent = currentUser.id || '0';
+                document.getElementById('views-stat').textContent = '0';
+                document.getElementById('links-stat').textContent = '0';
+                document.getElementById('this-week-views').textContent = '0';
+                document.getElementById('this-month-views').textContent = '0';
 
-                // Show admin nav if user has privileges
+                if (currentUser.created_at) {
+                    const date = new Date(currentUser.created_at);
+                    document.getElementById('profile-created').textContent = date.toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric'
+                    });
+                }
+
                 if (['owner', 'manager', 'admin', 'mod'].includes(currentUser.role)) {
-                    document.getElementById('nav-admin').style.display = 'flex';
-                    loadRolePanels();
+                    document.getElementById('admin-section').style.display = 'block';
                 }
             } catch (error) {
                 console.error('Error loading user:', error);
                 localStorage.removeItem('token');
                 window.location.href = '/login';
             }
-        }
-
-        function loadRolePanels() {
-            const role = currentUser.role;
-            
-            // Owner can see all panels
-            if (role === 'owner') {
-                document.getElementById('owner-panel').classList.add('visible');
-                document.getElementById('manager-panel').classList.add('visible');
-                document.getElementById('admin-panel').classList.add('visible');
-                document.getElementById('mod-panel').classList.add('visible');
-            }
-            // Manager can see Manager and Admin panels
-            else if (role === 'manager') {
-                document.getElementById('manager-panel').classList.add('visible');
-                document.getElementById('admin-panel').classList.add('visible');
-            }
-            // Admin can see only Admin panel
-            else if (role === 'admin') {
-                document.getElementById('admin-panel').classList.add('visible');
-            }
-            // Mod can see only Mod panel
-            else if (role === 'mod') {
-                document.getElementById('mod-panel').classList.add('visible');
-            }
-
-            // Load invites for visible panels
-            loadInvites();
-        }
-
-        async function loadInvites() {
-            const token = localStorage.getItem('token');
-            try {
-                const response = await fetch('/api/invites', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-
-                if (!response.ok) return;
-
-                const data = await response.json();
-                const invites = data.invites || [];
-
-                // Update stats for each panel
-                const panels = ['owner', 'manager', 'admin', 'mod'];
-                panels.forEach(panel => {
-                    const total = invites.length;
-                    const used = invites.filter(i => i.uses_count > 0).length;
-                    
-                    const totalEl = document.getElementById(`${panel}-invites`);
-                    const usedEl = document.getElementById(`${panel}-used`);
-                    
-                    if (totalEl) totalEl.textContent = total;
-                    if (usedEl) usedEl.textContent = used;
-
-                    // Display invite list
-                    const listEl = document.getElementById(`${panel}-invites-list`);
-                    if (listEl) {
-                        if (invites.length === 0) {
-                            listEl.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: var(--spacing-lg);">No invites created yet</p>';
-                        } else {
-                            listEl.innerHTML = invites.map(invite => `
-                                <div class="invite-item">
-                                    <div>
-                                        <div class="invite-code">${invite.code}</div>
-                                        <div class="invite-info">
-                                            Role: ${invite.role} | Uses: ${invite.uses_count}/${invite.max_uses}
-                                            ${invite.expires_at ? `| Expires: ${new Date(invite.expires_at).toLocaleString()}` : ''}
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-ghost" onclick="copyInvite('${invite.code}')">Copy</button>
-                                </div>
-                            `).join('');
-                        }
-                    }
-                });
-            } catch (error) {
-                console.error('Error loading invites:', error);
-            }
-        }
-
-        async function createInvite(event, panel) {
-            event.preventDefault();
-            
-            const role = document.getElementById(`${panel}-role`).value;
-            const maxUses = document.getElementById(`${panel}-max-uses`).value;
-            const expiresIn = document.getElementById(`${panel}-expires`).value;
-
-            const token = localStorage.getItem('token');
-
-            try {
-                const response = await fetch('/api/invites/create', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ 
-                        role, 
-                        maxUses: parseInt(maxUses), 
-                        expiresIn: expiresIn ? parseInt(expiresIn) : null 
-                    })
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    alert(`Invite code created: ${data.code}`);
-                    
-                    // Reset form
-                    document.getElementById(`${panel}-max-uses`).value = '1';
-                    document.getElementById(`${panel}-expires`).value = '';
-                    
-                    // Reload invites
-                    loadInvites();
-                } else {
-                    const error = await response.json();
-                    alert(`Error: ${error.error}`);
-                }
-            } catch (error) {
-                console.error('Error creating invite:', error);
-                alert('Error creating invite code');
-            }
-        }
-
-        function copyInvite(code) {
-            navigator.clipboard.writeText(code).then(() => {
-                alert('Invite code copied to clipboard!');
-            });
         }
 
         // Navigation
@@ -743,44 +846,63 @@
             });
         });
 
-        function switchPage(page) {
-            // Hide all pages
-            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+        function switchPage(pageName) {
+            document.querySelectorAll('.page').forEach(page => page.classList.add('hidden'));
             
-            // Show selected page
-            document.getElementById(`${page}-page`).classList.remove('hidden');
-            
-            // Update nav
+            const targetPage = document.getElementById(`${pageName}-page`);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+            }
+
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
-                if (item.dataset.page === page) {
-                    item.classList.add('active');
-                }
             });
+
+            const activeNav = document.querySelector(`.nav-item[data-page="${pageName}"]`);
+            if (activeNav) {
+                activeNav.classList.add('active');
+            }
         }
 
+        // Quick action functions
         function viewProfile() {
-            if (currentUser) {
+            if (currentUser && currentUser.custom_url) {
                 window.open(`/${currentUser.custom_url}`, '_blank');
+            } else if (currentUser) {
+                window.open(`/${currentUser.username}`, '_blank');
             }
         }
 
-        function shareProfile() {
-            if (currentUser) {
-                const url = `${window.location.origin}/${currentUser.custom_url}`;
-                navigator.clipboard.writeText(url).then(() => {
-                    alert('Profile URL copied to clipboard!');
-                });
-            }
+        function editProfile() {
+            switchPage('settings');
+        }
+
+        function customizeProfile() {
+            switchPage('customize');
+        }
+
+        function manageLinks() {
+            switchPage('socials');
+        }
+
+        function viewTemplates() {
+            switchPage('templates');
+        }
+
+        function accountSettings() {
+            switchPage('settings');
+        }
+
+        function viewAnalytics() {
+            switchPage('analytics');
         }
 
         function logout() {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            window.location.href = '/';
+            window.location.href = '/login';
         }
 
-        // Initialize
         loadUser();
     </script>
 </body>

@@ -59,11 +59,35 @@
         }
 
         .form-label {
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
             margin-bottom: var(--spacing-sm);
             font-size: 0.875rem;
             font-weight: 600;
             color: var(--text-secondary);
+        }
+
+        .validation-icon {
+            font-size: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .validation-icon.show {
+            opacity: 1;
+        }
+
+        .validation-icon.valid {
+            color: #10b981;
+        }
+
+        .validation-icon.invalid {
+            color: #ef4444;
+        }
+
+        .input-wrapper {
+            position: relative;
         }
 
         .form-input {
@@ -92,6 +116,39 @@
             font-size: 0.75rem;
             color: var(--text-muted);
             margin-top: var(--spacing-sm);
+        }
+
+        .password-requirements {
+            margin-top: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-primary);
+        }
+
+        .requirements-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-xs) 0;
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+
+        .requirement-item.met {
+            color: #a855f7;
+        }
+
+        .requirement-icon {
+            font-size: 0.75rem;
         }
 
         .btn-submit {
@@ -216,18 +273,23 @@
 
             <form id="register-form">
                 <div class="form-group">
-                    <label for="username" class="form-label">Username</label>
-                    <input 
-                        type="text" 
-                        id="username" 
-                        name="username" 
-                        class="form-input" 
-                        placeholder="Choose a unique username*"
-                        required
-                        pattern="[a-zA-Z0-9_]{1,20}"
-                        autocomplete="username"
-                    >
-                    <div class="form-hint">1-20 characters, letters, numbers, and underscores only</div>
+                    <label for="username" class="form-label">
+                        Username
+                        <span id="username-icon" class="validation-icon"></span>
+                    </label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            class="form-input" 
+                            placeholder="Choose a unique username*"
+                            required
+                            pattern="[a-zA-Z0-9_]{1,12}"
+                            autocomplete="username"
+                        >
+                    </div>
+                    <div class="form-hint">1-12 characters, letters, numbers, and underscores only</div>
                 </div>
 
                 <div class="form-group">
@@ -244,21 +306,49 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password" class="form-label">Password</label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password" 
-                        class="form-input" 
-                        placeholder="Password*"
-                        required
-                        minlength="8"
-                        autocomplete="new-password"
-                    >
+                    <label for="password" class="form-label">
+                        Password
+                        <span id="password-icon" class="validation-icon"></span>
+                    </label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-input" 
+                            placeholder="Password*"
+                            required
+                            minlength="8"
+                            maxlength="12"
+                            autocomplete="new-password"
+                        >
+                    </div>
                     <div class="password-strength">
                         <div id="password-strength-bar" class="password-strength-bar"></div>
                     </div>
-                    <div class="form-hint">At least 8 characters</div>
+                    <div class="password-requirements">
+                        <div class="requirements-title">Your password must contain:</div>
+                        <div class="requirement-item" id="req-length">
+                            <span class="requirement-icon">○</span>
+                            <span>At least 8-12 characters</span>
+                        </div>
+                        <div class="requirement-item" id="req-uppercase">
+                            <span class="requirement-icon">○</span>
+                            <span>At least 1 uppercase letter</span>
+                        </div>
+                        <div class="requirement-item" id="req-lowercase">
+                            <span class="requirement-icon">○</span>
+                            <span>At least 1 lowercase letter</span>
+                        </div>
+                        <div class="requirement-item" id="req-digit">
+                            <span class="requirement-icon">○</span>
+                            <span>At least 1 digit</span>
+                        </div>
+                        <div class="requirement-item" id="req-special">
+                            <span class="requirement-icon">○</span>
+                            <span>At least 1 special character</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -290,16 +380,73 @@
         const successMessage = document.getElementById('success-message');
         const passwordInput = document.getElementById('password');
         const strengthBar = document.getElementById('password-strength-bar');
+        const usernameInput = document.getElementById('username');
+        const usernameIcon = document.getElementById('username-icon');
+        const passwordIcon = document.getElementById('password-icon');
+
+        usernameInput.addEventListener('input', (e) => {
+            const username = e.target.value;
+            const isValid = /^[a-zA-Z0-9_]{1,12}$/.test(username);
+            
+            usernameIcon.classList.add('show');
+            if (isValid && username.length >= 1) {
+                usernameIcon.textContent = '✓';
+                usernameIcon.classList.remove('invalid');
+                usernameIcon.classList.add('valid');
+            } else {
+                usernameIcon.textContent = '✗';
+                usernameIcon.classList.remove('valid');
+                usernameIcon.classList.add('invalid');
+            }
+
+            if (username.length === 0) {
+                usernameIcon.classList.remove('show');
+            }
+        });
 
         passwordInput.addEventListener('input', (e) => {
             const password = e.target.value;
-            let strength = 0;
+            
+            const requirements = {
+                length: password.length >= 8 && password.length <= 12,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                digit: /[0-9]/.test(password),
+                special: /[^a-zA-Z0-9]/.test(password)
+            };
 
-            if (password.length >= 8) strength++;
-            if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
-            if (password.match(/[0-9]/)) strength++;
-            if (password.match(/[^a-zA-Z0-9]/)) strength++;
+            document.getElementById('req-length').classList.toggle('met', requirements.length);
+            document.getElementById('req-uppercase').classList.toggle('met', requirements.uppercase);
+            document.getElementById('req-lowercase').classList.toggle('met', requirements.lowercase);
+            document.getElementById('req-digit').classList.toggle('met', requirements.digit);
+            document.getElementById('req-special').classList.toggle('met', requirements.special);
 
+            document.querySelectorAll('.requirement-item').forEach(item => {
+                const icon = item.querySelector('.requirement-icon');
+                if (item.classList.contains('met')) {
+                    icon.textContent = '●';
+                } else {
+                    icon.textContent = '○';
+                }
+            });
+
+            const allMet = Object.values(requirements).every(req => req);
+            passwordIcon.classList.add('show');
+            if (allMet) {
+                passwordIcon.textContent = '✓';
+                passwordIcon.classList.remove('invalid');
+                passwordIcon.classList.add('valid');
+            } else if (password.length > 0) {
+                passwordIcon.textContent = '✗';
+                passwordIcon.classList.remove('valid');
+                passwordIcon.classList.add('invalid');
+            }
+
+            if (password.length === 0) {
+                passwordIcon.classList.remove('show');
+            }
+
+            let strength = Object.values(requirements).filter(req => req).length;
             strengthBar.className = 'password-strength-bar';
             if (strength >= 4) strengthBar.classList.add('strength-strong');
             else if (strength >= 2) strengthBar.classList.add('strength-medium');

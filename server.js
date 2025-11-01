@@ -197,6 +197,65 @@ function initializeDatabase() {
                 if (err && !err.message.includes('duplicate column')) console.log("Column may exist");
             });
         });
+        
+        createDefaultOwnerAccount();
+    });
+}
+
+async function createDefaultOwnerAccount() {
+    const defaultUsername = 'r';
+    const defaultPassword = 'ACK071675$!';
+    const defaultEmail = 'owner@og.email';
+    
+    db.get('SELECT id FROM users WHERE username = ?', [defaultUsername], async (err, existingUser) => {
+        if (err) {
+            console.error('Error checking for owner account:', err);
+            return;
+        }
+        
+        if (existingUser) {
+            console.log('✓ Default owner account already exists');
+            return;
+        }
+        
+        try {
+            const passwordHash = await bcrypt.hash(defaultPassword, 12);
+            const customUrl = defaultUsername.toLowerCase();
+            
+            db.run(
+                'INSERT INTO users (username, email, password_hash, display_name, custom_url, role) VALUES (?, ?, ?, ?, ?, ?)',
+                [defaultUsername, defaultEmail, passwordHash, defaultUsername, customUrl, 'owner'],
+                function(err) {
+                    if (err) {
+                        console.error('Error creating default owner account:', err);
+                        return;
+                    }
+                    
+                    const userId = this.lastID;
+                    
+                    db.run('INSERT INTO profiles (user_id) VALUES (?)', [userId], (err) => {
+                        if (err) console.error('Error creating owner profile:', err);
+                    });
+                    
+                    const inviteCode = crypto.randomBytes(8).toString('hex').toUpperCase();
+                    db.run(
+                        'INSERT INTO invites (code, max_uses, role) VALUES (?, ?, ?)',
+                        [inviteCode, 999, 'owner'],
+                        (err) => {
+                            if (err) {
+                                console.error('Error creating owner invite code:', err);
+                            } else {
+                                console.log('✓ Default owner account created successfully');
+                                console.log(`  Username: ${defaultUsername}`);
+                                console.log(`  Owner Invite Code: ${inviteCode}`);
+                            }
+                        }
+                    );
+                }
+            );
+        } catch (error) {
+            console.error('Error hashing password for owner account:', error);
+        }
     });
 }
 
@@ -217,9 +276,14 @@ const authMiddleware = (req, res, next) => {
 };
 
 app.post('/api/auth/register', [
-    body('username').isLength({ min: 1, max: 20 }).matches(/^[a-zA-Z0-9_]+$/),
+    body('username').isLength({ min: 1, max: 12 }).matches(/^[a-zA-Z0-9_]+$/),
     body('email').isEmail().normalizeEmail(),
-    body('password').isLength({ min: 8 }),
+    body('password')
+        .isLength({ min: 8, max: 12 })
+        .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter')
+        .matches(/[a-z]/).withMessage('Password must contain at least one lowercase letter')
+        .matches(/[0-9]/).withMessage('Password must contain at least one digit')
+        .matches(/[^a-zA-Z0-9]/).withMessage('Password must contain at least one special character'),
     body('inviteCode').notEmpty().isString()
 ], async (req, res) => {
     const errors = validationResult(req);
