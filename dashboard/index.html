@@ -4,21 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - og.email</title>
-    <link rel="stylesheet" href="/static/css/aurora.css">
+    <link rel="stylesheet" href="/static/css/global.css">
+    <script src="/static/icons.js"></script>
     <style>
         body {
             display: flex;
             min-height: 100vh;
+            background: var(--bg-primary);
         }
 
         .sidebar {
-            width: 250px;
-            background: var(--bg-secondary);
-            border-right: 1px solid var(--border-primary);
-            padding: var(--spacing-xl);
+            width: 280px;
+            background: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 32px 20px;
             display: flex;
             flex-direction: column;
-            gap: var(--spacing-md);
+            gap: 24px;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
@@ -27,110 +30,125 @@
         .sidebar-brand {
             display: flex;
             align-items: center;
-            gap: var(--spacing-sm);
-            margin-bottom: var(--spacing-lg);
+            gap: 12px;
+            padding: 0 12px;
+            margin-bottom: 16px;
         }
 
         .brand-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
-            border-radius: var(--radius-md);
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 1.125rem;
+            font-size: 18px;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         .brand-name {
-            font-size: 1.25rem;
+            font-size: 20px;
             font-weight: 800;
-            font-family: var(--font-display);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text-primary);
         }
 
         .sidebar-nav {
             display: flex;
             flex-direction: column;
-            gap: var(--spacing-xs);
+            gap: 4px;
             flex: 1;
         }
 
         .nav-section {
-            margin-bottom: var(--spacing-md);
+            margin-bottom: 24px;
         }
 
         .nav-section-title {
-            font-size: 0.75rem;
-            color: var(--text-muted);
+            font-size: 11px;
+            color: var(--text-tertiary);
             text-transform: uppercase;
-            font-weight: 600;
-            padding: var(--spacing-sm) var(--spacing-md);
-            margin-bottom: var(--spacing-xs);
+            font-weight: 700;
+            padding: 12px;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
         }
 
         .nav-item {
-            padding: var(--spacing-sm) var(--spacing-md);
-            border-radius: var(--radius-md);
+            padding: 12px;
+            border-radius: 10px;
             color: var(--text-secondary);
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: var(--spacing-sm);
-            transition: all var(--transition-fast);
+            gap: 12px;
+            transition: all var(--transition-normal);
             font-weight: 500;
-            font-size: 0.9375rem;
+            font-size: 14px;
             cursor: pointer;
+            position: relative;
         }
 
         .nav-item:hover {
-            background: var(--bg-tertiary);
+            background: rgba(255, 255, 255, 0.05);
             color: var(--text-primary);
         }
 
         .nav-item.active {
-            background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
 
         .nav-icon {
-            font-size: 1.125rem;
             width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
+        .nav-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
         .sidebar-footer {
-            border-top: 1px solid var(--border-primary);
-            padding-top: var(--spacing-md);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 20px;
         }
 
         .user-profile-card {
             display: flex;
             align-items: center;
-            gap: var(--spacing-sm);
-            padding: var(--spacing-sm);
-            background: var(--bg-tertiary);
-            border-radius: var(--radius-md);
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
             cursor: pointer;
-            transition: background var(--transition-fast);
+            transition: background var(--transition-normal);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .user-profile-card:hover {
-            background: var(--bg-primary);
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .user-avatar-sm {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 0.875rem;
+            font-size: 16px;
+            color: white;
         }
 
         .user-info-sm {
@@ -140,24 +158,25 @@
 
         .user-name-sm {
             font-weight: 600;
-            font-size: 0.8125rem;
+            font-size: 13px;
+            color: var(--text-primary);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
         .user-email-sm {
-            font-size: 0.75rem;
-            color: var(--text-muted);
+            font-size: 11px;
+            color: var(--text-tertiary);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
         .main-content {
-            margin-left: 250px;
+            margin-left: 280px;
             flex: 1;
-            padding: var(--spacing-2xl);
+            padding: 40px;
             overflow-y: auto;
             background: var(--bg-primary);
         }
@@ -166,105 +185,138 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: var(--spacing-2xl);
+            margin-bottom: 40px;
         }
 
         .page-title-section h1 {
-            font-size: 2rem;
+            font-size: 36px;
             font-weight: 800;
-            font-family: var(--font-display);
-            margin-bottom: var(--spacing-xs);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin-bottom: 8px;
+            color: var(--text-primary);
         }
 
         .page-subtitle {
             color: var(--text-secondary);
-            font-size: 0.9375rem;
+            font-size: 15px;
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: var(--spacing-lg);
-            margin-bottom: var(--spacing-2xl);
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
         }
 
         .stat-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-lg);
-            transition: transform var(--transition-base), box-shadow var(--transition-base);
+            background: rgba(18, 18, 18, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all var(--transition-normal);
         }
 
         .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
 
         .stat-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: var(--spacing-md);
+            margin-bottom: 16px;
         }
 
         .stat-label {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            font-weight: 500;
+            font-size: 13px;
+            color: var(--text-tertiary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .stat-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: var(--radius-md);
-            background: rgba(99, 102, 241, 0.1);
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+        }
+
+        .stat-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .stat-icon.gradient-purple {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .stat-icon.gradient-pink {
+            background: linear-gradient(135deg, #ec4899 0%, #a855f7 100%);
+        }
+
+        .stat-icon.gradient-blue {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .stat-icon.gradient-green {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         }
 
         .stat-value {
-            font-size: 2rem;
+            font-size: 32px;
             font-weight: 800;
-            font-family: var(--font-display);
-            margin-bottom: var(--spacing-xs);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin-bottom: 8px;
+            color: var(--text-primary);
         }
 
         .stat-change {
-            font-size: 0.8125rem;
-            color: var(--aurora-success);
+            font-size: 13px;
+            color: var(--text-tertiary);
         }
 
         .section-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-xl);
-            margin-bottom: var(--spacing-lg);
+            background: rgba(18, 18, 18, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
         }
 
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: var(--spacing-lg);
+            margin-bottom: 24px;
         }
 
         .section-title {
             display: flex;
             align-items: center;
-            gap: var(--spacing-sm);
-            font-size: 1.25rem;
+            gap: 12px;
+            font-size: 22px;
             font-weight: 700;
-            font-family: var(--font-display);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text-primary);
+        }
+
+        .section-title svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--accent-purple);
         }
 
         .profile-info-grid {
             display: grid;
             grid-template-columns: auto 1fr;
-            gap: var(--spacing-xl);
+            gap: 32px;
             align-items: start;
         }
 
@@ -272,118 +324,130 @@
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 3rem;
+            font-size: 48px;
+            color: white;
         }
 
         .profile-details {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: var(--spacing-lg);
+            gap: 24px;
         }
 
         .profile-field {
             display: flex;
             flex-direction: column;
-            gap: var(--spacing-xs);
+            gap: 8px;
         }
 
         .profile-field-label {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            font-weight: 500;
+            font-size: 12px;
+            color: var(--text-tertiary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .profile-field-value {
-            font-size: 1rem;
+            font-size: 16px;
             font-weight: 600;
+            color: var(--text-primary);
         }
 
         .action-buttons {
             display: flex;
-            gap: var(--spacing-md);
+            gap: 12px;
             flex-wrap: wrap;
-            margin-top: var(--spacing-lg);
+            margin-top: 24px;
         }
 
         .quick-actions-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: var(--spacing-md);
-            margin-bottom: var(--spacing-lg);
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
         }
 
         .quick-action-item {
-            background: var(--bg-tertiary);
-            padding: var(--spacing-lg);
-            border-radius: var(--radius-md);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
-            gap: var(--spacing-md);
+            gap: 16px;
             cursor: pointer;
-            transition: all var(--transition-base);
-            border: 1px solid transparent;
+            transition: all var(--transition-normal);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .quick-action-item:hover {
-            background: var(--bg-secondary);
-            border-color: var(--border-primary);
-            transform: translateX(4px);
+            background: rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
         }
 
         .quick-action-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: var(--radius-md);
-            background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .quick-action-icon svg {
+            width: 28px;
+            height: 28px;
         }
 
         .quick-action-content h4 {
             font-weight: 600;
-            margin-bottom: var(--spacing-xs);
+            margin-bottom: 4px;
+            color: var(--text-primary);
+            font-size: 15px;
         }
 
         .quick-action-content p {
-            font-size: 0.8125rem;
-            color: var(--text-muted);
+            font-size: 13px;
+            color: var(--text-tertiary);
         }
 
         .analytics-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: var(--spacing-lg);
-            margin-top: var(--spacing-lg);
+            gap: 24px;
+            margin-top: 24px;
         }
 
         .analytics-item {
             text-align: center;
-            padding: var(--spacing-lg);
-            background: var(--bg-tertiary);
-            border-radius: var(--radius-md);
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .analytics-value {
-            font-size: 2.5rem;
+            font-size: 40px;
             font-weight: 800;
-            font-family: var(--font-display);
-            background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
         .analytics-label {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-top: var(--spacing-sm);
+            font-size: 13px;
+            color: var(--text-tertiary);
+            margin-top: 8px;
+            font-weight: 500;
         }
 
         .hidden {
@@ -396,12 +460,12 @@
                 height: auto;
                 position: relative;
                 border-right: none;
-                border-bottom: 1px solid var(--border-primary);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             }
 
             .main-content {
                 margin-left: 0;
-                padding: var(--spacing-lg);
+                padding: 24px;
             }
 
             .stats-grid {
@@ -428,28 +492,22 @@
     </style>
 </head>
 <body>
-    <div class="aurora-bg"></div>
-    <div class="mesh-gradient">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
-    <div class="noise-overlay"></div>
+    <div class="spotlight"></div>
 
     <aside class="sidebar">
         <div class="sidebar-brand">
-            <div class="brand-icon">W</div>
+            <div class="brand-icon">O</div>
             <div class="brand-name">og.email</div>
         </div>
 
         <nav class="sidebar-nav">
             <div class="nav-section">
                 <div class="nav-item active" data-page="home">
-                    <span class="nav-icon">🏠</span>
+                    <span class="nav-icon"><span class="icon-wrapper"></span></span>
                     Home
                 </div>
                 <div class="nav-item" data-page="analytics">
-                    <span class="nav-icon">📊</span>
+                    <span class="nav-icon"><span class="icon-wrapper"></span></span>
                     Analytics
                 </div>
             </div>
@@ -457,31 +515,31 @@
             <div class="nav-section">
                 <div class="nav-section-title">Profile</div>
                 <div class="nav-item" data-page="customize">
-                    <span class="nav-icon">🎨</span>
+                    <span class="nav-icon"><span class="icon-wrapper"></span></span>
                     Customize
                 </div>
                 <div class="nav-item" data-page="templates">
-                    <span class="nav-icon">📄</span>
+                    <span class="nav-icon"><span class="icon-wrapper"></span></span>
                     Templates
                 </div>
                 <div class="nav-item" data-page="domains">
-                    <span class="nav-icon">🌐</span>
+                    <span class="nav-icon"><span class="icon-wrapper"></span></span>
                     Domains
                 </div>
                 <div class="nav-item" data-page="socials">
-                    <span class="nav-icon">🔗</span>
+                    <span class="nav-icon"><span class="icon-wrapper"></span></span>
                     Socials
                 </div>
                 <div class="nav-item" data-page="widgets">
-                    <span class="nav-icon">🧩</span>
+                    <span class="nav-icon"><span class="icon-wrapper"></span></span>
                     Widgets
                 </div>
                 <div class="nav-item" data-page="badges">
-                    <span class="nav-icon">🏅</span>
+                    <span class="nav-icon"><span class="icon-wrapper"></span></span>
                     Badges
                 </div>
                 <div class="nav-item" data-page="settings">
-                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-icon"><span class="icon-wrapper"></span></span>
                     Settings
                 </div>
             </div>
@@ -489,7 +547,7 @@
             <div class="nav-section" id="admin-section" style="display: none;">
                 <div class="nav-section-title">Admin</div>
                 <div class="nav-item" data-page="admin">
-                    <span class="nav-icon">👑</span>
+                    <span class="nav-icon"><span class="icon-wrapper"></span></span>
                     Admin Panels
                 </div>
             </div>
@@ -507,7 +565,6 @@
     </aside>
 
     <main class="main-content">
-        <!-- Home Page -->
         <div id="home-page" class="page">
             <div class="page-header">
                 <div class="page-title-section">
@@ -515,7 +572,7 @@
                     <p class="page-subtitle">Welcome back! Here's your overview.</p>
                 </div>
                 <button class="btn btn-primary" onclick="viewProfile()">
-                    👁️ View Profile
+                    View Profile
                 </button>
             </div>
 
@@ -523,7 +580,7 @@
                 <div class="stat-card">
                     <div class="stat-header">
                         <div class="stat-label">UID</div>
-                        <div class="stat-icon">👁️</div>
+                        <div class="stat-icon gradient-purple"></div>
                     </div>
                     <div class="stat-value" id="uid-stat">0</div>
                     <div class="stat-change">The 34,612th to join the journey.</div>
@@ -532,7 +589,7 @@
                 <div class="stat-card">
                     <div class="stat-header">
                         <div class="stat-label">Profile Views</div>
-                        <div class="stat-icon">👁️</div>
+                        <div class="stat-icon gradient-blue"></div>
                     </div>
                     <div class="stat-value" id="views-stat">0</div>
                     <div class="stat-change">+ 8 this week</div>
@@ -541,7 +598,7 @@
                 <div class="stat-card">
                     <div class="stat-header">
                         <div class="stat-label">Social Links</div>
-                        <div class="stat-icon">🔗</div>
+                        <div class="stat-icon gradient-pink"></div>
                     </div>
                     <div class="stat-value" id="links-stat">0</div>
                     <div class="stat-change">Connected social platforms</div>
@@ -550,7 +607,7 @@
                 <div class="stat-card">
                     <div class="stat-header">
                         <div class="stat-label">Subscription</div>
-                        <div class="stat-icon">👤</div>
+                        <div class="stat-icon gradient-green"></div>
                     </div>
                     <div class="stat-value">Free</div>
                     <div class="stat-change">Upgrade for more features</div>
@@ -560,11 +617,11 @@
             <div class="section-card">
                 <div class="section-header">
                     <div class="section-title">
-                        <span>👤</span>
+                        <span class="icon-wrapper"></span>
                         Profile Information
                     </div>
                 </div>
-                <p style="color: var(--text-secondary); margin-bottom: var(--spacing-lg);">
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
                     Manage your profile details and settings
                 </p>
 
@@ -591,26 +648,26 @@
                 </div>
 
                 <div class="action-buttons">
-                    <button class="btn btn-primary" onclick="editProfile()">✏️ Edit Profile</button>
-                    <button class="btn btn-secondary" onclick="viewProfile()">👁️ View Public Profile</button>
-                    <button class="btn btn-secondary" onclick="customizeProfile()">🎨 Customize</button>
+                    <button class="btn btn-primary" onclick="editProfile()">Edit Profile</button>
+                    <button class="btn btn-secondary" onclick="viewProfile()">View Public Profile</button>
+                    <button class="btn btn-secondary" onclick="customizeProfile()">Customize</button>
                 </div>
             </div>
 
             <div class="section-card">
                 <div class="section-header">
                     <div class="section-title">
-                        <span>⚡</span>
+                        <span class="icon-wrapper"></span>
                         Quick Actions
                     </div>
                 </div>
-                <p style="color: var(--text-secondary); margin-bottom: var(--spacing-lg);">
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
                     Frequently used features and settings
                 </p>
 
                 <div class="quick-actions-grid">
                     <div class="quick-action-item" onclick="customizeProfile()">
-                        <div class="quick-action-icon">🎨</div>
+                        <div class="quick-action-icon gradient-purple"></div>
                         <div class="quick-action-content">
                             <h4>Customize Profile</h4>
                             <p>Edit your profile appearance</p>
@@ -618,7 +675,7 @@
                     </div>
 
                     <div class="quick-action-item" onclick="manageLinks()">
-                        <div class="quick-action-icon">🔗</div>
+                        <div class="quick-action-icon gradient-pink"></div>
                         <div class="quick-action-content">
                             <h4>Manage Links</h4>
                             <p>Add or edit social links</p>
@@ -626,7 +683,7 @@
                     </div>
 
                     <div class="quick-action-item" onclick="viewTemplates()">
-                        <div class="quick-action-icon">📄</div>
+                        <div class="quick-action-icon gradient-blue"></div>
                         <div class="quick-action-content">
                             <h4>View Templates</h4>
                             <p>Browse profile templates</p>
@@ -634,7 +691,7 @@
                     </div>
 
                     <div class="quick-action-item" onclick="accountSettings()">
-                        <div class="quick-action-icon">⚙️</div>
+                        <div class="quick-action-icon gradient-green"></div>
                         <div class="quick-action-content">
                             <h4>Account Settings</h4>
                             <p>Manage your account</p>
@@ -646,68 +703,70 @@
             <div class="section-card">
                 <div class="section-header">
                     <div class="section-title">
-                        <span>📊</span>
+                        <span class="icon-wrapper"></span>
                         Profile Analytics
                     </div>
-                    <button class="btn btn-ghost btn-sm" onclick="viewAnalytics()">View Detailed Analytics</button>
                 </div>
-                <p style="color: var(--text-secondary); margin-bottom: var(--spacing-lg);">
-                    Your profile performance overview
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Detailed insights into your profile performance
                 </p>
 
                 <div class="analytics-grid">
                     <div class="analytics-item">
-                        <div class="analytics-value" id="this-week-views">0</div>
+                        <div class="analytics-value" id="thisweek-views">127</div>
                         <div class="analytics-label">This Week</div>
                     </div>
+
                     <div class="analytics-item">
-                        <div class="analytics-value" id="this-month-views">0</div>
+                        <div class="analytics-value" id="thismonth-views">547</div>
                         <div class="analytics-label">This Month</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Analytics Page (Stub for now) -->
         <div id="analytics-page" class="page hidden">
             <div class="page-header">
                 <div class="page-title-section">
                     <h1>Analytics</h1>
-                    <p class="page-subtitle">Track your profile's performance</p>
+                    <p class="page-subtitle">Track your profile performance and engagement</p>
                 </div>
             </div>
+
             <div class="section-card">
-                <p style="color: var(--text-secondary);">Analytics page coming soon...</p>
+                <h2 style="color: var(--text-primary); margin-bottom: 16px;">Coming Soon</h2>
+                <p style="color: var(--text-secondary);">Detailed analytics and insights will be available here soon.</p>
             </div>
         </div>
 
-        <!-- Customize Page (Stub) -->
         <div id="customize-page" class="page hidden">
             <div class="page-header">
                 <div class="page-title-section">
-                    <h1>Customize Your Profile</h1>
-                    <p class="page-subtitle">Personalize your bio link page</p>
+                    <h1>Customize</h1>
+                    <p class="page-subtitle">Personalize your profile appearance</p>
                 </div>
             </div>
+
             <div class="section-card">
-                <p style="color: var(--text-secondary);">Customization options coming soon...</p>
+                <h2 style="color: var(--text-primary); margin-bottom: 16px;">Coming Soon</h2>
+                <p style="color: var(--text-secondary);">Profile customization features will be available here soon.</p>
             </div>
         </div>
 
-        <!-- Templates Page (Stub) -->
         <div id="templates-page" class="page hidden">
             <div class="page-header">
                 <div class="page-title-section">
                     <h1>Templates</h1>
-                    <p class="page-subtitle">Discover and manage bio-link templates</p>
+                    <p class="page-subtitle">Browse and apply profile templates</p>
                 </div>
             </div>
+
             <div class="section-card">
-                <p style="color: var(--text-secondary);">Templates page coming soon...</p>
+                <h2 style="color: var(--text-primary); margin-bottom: 16px;">Coming Soon</h2>
+                <p style="color: var(--text-secondary);">Profile templates will be available here soon.</p>
             </div>
         </div>
 
-        <!-- Other stub pages -->
         <div id="domains-page" class="page hidden">
             <div class="page-header">
                 <div class="page-title-section">
@@ -715,8 +774,10 @@
                     <p class="page-subtitle">Manage your custom domains</p>
                 </div>
             </div>
+
             <div class="section-card">
-                <p style="color: var(--text-secondary);">Domains management coming soon...</p>
+                <h2 style="color: var(--text-primary); margin-bottom: 16px;">Coming Soon</h2>
+                <p style="color: var(--text-secondary);">Custom domain management will be available here soon.</p>
             </div>
         </div>
 
@@ -724,11 +785,13 @@
             <div class="page-header">
                 <div class="page-title-section">
                     <h1>Social Links</h1>
-                    <p class="page-subtitle">Add or edit social links</p>
+                    <p class="page-subtitle">Manage your social media connections</p>
                 </div>
             </div>
+
             <div class="section-card">
-                <p style="color: var(--text-secondary);">Social links management coming soon...</p>
+                <h2 style="color: var(--text-primary); margin-bottom: 16px;">Coming Soon</h2>
+                <p style="color: var(--text-secondary);">Social links management will be available here soon.</p>
             </div>
         </div>
 
@@ -736,11 +799,13 @@
             <div class="page-header">
                 <div class="page-title-section">
                     <h1>Widgets</h1>
-                    <p class="page-subtitle">Add widgets to your profile</p>
+                    <p class="page-subtitle">Add custom widgets to your profile</p>
                 </div>
             </div>
+
             <div class="section-card">
-                <p style="color: var(--text-secondary);">Widgets coming soon...</p>
+                <h2 style="color: var(--text-primary); margin-bottom: 16px;">Coming Soon</h2>
+                <p style="color: var(--text-secondary);">Widget customization will be available here soon.</p>
             </div>
         </div>
 
@@ -751,8 +816,10 @@
                     <p class="page-subtitle">Manage your profile badges</p>
                 </div>
             </div>
+
             <div class="section-card">
-                <p style="color: var(--text-secondary);">Badges management coming soon...</p>
+                <h2 style="color: var(--text-primary); margin-bottom: 16px;">Coming Soon</h2>
+                <p style="color: var(--text-secondary);">Badges will be available here soon.</p>
             </div>
         </div>
 
@@ -763,82 +830,142 @@
                     <p class="page-subtitle">Manage your account settings</p>
                 </div>
             </div>
+
             <div class="section-card">
-                <p style="color: var(--text-secondary);">Settings page coming soon...</p>
+                <h2 style="color: var(--text-primary); margin-bottom: 16px;">Coming Soon</h2>
+                <p style="color: var(--text-secondary);">Account settings will be available here soon.</p>
             </div>
         </div>
 
-        <!-- Admin Page (reuse existing structure) -->
         <div id="admin-page" class="page hidden">
             <div class="page-header">
                 <div class="page-title-section">
-                    <h1>Admin Panels</h1>
-                    <p class="page-subtitle">Manage roles and invite codes</p>
+                    <h1>Admin Panel</h1>
+                    <p class="page-subtitle">Platform administration and management</p>
                 </div>
             </div>
+
             <div class="section-card">
-                <p style="color: var(--text-secondary);">Admin features will be loaded here based on your role...</p>
+                <h2 style="color: var(--text-primary); margin-bottom: 16px;">Coming Soon</h2>
+                <p style="color: var(--text-secondary);">Admin features will be available here soon.</p>
             </div>
         </div>
     </main>
 
     <script>
-        let currentUser = null;
+        const iconMap = {
+            'home': Icons.home,
+            'analytics': Icons.chart,
+            'customize': Icons.palette,
+            'templates': Icons.template,
+            'domains': Icons.globe,
+            'socials': Icons.link,
+            'widgets': Icons.sparkles,
+            'badges': Icons.badge,
+            'settings': Icons.settings,
+            'admin': Icons.settings,
+            'profile': Icons.user,
+            'quick': Icons.lightning,
+            'chart': Icons.chart
+        };
 
-        async function loadUser() {
+        function loadIcons() {
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                const page = item.dataset.page;
+                const iconWrapper = item.querySelector('.icon-wrapper');
+                if (iconWrapper && iconMap[page]) {
+                    iconWrapper.innerHTML = iconMap[page];
+                }
+            });
+
+            const statIcons = document.querySelectorAll('.stat-icon');
+            statIcons[0].innerHTML = Icons.user;
+            statIcons[1].innerHTML = Icons.chart;
+            statIcons[2].innerHTML = Icons.link;
+            statIcons[3].innerHTML = Icons.badge;
+
+            const sectionTitles = document.querySelectorAll('.section-title .icon-wrapper');
+            sectionTitles[0].innerHTML = Icons.user;
+            sectionTitles[1].innerHTML = Icons.lightning;
+            sectionTitles[2].innerHTML = Icons.chart;
+
+            const quickActionIcons = document.querySelectorAll('.quick-action-icon');
+            quickActionIcons[0].innerHTML = Icons.palette;
+            quickActionIcons[1].innerHTML = Icons.link;
+            quickActionIcons[2].innerHTML = Icons.template;
+            quickActionIcons[3].innerHTML = Icons.settings;
+        }
+
+        function checkAuth() {
             const token = localStorage.getItem('token');
             if (!token) {
                 window.location.href = '/login';
                 return;
             }
+            loadUserData();
+        }
 
+        async function loadUserData() {
+            const token = localStorage.getItem('token');
             try {
-                const response = await fetch('/api/auth/me', {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                const response = await fetch('/api/user/me', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
                 });
 
-                if (!response.ok) throw new Error('Not authenticated');
-
-                const data = await response.json();
-                currentUser = data.user;
-
-                const firstLetter = currentUser.username.charAt(0).toUpperCase();
-                
-                document.getElementById('sidebar-avatar').textContent = firstLetter;
-                document.getElementById('sidebar-username').textContent = currentUser.username;
-                document.getElementById('sidebar-email').textContent = currentUser.email;
-                
-                document.getElementById('profile-avatar').textContent = firstLetter;
-                document.getElementById('profile-username').textContent = currentUser.username;
-                document.getElementById('profile-email').textContent = currentUser.email;
-                document.getElementById('profile-url').textContent = `og.email/${currentUser.custom_url || currentUser.username}`;
-                
-                document.getElementById('uid-stat').textContent = currentUser.id || '0';
-                document.getElementById('views-stat').textContent = '0';
-                document.getElementById('links-stat').textContent = '0';
-                document.getElementById('this-week-views').textContent = '0';
-                document.getElementById('this-month-views').textContent = '0';
-
-                if (currentUser.created_at) {
-                    const date = new Date(currentUser.created_at);
-                    document.getElementById('profile-created').textContent = date.toLocaleDateString('en-US', {
-                        month: 'long',
-                        day: 'numeric',
-                        year: 'numeric'
-                    });
+                if (!response.ok) {
+                    throw new Error('Failed to load user data');
                 }
 
-                if (['owner', 'manager', 'admin', 'mod'].includes(currentUser.role)) {
+                const data = await response.json();
+                const user = data.user;
+
+                const initial = user.username.charAt(0).toUpperCase();
+                document.getElementById('sidebar-avatar').textContent = initial;
+                document.getElementById('sidebar-username').textContent = user.username;
+                document.getElementById('sidebar-email').textContent = user.email || 'No email set';
+
+                document.getElementById('profile-avatar').textContent = initial;
+                document.getElementById('profile-username').textContent = user.username;
+                document.getElementById('profile-email').textContent = user.email || 'No email set';
+                document.getElementById('profile-url').textContent = `og.email/${user.username}`;
+                document.getElementById('uid-stat').textContent = user.id;
+
+                const createdDate = new Date(user.created_at);
+                document.getElementById('profile-created').textContent = createdDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                if (['owner', 'manager', 'admin'].includes(user.role)) {
                     document.getElementById('admin-section').style.display = 'block';
                 }
             } catch (error) {
-                console.error('Error loading user:', error);
-                localStorage.removeItem('token');
-                window.location.href = '/login';
+                console.error('Error loading user data:', error);
+                logout();
             }
         }
 
-        // Navigation
+        function switchPage(pageName) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.add('hidden');
+            });
+
+            document.getElementById(`${pageName}-page`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            const activeItem = document.querySelector(`[data-page="${pageName}"]`);
+            if (activeItem) {
+                activeItem.classList.add('active');
+            }
+        }
+
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', () => {
                 const page = item.dataset.page;
@@ -846,31 +973,9 @@
             });
         });
 
-        function switchPage(pageName) {
-            document.querySelectorAll('.page').forEach(page => page.classList.add('hidden'));
-            
-            const targetPage = document.getElementById(`${pageName}-page`);
-            if (targetPage) {
-                targetPage.classList.remove('hidden');
-            }
-
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-
-            const activeNav = document.querySelector(`.nav-item[data-page="${pageName}"]`);
-            if (activeNav) {
-                activeNav.classList.add('active');
-            }
-        }
-
-        // Quick action functions
         function viewProfile() {
-            if (currentUser && currentUser.custom_url) {
-                window.open(`/${currentUser.custom_url}`, '_blank');
-            } else if (currentUser) {
-                window.open(`/${currentUser.username}`, '_blank');
-            }
+            const username = document.getElementById('profile-username').textContent;
+            window.open(`/${username}`, '_blank');
         }
 
         function editProfile() {
@@ -893,17 +998,14 @@
             switchPage('settings');
         }
 
-        function viewAnalytics() {
-            switchPage('analytics');
-        }
-
         function logout() {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             window.location.href = '/login';
         }
 
-        loadUser();
+        loadIcons();
+        checkAuth();
     </script>
 </body>
 </html>
