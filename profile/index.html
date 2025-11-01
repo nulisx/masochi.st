@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Aurora</title>
+    <link rel="stylesheet" href="/static/css/aurora.css">
+    <style>
+        .profile-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-xl);
+        }
+
+        .profile-card {
+            max-width: 600px;
+            width: 100%;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-xl);
+            padding: calc(var(--spacing-2xl) * 2);
+            backdrop-filter: blur(20px);
+            text-align: center;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto var(--spacing-xl);
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 800;
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 800;
+            font-family: var(--font-display);
+            margin-bottom: var(--spacing-sm);
+            background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-username {
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-lg);
+            font-size: 0.875rem;
+        }
+
+        .profile-bio {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: var(--spacing-2xl);
+            padding-bottom: var(--spacing-2xl);
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .profile-links {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .profile-link {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-lg);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all var(--transition-base);
+        }
+
+        .profile-link:hover {
+            border-color: var(--border-glow);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+        }
+
+        .link-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .link-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .link-title {
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .link-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .link-arrow {
+            color: var(--text-muted);
+            transition: transform var(--transition-base);
+        }
+
+        .profile-link:hover .link-arrow {
+            transform: translateX(4px);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-md);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--border-primary);
+        }
+
+        .social-link {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 50%;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1.25rem;
+            transition: all var(--transition-base);
+        }
+
+        .social-link:hover {
+            background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
+            color: white;
+            border-color: transparent;
+            transform: translateY(-4px);
+        }
+
+        .loading {
+            text-align: center;
+            padding: calc(var(--spacing-2xl) * 3);
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto var(--spacing-lg);
+            border: 4px solid var(--bg-tertiary);
+            border-top: 4px solid var(--aurora-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            text-align: center;
+            padding: calc(var(--spacing-2xl) * 2);
+        }
+
+        .error-icon {
+            font-size: 4rem;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .error-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+        }
+    </style>
+</head>
+<body>
+    <div class="aurora-bg"></div>
+    <div class="mesh-gradient">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+    <div class="noise-overlay"></div>
+
+    <div class="profile-container">
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p class="text-secondary">Loading profile...</p>
+        </div>
+
+        <div id="error" class="error-message" style="display: none;">
+            <div class="error-icon">🔍</div>
+            <h2 class="error-title">Profile Not Found</h2>
+            <p class="text-secondary">This profile doesn't exist or has been removed.</p>
+            <a href="/" class="btn btn-primary mt-xl">Go Home</a>
+        </div>
+
+        <div id="profile" class="profile-card" style="display: none;">
+            <div class="profile-avatar" id="avatar">U</div>
+            <h1 class="profile-name" id="displayName">User</h1>
+            <p class="profile-username">@<span id="username">username</span></p>
+            <p class="profile-bio" id="bio"></p>
+
+            <div class="profile-links" id="links"></div>
+
+            <div class="social-links" id="socials"></div>
+        </div>
+    </div>
+
+    <script>
+        const username = window.location.pathname.substring(1);
+
+        async function loadProfile() {
+            try {
+                const response = await fetch(`/api/profile/${username}`);
+                
+                if (!response.ok) {
+                    throw new Error('Profile not found');
+                }
+
+                const data = await response.json();
+                const profile = data.profile;
+
+                document.getElementById('avatar').textContent = (profile.displayName || profile.username).charAt(0).toUpperCase();
+                document.getElementById('displayName').textContent = profile.displayName || profile.username;
+                document.getElementById('username').textContent = profile.username;
+
+                if (profile.bio) {
+                    document.getElementById('bio').textContent = profile.bio;
+                } else {
+                    document.getElementById('bio').style.display = 'none';
+                }
+
+                const linksContainer = document.getElementById('links');
+                if (data.links && data.links.length > 0) {
+                    linksContainer.innerHTML = data.links.map(link => `
+                        <a href="${link.url}" class="profile-link" target="_blank" rel="noopener noreferrer" onclick="trackClick(${link.id})">
+                            <div class="link-icon">${link.icon || '🔗'}</div>
+                            <div class="link-content">
+                                <div class="link-title">${link.title}</div>
+                                ${link.description ? `<div class="link-description">${link.description}</div>` : ''}
+                            </div>
+                            <span class="link-arrow">→</span>
+                        </a>
+                    `).join('');
+                } else {
+                    linksContainer.innerHTML = '<p class="text-secondary">No links yet</p>';
+                }
+
+                const socialsContainer = document.getElementById('socials');
+                if (data.socials && data.socials.length > 0) {
+                    socialsContainer.innerHTML = data.socials.map(social => {
+                        let icon = '🔗';
+                        switch(social.platform.toLowerCase()) {
+                            case 'twitter': icon = '🐦'; break;
+                            case 'instagram': icon = '📷'; break;
+                            case 'youtube': icon = '🎥'; break;
+                            case 'discord': icon = '💬'; break;
+                            case 'github': icon = '💻'; break;
+                        }
+                        return `
+                            <a href="${social.url}" class="social-link" target="_blank" rel="noopener noreferrer" title="${social.platform}">
+                                ${icon}
+                            </a>
+                        `;
+                    }).join('');
+                } else {
+                    socialsContainer.style.display = 'none';
+                }
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('profile').style.display = 'block';
+                document.title = `${profile.displayName || profile.username} - Aurora`;
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+
+        function trackClick(linkId) {
+            fetch(`/api/track/${linkId}`, { method: 'POST' }).catch(() => {});
+        }
+
+        loadProfile();
+    </script>
+</body>
+</html>

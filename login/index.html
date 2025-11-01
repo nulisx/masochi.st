@@ -1,243 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>og.email: login</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Login - Aurora</title>
+    <link rel="stylesheet" href="/static/css/aurora.css">
     <style>
-        @font-face {
-            font-family: 'regular';
-            src: url('https://og.email/assets/fonts/regular.woff2') format('woff2');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        @font-face {
-            font-family: 'bold';
-            src: url('https://og.email/assets/fonts/bold.woff2') format('woff2');
-            font-weight: bold;
-            font-style: normal;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'regular', Arial, sans-serif;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'regular', Arial, sans-serif;
-            background-color: #1E2025;
-            color: white;
-            display: flex;
-            flex-direction: column;
+        .auth-container {
             min-height: 100vh;
-        }
-
-        .container {
-            max-width: 400px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 100px 20px;
-            box-sizing: border-box;
-            flex: 1;
             display: flex;
-            flex-direction: column;
-            align-items: left;
+            align-items: center;
             justify-content: center;
-            text-align: left;
+            padding: var(--spacing-lg);
         }
 
-        header {
-            padding: 16px 20px;
-        }
-
-        h1 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 24px;
-        }
-
-        .input-container {
+        .auth-card {
             width: 100%;
-            margin-bottom: 16px;
+            max-width: 450px;
+            padding: calc(var(--spacing-2xl) * 1.5);
+            background: var(--bg-glass);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-xl);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-lg);
+            animation: scaleIn 0.5s ease-out;
         }
 
-        input {
-            width: 100%;
-            padding: 12px 16px;
-            font-size: 16px;
-            border-radius: 6px;
-            background-color: #1E2025;
-            border: 2px solid #2B2D32;
-            color: white;
-            box-sizing: border-box;
-        }
-
-        input::placeholder {
-            color: #8e8e8e;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px 16px;
-            margin: 8px 0;
-            background-color: #1E2025;
-            border: 2px solid #2B2D32;
-            color: white;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        button:hover {
-            background-color: #2B2D32;
-        }
-
-        .signup-text {
-            margin-top: 16px;
-            font-size: 14px;
-            color: #8e8e8e;
+        .auth-header {
             text-align: center;
+            margin-bottom: var(--spacing-2xl);
         }
 
-        .signup-text a {
-            color: #e2e2e2;
-            text-decoration: none;
+        .auth-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            font-family: var(--font-display);
+            background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--spacing-md);
         }
 
-        .separator {
+        .auth-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .auth-subtitle {
+            color: var(--text-secondary);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: var(--spacing-sm);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--spacing-md);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all var(--transition-base);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--aurora-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            background: var(--bg-tertiary);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: var(--spacing-md);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: var(--spacing-lg);
+        }
+
+        .divider {
             display: flex;
             align-items: center;
             text-align: center;
-            margin: 20px 0;
-            color: #8e8e8e;
+            margin: var(--spacing-xl) 0;
+            color: var(--text-muted);
+            font-size: 0.875rem;
         }
 
-        .separator::before,
-        .separator::after {
+        .divider::before,
+        .divider::after {
             content: '';
             flex: 1;
-            border-bottom: 1px solid #2B2D32;
+            border-bottom: 1px solid var(--border-primary);
         }
 
-        .separator::before {
-            margin-right: 10px;
+        .divider span {
+            padding: 0 var(--spacing-md);
         }
 
-        .separator::after {
-            margin-left: 10px;
-        }
-
-        .password-input-container {
-            position: relative;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #8e8e8e;
-            cursor: pointer;
-            padding: 0;
-            width: 24px;
-            height: 24px;
-        }
-
-        footer {
+        .auth-footer {
             text-align: center;
-            padding: 20px;
-            font-size: 14px;
-            color: #8e8e8e;
-            border-top: 1px solid #2B2D32;
-            margin-top: auto;
+            margin-top: var(--spacing-xl);
+            color: var(--text-secondary);
         }
 
-        footer a {
-            color: #8e8e8e;
+        .auth-footer a {
+            color: var(--aurora-primary);
             text-decoration: none;
-            margin: 0 8px;
+            font-weight: 600;
+            transition: color var(--transition-fast);
+        }
+
+        .auth-footer a:hover {
+            color: var(--aurora-secondary);
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--aurora-danger);
+            color: var(--aurora-danger);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-lg);
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--aurora-success);
+            color: var(--aurora-success);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-lg);
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: var(--spacing-xl);
+            font-weight: 500;
+            transition: color var(--transition-fast);
+        }
+
+        .back-link:hover {
+            color: var(--text-primary);
         }
     </style>
 </head>
-
 <body>
-    <header>
-        <div>og.email</div>
-    </header>
+    <div class="aurora-bg"></div>
+    <div class="mesh-gradient">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+    <div class="noise-overlay"></div>
 
-    <div class="container">
-        <h1>Welcome back</h1>
-        <div class="input-container">
-            <input type="email" id="email" placeholder="Email address*" required>
-        </div>
-        <div class="input-container password-input-container">
-            <input type="password" id="password" placeholder="Password*" required>
-        </div>
-        <button id="login-button">Login</button>
+    <div class="auth-container">
+        <div class="auth-card">
+            <a href="/" class="back-link">
+                ← Back to home
+            </a>
 
-        <div class="signup-text">
-            Don't have an account? <a href="/register">Sign Up</a>
+            <div class="auth-header">
+                <div class="auth-logo">✨ Aurora</div>
+                <h1 class="auth-title">Welcome back</h1>
+                <p class="auth-subtitle">Login to your account</p>
+            </div>
+
+            <div id="error-message" class="error-message"></div>
+            <div id="success-message" class="success-message"></div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="identifier" class="form-label">Username or Email</label>
+                    <input 
+                        type="text" 
+                        id="identifier" 
+                        name="identifier" 
+                        class="form-input" 
+                        placeholder="Enter your username or email"
+                        required
+                        autocomplete="username"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Enter your password"
+                        required
+                        autocomplete="current-password"
+                    >
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-submit">
+                    Login
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                Don't have an account? <a href="/register">Sign up</a>
+            </div>
         </div>
     </div>
 
     <script>
-        document.getElementById('login-button').addEventListener('click', function () {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+        const form = document.getElementById('login-form');
+        const errorMessage = document.getElementById('error-message');
+        const successMessage = document.getElementById('success-message');
 
-            if (!email || !password) {
-                alert('Please enter both email and password');
-                return;
-            }
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+            
+            const formData = {
+                identifier: document.getElementById('identifier').value,
+                password: document.getElementById('password').value
+            };
 
-            // Clear previous response message
-            const responseMessage = document.getElementById('response-message');
-            if (responseMessage) {
-                responseMessage.remove();
-            }
+            const submitBtn = form.querySelector('button[type="submit"]');
+            submitBtn.classList.add('loading');
+            submitBtn.textContent = 'Logging in...';
 
-            fetch("https://og.email/api/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ identifier: email, password })
-            })
-                .then(res => res.json())
-                .then(data => {
-                    const responseMessage = document.createElement('div');
-                    responseMessage.id = 'response-message';
-                    responseMessage.style.backgroundColor = data.success ? '#4caf50' : '#f44336';
-                    responseMessage.style.color = '#fff';
-                    responseMessage.style.padding = '10px';
-                    responseMessage.style.textAlign = 'center';
-                    responseMessage.style.marginBottom = '20px';
-                    responseMessage.innerText = data.error || 'Login successful!';
-
-                    // Prepend the message to the container
-                    document.querySelector('.container').prepend(responseMessage);
-
-                    if (data.success) {
-                        document.cookie = `auth_token=${data.token};path=/`;
-                        window.location.href = "dashboard";
-                    } else {
-                        console.error("Login failed:", data);
-                    }
-                })
-                .catch(error => {
-                    console.error("Error during login:", error);
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
                 });
-        });
 
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    successMessage.textContent = 'Login successful! Redirecting...';
+                    successMessage.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        window.location.href = '/dashboard';
+                    }, 1000);
+                } else {
+                    throw new Error(data.error || 'Login failed');
+                }
+            } catch (error) {
+                errorMessage.textContent = error.message;
+                errorMessage.style.display = 'block';
+                submitBtn.classList.remove('loading');
+                submitBtn.textContent = 'Login';
+            }
+        });
     </script>
 </body>
-
 </html>
