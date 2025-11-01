@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - Aurora</title>
+    <title>Profile - og.email</title>
     <link rel="stylesheet" href="/static/css/aurora.css">
     <style>
         .profile-container {
@@ -290,7 +290,7 @@
 
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('profile').style.display = 'block';
-                document.title = `${profile.displayName || profile.username} - Aurora`;
+                document.title = `${profile.displayName || profile.username} - og.email`;
             } catch (error) {
                 console.error('Error loading profile:', error);
                 document.getElementById('loading').style.display = 'none';

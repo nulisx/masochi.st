@@ -48,6 +48,7 @@
             gap: var(--spacing-sm);
             transition: all var(--transition-base);
             font-weight: 500;
+            cursor: pointer;
         }
 
         .nav-item:hover {
@@ -95,9 +96,10 @@
             font-size: 0.875rem;
         }
 
-        .user-email {
+        .user-role {
             font-size: 0.75rem;
-            color: var(--text-muted);
+            color: var(--aurora-primary);
+            text-transform: uppercase;
         }
 
         .main-content {
@@ -121,157 +123,147 @@
             color: var(--text-secondary);
         }
 
-        .stats-grid {
+        .role-panels {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: var(--spacing-lg);
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: var(--spacing-xl);
             margin-bottom: var(--spacing-2xl);
         }
 
-        .stat-card {
-            padding: var(--spacing-xl);
+        .role-panel {
             background: var(--bg-secondary);
             border: 1px solid var(--border-primary);
             border-radius: var(--radius-lg);
-            transition: all var(--transition-base);
+            padding: var(--spacing-xl);
+            display: none;
         }
 
-        .stat-card:hover {
-            border-color: var(--border-glow);
-            transform: translateY(-2px);
+        .role-panel.visible {
+            display: block;
         }
 
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 800;
-            font-family: var(--font-display);
-            background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .stat-label {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-
-        .section {
-            margin-bottom: var(--spacing-2xl);
-        }
-
-        .section-header {
+        .panel-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .panel-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            font-family: var(--font-display);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .panel-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-owner {
+            background: rgba(255, 105, 235, 0.2);
+            color: var(--aurora-primary);
+        }
+
+        .badge-manager {
+            background: rgba(255, 27, 212, 0.2);
+            color: var(--aurora-secondary);
+        }
+
+        .badge-admin {
+            background: rgba(234, 0, 255, 0.2);
+            color: var(--aurora-accent);
+        }
+
+        .badge-mod {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--aurora-success);
+        }
+
+        .panel-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-md);
             margin-bottom: var(--spacing-lg);
         }
 
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            font-family: var(--font-display);
+        .stat-item {
+            background: var(--bg-tertiary);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
         }
 
-        .link-list {
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--aurora-primary);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .invite-section {
+            background: var(--bg-tertiary);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .invite-form {
             display: flex;
             flex-direction: column;
             gap: var(--spacing-md);
         }
 
-        .link-card {
-            padding: var(--spacing-lg);
+        .form-row {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .invite-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .invite-item {
             background: var(--bg-secondary);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius-lg);
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-lg);
-            transition: all var(--transition-base);
-        }
-
-        .link-card:hover {
-            border-color: var(--border-glow);
-        }
-
-        .link-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--aurora-primary), var(--aurora-secondary));
+            padding: var(--spacing-md);
             border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-        }
-
-        .link-content {
-            flex: 1;
-        }
-
-        .link-title {
-            font-weight: 600;
-            margin-bottom: var(--spacing-xs);
-        }
-
-        .link-url {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .link-stats {
-            display: flex;
-            gap: var(--spacing-lg);
-            color: var(--text-muted);
-            font-size: 0.875rem;
-        }
-
-        .link-actions {
-            display: flex;
-            gap: var(--spacing-sm);
-        }
-
-        .icon-btn {
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius-md);
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all var(--transition-base);
-        }
-
-        .icon-btn:hover {
-            background: var(--bg-glass);
-            color: var(--text-primary);
-            border-color: var(--border-glow);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: calc(var(--spacing-2xl) * 2);
-        }
-
-        .empty-icon {
-            font-size: 4rem;
-            margin-bottom: var(--spacing-lg);
-            opacity: 0.3;
-        }
-
-        .empty-title {
-            font-size: 1.5rem;
-            font-weight: 700;
             margin-bottom: var(--spacing-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .empty-text {
-            color: var(--text-secondary);
-            margin-bottom: var(--spacing-xl);
+        .invite-code {
+            font-family: monospace;
+            background: var(--bg-primary);
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+            color: var(--aurora-primary);
+            font-weight: 600;
+        }
+
+        .invite-info {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
         }
 
         .modal {
@@ -303,20 +295,8 @@
             animation: scaleIn 0.3s ease-out;
         }
 
-        .modal-header {
-            margin-bottom: var(--spacing-xl);
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            font-family: var(--font-display);
-        }
-
-        .form-actions {
-            display: flex;
-            gap: var(--spacing-md);
-            margin-top: var(--spacing-xl);
+        .hidden {
+            display: none !important;
         }
 
         @media (max-width: 768px) {
@@ -332,6 +312,10 @@
 
             .main-content {
                 padding: var(--spacing-lg);
+            }
+
+            .role-panels {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -349,21 +333,18 @@
         <div>
             <div class="sidebar-logo">og.email</div>
             <nav class="sidebar-nav">
-                <a href="#" class="nav-item active" data-page="overview">
+                <div class="nav-item active" data-page="overview">
                     <span>📊</span> Overview
-                </a>
-                <a href="#" class="nav-item" data-page="links">
-                    <span>🔗</span> Links
-                </a>
-                <a href="#" class="nav-item" data-page="appearance">
-                    <span>🎨</span> Appearance
-                </a>
-                <a href="#" class="nav-item" data-page="analytics">
-                    <span>📈</span> Analytics
-                </a>
-                <a href="#" class="nav-item" data-page="settings">
-                    <span>⚙️</span> Settings
-                </a>
+                </div>
+                <div class="nav-item" data-page="admin" id="nav-admin" style="display: none;">
+                    <span>👑</span> Admin Panels
+                </div>
+                <div class="nav-item" data-page="links">
+                    <span>🔗</span> My Links
+                </div>
+                <div class="nav-item" data-page="profile">
+                    <span>👤</span> Profile
+                </div>
             </nav>
         </div>
 
@@ -372,7 +353,7 @@
                 <div class="user-avatar" id="user-avatar">U</div>
                 <div class="user-info">
                     <div class="user-name" id="user-name">Loading...</div>
-                    <div class="user-email" id="user-email"></div>
+                    <div class="user-role" id="user-role">user</div>
                 </div>
             </div>
             <button class="btn btn-ghost mt-md" style="width: 100%;" onclick="logout()">Logout</button>
@@ -380,83 +361,215 @@
     </aside>
 
     <main class="main-content">
-        <div id="overview-page">
+        <!-- Overview Page -->
+        <div id="overview-page" class="page">
             <div class="page-header">
                 <h1 class="page-title">
                     Welcome back, <span class="gradient-text" id="welcome-name">User</span>
                 </h1>
-                <p class="page-subtitle">Here's what's happening with your profile today</p>
+                <p class="page-subtitle">Manage your links and profile</p>
             </div>
 
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value" id="total-links">0</div>
-                    <div class="stat-label">Total Links</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="total-clicks">0</div>
-                    <div class="stat-label">Total Clicks</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="profile-views">0</div>
-                    <div class="stat-label">Profile Views</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">✨</div>
-                    <div class="stat-label">Active Status</div>
-                </div>
+            <div class="quick-actions">
+                <button class="btn btn-primary" onclick="viewProfile()">👁️ View Profile</button>
+                <button class="btn btn-secondary" onclick="shareProfile()">📤 Share</button>
+            </div>
+        </div>
+
+        <!-- Admin Panels Page -->
+        <div id="admin-page" class="page hidden">
+            <div class="page-header">
+                <h1 class="page-title">Admin Panels</h1>
+                <p class="page-subtitle">Manage roles and invite codes</p>
             </div>
 
-            <div class="section">
-                <div class="section-header">
-                    <h2 class="section-title">Quick Actions</h2>
+            <div class="role-panels">
+                <!-- Owner Panel -->
+                <div class="role-panel" id="owner-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <span>👑</span> Owner Panel
+                        </div>
+                        <span class="panel-badge badge-owner">Owner</span>
+                    </div>
+
+                    <div class="panel-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="owner-invites">0</div>
+                            <div class="stat-label">Invites Created</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="owner-used">0</div>
+                            <div class="stat-label">Invites Used</div>
+                        </div>
+                    </div>
+
+                    <div class="invite-section">
+                        <h3 style="margin-bottom: var(--spacing-md);">Create Invite Code</h3>
+                        <form class="invite-form" onsubmit="createInvite(event, 'owner')">
+                            <div class="form-row">
+                                <select class="input-field" id="owner-role" required>
+                                    <option value="owner">Owner</option>
+                                    <option value="manager">Manager</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="mod">Moderator</option>
+                                    <option value="user">User</option>
+                                </select>
+                                <input type="number" class="input-field" id="owner-max-uses" placeholder="Max Uses" min="1" value="1" required>
+                            </div>
+                            <input type="number" class="input-field" id="owner-expires" placeholder="Expires in (hours, optional)" min="1">
+                            <button type="submit" class="btn btn-primary">Generate Invite</button>
+                        </form>
+                    </div>
+
+                    <div>
+                        <h3 style="margin-bottom: var(--spacing-md);">My Invite Codes</h3>
+                        <div class="invite-list" id="owner-invites-list"></div>
+                    </div>
                 </div>
-                <div class="flex gap-md">
-                    <button class="btn btn-primary" onclick="showAddLinkModal()">+ Add New Link</button>
-                    <button class="btn btn-secondary" onclick="viewProfile()">👁️ View Profile</button>
-                    <button class="btn btn-secondary" onclick="shareProfile()">📤 Share</button>
+
+                <!-- Manager Panel -->
+                <div class="role-panel" id="manager-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <span>💼</span> Manager Panel
+                        </div>
+                        <span class="panel-badge badge-manager">Manager</span>
+                    </div>
+
+                    <div class="panel-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="manager-invites">0</div>
+                            <div class="stat-label">Invites Created</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="manager-used">0</div>
+                            <div class="stat-label">Invites Used</div>
+                        </div>
+                    </div>
+
+                    <div class="invite-section">
+                        <h3 style="margin-bottom: var(--spacing-md);">Create Invite Code</h3>
+                        <form class="invite-form" onsubmit="createInvite(event, 'manager')">
+                            <div class="form-row">
+                                <select class="input-field" id="manager-role" required>
+                                    <option value="admin">Admin</option>
+                                    <option value="mod">Moderator</option>
+                                    <option value="user">User</option>
+                                </select>
+                                <input type="number" class="input-field" id="manager-max-uses" placeholder="Max Uses" min="1" value="1" required>
+                            </div>
+                            <input type="number" class="input-field" id="manager-expires" placeholder="Expires in (hours, optional)" min="1">
+                            <button type="submit" class="btn btn-primary">Generate Invite</button>
+                        </form>
+                    </div>
+
+                    <div>
+                        <h3 style="margin-bottom: var(--spacing-md);">My Invite Codes</h3>
+                        <div class="invite-list" id="manager-invites-list"></div>
+                    </div>
+                </div>
+
+                <!-- Admin Panel -->
+                <div class="role-panel" id="admin-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <span>⚙️</span> Admin Panel
+                        </div>
+                        <span class="panel-badge badge-admin">Admin</span>
+                    </div>
+
+                    <div class="panel-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="admin-invites">0</div>
+                            <div class="stat-label">Invites Created</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="admin-used">0</div>
+                            <div class="stat-label">Invites Used</div>
+                        </div>
+                    </div>
+
+                    <div class="invite-section">
+                        <h3 style="margin-bottom: var(--spacing-md);">Create Invite Code</h3>
+                        <form class="invite-form" onsubmit="createInvite(event, 'admin')">
+                            <div class="form-row">
+                                <select class="input-field" id="admin-role" required>
+                                    <option value="mod">Moderator</option>
+                                    <option value="user">User</option>
+                                </select>
+                                <input type="number" class="input-field" id="admin-max-uses" placeholder="Max Uses" min="1" value="1" required>
+                            </div>
+                            <input type="number" class="input-field" id="admin-expires" placeholder="Expires in (hours, optional)" min="1">
+                            <button type="submit" class="btn btn-primary">Generate Invite</button>
+                        </form>
+                    </div>
+
+                    <div>
+                        <h3 style="margin-bottom: var(--spacing-md);">My Invite Codes</h3>
+                        <div class="invite-list" id="admin-invites-list"></div>
+                    </div>
+                </div>
+
+                <!-- Mod Panel -->
+                <div class="role-panel" id="mod-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <span>🛡️</span> Moderator Panel
+                        </div>
+                        <span class="panel-badge badge-mod">Moderator</span>
+                    </div>
+
+                    <div class="panel-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="mod-invites">0</div>
+                            <div class="stat-label">Invites Created</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="mod-used">0</div>
+                            <div class="stat-label">Invites Used</div>
+                        </div>
+                    </div>
+
+                    <div class="invite-section">
+                        <h3 style="margin-bottom: var(--spacing-md);">Create Invite Code</h3>
+                        <form class="invite-form" onsubmit="createInvite(event, 'mod')">
+                            <div class="form-row">
+                                <select class="input-field" id="mod-role" required>
+                                    <option value="user">User</option>
+                                </select>
+                                <input type="number" class="input-field" id="mod-max-uses" placeholder="Max Uses" min="1" value="1" required>
+                            </div>
+                            <input type="number" class="input-field" id="mod-expires" placeholder="Expires in (hours, optional)" min="1">
+                            <button type="submit" class="btn btn-primary">Generate Invite</button>
+                        </form>
+                    </div>
+
+                    <div>
+                        <h3 style="margin-bottom: var(--spacing-md);">My Invite Codes</h3>
+                        <div class="invite-list" id="mod-invites-list"></div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="section">
-                <div class="section-header">
-                    <h2 class="section-title">Recent Links</h2>
-                    <a href="#" class="btn btn-ghost" onclick="switchPage('links'); return false;">View All</a>
-                </div>
-                <div id="recent-links" class="link-list"></div>
+        <!-- Links Page -->
+        <div id="links-page" class="page hidden">
+            <div class="page-header">
+                <h1 class="page-title">My Links</h1>
+                <p class="page-subtitle">Manage your profile links</p>
+            </div>
+            <button class="btn btn-primary">+ Add New Link</button>
+        </div>
+
+        <!-- Profile Page -->
+        <div id="profile-page" class="page hidden">
+            <div class="page-header">
+                <h1 class="page-title">Profile Settings</h1>
+                <p class="page-subtitle">Customize your profile</p>
             </div>
         </div>
     </main>
-
-    <div id="add-link-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Add New Link</h2>
-            </div>
-            <form id="add-link-form">
-                <div class="input-group">
-                    <label class="input-label">Title</label>
-                    <input type="text" class="input-field" id="link-title" placeholder="e.g., My YouTube Channel" required>
-                </div>
-                <div class="input-group">
-                    <label class="input-label">URL</label>
-                    <input type="url" class="input-field" id="link-url" placeholder="https://..." required>
-                </div>
-                <div class="input-group">
-                    <label class="input-label">Description (Optional)</label>
-                    <input type="text" class="input-field" id="link-description" placeholder="Brief description">
-                </div>
-                <div class="input-group">
-                    <label class="input-label">Icon (Optional)</label>
-                    <input type="text" class="input-field" id="link-icon" placeholder="🎥 or emoji">
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Add Link</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <script>
         let currentUser = null;
@@ -478,12 +591,16 @@
                 const data = await response.json();
                 currentUser = data.user;
 
-                document.getElementById('user-name').textContent = currentUser.display_name || currentUser.username;
-                document.getElementById('user-email').textContent = currentUser.email;
-                document.getElementById('user-avatar').textContent = (currentUser.display_name || currentUser.username).charAt(0).toUpperCase();
-                document.getElementById('welcome-name').textContent = currentUser.display_name || currentUser.username;
+                document.getElementById('user-name').textContent = currentUser.username;
+                document.getElementById('user-role').textContent = currentUser.role || 'user';
+                document.getElementById('user-avatar').textContent = currentUser.username.charAt(0).toUpperCase();
+                document.getElementById('welcome-name').textContent = currentUser.username;
 
-                loadLinks();
+                // Show admin nav if user has privileges
+                if (['owner', 'manager', 'admin', 'mod'].includes(currentUser.role)) {
+                    document.getElementById('nav-admin').style.display = 'flex';
+                    loadRolePanels();
+                }
             } catch (error) {
                 console.error('Error loading user:', error);
                 localStorage.removeItem('token');
@@ -491,119 +608,155 @@
             }
         }
 
-        async function loadLinks() {
+        function loadRolePanels() {
+            const role = currentUser.role;
+            
+            // Owner can see all panels
+            if (role === 'owner') {
+                document.getElementById('owner-panel').classList.add('visible');
+                document.getElementById('manager-panel').classList.add('visible');
+                document.getElementById('admin-panel').classList.add('visible');
+                document.getElementById('mod-panel').classList.add('visible');
+            }
+            // Manager can see Manager and Admin panels
+            else if (role === 'manager') {
+                document.getElementById('manager-panel').classList.add('visible');
+                document.getElementById('admin-panel').classList.add('visible');
+            }
+            // Admin can see only Admin panel
+            else if (role === 'admin') {
+                document.getElementById('admin-panel').classList.add('visible');
+            }
+            // Mod can see only Mod panel
+            else if (role === 'mod') {
+                document.getElementById('mod-panel').classList.add('visible');
+            }
+
+            // Load invites for visible panels
+            loadInvites();
+        }
+
+        async function loadInvites() {
             const token = localStorage.getItem('token');
             try {
-                const response = await fetch('/api/links', {
+                const response = await fetch('/api/invites', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
+                if (!response.ok) return;
+
                 const data = await response.json();
-                const links = data.links || [];
+                const invites = data.invites || [];
 
-                document.getElementById('total-links').textContent = links.length;
-                const totalClicks = links.reduce((sum, link) => sum + (link.clicks || 0), 0);
-                document.getElementById('total-clicks').textContent = totalClicks;
+                // Update stats for each panel
+                const panels = ['owner', 'manager', 'admin', 'mod'];
+                panels.forEach(panel => {
+                    const total = invites.length;
+                    const used = invites.filter(i => i.uses_count > 0).length;
+                    
+                    const totalEl = document.getElementById(`${panel}-invites`);
+                    const usedEl = document.getElementById(`${panel}-used`);
+                    
+                    if (totalEl) totalEl.textContent = total;
+                    if (usedEl) usedEl.textContent = used;
 
-                const recentLinks = links.slice(0, 5);
-                const container = document.getElementById('recent-links');
-
-                if (recentLinks.length === 0) {
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <div class="empty-icon">🔗</div>
-                            <h3 class="empty-title">No links yet</h3>
-                            <p class="empty-text">Add your first link to get started</p>
-                            <button class="btn btn-primary" onclick="showAddLinkModal()">+ Add Link</button>
-                        </div>
-                    `;
-                } else {
-                    container.innerHTML = recentLinks.map(link => `
-                        <div class="link-card">
-                            <div class="link-icon">${link.icon || '🔗'}</div>
-                            <div class="link-content">
-                                <div class="link-title">${link.title}</div>
-                                <div class="link-url">${link.url}</div>
-                                ${link.description ? `<div class="link-stats"><span>${link.description}</span></div>` : ''}
-                                <div class="link-stats">
-                                    <span>👁️ ${link.clicks || 0} clicks</span>
-                                    <span>${link.active ? '✅ Active' : '⏸️ Inactive'}</span>
+                    // Display invite list
+                    const listEl = document.getElementById(`${panel}-invites-list`);
+                    if (listEl) {
+                        if (invites.length === 0) {
+                            listEl.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: var(--spacing-lg);">No invites created yet</p>';
+                        } else {
+                            listEl.innerHTML = invites.map(invite => `
+                                <div class="invite-item">
+                                    <div>
+                                        <div class="invite-code">${invite.code}</div>
+                                        <div class="invite-info">
+                                            Role: ${invite.role} | Uses: ${invite.uses_count}/${invite.max_uses}
+                                            ${invite.expires_at ? `| Expires: ${new Date(invite.expires_at).toLocaleString()}` : ''}
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-ghost" onclick="copyInvite('${invite.code}')">Copy</button>
                                 </div>
-                            </div>
-                            <div class="link-actions">
-                                <button class="icon-btn" onclick="editLink(${link.id})" title="Edit">✏️</button>
-                                <button class="icon-btn" onclick="deleteLink(${link.id})" title="Delete">🗑️</button>
-                            </div>
-                        </div>
-                    `).join('');
-                }
+                            `).join('');
+                        }
+                    }
+                });
             } catch (error) {
-                console.error('Error loading links:', error);
+                console.error('Error loading invites:', error);
             }
         }
 
-        function showAddLinkModal() {
-            document.getElementById('add-link-modal').classList.add('active');
-        }
-
-        function closeModal() {
-            document.getElementById('add-link-modal').classList.remove('active');
-            document.getElementById('add-link-form').reset();
-        }
-
-        document.getElementById('add-link-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const formData = {
-                title: document.getElementById('link-title').value,
-                url: document.getElementById('link-url').value,
-                description: document.getElementById('link-description').value,
-                icon: document.getElementById('link-icon').value
-            };
+        async function createInvite(event, panel) {
+            event.preventDefault();
+            
+            const role = document.getElementById(`${panel}-role`).value;
+            const maxUses = document.getElementById(`${panel}-max-uses`).value;
+            const expiresIn = document.getElementById(`${panel}-expires`).value;
 
             const token = localStorage.getItem('token');
 
             try {
-                const response = await fetch('/api/links', {
+                const response = await fetch('/api/invites/create', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify(formData)
+                    body: JSON.stringify({ 
+                        role, 
+                        maxUses: parseInt(maxUses), 
+                        expiresIn: expiresIn ? parseInt(expiresIn) : null 
+                    })
                 });
 
                 if (response.ok) {
-                    closeModal();
-                    loadLinks();
+                    const data = await response.json();
+                    alert(`Invite code created: ${data.code}`);
+                    
+                    // Reset form
+                    document.getElementById(`${panel}-max-uses`).value = '1';
+                    document.getElementById(`${panel}-expires`).value = '';
+                    
+                    // Reload invites
+                    loadInvites();
                 } else {
-                    alert('Failed to add link');
+                    const error = await response.json();
+                    alert(`Error: ${error.error}`);
                 }
             } catch (error) {
-                console.error('Error adding link:', error);
-                alert('Error adding link');
+                console.error('Error creating invite:', error);
+                alert('Error creating invite code');
             }
+        }
+
+        function copyInvite(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                alert('Invite code copied to clipboard!');
+            });
+        }
+
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const page = item.dataset.page;
+                switchPage(page);
+            });
         });
 
-        async function deleteLink(id) {
-            if (!confirm('Are you sure you want to delete this link?')) return;
-
-            const token = localStorage.getItem('token');
-
-            try {
-                const response = await fetch(`/api/links/${id}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-
-                if (response.ok) {
-                    loadLinks();
-                } else {
-                    alert('Failed to delete link');
+        function switchPage(page) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+            
+            // Show selected page
+            document.getElementById(`${page}-page`).classList.remove('hidden');
+            
+            // Update nav
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.page === page) {
+                    item.classList.add('active');
                 }
-            } catch (error) {
-                console.error('Error deleting link:', error);
-            }
+            });
         }
 
         function viewProfile() {
@@ -627,6 +780,7 @@
             window.location.href = '/';
         }
 
+        // Initialize
         loadUser();
     </script>
 </body>

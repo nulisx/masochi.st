@@ -268,8 +268,16 @@ app.post('/api/auth/register', [
 
                 db.run('INSERT INTO profiles (user_id) VALUES (?)', [userId]);
 
+                // Update invite usage
                 db.run('UPDATE invites SET uses_count = uses_count + 1, used_by = ?, used_at = CURRENT_TIMESTAMP WHERE code = ?',
-                    [userId, inviteCode]);
+                    [userId, inviteCode], function(updateErr) {
+                        if (updateErr) {
+                            console.error('Error updating invite usage:', updateErr);
+                        }
+                        
+                        // Mark as fully used if max uses reached
+                        db.run('UPDATE invites SET used = 1 WHERE code = ? AND uses_count >= max_uses', [inviteCode]);
+                    });
 
                 const token = jwt.sign({ userId }, JWT_SECRET, { expiresIn: '7d' });
                 req.session.token = token;
@@ -535,6 +543,20 @@ app.post('/api/invites/create', authMiddleware, (req, res) => {
         }
 
         const { role = 'user', maxUses = 1, expiresIn } = req.body;
+        
+        // Role hierarchy validation
+        const roleHierarchy = {
+            'owner': ['owner', 'manager', 'admin', 'mod', 'user'],
+            'manager': ['admin', 'mod', 'user'],
+            'admin': ['mod', 'user'],
+            'mod': ['user']
+        };
+
+        const allowedRoles = roleHierarchy[user.role] || [];
+        if (!allowedRoles.includes(role)) {
+            return res.status(403).json({ error: 'Cannot create invite codes for roles equal to or higher than your own' });
+        }
+
         const inviteCode = crypto.randomBytes(4).toString('hex');
         let expiresAt = null;
 
