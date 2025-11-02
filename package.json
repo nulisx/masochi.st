@@ -1,0 +1,16 @@
+{
+  "name": "og-email",
+  "version": "1.0.0",
+  "description": "og.email Bio Link Platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["bio", "link", "profile"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
