@@ -90,8 +90,8 @@
             <p class="content-subtitle">Manage your social connections</p>
         </div>
         
-        <div style="display: flex; gap: 1.5rem; width: 100%;">
-            <div class="card" style="flex: 1; position: relative; overflow: hidden;">
+        <div class="profile-cards-container">
+            <div class="card profile-card-sticky">
                 <div class="social-navigation">
                     <button class="nav-button" onclick="scrollSocials(1)">
                         <i class="fas fa-chevron-up"></i>
@@ -120,43 +120,43 @@
                 </div>
             </div>
             
-            <div class="card" style="flex: 1;">
+            <div class="card profile-card">
                 <div class="social-icons-grid">
                     <div class="social-icon-large discord">
-                        <i class="fab fa-discord" style="color: #7289da;"></i>
+                        <i class="fab fa-discord social-icon fa-discord"></i>
                     </div>
                     <div class="social-icon-large instagram">
-                        <i class="fab fa-instagram" style="color: #E4405F;"></i>
+                        <i class="fab fa-instagram social-icon fa-instagram"></i>
                     </div>
                     <div class="social-icon-large tiktok">
-                        <i class="fab fa-tiktok" style="color: #fff;"></i>
+                        <i class="fab fa-tiktok social-icon fa-tiktok"></i>
                     </div>
                     <div class="social-icon-large youtube">
-                        <i class="fab fa-youtube" style="color: #FF0000;"></i>
+                        <i class="fab fa-youtube social-icon fa-youtube"></i>
                     </div>
                     <div class="social-icon-large pinterest">
-                        <i class="fab fa-pinterest" style="color: #E60023;"></i>
+                        <i class="fab fa-pinterest social-icon fa-pinterest"></i>
                     </div>
                     <div class="social-icon-large spotify">
-                        <i class="fab fa-spotify" style="color: #1DB954;"></i>
+                        <i class="fab fa-spotify social-icon fa-spotify"></i>
                     </div>
                     <div class="social-icon-large github">
-                        <i class="fab fa-github" style="color: #fff;"></i>
+                        <i class="fab fa-github social-icon fa-github"></i>
                     </div>
                     <div class="social-icon-large twitch">
-                        <i class="fab fa-twitch" style="color: #9146FF;"></i>
+                        <i class="fab fa-twitch social-icon fa-twitch"></i>
                     </div>
                     <div class="social-icon-large soundcloud">
-                        <i class="fab fa-soundcloud" style="color: #FF4500;"></i>
+                        <i class="fab fa-soundcloud social-icon fa-soundcloud"></i>
                     </div>
                     <div class="social-icon-large reddit">
-                        <i class="fab fa-reddit" style="color: #FF4500;"></i>
+                        <i class="fab fa-reddit social-icon fa-reddit"></i>
                     </div>
                     <div class="social-icon-large linkedin">
-                        <i class="fab fa-linkedin" style="color: #0077B5;"></i>
+                        <i class="fab fa-linkedin social-icon fa-linkedin"></i>
                     </div>
                     <div class="social-icon-large telegram">
-                        <i class="fab fa-telegram" style="color: #0088cc;"></i>
+                        <i class="fab fa-telegram social-icon fa-telegram"></i>
                     </div>
                 </div>
             </div>
@@ -173,337 +173,6 @@
             </div>
         </div>
     </div>
-
-    <style>
-        .profile-container {
-            width: 100%;
-            position: relative;
-        }
-        .profile-banner {
-            width: 100%;
-            height: 150px;
-            background-color: rgba(217, 70, 239, 0.1);
-            background-size: cover;
-            background-position: center;
-            border-radius: 20px 20px 0 0;
-        }
-        .profile-avatar {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            border-radius: 20px;
-            border: 4px solid var(--black);
-            background-size: cover;
-            background-position: center;
-            background-color: rgba(217, 70, 239, 0.2);
-            top: 90px;
-            left: 30px;
-            box-shadow: 0 0 20px var(--pink-glow);
-        }
-        .profile-details {
-            margin-top: 20px;
-            margin-left: 180px;
-            position: relative;
-        }
-        .profile-name-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .profile-edit-icon {
-            color: rgba(255, 255, 255, 0.4);
-            cursor: pointer;
-            transition: color 0.3s ease;
-            font-size: 14px;
-        }
-        .profile-edit-icon:hover {
-            color: var(--pink);
-        }
-        .profile-name {
-            font-family: 'bold', Arial, sans-serif;
-            font-size: 24px;
-            color: var(--white);
-            margin-bottom: 10px;
-        }
-        .profile-username {
-            font-family: 'regular', Arial, sans-serif;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.5);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .profile-bio-container {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .profile-bio {
-            font-family: 'regular', Arial, sans-serif;
-            color: rgba(255, 255, 255, 0.6);
-            max-width: 500px;
-            word-break: break-word;
-            line-height: 1.5;
-            flex-grow: 1;
-        }
-        .social-navigation {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 10;
-        }
-        .nav-button {
-            background-color: rgba(217, 70, 239, 0.1);
-            color: var(--white);
-            border: 1px solid var(--border);
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        .nav-button:hover {
-            background-color: rgba(217, 70, 239, 0.2);
-            border-color: var(--pink);
-        }
-        .social-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            padding-left: 50px;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .social-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px;
-            border-radius: 12px;
-            background-color: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-        .social-item:hover {
-            border-color: var(--border-hover);
-            background-color: rgba(217, 70, 239, 0.05);
-        }
-        .social-connection-content {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .social-item h3 {
-            font-family: 'bold', Arial, sans-serif;
-            font-size: 1rem;
-            margin-bottom: 4px;
-        }
-        .social-item p {
-            font-family: 'regular', Arial, sans-serif;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.9rem;
-        }
-        .social-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .action-icon {
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.4);
-            cursor: pointer;
-            transition: color 0.3s ease;
-            padding: 8px;
-            border-radius: 8px;
-        }
-        .action-icon:hover {
-            color: var(--white);
-            background-color: rgba(217, 70, 239, 0.1);
-        }
-        .action-icon.go:hover { color: #4CAF50; }
-        .action-icon.edit:hover { color: var(--pink); }
-        .action-icon.delete:hover { color: #F44336; }
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .social-icons-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            padding: 15px;
-        }
-        .social-icon-large {
-            width: 60px;
-            height: 60px;
-            background-color: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .social-icon-large:hover {
-            background-color: rgba(217, 70, 239, 0.1);
-            border-color: var(--pink);
-            box-shadow: 0 0 20px rgba(217, 70, 239, 0.3);
-            transform: translateY(-2px);
-        }
-        .social-icon-large.selected {
-            background-color: rgba(217, 70, 239, 0.2);
-            border-color: var(--pink);
-            box-shadow: 0 0 20px var(--pink-glow);
-        }
-        .social-icon-large i {
-            font-size: 28px;
-        }
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        .modal.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        .modal-content {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(30px);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            width: 400px;
-            padding: 30px;
-            transform: scale(0.9);
-            opacity: 0;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-        .modal.show .modal-content {
-            transform: scale(1);
-            opacity: 1;
-        }
-        .modal h2 {
-            font-family: 'bold', Arial, sans-serif;
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-        }
-        .modal-input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            background-color: rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--white);
-            font-family: 'regular', Arial, sans-serif;
-            transition: border-color 0.3s ease;
-        }
-        .modal-input:focus {
-            outline: none;
-            border-color: var(--pink);
-        }
-        .modal-buttons {
-            display: flex;
-            margin-top: 20px;
-            gap: 10px;
-        }
-        .modal-btn {
-            flex: 1;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'bold', Arial, sans-serif;
-        }
-        .modal-btn-cancel {
-            background-color: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            color: var(--white);
-        }
-        .modal-btn-cancel:hover {
-            background-color: rgba(0, 0, 0, 0.5);
-            border-color: var(--border-hover);
-        }
-        .modal-btn-confirm {
-            background: linear-gradient(135deg, var(--pink) 0%, var(--pink-light) 100%);
-            color: var(--white);
-            border: 1px solid var(--pink);
-            box-shadow: 0 4px 20px var(--pink-glow);
-        }
-        .modal-btn-confirm:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px var(--pink-glow);
-        }
-        @keyframes pulse {
-            0% { background-position: 0% 0%; }
-            100% { background-position: -135% 0%; }
-        }
-        .skeleton {
-            background: linear-gradient(90deg, rgba(217, 70, 239, 0.05) 25%, rgba(217, 70, 239, 0.1) 50%, rgba(217, 70, 239, 0.05) 75%);
-            background-size: 400% 100%;
-            animation: pulse 1.5s ease-in-out infinite;
-            color: transparent !important;
-            border-color: transparent !important;
-            user-select: none;
-        }
-        .skeleton-text {
-            border-radius: 8px;
-            display: inline-block;
-            height: 1em;
-            width: 70%;
-        }
-        .skeleton-avatar {
-            border-radius: 20px;
-        }
-        .skeleton-banner {
-            border-radius: 20px;
-        }
-        .skeleton-container {
-            pointer-events: none;
-        }
-        .sortable-ghost {
-            opacity: 0.4;
-            background-color: rgba(217, 70, 239, 0.1);
-            border: 2px dashed var(--pink);
-        }
-        .sortable-chosen {
-            background-color: rgba(217, 70, 239, 0.1);
-        }
-        .sortable-drag {
-            opacity: 0.8;
-            box-shadow: 0 5px 15px rgba(217, 70, 239, 0.3);
-        }
-        .social-connection-content {
-            cursor: grab;
-        }
-        .social-connection-content:active {
-            cursor: grabbing;
-        }
-    </style>
 
     <script>
         async function getAuthToken() {

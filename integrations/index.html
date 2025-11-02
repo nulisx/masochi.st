@@ -64,55 +64,41 @@
             <p class="content-subtitle">Connect your apps via oauth2</p>
         </div>
         
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; width: 100%;">
-            <div class="card">
+        <div class="integrations-grid">
+            <div class="card integration-card">
                 <div class="integration-icon">
-                    <i class="fab fa-discord" style="color: #7289da; font-size: 40px;"></i>
+                    <i class="fab fa-discord"></i>
                 </div>
-                <h3 class="card-title" style="margin-top: 15px;">Discord</h3>
+                <h3 class="card-title">Discord</h3>
                 <p class="content-subtitle">Connect your Discord account</p>
-                <button class="btn" onclick="window.location.href='/discord/login'" style="margin-top: auto; width: 100%;">
+                <button class="btn" onclick="window.location.href='/discord/login'">
                     Connect
                 </button>
             </div>
 
-            <div class="card">
+            <div class="card integration-card">
                 <div class="integration-icon">
-                    <i class="fab fa-twitch" style="color: #9146FF; font-size: 40px;"></i>
+                    <i class="fab fa-twitch"></i>
                 </div>
-                <h3 class="card-title" style="margin-top: 15px;">Twitch</h3>
+                <h3 class="card-title">Twitch</h3>
                 <p class="content-subtitle">Connect your Twitch account</p>
-                <button class="btn" style="margin-top: auto; width: 100%;">
+                <button class="btn">
                     Connect
                 </button>
             </div>
             
-            <div class="card">
+            <div class="card integration-card">
                 <div class="integration-icon">
-                    <i class="fab fa-lastfm" style="color: #d23838; font-size: 40px;"></i>
+                    <i class="fab fa-lastfm"></i>
                 </div>
-                <h3 class="card-title" style="margin-top: 15px;">Last.fm</h3>
+                <h3 class="card-title">Last.fm</h3>
                 <p class="content-subtitle">Connect your Last.fm account</p>
-                <button class="btn" style="margin-top: auto; width: 100%;">
+                <button class="btn">
                     Connect
                 </button>
             </div>
         </div>
     </div>
-
-    <style>
-        .integration-icon {
-            width: 80px;
-            height: 80px;
-            background-color: rgba(217, 70, 239, 0.1);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-        }
-    </style>
 
     <script>
         async function exchange() {
