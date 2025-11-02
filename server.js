@@ -97,12 +97,11 @@ function initializeDatabase() {
     
     if (!existingOwner) {
         const passwordHash = bcrypt.hashSync('ACK071675$!', 12);
-        const emailHash = crypto.createHash('sha256').update('owner@og.email').digest('hex');
         
         db.prepare(`
             INSERT INTO users (username, email, password_hash, display_name, role)
             VALUES (?, ?, ?, ?, ?)
-        `).run('r', emailHash, passwordHash, 'r', 'owner');
+        `).run('r', 'asmo@drugsellers.com', passwordHash, 'r', 'owner');
         
         console.log('✅ Default owner account created');
     }

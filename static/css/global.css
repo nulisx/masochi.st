@@ -17,11 +17,14 @@
 :root {
     --black: #000000;
     --white: #ffffff;
-    --pink: #ec4899;
-    --pink-glow: rgba(236, 72, 153, 0.5);
-    --white-glow: rgba(255, 255, 255, 0.3);
+    --pink: #d946ef;
+    --pink-light: #e879f9;
+    --pink-glow: rgba(217, 70, 239, 0.6);
+    --white-glow: rgba(255, 255, 255, 0.4);
     --dark-bg: #0a0a0a;
-    --border: rgba(255, 255, 255, 0.1);
+    --card-bg: rgba(15, 15, 15, 0.8);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(217, 70, 239, 0.5);
 }
 
 *,
@@ -67,25 +70,28 @@ body {
 
 .navbar {
     position: fixed;
-    top: 2rem;
+    top: 1.5rem;
     width: min(1280px, calc(100% - 4rem));
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.25rem 2rem;
-    height: 65px;
-    border-radius: 50px;
-    background: rgba(10, 10, 10, 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    padding: 1rem 2rem;
+    height: 70px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
     border: 1px solid var(--border);
     z-index: 100;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
 .navbar:hover {
-    background: rgba(15, 15, 15, 0.9);
-    box-shadow: 0 8px 32px rgba(236, 72, 153, 0.2);
+    background: rgba(0, 0, 0, 0.7);
+    border-color: var(--border-hover);
+    box-shadow: 0 8px 40px rgba(217, 70, 239, 0.25);
+    transform: translateY(-1px);
 }
 
 .navbar .logo {
@@ -93,8 +99,9 @@ body {
     font-size: 1.5rem;
     color: var(--white);
     font-weight: 700;
-    letter-spacing: -0.02em;
-    text-shadow: 0 0 20px var(--white-glow);
+    letter-spacing: -0.01em;
+    text-shadow: 0 0 30px var(--white-glow), 0 0 15px rgba(255, 255, 255, 0.2);
+    filter: blur(0.3px);
 }
 
 .navbar .center-links {
@@ -108,28 +115,31 @@ body {
 
 .navbar .center-links a {
     font-family: 'regular', Arial, sans-serif;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.5);
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     font-weight: 500;
     position: relative;
+    padding: 0.5rem 0;
 }
 
 .navbar .center-links a::after {
     content: '';
     position: absolute;
-    bottom: -4px;
-    left: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 0;
     height: 2px;
-    background: var(--pink);
-    box-shadow: 0 0 10px var(--pink-glow);
-    transition: width 0.3s ease;
+    background: linear-gradient(90deg, transparent, var(--pink), transparent);
+    box-shadow: 0 0 12px var(--pink-glow);
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .navbar .center-links a:hover {
     color: var(--white);
-    text-shadow: 0 0 15px var(--white-glow);
+    text-shadow: 0 0 20px var(--white-glow);
+    filter: blur(0.2px);
 }
 
 .navbar .center-links a:hover::after {
@@ -142,25 +152,43 @@ body {
 
 .navbar .right-links button {
     font-family: 'regular', Arial, sans-serif;
-    font-size: 1rem;
-    height: 50px;
-    padding: 0 1.5rem;
+    font-size: 0.95rem;
+    height: 45px;
+    padding: 0 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid var(--pink);
-    border-radius: 50px;
-    background: var(--pink);
+    border: 1.5px solid var(--pink);
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--pink) 0%, var(--pink-light) 100%);
     color: var(--white);
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 20px var(--pink-glow);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px var(--pink-glow), 0 0 40px rgba(217, 70, 239, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.navbar .right-links button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.navbar .right-links button:hover::before {
+    left: 100%;
 }
 
 .navbar .right-links button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 30px var(--pink-glow), 0 4px 20px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 30px var(--pink-glow), 0 0 60px rgba(217, 70, 239, 0.4);
+    border-color: var(--pink-light);
 }
 
 a {

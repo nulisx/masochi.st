@@ -1,1208 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <title>og.email</title>
-    <style>
-        @font-face {
-            font-family: 'regular';
-            src: url('https://og.email/assets/fonts/regular.woff2') format('woff2');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        @font-face {
-            font-family: 'bold';
-            src: url('https://og.email/assets/fonts/bold.woff2') format('woff2');
-            font-weight: bold;
-            font-style: normal;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'regular', Arial, sans-serif;
-        }
-
-        body {
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow-x: hidden;
-            background-color: #18191E;
-        }
-
-        .container {
-            width: 1280px;
-            margin: 0 auto;
-            position: relative;
-            border-left: 2px solid #2B2D32;
-            border-right: 2px solid #2B2D32;
-        }
-
-        .header {
-            position: relative;
-            width: 1280px;
-            left: 50%;
-            transform: translateX(-50%);
-            top: 0;
-            border: 2px solid #2B2D32;
-            border-top: none;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 99;
-            padding: 15px;
-            padding-left: 50px;
-            padding-right: 50px;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            width: 100%;
-            margin: 0 auto;
-            font-family: 'bold', Arial, sans-serif;
-        }
-
-        .header-spacer {
-            height: 70px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 22px;
-            font-weight: 600;
-        }
-
-        .nav {
-            display: flex;
-            gap: 24px;
-        }
-
-        .nav a {
-            color: white;
-            font-size: 1rem;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .nav a:hover {
-            color: #D2E1FE;
-        }
-
-        .button {
-            border: 2px solid #f1f1f1;
-            background-color: #fff;
-            color: #2B2D32;
-            font-weight: 500;
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .button:hover {
-            transform: translateY(-2px);
-        }
-
-        .secondary-button {
-            background-color: #35476D;
-            border: 2px solid #3D5687;
-            color: #D2E1FE;
-            font-weight: 500;
-            padding: 10px 24px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .secondary-button:hover {
-            background-color: #3D5687;
-            transform: translateY(-2px);
-        }
-
-        .section-divider {
-            height: 2px;
-            width: 100%;
-            background-color: #2B2D32;
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero-section {
-            position: relative;
-            background-color: #18191E;
-            overflow: hidden;
-            border-bottom: 2px solid #2B2D32;
-        }
-
-        .hero {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 80px 0;
-            position: relative;
-            z-index: 1;
-            margin: 50px auto 0;
-            min-height: 85vh;
-            width: 1280px;
-        }
-
-        .hero-lighting {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            width: 100vw;
-            height: 100vh;
-            background: radial-gradient(circle at 50% 120%, rgba(53, 71, 109, 0.6) 0%, rgba(0, 0, 0, 0) 90%);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .hero-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            z-index: 2;
-            padding: 0 1rem;
-        }
-
-        .hero h1 {
-            font-size: 4.5rem;
-            font-weight: 400;
-            line-height: 1.1;
-            text-align: center;
-            margin-bottom: 1.25rem;
-            font-family: 'bold', Arial, sans-serif;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            hyphens: auto;
-            max-width: 14ch;
-            width: 100%;
-        }
-
-        .hero p {
-            font-size: clamp(1rem, 3vw, 1.4rem);
-            color: #c2c5ce;
-            width: 100%;
-            max-width: 500px;
-            line-height: 1.6;
-            margin-bottom: 1.875rem;
-            text-align: center;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-
-        .hero-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 2.5rem;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .dashboard-section {
-            position: relative;
-            border-top: none;
-            background-color: #18191E;
-            overflow: hidden;
-            background-image:
-                linear-gradient(#1d1e21 2px, transparent 2px),
-                linear-gradient(90deg, #1d1e21 2px, transparent 2px);
-            background-size: 50px 50px;
-            z-index: 0;
-            width: 100%
-        }
-
-        .dashboard {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            padding: 80px 0;
-            position: relative;
-            z-index: 1;
-            margin: 0 auto;
-            min-height: 100vh;
-            width: 1280px;
-        }
-
-        .dashboard-lighting {
-            position: absolute;
-            top: 0;
-            right: 50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(77, 46, 99, 0.6) 0%, rgba(0, 0, 0, 0) 90%);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .dashboard-content {
-            width: 45%;
-            text-align: left;
-            position: relative;
-            z-index: 2;
-            padding: 50px;
-        }
-
-        .dashboard-title {
-            font-size: 48px;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 20px;
-        }
-
-        .dashboard-subtitle {
-            font-size: 16px;
-            color: #a8a9bc;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        .dashboard-image {
-            width: 50%;
-            position: relative;
-            z-index: 2;
-            border-radius: 50px;
-            margin-right: 40px;
-        }
-
-        .dashboard-image img {
-            width: 100%;
-            border-radius: 12px;
-            display: block;
-        }
-
-        .features-section {
-            position: relative;
-            background-color: #18191E;
-            overflow: hidden;
-            padding: 40px 0 80px;
-            background-image:
-                linear-gradient(#0b0b0b 2px, transparent 2px),
-                linear-gradient(90deg, #0b0b0b 2px, transparent 2px);
-            background-size: 50px 50px;
-        }
-
-        .features {
-            display: flex;
-            flex-direction: row-reverse;
-            align-items: center;
-            justify-content: space-between;
-            padding: 80px 0;
-            position: relative;
-            z-index: 1;
-            margin: 0 auto;
-            min-height: 100vh;
-            width: 1280px;
-        }
-
-        .features-lighting {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 120%, rgba(38, 59, 37, 0.6) 0%, #00000000 60%);
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .features-content {
-            width: 45%;
-            text-align: left;
-            position: relative;
-            z-index: 2;
-            padding: 50px;
-        }
-
-        .features-title {
-            font-size: 48px;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 20px;
-        }
-
-        .features-subtitle {
-            font-size: 16px;
-            color: #a8a9bc;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        .features-image {
-            width: 50%;
-            position: relative;
-            z-index: 2;
-            padding: 50px
-        }
-
-        .features-image img {
-            width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: block;
-        }
-
-        .socials-section {
-            position: relative;
-            background-color: #18191E;
-            overflow: hidden;
-            padding: 40px 0 80px;
-            background-image:
-                linear-gradient(#1d1e21 2px, transparent 2px),
-                linear-gradient(90deg, #1d1e21 2px, transparent 2px);
-            background-size: 50px 50px;
-        }
-
-
-        .socials {
-            position: relative;
-            z-index: 1;
-            width: 1280px;
-            margin: 0 auto;
-            padding: 60px 0;
-        }
-
-        .socials-heading {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .socials-heading h2 {
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        .socials-heading p {
-            font-size: 18px;
-            color: #a8a9bc;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .socials-grid {
-            display: flex;
-            max-width: 80%;
-            margin: 0 auto;
-            padding: 0 30px;
-            gap: 30px;
-        }
-
-        .social-lighting {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 120%, rgba(53, 71, 109, 0.6) 0%, rgba(0, 0, 0, 0) 90%);
-            z-index: 999;
-            pointer-events: none;
-        }
-
-        .social-embed {
-            flex: 1;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            background-color: #2B2D323c;
-            border: 2px solid #1b1b1b44;
-            max-width: calc(1000% - 15px);
-            height: 350px;
-        }
-
-        .social-header {
-            display: flex;
-            align-items: center;
-            margin: 50px;
-            background-color: #2B2D323c;
-            border: 2px solid #1b1b1b44;
-            padding: 20px;
-            border-radius: 10px;
-            padding-bottom: 30px;
-            margin-bottom: 0;
-        }
-
-        .social-avatar {
-            width: 50px;
-            height: 50px;
-            background-color: #4CAF50;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            margin-right: 20px;
-            color: white;
-            font-size: 24px;
-        }
-
-        .social-title {
-            flex-grow: 1;
-            font-size: 22px;
-            font-weight: 600;
-            color: white;
-        }
-
-        .social-subtitle {
-            font-size: 18px;
-            font-weight: 400;
-            margin-top: 5px;
-            color: #a8a9bc;
-        }
-
-        .social-check {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #4CAF50;
-            font-size: 24px;
-        }
-
-        .social-feature h2 {
-            padding: 50px;
-            padding-bottom: 0;
-            padding-top: 0;
-            font-size: 32px;
-            font-weight: 600;
-            color: white;
-        }
-
-        .social-feature p {
-            padding-top: 0;
-            padding-bottom: 0;
-            padding: 50px;
-            font-size: 18px;
-            line-height: 1.5;
-            color: #a8a9bc;
-        }
-
-        .testimonial-embed {
-            background-color: #101010;
-            border-radius: 60px;
-            padding: 30px;
-            margin-bottom: 30px;
-            border: 1px solid #2a2a2a;
-        }
-
-        .testimonial-header {
-            display: flex;
-            align-items: center;
-            margin: 50px;
-            background-color: #2B2D32;
-            border: 2px solid #1b1b1b;
-            padding: 20px;
-            border-radius: 50px;
-            padding-bottom: 30px;
-            margin-bottom: 0;
-        }
-
-        .testimonial-avatar {
-            width: 50px;
-            height: 50px;
-            background-color: #4CAF50;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            margin-right: 20px;
-            color: white;
-            font-size: 24px;
-        }
-
-        .testimonial-title {
-            flex-grow: 1;
-            font-size: 22px;
-            font-weight: 600;
-            color: white;
-        }
-
-        .testimonial-subtitle {
-            font-size: 18px;
-            font-weight: 400;
-            margin-top: 5px;
-            color: #a8a9bc;
-        }
-
-        .testimonial-feature {
-            padding: 0 50px 50px 50px;
-        }
-
-        .testimonial-feature p {
-            font-size: 18px;
-            line-height: 1.5;
-            color: #a8a9bc;
-        }
-
-
-        .socials-grid {
-            display: flex;
-            flex-direction: column;
-            max-width: 80%;
-            margin: 0 auto;
-            padding: 0 30px;
-            gap: 30px;
-        }
-
-        .socials-row {
-            display: flex;
-            gap: 30px;
-            width: 100%;
-        }
-
-        .socials-row .social-embed {
-            flex: 1;
-            width: calc(50% - 15px);
-        }
-
-        .wide-embed {
-            width: 100%;
-        }
-
-        @media (max-width: 1399.98px) {
-
-            .container,
-            .header,
-            .hero,
-            .dashboard,
-            .features,
-            .socials {
-                max-width: 1140px;
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 1199.98px) {
-
-            .container,
-            .header,
-            .hero,
-            .dashboard,
-            .features,
-            .socials {
-                max-width: 960px;
-                width: 100%;
-            }
-
-            .hero h1 {
-                font-size: 3.5rem;
-                max-width: 14ch;
-            }
-
-            .dashboard-title,
-            .features-title {
-                font-size: 42px;
-            }
-
-            .hero-content {
-                padding: 0 2rem;
-            }
-
-            .dashboard-content,
-            .features-content {
-                padding: 30px;
-            }
-        }
-
-        @media (max-width: 991.98px) {
-
-            .container,
-            .header,
-            .hero,
-            .dashboard,
-            .features,
-            .socials {
-                max-width: 100%;
-                padding-left: 20px;
-                padding-right: 20px;
-            }
-
-            .header {
-                position: relative;
-                width: 100%;
-                padding: 10px 20px;
-                border-left: none;
-                border-right: none;
-            }
-
-            .header-content {
-                padding: 10px 0;
-            }
-
-            .header-spacer {
-                height: 70px;
-            }
-
-            .hero {
-                padding: 60px 0;
-                min-height: auto;
-            }
-
-            .hero h1 {
-                font-size: 3rem;
-            }
-
-            .dashboard,
-            .features {
-                flex-direction: column;
-                padding: 60px 0;
-                min-height: auto;
-            }
-
-            .dashboard-content,
-            .features-content,
-            .dashboard-image,
-            .features-image {
-                width: 100%;
-                padding: 20px;
-            }
-
-            .dashboard-image img,
-            .features-image img {
-                max-width: 100%;
-            }
-
-            .socials-heading h2 {
-                font-size: 36px;
-            }
-
-            .socials-grid {
-                max-width: 100%;
-            }
-        }
-
-        @media (max-width: 767.98px) {
-
-            .container,
-            .header {
-                padding-left: 15px;
-                padding-right: 15px;
-            }
-
-            .nav {
-                display: none;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-                background: none;
-                border: none;
-                color: white;
-                font-size: 24px;
-                cursor: pointer;
-            }
-
-            .nav.mobile-active {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                width: 100%;
-                background-color: rgba(8, 8, 8, 0.98);
-                padding: 20px;
-                border-bottom: 2px solid #2B2D32;
-                z-index: 999;
-                backdrop-filter: blur(10px);
-            }
-
-            .nav.mobile-active a {
-                padding: 15px 0;
-                border-bottom: 1px solid #2B2D32;
-            }
-
-            .hero {
-                text-align: center;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-                padding: 0 10px;
-            }
-
-            .hero p {
-                font-size: 1rem;
-                padding: 0 20px;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-                width: 100%;
-                max-width: 300px;
-            }
-
-            .hero-buttons .button,
-            .hero-buttons .secondary-button {
-                width: 100%;
-                margin-bottom: 15px;
-                text-align: center;
-            }
-
-            .dashboard-title,
-            .features-title {
-                font-size: 32px;
-                text-align: center;
-            }
-
-            .dashboard-subtitle,
-            .features-subtitle {
-                text-align: center;
-            }
-
-            .socials {
-                padding: 40px 10px;
-            }
-
-            .socials-grid {
-                padding: 0;
-            }
-
-            .socials-row {
-                flex-direction: column;
-            }
-
-            .socials-row .social-embed {
-                width: 100%;
-            }
-
-            .social-header,
-            .testimonial-header {
-                margin: 20px 10px;
-                padding: 15px;
-                border-radius: 20px;
-            }
-
-            .social-feature,
-            .testimonial-feature {
-                padding: 10px 15px 20px;
-            }
-
-            .social-feature h2 {
-                padding: 20px 15px 10px;
-                font-size: 24px;
-            }
-
-            .social-feature p {
-                padding: 0 15px 20px;
-            }
-
-            .social-title,
-            .testimonial-title {
-                font-size: 18px;
-            }
-
-            .social-subtitle,
-            .testimonial-subtitle,
-            .social-feature p,
-            .testimonial-feature p {
-                font-size: 14px;
-            }
-
-            .social-embed,
-            .testimonial-embed {
-                height: auto;
-                min-height: 250px;
-            }
-        }
-
-        @media (max-width: 575.98px) {
-            .header-content {
-                padding: 10px 0;
-            }
-
-            .logo {
-                font-size: 18px;
-            }
-
-            .button,
-            .secondary-button {
-                padding: 8px 16px;
-                font-size: 14px;
-            }
-
-            .hero {
-                padding: 40px 10px;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-                max-width: 100%;
-            }
-
-            .dashboard,
-            .features {
-                padding: 40px 10px;
-            }
-
-            .dashboard-content,
-            .features-content {
-                padding: 15px 10px;
-            }
-
-            .dashboard-image,
-            .features-image {
-                padding: 15px 10px;
-            }
-
-            .dashboard-title,
-            .features-title {
-                font-size: 28px;
-                margin-bottom: 15px;
-            }
-
-            .dashboard-subtitle,
-            .features-subtitle {
-                font-size: 14px;
-                margin-bottom: 20px;
-            }
-
-            .socials-heading {
-                margin-bottom: 30px;
-                padding: 0 10px;
-            }
-
-            .socials-heading h2 {
-                font-size: 28px;
-            }
-
-            .socials-heading p {
-                font-size: 14px;
-            }
-
-            .social-embed,
-            .testimonial-embed {
-                border-radius: 20px;
-                padding: 10px;
-                margin-bottom: 20px;
-            }
-
-            .social-avatar,
-            .testimonial-avatar {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-                padding: 10px;
-            }
-
-            .social-check {
-                width: 30px;
-                height: 30px;
-                font-size: 18px;
-            }
-        }
-
-        @media (max-width: 375px) {
-            .hero h1 {
-                font-size: 1.75rem;
-            }
-
-            .dashboard-title,
-            .features-title {
-                font-size: 24px;
-            }
-
-            .socials-heading h2 {
-                font-size: 24px;
-            }
-
-            .button,
-            .secondary-button {
-                padding: 8px 12px;
-                font-size: 13px;
-            }
-        }
-
-        @media (max-width: 480px) and (orientation: portrait) {
-            .hero {
-                min-height: 70vh;
-            }
-
-            .hero-content {
-                justify-content: center;
-            }
-        }
-
-        @media (max-height: 600px) and (orientation: landscape) {
-
-            .hero,
-            .dashboard,
-            .features {
-                min-height: auto;
-                padding: 40px 15px;
-            }
-
-            .header {
-                position: relative;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero-content {
-                max-width: 80%;
-            }
-        }
-
-        @media (hover: none) {
-
-            .button,
-            .secondary-button,
-            .nav a {
-                transition: none;
-            }
-
-            .nav a:active {
-                color: #D2E1FE;
-            }
-
-            .button:active,
-            .secondary-button:active {
-                transform: translateY(-1px);
-            }
-        }
-
-        @media (max-width: 767.98px) {
-            @font-face {
-                font-family: 'regular';
-                src: local('Arial');
-                font-weight: normal;
-                font-style: normal;
-                font-display: swap;
-            }
-
-            @font-face {
-                font-family: 'bold';
-                src: local('Arial Bold');
-                font-weight: bold;
-                font-style: normal;
-                font-display: swap;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/static/css/global.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <title>og.email - Premium Bio Links</title>
 </head>
 
 <body>
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">
-                <span>og.email</span>
+    <div class="navbar">
+        <div class="logo">og.email</div>
+        <div class="center-links">
+            <a href="#features">Features</a>
+            <a href="#support">Support</a>
+            <a href="#pricing">Pricing</a>
+        </div>
+        <div class="right-links">
+            <button onclick="window.location.href='/register'">Sign Up</button>
+        </div>
+        <div class="mobile-menu">
+            <button class="mobile-menu-button" onclick="toggleMobileMenu()">☰</button>
+            <div class="mobile-dropdown" id="mobileDropdown">
+                <button class="mobile-button" onclick="window.location.href='#features'">Features</button>
+                <button class="mobile-button" onclick="window.location.href='#support'">Support</button>
+                <button class="mobile-button" onclick="window.location.href='#pricing'">Pricing</button>
+                <button class="mobile-button" onclick="window.location.href='/register'">Sign Up</button>
             </div>
-            <nav class="nav">
-                <a href="#socials">Features</a>
-                <a href="https://discord.gg/whip">Support</a>
-                <a href="https://discord.gg/whip">Pricing</a>
-            </nav>
-            <a href="/register" class="button" style="text-decoration: none;"><i class="fas fa-key"
-                    style="padding-right: 10px;"></i>Sign Up</a>
         </div>
-    </header>
+    </div>
 
-    <div class="container">
-        <div class="hero-section">
-            <div class="hero-lighting"></div>
-            <section class="hero">
-                <div class="hero-content">
-                    <h1>Your Digital Presence Made Simple</h1>
-                    <p>Premium, privacy focused solutions for your portfolio, images, emails & much more</p>
-                    <div class="hero-buttons">
-                        <a href="/register" class="button"
-                            style="text-decoration: none; background-color: white; border: none; color: #2B2D32;"><i
-                                class="fas fa-key" style="padding-right: 10px;"></i>Sign Up</a>
-                        <a href="https://discord.gg/whip" class="secondary-button" style="text-decoration: none;"><i
-                                class="fa-brands fa-discord" style="padding-right: 10px;"></i>Join Discord</a>
+    <div class="hero-container">
+        <div class="meow">✨ Premium Bio Links</div>
+        <h1>Your Digital Presence Made Simple</h1>
+        <p>Premium, privacy focused solutions for your portfolio, images, emails & much more</p>
+        <div class="hero-buttons">
+            <a href="/register" class="button">Sign Up</a>
+            <a href="https://discord.gg/yourdiscord" class="button">Join Discord</a>
+        </div>
+    </div>
+
+    <section id="features" class="features-container section">
+        <div class="feature-box">
+            <div class="feature-icon"><i class="fas fa-link"></i></div>
+            <h2>Biolink</h2>
+            <p>Showcase all your socials, description about yourself, your design of choice & etc, fully customizable</p>
+        </div>
+        <div class="feature-box">
+            <div class="feature-icon"><i class="fas fa-plug"></i></div>
+            <h2>Integrations</h2>
+            <p>Connect your favourite socials to the site, display your profiles, activity, status & much more using oAuth2 technology</p>
+        </div>
+        <div class="feature-box">
+            <div class="feature-icon"><i class="fas fa-envelope"></i></div>
+            <h2>Email</h2>
+            <p>Use our completely safe & secure email provider for maximum security, with a no-log policy. Choose from over 10+ domains</p>
+        </div>
+        <div class="feature-box">
+            <div class="feature-icon"><i class="fas fa-image"></i></div>
+            <h2>Image Host</h2>
+            <p>Upload your images to our server and access them from anywhere else, images are end-to-end encrypted so only you can see them</p>
+        </div>
+        <div class="feature-box">
+            <div class="feature-icon"><i class="fas fa-star"></i></div>
+            <h2>Collectibles</h2>
+            <p>Collect, transfer, manage & show off your collectibles such as usernames & gifts, each user having the ability to claim 10 collectible usernames</p>
+        </div>
+        <div class="feature-box">
+            <div class="feature-icon"><i class="fas fa-palette"></i></div>
+            <h2>Customization</h2>
+            <p>Fully customize your profile with custom CSS, themes, and design choices to make it truly yours</p>
+        </div>
+    </section>
+
+    <section class="socials-section section">
+        <h2 class="section-title">Connect Your Platforms</h2>
+        <div class="socials-slider">
+            <div class="socials-container">
+                <div class="socials-box">
+                    <img src="/static/cdn/discord.png" alt="Discord" class="socials-icon">
+                    <div class="socials-content">
+                        <h3>Discord</h3>
+                        <p>Connect your Discord account</p>
                     </div>
                 </div>
-            </section>
-            <h2
-                style="align-items: center; justify-content: center; display: flex; margin-bottom: 50px; margin-top: -50px; font-size: 1rem;">
-                Scroll down to learn more</h2>
-        </div>
-        <div class="section-divider"></div>
-
-        <div class="dashboard-section">
-            <div class="dashboard-lighting"></div>
-            <section class="dashboard">
-                <div class="dashboard-content">
-                    <h1 class="dashboard-title">Dashboard</h1>
-                    <p class="dashboard-subtitle">Manage your account with a clean, modern dashboard, from basic account
-                        details to advanced oAuth2 connections & collectible usernames
-                    </p>
-                </div>
-                <div class="dashboard-image">
-                    <img src="https://og.email/assets/placeholder.png">
-                </div>
-            </section>
-        </div>
-
-        <div class="section-divider"></div>
-
-        <div class="socials-section" id="socials">
-            <div class="social-lighting"></div>
-            <section class="socials">
-                <div class="socials-grid">
-                    <div class="socials-row">
-                        <div class="social-embed">
-                            <div class="social-header">
-                                <div class="social-avatar" style="background-color: #5E69F2;">
-                                    <i class="fa-solid fa-plug"></i>
-                                </div>
-                                <div class="social-title">
-                                    Integrations
-                                    <div class="social-subtitle">Connect your favourite socials</div>
-                                </div>
-                            </div>
-                            <div class="social-feature">
-                                <p>Connect your favourite socials to the site, display your profiles, activity, status &
-                                    much more using oAuth2 technology</p>
-                            </div>
-                        </div>
-
-                        <div class="social-embed">
-                            <div class="social-header">
-                                <div class="social-avatar" style="background-color: #5E69F2;">
-                                    <i class="fa-solid fa-user"></i>
-                                </div>
-                                <div class="social-title">
-                                    Shaun
-                                </div>
-                            </div>
-                            <div class="social-feature">
-                                <p>i was going through a dark place in my life but ever since i got og.email, things
-                                    have been better! thank you </p>
-                            </div>
-                        </div>
+                <div class="socials-box">
+                    <img src="/static/cdn/twitter.png" alt="Twitter" class="socials-icon">
+                    <div class="socials-content">
+                        <h3>Twitter</h3>
+                        <p>Link your Twitter profile</p>
                     </div>
-
-                    <!--
-                    <div class="social-embed wide-embed">
-                        <div class="social-header">
-                            <div class="social-avatar" style="background-color: #5E69F2;">
-                                <i class="fa-solid fa-at"></i>
-                            </div>
-                            <div class="social-title">
-                                Collectibles
-                                <div class="social-subtitle">Collect, be creative</div>
-                            </div>
-                        </div>
-                        <div class="social-feature">
-                            <p>Collect, transfer, manage & show off your collectibles such as usernames & gifts, each
-                                user having the ability to claim 10 collectible usernames, and display them on your
-                                profile</p>
-                        </div>
-                    </div>
-                    -->
-
                 </div>
-            </section>
+                <div class="socials-box">
+                    <img src="/static/cdn/instagram.png" alt="Instagram" class="socials-icon">
+                    <div class="socials-content">
+                        <h3>Instagram</h3>
+                        <p>Show your Instagram feed</p>
+                    </div>
+                </div>
+                <div class="socials-box">
+                    <img src="/static/cdn/twitch.png" alt="Twitch" class="socials-icon">
+                    <div class="socials-content">
+                        <h3>Twitch</h3>
+                        <p>Display your Twitch streams</p>
+                    </div>
+                </div>
+                <div class="socials-box">
+                    <img src="/static/cdn/tiktok.png" alt="TikTok" class="socials-icon">
+                    <div class="socials-content">
+                        <h3>TikTok</h3>
+                        <p>Share your TikTok content</p>
+                    </div>
+                </div>
+                <div class="socials-box">
+                    <img src="/static/cdn/soundcloud.png" alt="SoundCloud" class="socials-icon">
+                    <div class="socials-content">
+                        <h3>SoundCloud</h3>
+                        <p>Showcase your music</p>
+                    </div>
+                </div>
+                <div class="socials-box">
+                    <img src="/static/cdn/steam.png" alt="Steam" class="socials-icon">
+                    <div class="socials-content">
+                        <h3>Steam</h3>
+                        <p>Link your gaming profile</p>
+                    </div>
+                </div>
+                <div class="socials-box">
+                    <img src="/static/cdn/roblox.png" alt="Roblox" class="socials-icon">
+                    <div class="socials-content">
+                        <h3>Roblox</h3>
+                        <p>Connect your Roblox account</p>
+                    </div>
+                </div>
+                <div class="socials-box">
+                    <img src="/static/cdn/telegram.png" alt="Telegram" class="socials-icon">
+                    <div class="socials-content">
+                        <h3>Telegram</h3>
+                        <p>Add your Telegram channel</p>
+                    </div>
+                </div>
+                <div class="socials-box">
+                    <img src="/static/cdn/discord.png" alt="Discord" class="socials-icon">
+                    <div class="socials-content">
+                        <h3>Discord</h3>
+                        <p>Connect your Discord account</p>
+                    </div>
+                </div>
+                <div class="socials-box">
+                    <img src="/static/cdn/twitter.png" alt="Twitter" class="socials-icon">
+                    <div class="socials-content">
+                        <h3>Twitter</h3>
+                        <p>Link your Twitter profile</p>
+                    </div>
+                </div>
+                <div class="socials-box">
+                    <img src="/static/cdn/instagram.png" alt="Instagram" class="socials-icon">
+                    <div class="socials-content">
+                        <h3>Instagram</h3>
+                        <p>Show your Instagram feed</p>
+                    </div>
+                </div>
+            </div>
         </div>
+    </section>
+
+    <script>
+        function toggleMobileMenu() {
+            const dropdown = document.getElementById('mobileDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const dropdown = document.getElementById('mobileDropdown');
+            if (!mobileMenu.contains(event.target) && dropdown.classList.contains('show')) {
+                dropdown.classList.toggle('show');
+            }
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
 </body>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let e = [
-            { icon: "fa-solid fa-plug", color: "#5E69F2", title: "Integrations", subtitle: "Connect your favourite socials", feature: "Connect your favourite socials to the site, display your profiles, activity, status & much more using oAuth2 technology" },
-            { icon: "fa-solid fa-user", color: "#333333", title: "Biolink", subtitle: "Your portfolio", feature: "Showcase all your socials, description about yourself, your design of choise & etc, fully customizable" },
-            { icon: "fa-solid fa-at", color: "#5E69F2", title: "Collectibles", subtitle: "Collect & display", feature: "Claim & display upto 10 collectible users, even use them on emails!" },
-            { icon: "fa-solid fa-envelope", color: "#e13e3e", title: "Email", subtitle: "Fully secure emails", feature: "Use our completely safe & secure email provider for maximum security, with a no-log policy. Choose from over 10+ domains" },
-            { icon: "fa-solid fa-image", color: "#1b95f0", title: "Image host", subtitle: "Fast, nice, easy", feature: "Upload your images to our server and access them from anywhere else, images are end-to-end encrypted so only you can see them" },],
-
-            t = [
-                { avatar: "fa-solid fa-user", color: "#5E69F2", name: "Shaun", subtitle: "10/10", text: "i was going through a dark place in my life but ever since i got og.email, things have been better! thank you" },
-                { avatar: "fa-solid fa-user", color: "#e13e3e", name: "Moom", subtitle: "9/10", text: "i switched from alo.ne to og.email and instantly noticed the details, it was WAY better. Thank you for saving my life." },
-                { avatar: "fa-solid fa-user", color: "#1b95f0", name: "James", subtitle: "10/10", text: "i dislike my life with a passion but after i recieved an invite to og.email by a very cool person i was met with true joy and happiness. Thx Uuu >.<" },
-                { avatar: "fa-solid fa-user", color: "#e13e3e", name: "Shy", subtitle: "10/10", text: "i struggled with my biolink services always getting breached but og.email came and secured my information" },
-                ,
-            ],
-            a = document.createElement("style"); function i(e, t) { let a = document.querySelector(e); if (!a) return; let i = a.querySelector("div:not(.fade-out)"); i && (i.classList.add("fade-out"), setTimeout(() => { i.remove() }, 600)); let l = document.createElement("div"); l.textContent = t, l.classList.add("fade-in"), a.appendChild(l) } function l(e, t) { if (!e) return; let a = e.querySelector("i"); a && (a.classList.add("fade-out"), setTimeout(() => { a.remove() }, 600)); let i = document.createElement("i"); i.className = t + " fade-in", i.style.position = "absolute", i.style.width = "100%", i.style.height = "100%", i.style.display = "flex", i.style.alignItems = "center", i.style.justifyContent = "center", i.style.top = "0", i.style.left = "0", e.appendChild(i) } a.textContent = `
-        .social-title, .social-subtitle, .social-feature p {
-            position: relative;
-        }
-        
-        .social-avatar {
-            transition: background-color 0.6s ease;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .social-avatar i {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .content-wrapper {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.6s ease forwards;
-        }
-        
-        .fade-out {
-            animation: fadeOut 0.6s ease forwards;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-        }
-        
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes fadeOut {
-            0% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-        }
-    `, document.head.appendChild(a); let o = 0, r = 0; !function e() { let t = document.querySelectorAll(".social-embed")[0]; if (t) { let a = t.querySelector(".social-title"); if (a) { let i = a.childNodes[0].nodeValue.trim(); a.removeChild(a.childNodes[0]); let l = document.createElement("div"); l.className = "content-wrapper title-wrapper", l.style.height = "auto"; let o = document.createElement("div"); o.textContent = i, l.appendChild(o), a.insertBefore(l, a.firstChild) } let r = t.querySelector(".social-subtitle"); if (r) { let n = r.innerHTML; r.innerHTML = ""; let s = document.createElement("div"); s.className = "content-wrapper subtitle-wrapper"; let c = document.createElement("div"); c.innerHTML = n, s.appendChild(c), r.appendChild(s) } let d = t.querySelector(".social-feature p"); if (d) { let u = d.innerHTML; d.innerHTML = ""; let p = document.createElement("div"); p.className = "content-wrapper feature-wrapper"; let f = document.createElement("div"); f.innerHTML = u, p.appendChild(f), d.appendChild(p) } } let m = document.querySelectorAll(".social-embed")[1]; if (m) { let y = m.querySelector(".social-title"); if (y) { let h = y.innerHTML; y.innerHTML = ""; let $ = document.createElement("div"); $.className = "content-wrapper testimonial-title-wrapper"; let v = document.createElement("div"); v.innerHTML = h, $.appendChild(v), y.appendChild($) } let b = m.querySelector(".social-subtitle"); if (b) { let w = b.innerHTML; b.innerHTML = ""; let g = document.createElement("div"); g.className = "content-wrapper testimonial-subtitle-wrapper"; let C = document.createElement("div"); C.innerHTML = w, g.appendChild(C), b.appendChild(g) } let _ = m.querySelector(".social-feature p"); if (_) { let E = _.innerHTML; _.innerHTML = ""; let L = document.createElement("div"); L.className = "content-wrapper testimonial-feature-wrapper"; let M = document.createElement("div"); M.innerHTML = E, L.appendChild(M), _.appendChild(L) } } let S = document.querySelectorAll(".social-avatar"); S.forEach(e => { let t = e.querySelector("i"); t && (t.style.position = "absolute", t.style.width = "100%", t.style.height = "100%", t.style.display = "flex", t.style.alignItems = "center", t.style.justifyContent = "center", t.style.top = "0", t.style.left = "0") }) }(), setInterval(function t() { o = (o + 1) % e.length; let a = e[o], r = document.querySelector(".social-avatar"); r && (r.style.backgroundColor = a.color, l(r, a.icon)), i(".title-wrapper", a.title), i(".subtitle-wrapper", a.subtitle), i(".feature-wrapper", a.feature) }, 3e3), setInterval(function e() { r = (r + 1) % t.length; let a = t[r], o = document.querySelectorAll(".social-avatar")[1]; o && (o.style.backgroundColor = a.color, l(o, a.avatar)), i(".testimonial-title-wrapper", a.name), i(".testimonial-subtitle-wrapper", a.rating), i(".testimonial-feature-wrapper", a.text) }, 3e3)
-    });
-</script>
-
 </html>
