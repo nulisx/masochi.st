@@ -5,206 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/global.css">
+    <link rel="stylesheet" href="/static/css/auth.css">
     <title>Login - og.email</title>
-    <style>
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: -10%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 1000px;
-            height: 1000px;
-            background: radial-gradient(circle, var(--pink-glow) 0%, transparent 60%);
-            filter: blur(120px);
-            z-index: -1;
-            pointer-events: none;
-            opacity: 0.4;
-            animation: pulse 8s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 0.4;
-                transform: translateX(-50%) scale(1);
-            }
-            50% {
-                opacity: 0.5;
-                transform: translateX(-50%) scale(1.1);
-            }
-        }
-
-        .login-container {
-            width: 100%;
-            max-width: 420px;
-            padding: 3rem;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .login-container:hover {
-            border-color: var(--border-hover);
-            box-shadow: 0 12px 50px rgba(217, 70, 239, 0.2);
-        }
-
-        .logo-link {
-            display: inline-block;
-            margin-bottom: 2rem;
-            color: var(--white);
-            text-decoration: none;
-            font-family: 'bold', Arial, sans-serif;
-            font-size: 1.75rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            text-shadow: 0 0 30px var(--white-glow);
-            filter: blur(0.3px);
-            transition: all 0.3s ease;
-        }
-
-        .logo-link:hover {
-            color: var(--pink-light);
-            text-shadow: 0 0 40px var(--pink-glow);
-        }
-
-        h1 {
-            font-family: 'bold', Arial, sans-serif;
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--white);
-            letter-spacing: -0.02em;
-        }
-
-        .subtitle {
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        input {
-            width: 100%;
-            padding: 0.875rem 1rem;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--white);
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            font-family: 'regular', Arial, sans-serif;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--pink);
-            background: rgba(0, 0, 0, 0.4);
-            box-shadow: 0 0 20px rgba(217, 70, 239, 0.2);
-        }
-
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        .login-button {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--pink) 0%, var(--pink-light) 100%);
-            border: 1.5px solid var(--pink);
-            border-radius: 12px;
-            color: var(--white);
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 20px var(--pink-glow);
-            position: relative;
-            overflow: hidden;
-            font-family: 'regular', Arial, sans-serif;
-        }
-
-        .login-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .login-button:hover::before {
-            left: 100%;
-        }
-
-        .login-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px var(--pink-glow);
-        }
-
-        .register-link {
-            text-align: center;
-            margin-top: 1.5rem;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-        }
-
-        .register-link a {
-            color: var(--pink-light);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .register-link a:hover {
-            color: var(--pink);
-            text-shadow: 0 0 15px var(--pink-glow);
-        }
-
-        .error-message {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #ef4444;
-            padding: 0.875rem 1rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-            display: none;
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
-        }
-
-        .error-message.show {
-            display: block;
-        }
-    </style>
 </head>
 <body>
-    <div class="login-container">
+    <div class="auth-container">
         <a href="/" class="logo-link">og.email</a>
         <h1>Welcome Back</h1>
         <p class="subtitle">Login to access your account</p>
@@ -222,10 +27,10 @@
                 <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
             </div>
             
-            <button type="submit" class="login-button">Login</button>
+            <button type="submit" class="auth-button">Login</button>
         </form>
         
-        <div class="register-link">
+        <div class="auth-link">
             Don't have an account? <a href="/register">Sign up</a>
         </div>
     </div>
