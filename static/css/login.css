@@ -1,13 +1,34 @@
+body {
+    background: var(--black);
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--pink-glow) 0%, transparent 70%);
+    filter: blur(120px);
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.4;
+}
+
 .login-container {
-    background: hsl(var(--card) / 0.4);
+    background: rgba(10, 10, 10, 0.8);
     backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
-    border: 1px solid hsl(var(--border) / 0.3);
+    border: 1px solid var(--border);
     padding: 2.5rem 3rem;
     border-radius: 1.5rem;
     width: 100%;
     max-width: 420px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 60px var(--pink-glow);
     position: relative;
     overflow: hidden;
 }
@@ -19,9 +40,7 @@
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, 
-                hsl(220 70% 50% / 0.1) 0%, 
-                transparent 50%);
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.15) 0%, transparent 50%);
     animation: rotate 20s linear infinite;
     z-index: 0;
 }
@@ -46,7 +65,8 @@
     font-size: 1.75rem;
     font-weight: 700;
     letter-spacing: -0.02em;
-    color: hsl(var(--foreground));
+    color: var(--white);
+    text-shadow: 0 0 30px var(--white-glow);
 }
 
 .input-group {
@@ -58,33 +78,31 @@
     margin-bottom: 0.5rem;
     font-weight: 500;
     font-size: 0.9rem;
-    color: hsl(var(--muted-foreground));
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .input-group input {
     width: 100%;
     padding: 0.875rem 1rem;
     font-size: 1rem;
-    background: hsl(var(--input) / 0.4);
+    background: rgba(15, 15, 15, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    color: hsl(var(--foreground));
-    border: 1px solid hsl(var(--border) / 0.3);
+    color: var(--white);
+    border: 1px solid var(--border);
     border-radius: 0.75rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 .input-group input::placeholder {
-    color: hsl(var(--muted-foreground) / 0.5);
+    color: rgba(255, 255, 255, 0.3);
 }
 
 .input-group input:focus {
     outline: none;
-    border-color: hsl(var(--ring) / 0.5);
-    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.1),
-                0 0 0 3px hsl(var(--ring) / 0.1);
-    background: hsl(var(--input) / 0.6);
+    border-color: var(--pink);
+    box-shadow: 0 0 20px var(--pink-glow), 0 0 0 3px rgba(236, 72, 153, 0.1);
+    background: rgba(20, 20, 20, 0.8);
 }
 
 .show-password {
@@ -93,31 +111,31 @@
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    color: hsl(var(--muted-foreground));
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
 }
 
 .show-password:hover {
-    color: hsl(var(--foreground));
+    color: var(--pink);
 }
 
 .login-btn {
     width: 100%;
     padding: 1rem 2rem;
-    background: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
-    border: none;
+    background: var(--pink);
+    color: var(--white);
+    border: 2px solid var(--pink);
     font-weight: 600;
     font-size: 1rem;
     cursor: pointer;
     border-radius: 0.75rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    box-shadow: 0 0 25px var(--pink-glow);
 }
 
 .login-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 35px var(--pink-glow), 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .login-btn:active {
@@ -133,35 +151,35 @@
     width: 100%;
     height: 100%;
     overflow: auto;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 }
 
 .modal-content {
-    background: hsl(var(--card) / 0.95);
+    background: rgba(10, 10, 10, 0.95);
     backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
     margin: 10% auto;
     padding: 2rem;
-    border: 1px solid hsl(var(--border) / 0.3);
+    border: 1px solid var(--pink);
     width: 90%;
     max-width: 420px;
     border-radius: 1.25rem;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 50px var(--pink-glow);
 }
 
 .close {
-    color: hsl(var(--muted-foreground));
+    color: rgba(255, 255, 255, 0.6);
     float: right;
     font-size: 1.75rem;
     font-weight: bold;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
 }
 
 .close:hover,
 .close:focus {
-    color: hsl(var(--foreground));
+    color: var(--pink);
     text-decoration: none;
     cursor: pointer;
     transform: scale(1.1);
@@ -176,14 +194,14 @@
 .account-links p {
     margin: 0;
     font-size: 0.9rem;
-    color: hsl(var(--muted-foreground));
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .account-links a {
-    color: hsl(var(--primary));
+    color: var(--pink);
     text-decoration: none;
     font-weight: 500;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
     position: relative;
 }
 
@@ -194,8 +212,9 @@
     left: 0;
     width: 0;
     height: 1px;
-    background: hsl(var(--primary));
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--pink);
+    box-shadow: 0 0 10px var(--pink-glow);
+    transition: width 0.3s ease;
 }
 
 .account-links a:hover::after {
@@ -212,21 +231,20 @@
     padding-left: 2.75rem;
     font-size: 1rem;
     line-height: 1.5;
-    color: hsl(var(--foreground));
-    background: hsl(var(--input) / 0.4);
+    color: var(--white);
+    background: rgba(15, 15, 15, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid hsl(var(--border) / 0.3);
+    border: 1px solid var(--border);
     border-radius: 0.75rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
 }
 
 .input-icon-container input:focus {
     outline: none;
-    border-color: hsl(var(--ring) / 0.5);
-    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.1),
-                0 0 0 3px hsl(var(--ring) / 0.1);
-    background: hsl(var(--input) / 0.6);
+    border-color: var(--pink);
+    box-shadow: 0 0 20px var(--pink-glow), 0 0 0 3px rgba(236, 72, 153, 0.1);
+    background: rgba(20, 20, 20, 0.8);
 }
 
 .input-icon-container i {
@@ -235,18 +253,18 @@
     top: 50%;
     transform: translateY(-50%);
     font-size: 1.125rem;
-    color: hsl(var(--muted-foreground));
+    color: rgba(255, 255, 255, 0.5);
     pointer-events: none;
 }
 
 .info-box {
     position: relative;
-    background: hsl(217 91% 60% / 0.1);
+    background: rgba(236, 72, 153, 0.1);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-left: 3px solid hsl(217 91% 60%);
+    border-left: 3px solid var(--pink);
     border-radius: 0.5rem;
-    color: hsl(var(--muted-foreground));
+    color: rgba(255, 255, 255, 0.7);
     padding: 1rem 1.25rem;
     margin-bottom: 1.5rem;
     display: flex;
@@ -255,7 +273,7 @@
 }
 
 .info-box i {
-    color: hsl(217 91% 60%);
+    color: var(--pink);
     margin-right: 0.75rem;
     font-size: 1.25rem;
 }

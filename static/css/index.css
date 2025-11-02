@@ -5,8 +5,24 @@ body {
     justify-content: flex-start;
     min-height: 100vh;
     margin: 0;
-    background: radial-gradient(circle at 50% 20%, hsl(220 50% 15% / 0.3) 0%, transparent 50%),
-                hsl(var(--background));
+    background: var(--black);
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, var(--pink-glow) 0%, transparent 70%);
+    filter: blur(100px);
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.3;
 }
 
 .hero-container {
@@ -15,33 +31,19 @@ body {
     padding: clamp(5rem, 15vh, 10rem) 2rem clamp(3rem, 10vh, 6rem);
     margin: 0 auto;
     text-align: center;
-    color: hsl(var(--foreground));
+    color: var(--white);
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
 }
 
-.hero-container::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, hsl(220 70% 50% / 0.15) 0%, transparent 70%);
-    filter: blur(60px);
-    z-index: -1;
-    pointer-events: none;
-}
-
 .hero-container .meow {
-    background: hsl(var(--accent) / 0.4);
+    background: rgba(236, 72, 153, 0.15);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid hsl(var(--border) / 0.3);
-    color: hsl(var(--accent-foreground));
+    border: 1px solid rgba(236, 72, 153, 0.3);
+    color: var(--pink);
     padding: 0.5rem 1rem;
     border-radius: 2rem;
     font-size: 0.875rem;
@@ -50,13 +52,13 @@ body {
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 1.5rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px var(--pink-glow);
 }
 
 .hero-container .meow:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 30px var(--pink-glow);
 }
 
 .hero-container h1 {
@@ -65,24 +67,18 @@ body {
     font-weight: 700;
     margin-bottom: 1rem;
     max-width: 800px;
-    word-break: normal;
     letter-spacing: -0.03em;
     line-height: 1.1;
-    background: linear-gradient(135deg, 
-                hsl(var(--foreground)) 0%, 
-                hsl(var(--muted-foreground)) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--white);
+    text-shadow: 0 0 40px var(--white-glow);
 }
 
 .hero-container p {
-    color: hsl(var(--muted-foreground));
+    color: rgba(255, 255, 255, 0.7);
     font-size: clamp(1rem, 2.5vw, 1.25rem);
     line-height: 1.6;
     margin-bottom: 2rem;
     max-width: 600px;
-    word-break: normal;
 }
 
 .hero-buttons {
@@ -98,24 +94,29 @@ body {
     padding: 0.875rem 2rem;
     font-size: 1rem;
     font-weight: 600;
-    background: hsl(var(--primary));
-    border: 1px solid transparent;
-    color: hsl(var(--primary-foreground));
+    background: var(--pink);
+    border: 2px solid var(--pink);
+    color: var(--white);
     border-radius: 0.75rem;
     text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px var(--pink-glow);
 }
 
 .hero-buttons .button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 30px var(--pink-glow), 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 .hero-buttons .button:nth-child(2) {
-    background: hsl(var(--secondary));
-    border: 1px solid hsl(var(--border));
-    color: hsl(var(--secondary-foreground));
+    background: transparent;
+    border: 2px solid var(--white);
+    color: var(--white);
+    box-shadow: 0 0 15px var(--white-glow);
+}
+
+.hero-buttons .button:nth-child(2):hover {
+    box-shadow: 0 0 25px var(--white-glow), 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 .features-container {
@@ -130,15 +131,15 @@ body {
 
 .feature-box {
     position: relative;
-    background: hsl(var(--card) / 0.4);
+    background: rgba(10, 10, 10, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid hsl(var(--border) / 0.3);
+    border: 1px solid var(--border);
     padding: 2rem;
     border-radius: 1rem;
     text-align: left;
-    color: hsl(var(--card-foreground));
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--white);
+    transition: all 0.3s ease;
     overflow: hidden;
 }
 
@@ -149,18 +150,16 @@ body {
     left: 0;
     right: 0;
     height: 100%;
-    background: linear-gradient(135deg, 
-                hsl(var(--primary) / 0.05) 0%, 
-                transparent 100%);
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, transparent 100%);
     opacity: 0;
-    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.3s ease;
     z-index: 0;
 }
 
 .feature-box:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-    border-color: hsl(var(--border) / 0.5);
+    box-shadow: 0 0 30px var(--pink-glow);
+    border-color: var(--pink);
 }
 
 .feature-box:hover::before {
@@ -178,16 +177,18 @@ body {
     justify-content: center;
     font-size: 1.5rem;
     font-weight: bold;
-    background: hsl(var(--card));
-    border: 1px solid hsl(var(--border));
+    background: rgba(10, 10, 10, 0.9);
+    border: 1px solid var(--pink);
     border-radius: 50%;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
     cursor: pointer;
     z-index: 1;
+    box-shadow: 0 0 20px var(--pink-glow);
 }
 
 .feature-box:hover .feature-icon {
     transform: rotate(10deg) scale(1.1);
+    box-shadow: 0 0 30px var(--pink-glow);
 }
 
 .feature-box h2 {
@@ -197,11 +198,13 @@ body {
     margin-bottom: 0.75rem;
     position: relative;
     z-index: 1;
+    color: var(--white);
+    text-shadow: 0 0 15px var(--white-glow);
 }
 
 .feature-box p {
     font-size: 1rem;
-    color: hsl(var(--muted-foreground));
+    color: rgba(255, 255, 255, 0.7);
     line-height: 1.6;
     position: relative;
     z-index: 1;
@@ -215,16 +218,8 @@ body {
     width: min(980px, 100%);
     position: relative;
     overflow: hidden;
-    -webkit-mask-image: linear-gradient(to right, 
-                        transparent 0%, 
-                        black 10%, 
-                        black 90%, 
-                        transparent 100%);
-    mask-image: linear-gradient(to right, 
-                transparent 0%, 
-                black 10%, 
-                black 90%, 
-                transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
 }
 
 .socials-container,
@@ -238,24 +233,24 @@ body {
 .profiles-box {
     display: flex;
     align-items: center;
-    background: hsl(var(--card) / 0.4);
+    background: rgba(10, 10, 10, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid hsl(var(--border) / 0.3);
+    border: 1px solid var(--border);
     padding: 1.25rem 1.5rem;
     border-radius: 1rem;
     margin: 0 0.75rem;
-    color: hsl(var(--foreground));
+    color: var(--white);
     flex: 0 0 auto;
     min-width: 280px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
 }
 
 .socials-box:hover,
 .profiles-box:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
-    border-color: hsl(var(--border) / 0.5);
+    box-shadow: 0 0 25px var(--pink-glow);
+    border-color: var(--pink);
 }
 
 .socials-icon {
@@ -264,7 +259,7 @@ body {
     margin-right: 1rem;
     font-size: 2.5rem;
     padding: 1rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
 }
 
 .socials-content h3 {
@@ -272,12 +267,13 @@ body {
     margin: 0;
     font-size: 1.2rem;
     font-weight: 600;
+    color: var(--white);
 }
 
 .socials-content p {
     margin: 0.25rem 0 0;
     font-size: 1rem;
-    color: hsl(var(--muted-foreground));
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .profiles-box {
@@ -291,7 +287,8 @@ body {
     border-radius: 50%;
     object-fit: cover;
     margin-right: 1rem;
-    border: 2px solid hsl(var(--border));
+    border: 2px solid var(--pink);
+    box-shadow: 0 0 15px var(--pink-glow);
 }
 
 .profiles-content h3 {
@@ -299,12 +296,13 @@ body {
     margin: 0;
     font-size: 1.1rem;
     font-weight: 600;
+    color: var(--white);
 }
 
 .profiles-content p {
     margin: 0.25rem 0 0;
     font-size: 0.9rem;
-    color: hsl(var(--muted-foreground));
+    color: rgba(255, 255, 255, 0.6);
 }
 
 @keyframes scroll {
@@ -319,8 +317,7 @@ body {
 .section {
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-                transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
 .section.visible {
