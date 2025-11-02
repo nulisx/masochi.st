@@ -1,243 +1,265 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>og.email: login</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/global.css">
+    <title>Login - og.email</title>
     <style>
-        @font-face {
-            font-family: 'regular';
-            src: url('/assets/fonts/regular.woff2') format('woff2');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        @font-face {
-            font-family: 'bold';
-            src: url('/assets/fonts/bold.woff2') format('woff2');
-            font-weight: bold;
-            font-style: normal;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'regular', Arial, sans-serif;
-        }
-
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'regular', Arial, sans-serif;
-            background-color: #1E2025;
-            color: white;
             display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 400px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 100px 20px;
-            box-sizing: border-box;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: left;
+            align-items: center;
             justify-content: center;
-            text-align: left;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
         }
 
-        header {
-            padding: 16px 20px;
+        body::before {
+            content: '';
+            position: fixed;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1000px;
+            height: 1000px;
+            background: radial-gradient(circle, var(--pink-glow) 0%, transparent 60%);
+            filter: blur(120px);
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.4;
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.4;
+                transform: translateX(-50%) scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: translateX(-50%) scale(1.1);
+            }
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 3rem;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .login-container:hover {
+            border-color: var(--border-hover);
+            box-shadow: 0 12px 50px rgba(217, 70, 239, 0.2);
+        }
+
+        .logo-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--white);
+            text-decoration: none;
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            text-shadow: 0 0 30px var(--white-glow);
+            filter: blur(0.3px);
+            transition: all 0.3s ease;
+        }
+
+        .logo-link:hover {
+            color: var(--pink-light);
+            text-shadow: 0 0 40px var(--pink-glow);
         }
 
         h1 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 24px;
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+            letter-spacing: -0.02em;
         }
 
-        .input-container {
-            width: 100%;
-            margin-bottom: 16px;
+        .subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            font-weight: 500;
         }
 
         input {
             width: 100%;
-            padding: 12px 16px;
-            font-size: 16px;
-            border-radius: 6px;
-            background-color: #1E2025;
-            border: 2px solid #2B2D32;
-            color: white;
-            box-sizing: border-box;
+            padding: 0.875rem 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--white);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            font-family: 'regular', Arial, sans-serif;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--pink);
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 20px rgba(217, 70, 239, 0.2);
         }
 
         input::placeholder {
-            color: #8e8e8e;
+            color: rgba(255, 255, 255, 0.3);
         }
 
-        button {
+        .login-button {
             width: 100%;
-            padding: 12px 16px;
-            margin: 8px 0;
-            background-color: #1E2025;
-            border: 2px solid #2B2D32;
-            color: white;
-            border-radius: 6px;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--pink) 0%, var(--pink-light) 100%);
+            border: 1.5px solid var(--pink);
+            border-radius: 12px;
+            color: var(--white);
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        button:hover {
-            background-color: #2B2D32;
-        }
-
-        .signup-text {
-            margin-top: 16px;
-            font-size: 14px;
-            color: #8e8e8e;
-            text-align: center;
-        }
-
-        .signup-text a {
-            color: #e2e2e2;
-            text-decoration: none;
-        }
-
-        .separator {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            margin: 20px 0;
-            color: #8e8e8e;
-        }
-
-        .separator::before,
-        .separator::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid #2B2D32;
-        }
-
-        .separator::before {
-            margin-right: 10px;
-        }
-
-        .separator::after {
-            margin-left: 10px;
-        }
-
-        .password-input-container {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px var(--pink-glow);
             position: relative;
+            overflow: hidden;
+            font-family: 'regular', Arial, sans-serif;
         }
 
-        .password-toggle {
+        .login-button::before {
+            content: '';
             position: absolute;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #8e8e8e;
-            cursor: pointer;
-            padding: 0;
-            width: 24px;
-            height: 24px;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
         }
 
-        footer {
+        .login-button:hover::before {
+            left: 100%;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--pink-glow);
+        }
+
+        .register-link {
             text-align: center;
-            padding: 20px;
-            font-size: 14px;
-            color: #8e8e8e;
-            border-top: 1px solid #2B2D32;
-            margin-top: auto;
+            margin-top: 1.5rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
         }
 
-        footer a {
-            color: #8e8e8e;
+        .register-link a {
+            color: var(--pink-light);
             text-decoration: none;
-            margin: 0 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .register-link a:hover {
+            color: var(--pink);
+            text-shadow: 0 0 15px var(--pink-glow);
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            padding: 0.875rem 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            display: none;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+        }
+
+        .error-message.show {
+            display: block;
         }
     </style>
 </head>
-
 <body>
-    <header>
-        <div>og.email</div>
-    </header>
-
-    <div class="container">
-        <h1>Welcome back</h1>
-        <div class="input-container">
-            <input type="email" id="email" placeholder="Email address*" required>
-        </div>
-        <div class="input-container password-input-container">
-            <input type="password" id="password" placeholder="Password*" required>
-        </div>
-        <button id="login-button">Login</button>
-
-        <div class="signup-text">
-            Don't have an account? <a href="/register">Sign Up</a>
+    <div class="login-container">
+        <a href="/" class="logo-link">og.email</a>
+        <h1>Welcome Back</h1>
+        <p class="subtitle">Login to access your account</p>
+        
+        <div id="errorMessage" class="error-message"></div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required autocomplete="username">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
+            </div>
+            
+            <button type="submit" class="login-button">Login</button>
+        </form>
+        
+        <div class="register-link">
+            Don't have an account? <a href="/register">Sign up</a>
         </div>
     </div>
 
     <script>
-        document.getElementById('login-button').addEventListener('click', function () {
-            const email = document.getElementById('email').value;
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-
-            if (!email || !password) {
-                alert('Please enter both email and password');
-                return;
-            }
-
-            // Clear previous response message
-            const responseMessage = document.getElementById('response-message');
-            if (responseMessage) {
-                responseMessage.remove();
-            }
-
-            fetch("https://og.email/api/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ identifier: email, password })
-            })
-                .then(res => res.json())
-                .then(data => {
-                    const responseMessage = document.createElement('div');
-                    responseMessage.id = 'response-message';
-                    responseMessage.style.backgroundColor = data.success ? '#4caf50' : '#f44336';
-                    responseMessage.style.color = '#fff';
-                    responseMessage.style.padding = '10px';
-                    responseMessage.style.textAlign = 'center';
-                    responseMessage.style.marginBottom = '20px';
-                    responseMessage.innerText = data.error || 'Login successful!';
-
-                    // Prepend the message to the container
-                    document.querySelector('.container').prepend(responseMessage);
-
-                    if (data.success) {
-                        document.cookie = `auth_token=${data.token};path=/`;
-                        window.location.href = "dashboard";
-                    } else {
-                        console.error("Login failed:", data);
-                    }
-                })
-                .catch(error => {
-                    console.error("Error during login:", error);
+            const errorMessage = document.getElementById('errorMessage');
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password }),
                 });
-        });
 
+                const data = await response.json();
+
+                if (response.ok) {
+                    window.location.href = '/dashboard';
+                } else {
+                    errorMessage.textContent = data.error || 'Login failed';
+                    errorMessage.classList.add('show');
+                }
+            } catch (error) {
+                errorMessage.textContent = 'An error occurred. Please try again.';
+                errorMessage.classList.add('show');
+            }
+        });
     </script>
 </body>
-
 </html>

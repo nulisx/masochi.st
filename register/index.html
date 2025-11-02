@@ -1,408 +1,315 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>og.email: register</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/global.css">
+    <title>Register - og.email</title>
     <style>
-        @font-face {
-            font-family: 'regular';
-            src: url('/assets/fonts/regular.woff2') format('woff2');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        @font-face {
-            font-family: 'bold';
-            src: url('/assets/fonts/bold.woff2') format('woff2');
-            font-weight: bold;
-            font-style: normal;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'regular', Arial, sans-serif;
-        }
-
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'regular', Arial, sans-serif;
-            background-color: #1E2025;
-            color: white;
             display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 400px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 100px 20px;
-            box-sizing: border-box;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: left;
+            align-items: center;
             justify-content: center;
-            text-align: left;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
         }
 
-        header {
-            padding: 16px 20px;
+        body::before {
+            content: '';
+            position: fixed;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1000px;
+            height: 1000px;
+            background: radial-gradient(circle, var(--pink-glow) 0%, transparent 60%);
+            filter: blur(120px);
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.4;
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.4;
+                transform: translateX(-50%) scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: translateX(-50%) scale(1.1);
+            }
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 3rem;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .register-container:hover {
+            border-color: var(--border-hover);
+            box-shadow: 0 12px 50px rgba(217, 70, 239, 0.2);
+        }
+
+        .logo-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--white);
+            text-decoration: none;
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            text-shadow: 0 0 30px var(--white-glow);
+            filter: blur(0.3px);
+            transition: all 0.3s ease;
+        }
+
+        .logo-link:hover {
+            color: var(--pink-light);
+            text-shadow: 0 0 40px var(--pink-glow);
         }
 
         h1 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 24px;
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+            letter-spacing: -0.02em;
         }
 
-        .input-container {
-            width: 100%;
-            margin-bottom: 16px;
-            position: relative;
+        .subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            font-weight: 500;
         }
 
         input {
             width: 100%;
-            padding: 12px 16px;
-            font-size: 16px;
-            border-radius: 6px;
-            background-color: #1E2025;
-            border: 2px solid #2B2D32;
-            color: white;
-            box-sizing: border-box;
+            padding: 0.875rem 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--white);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            font-family: 'regular', Arial, sans-serif;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--pink);
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 20px rgba(217, 70, 239, 0.2);
         }
 
         input::placeholder {
-            color: #8e8e8e;
+            color: rgba(255, 255, 255, 0.3);
         }
 
-        button {
+        .register-button {
             width: 100%;
-            padding: 12px 16px;
-            margin: 8px 0;
-            background-color: #1E2025;
-            border: 2px solid #2B2D32;
-            color: white;
-            border-radius: 6px;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--pink) 0%, var(--pink-light) 100%);
+            border: 1.5px solid var(--pink);
+            border-radius: 12px;
+            color: var(--white);
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        button:hover {
-            background-color: #2B2D32;
-        }
-
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .signup-text {
-            margin-top: 16px;
-            font-size: 14px;
-            color: #8e8e8e;
-            text-align: center;
-        }
-
-        .signup-text a {
-            color: #e2e2e2;
-            text-decoration: none;
-        }
-
-        .password-input-container {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px var(--pink-glow);
             position: relative;
+            overflow: hidden;
+            font-family: 'regular', Arial, sans-serif;
         }
 
-        footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 14px;
-            color: #8e8e8e;
-            border-top: 1px solid #2B2D32;
-            margin-top: auto;
-        }
-
-        footer a {
-            color: #8e8e8e;
-            text-decoration: none;
-            margin: 0 8px;
-        }
-
-        .validation-icon {
+        .register-button::before {
+            content: '';
             position: absolute;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #8e8e8e;
-            cursor: pointer;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
         }
 
-        .valid-icon {
-            color: #4caf50;
+        .register-button:hover::before {
+            left: 100%;
         }
 
-        .invalid-icon {
-            color: #f44336;
+        .register-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--pink-glow);
         }
 
-        .requirements-box {
-            margin-top: 16px;
-            margin-bottom: 16px;
-            padding: 16px;
-            border-radius: 6px;
-            border: 2px solid #2B2D32;
-            background-color: #1E2025;
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
         }
 
-        .requirements-title {
-            font-size: 18px;
-            margin-bottom: 12px;
-            color: #e2e2e2;
+        .login-link a {
+            color: var(--pink-light);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
-        .requirements-list {
-            list-style-type: none;
+        .login-link a:hover {
+            color: var(--pink);
+            text-shadow: 0 0 15px var(--pink-glow);
         }
 
-        .requirements-list li {
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            color: #8e8e8e;
-        }
-
-        .requirements-list li::before {
-            content: "•";
-            margin-right: 10px;
-        }
-
-        .username-requirements-box {
-            margin-top: 16px;
-            margin-bottom: 16px;
-            padding: 16px;
-            border-radius: 6px;
-            border: 2px solid #2B2D32;
-            background-color: #1E2025;
+        .error-message {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            padding: 0.875rem 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
             display: none;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+            padding: 0.875rem 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            display: none;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .invite-code-info {
+            background: rgba(217, 70, 239, 0.1);
+            border: 1px solid rgba(217, 70, 239, 0.2);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 0.875rem 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
         }
     </style>
 </head>
-
 <body>
-    <header>
-        <div>og.email</div>
-    </header>
-
-    <div class="container">
-        <h1>Sign Up</h1>
-        <div class="input-container">
-            <input type="email" id="email" placeholder="Email address*" required>
+    <div class="register-container">
+        <a href="/" class="logo-link">og.email</a>
+        <h1>Create Account</h1>
+        <p class="subtitle">Join og.email today</p>
+        
+        <div id="errorMessage" class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
+        <div class="invite-code-info">
+            <i class="fas fa-info-circle"></i> Registration requires an invite code
         </div>
-        <div class="input-container">
-            <input type="text" id="username" placeholder="Username*" required>
-            <span class="validation-icon" id="username-icon"><i class="fas fa-times invalid-icon"></i></span>
-        </div>
-
-
-        <div class="input-container password-input-container">
-            <input type="password" id="password" placeholder="Password*" required>
-            <span class="validation-icon" id="password-icon"><i class="fas fa-times invalid-icon"></i></span>
-        </div>
-
-        <div class="input-container password-input-container">
-            <input type="invite" id="invite" placeholder="Invite*" required>
-        </div>
-
-        <div class="username-requirements-box" id="username-requirements-box">
-            <div class="requirements-title">Your username must contain:</div>
-            <ul class="requirements-list">
-                <li id="username-length">3-12 characters</li>
-            </ul>
-        </div>
-
-
-        <div class="requirements-box" id="password-requirements-box">
-            <div class="requirements-title">Your password must contain:</div>
-            <ul class="requirements-list">
-                <li id="length-requirement">At least 16 characters</li>
-                <li id="uppercase-requirement">At least 1 uppercase letter</li>
-                <li id="lowercase-requirement">At least 1 lowercase letter</li>
-                <li id="digit-requirement">At least 1 digit</li>
-                <li id="special-requirement">At least 1 special character</li>
-            </ul>
-        </div>
-
-        <button id="login-button" disabled>Register</button>
-
-        <div class="signup-text">
+        
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Choose a username" required autocomplete="username">
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required autocomplete="email">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Create a password" required autocomplete="new-password">
+            </div>
+            
+            <div class="form-group">
+                <label for="inviteCode">Invite Code</label>
+                <input type="text" id="inviteCode" name="inviteCode" placeholder="Enter your invite code" required>
+            </div>
+            
+            <button type="submit" class="register-button">Create Account</button>
+        </form>
+        
+        <div class="login-link">
             Already have an account? <a href="/login">Login</a>
         </div>
     </div>
 
     <script>
-        function validatePassword(password) {
-            const minLength = 16;
-            const hasUpperCase = /[A-Z]/.test(password);
-            const hasLowerCase = /[a-z]/.test(password);
-            const hasDigit = /\d/.test(password);
-            const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
-
-            document.getElementById('length-requirement').style.color =
-                password.length >= minLength ? '#4caf50' : '#8e8e8e';
-
-            document.getElementById('uppercase-requirement').style.color =
-                hasUpperCase ? '#4caf50' : '#8e8e8e';
-
-            document.getElementById('lowercase-requirement').style.color =
-                hasLowerCase ? '#4caf50' : '#8e8e8e';
-
-            document.getElementById('digit-requirement').style.color =
-                hasDigit ? '#4caf50' : '#8e8e8e';
-
-            document.getElementById('special-requirement').style.color =
-                hasSpecial ? '#4caf50' : '#8e8e8e';
-
-            return password.length >= minLength && hasUpperCase && hasLowerCase && hasDigit && hasSpecial;
-        }
-
-        function validateUsername(username) {
-            const isValid = username.length >= 3 && username.length <= 12;
-
-            document.getElementById('username-length').style.color =
-                isValid ? '#4caf50' : '#8e8e8e';
-
-            return isValid;
-        }
-
-        function updateValidationStatus() {
-            const email = document.getElementById('email').value;
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
             const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const invite = document.getElementById('invite').value;
-
-            const usernameReqBox = document.getElementById('username-requirements-box');
-            if (username.length > 0) {
-                usernameReqBox.style.display = 'block';
-            } else {
-                usernameReqBox.style.display = 'none';
-            }
-
-            const usernameValid = validateUsername(username);
-            const usernameIcon = document.getElementById('username-icon');
-            if (username.length > 0) {
-                usernameIcon.innerHTML = usernameValid ?
-                    '<i class="fas fa-check valid-icon"></i>' :
-                    '<i class="fas fa-times invalid-icon"></i>';
-            } else {
-                usernameIcon.innerHTML = '<i class="fas fa-times invalid-icon"></i>';
-            }
-
-            const passwordValid = validatePassword(password);
-            const passwordIcon = document.getElementById('password-icon');
-            if (password.length > 0) {
-                passwordIcon.innerHTML = passwordValid ?
-                    '<i class="fas fa-check valid-icon"></i>' :
-                    '<i class="fas fa-times invalid-icon"></i>';
-            } else {
-                passwordIcon.innerHTML = '<i class="fas fa-times invalid-icon"></i>';
-            }
-
-            const allValid = email.length > 0 && usernameValid && passwordValid && invite.length > 0;
-            document.getElementById('login-button').disabled = !allValid;
-        }
-
-        document.getElementById('email').addEventListener('input', updateValidationStatus);
-        document.getElementById('username').addEventListener('input', updateValidationStatus);
-        document.getElementById('password').addEventListener('input', updateValidationStatus);
-        document.getElementById('invite').addEventListener('input', updateValidationStatus);
-
-        document.getElementById('login-button').addEventListener('click', function () {
             const email = document.getElementById('email').value;
-            const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            const invite = document.getElementById('invite').value;
-
-            const responseMessage = document.getElementById('response-message');
-            if (responseMessage) {
-                responseMessage.remove();
-            }
-
-            fetch("https://og.email/api/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    email: email,
-                    username: username,
-                    password: password,
-                    invite_code: invite
-                })
-            })
-                .then(res => res.json())
-                .then(data => {
-                    const responseMessage = document.createElement('div');
-                    responseMessage.id = 'response-message';
-                    responseMessage.style.backgroundColor = data.success ? '#4caf50' : '#f44336';
-                    responseMessage.style.color = '#fff';
-                    responseMessage.style.padding = '10px';
-                    responseMessage.style.textAlign = 'center';
-                    responseMessage.style.marginBottom = '20px';
-                    responseMessage.innerText = data.error || 'Registration successful!';
-
-                    document.querySelector('.container').prepend(responseMessage);
-
-                    if (data.success) {
-                        document.cookie = `auth_token=${data.token};path=/`;
-                        window.location.href = "login";
-                    } else {
-                        console.error("Registration failed:", data);
-                    }
-                })
-                .catch(error => {
-                    console.error("Error during registration:", error);
+            const inviteCode = document.getElementById('inviteCode').value;
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            
+            errorMessage.classList.remove('show');
+            successMessage.classList.remove('show');
+            
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, email, password, inviteCode }),
                 });
-        });
 
+                const data = await response.json();
 
-        updateValidationStatus();
-        function updateRequirementBoxVisibility() {
-            const usernameInput = document.getElementById('username');
-            const passwordInput = document.getElementById('password');
-            const usernameReqBox = document.getElementById('username-requirements-box');
-            const passwordReqBox = document.getElementById('password-requirements-box');
-
-            if (usernameInput.value.length > 0) {
-                usernameReqBox.style.display = 'block';
-            } else {
-                usernameReqBox.style.display = 'none';
+                if (response.ok) {
+                    successMessage.textContent = 'Account created successfully! Redirecting to login...';
+                    successMessage.classList.add('show');
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 2000);
+                } else {
+                    errorMessage.textContent = data.error || 'Registration failed';
+                    errorMessage.classList.add('show');
+                }
+            } catch (error) {
+                errorMessage.textContent = 'An error occurred. Please try again.';
+                errorMessage.classList.add('show');
             }
-
-            if (passwordInput.value.length > 0) {
-                passwordReqBox.style.display = 'block';
-            } else {
-                passwordReqBox.style.display = 'none';
-            }
-        }
-
-        document.getElementById('username').addEventListener('input', updateRequirementBoxVisibility);
-        document.getElementById('password').addEventListener('input', updateRequirementBoxVisibility);
-
-        document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('username-requirements-box').style.display = 'none';
-            document.getElementById('password-requirements-box').style.display = 'none';
         });
-
-        updateRequirementBoxVisibility();
-
     </script>
 </body>
-
 </html>
