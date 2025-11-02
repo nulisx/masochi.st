@@ -159,6 +159,19 @@ An exclusive, invite-only bio link platform (similar to Linktree) that allows us
 - All database tables are created automatically on server startup
 
 ## Recent Changes
+- 2025-11-02: Complete purple-pink (#d946ef) redesign with external CSS architecture
+  - Created comprehensive CSS design system with 4 external stylesheets:
+    - `static/css/global.css`: Shared color variables, fonts, and base styles
+    - `static/css/index.css`: Homepage-specific styles
+    - `static/css/auth.css`: Login and register page styles
+    - `static/css/dashboard.css`: All dashboard page styles
+  - Redesigned all 8 pages with consistent purple-pink theme and glow effects
+  - Removed ALL inline styles and inline `<style>` blocks from HTML files
+  - Professional, polished design across homepage, login, register, dashboard, account, collectibles, integrations, and images pages
+  - All JavaScript functionality preserved
+  - Fixed default owner account email in database (changed from hash to plain email)
+  - Default owner credentials: username "r", password "ACK071675$!", email "asmo@drugsellers.com"
+
 - 2025-11-02: Complete backend implementation and glowing neon redesign
   - Set up complete backend with SQLite database and authentication
   - Created default owner account (username: r) with hashed password
