@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Resource Not Found</title>
+    <style>
+        @font-face {
+            font-family: 'regular';
+            src: url('https://fights.cfd/assets/fonts/regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'bold';
+            src: url('https://fights.cfd/assets/fonts/bold.woff2') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'regular', Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            font-family: 'bold', Arial, sans-serif;
+            color: white;
+        }
+
+        .container {
+            text-align: left;
+            font-family: 'bold', Arial, sans-serif;
+        }
+
+        .error-code {
+            font-size: 2.8rem;
+            font-family: 'bold', Arial, sans-serif;
+            margin-bottom: 5px;
+        }
+
+        .error-message {
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 8px 16px;
+            border: 1px dashed #151515;
+            border-radius: 25px;
+            color: #d8d8d8;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .home-button:hover{
+            background-color: #151515;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="error-code">404</div>
+        <div class="error-message">unable to find that page!<br><span style="color: #3498db">@</span> is free & available to claim!</div>
+
+        <a href="/" class="home-button">
+            home
+        </a>
+        <a href="/dashboard" class="home-button">
+            claim username
+        </a>
+    </div>
+</body>
+
+</html>

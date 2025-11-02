@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fights.cfd: login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @font-face {
+            font-family: 'regular';
+            src: url('https://fights.cfd/assets/fonts/regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'bold';
+            src: url('https://fights.cfd/assets/fonts/bold.woff2') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'regular', Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'regular', Arial, sans-serif;
+            background-color: #1E2025;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 100px 20px;
+            box-sizing: border-box;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            justify-content: center;
+            text-align: left;
+        }
+
+        header {
+            padding: 16px 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .input-container {
+            width: 100%;
+            margin-bottom: 16px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+            border-radius: 6px;
+            background-color: #1E2025;
+            border: 2px solid #2B2D32;
+            color: white;
+            box-sizing: border-box;
+        }
+
+        input::placeholder {
+            color: #8e8e8e;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px 16px;
+            margin: 8px 0;
+            background-color: #1E2025;
+            border: 2px solid #2B2D32;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        button:hover {
+            background-color: #2B2D32;
+        }
+
+        .signup-text {
+            margin-top: 16px;
+            font-size: 14px;
+            color: #8e8e8e;
+            text-align: center;
+        }
+
+        .signup-text a {
+            color: #e2e2e2;
+            text-decoration: none;
+        }
+
+        .separator {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: #8e8e8e;
+        }
+
+        .separator::before,
+        .separator::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #2B2D32;
+        }
+
+        .separator::before {
+            margin-right: 10px;
+        }
+
+        .separator::after {
+            margin-left: 10px;
+        }
+
+        .password-input-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #8e8e8e;
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #8e8e8e;
+            border-top: 1px solid #2B2D32;
+            margin-top: auto;
+        }
+
+        footer a {
+            color: #8e8e8e;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div>fights.cfd</div>
+    </header>
+
+    <div class="container">
+        <h1>Welcome back</h1>
+        <div class="input-container">
+            <input type="email" id="email" placeholder="Email address*" required>
+        </div>
+        <div class="input-container password-input-container">
+            <input type="password" id="password" placeholder="Password*" required>
+        </div>
+        <button id="login-button">Login</button>
+
+        <div class="signup-text">
+            Don't have an account? <a href="/register">Sign Up</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('login-button').addEventListener('click', function () {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+
+            // Clear previous response message
+            const responseMessage = document.getElementById('response-message');
+            if (responseMessage) {
+                responseMessage.remove();
+            }
+
+            fetch("https://fights.cfd/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ identifier: email, password })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    const responseMessage = document.createElement('div');
+                    responseMessage.id = 'response-message';
+                    responseMessage.style.backgroundColor = data.success ? '#4caf50' : '#f44336';
+                    responseMessage.style.color = '#fff';
+                    responseMessage.style.padding = '10px';
+                    responseMessage.style.textAlign = 'center';
+                    responseMessage.style.marginBottom = '20px';
+                    responseMessage.innerText = data.error || 'Login successful!';
+
+                    // Prepend the message to the container
+                    document.querySelector('.container').prepend(responseMessage);
+
+                    if (data.success) {
+                        document.cookie = `auth_token=${data.token};path=/`;
+                        window.location.href = "dashboard";
+                    } else {
+                        console.error("Login failed:", data);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error during login:", error);
+                });
+        });
+
+    </script>
+</body>
+
+</html>

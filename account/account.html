@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://fights.cfd/assets/t.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fights.cfd: dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+    <style>
+        @font-face {
+            font-family: 'regular';
+            src: url('https://fights.cfd/assets/fonts/regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'bold';
+            src: url('https://fights.cfd/assets/fonts/bold.woff2') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'regular', Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            background-color: #18191E;
+            min-height: 100vh;
+            color: white;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: #1E2025;
+            border-right: 2px solid #2B2D32;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar-menu {
+            list-style-type: none;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            color: #A0A0A0;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .sidebar-menu-item:hover {
+            background-color: #2B2D32;
+            color: white;
+        }
+
+        .sidebar-menu-item.active {
+            background-color: #2B2D32;
+            color: white;
+        }
+
+        .sidebar-menu-item i {
+            font-size: 20px;
+            width: 25px;
+            text-align: center;
+        }
+
+        .sidebar-category {
+            color: #A0A0A0;
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin: 20px 15px 10px;
+            letter-spacing: 1px;
+        }
+
+        .user-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #2B2D32;
+            background-color: #1e1f23;
+            margin-top: auto;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #555;
+            border-radius: 50%;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .username {
+            color: white;
+            font-size: 16px;
+            flex: 1;
+            margin-left: 10px;
+            font-family: 'bold', Arial, sans-serif;
+        }
+
+        .menu-dots {
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+        }
+
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 50px;
+        }
+
+        .page-header {
+            width: 1040px;
+            text-align: left;
+        }
+
+        .page-title {
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .page-description {
+            color: #A0A0A0;
+            font-size: 16px;
+            margin-bottom: 20px;
+            max-width: 500px;
+        }
+
+        .container {
+            background-color: #1E2025;
+            border: 2px solid #2B2D32;
+            padding: 30px;
+            border-radius: 10px;
+            width: 1040px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .row-container {
+            border-radius: 10px;
+            width: 1040px;
+            flex: 1;
+            display: flex;
+            gap: 20px;
+            position: relative;
+        }
+
+        .half-container {
+            background-color: #1E2025;
+            border: 2px solid #2B2D32;
+            padding: 30px;
+            border-radius: 10px;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-navigation {
+            position: absolute;
+            left: 10px;
+            top: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+            z-index: 10;
+            border-right: 2px solid #2B2D32;
+            padding-right: 10px;
+        }
+
+        .nav-button {
+            background-color: #2B2D32;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background-color: #3A3C41;
+        }
+
+        .social-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            transition: transform 0.3s ease;
+            position: absolute;
+            width: 100%;
+            padding: 35px;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .social-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            width: 90%;
+            border: 1px solid #2B2D32;
+        }
+
+        .social-connection-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .social-item h3 {
+            font-family: 'bold', Arial, sans-serif;
+        }
+
+        .social-item p {
+            font-family: 'bold', Arial, sans-serif;
+            color: gray;
+
+        }
+
+        .social-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .action-icon {
+            background: none;
+            border: none;
+            color: #A0A0A0;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .action-icon:hover {
+            color: white;
+            background-color: #2B2D32;
+        }
+
+        .action-icon.go:hover {
+            color: #4CAF50;
+        }
+
+        .action-icon.edit:hover {
+            color: #2196F3;
+        }
+
+        .action-icon.delete:hover {
+            color: #F44336;
+        }
+
+        .social-item:hover {
+            background-color: #2B2D32;
+        }
+
+        .social-icon {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+
+        .social-icon.twitter {
+            color: #1DA1F2;
+        }
+
+        .social-icon.discord {
+            color: #5E69F2;
+        }
+
+        .social-icon.github {
+            color: #f9f9f9;
+        }
+
+        .social-icon.twitch {
+            color: #9146FF;
+        }
+
+        .social-icon.youtube {
+            color: #FF0000;
+        }
+
+        .social-icon.pinterest {
+            color: #d23838;
+        }
+
+        .social-icon.instagram {
+            color: #E1306C;
+        }
+
+        .social-icon.spotify {
+            color: #1DB954;
+        }
+
+        .social-icon.tiktok {
+            color: #000000;
+        }
+
+        .social-icon.soundcloud {
+            color: #FF4500;
+        }
+
+        .social-icon.linkedin {
+            color: #0077B5;
+        }
+
+        .social-icon.facebook {
+            color: #1877F2;
+        }
+
+        .social-icon.snapchat {
+            color: #FFFC00;
+        }
+
+        .social-icon.telegram {
+            color: #0088cc;
+        }
+
+        .social-icon.whatsapp {
+            color: #25D366;
+        }
+
+        .social-icon.domain {
+            color: #4f4f4f;
+        }
+
+        .social-icon.other {
+            color: #4f4f4f;
+        }
+
+        .social-icons-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            width: 100%;
+            height: 100%;
+            padding-left: 25px;
+            padding-top: 15px;
+            align-content: flex-start;
+            overflow: hidden;
+        }
+
+        .social-icon-large {
+            width: 60px;
+            height: 60px;
+            background-color: #2B2D32;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .social-icon-large:hover {
+            background-color: #3A3C41;
+        }
+
+        .social-icon-large i {
+            color: white;
+            font-size: 30px;
+        }
+    </style>
+
+    <style>
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+
+        .modal h2 {
+            font-size: 1rem;
+        }
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #1E2025;
+            border: 2px solid #2B2D32;
+            border-radius: 10px;
+            width: 400px;
+            padding: 30px;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #A0A0A0;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #2B2D32;
+            border: 1px solid #3A3C41;
+            border-radius: 5px;
+            color: white;
+        }
+
+        .modal-buttons {
+            display: flex;
+            margin-top: 20px;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-family: 'bold', Arial, sans-serif;
+        }
+
+        .modal-btn-cancel {
+            background-color: #2B2D32;
+            border: 1px solid #3A3C41;
+            color: white;
+        }
+
+        .modal-btn:hover {
+            background-color: #3A3C41;
+        }
+
+        .modal-btn-confirm:hover {
+            background-color: #fff;
+        }
+    </style>
+
+    <style>
+        .profile-container {
+            width: 100%;
+            position: relative;
+        }
+
+        .profile-banner {
+            width: 100%;
+            height: 150px;
+            background-color: #2B2D32;
+            background-image: url('');
+        }
+
+        .profile-avatar {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #1E2025;
+            background-image: url('');
+            background-size: cover;
+            background-position: center;
+            top: 90px;
+            left: 30px;
+        }
+
+        .profile-details {
+            margin-top: 20px;
+            margin-left: 180px;
+            position: relative;
+        }
+
+        .profile-name-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-edit-icon {
+            color: #A0A0A0;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            font-size: 10px;
+        }
+
+        .profile-edit-icon:hover {
+            color: #2196F3;
+        }
+
+        .profile-name {
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 24px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .profile-username {
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 0.8rem;
+            color: gray;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-bio-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .profile-bio {
+            font-family: 'regular', Arial, sans-serif;
+            color: #A0A0A0;
+            max-width: 500px;
+            word-break: break-word;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        /* Loading Skeleton Animation CSS */
+        @keyframes pulse {
+            0% {
+                background-position: 0% 0%;
+            }
+
+            100% {
+                background-position: -135% 0%;
+            }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #2B2D32 25%, #353740 50%, #2B2D32 75%);
+            background-size: 400% 100%;
+            animation: pulse 1.5s ease-in-out infinite;
+            color: transparent !important;
+            border-color: transparent !important;
+            user-select: none;
+        }
+
+        .skeleton-text {
+            border-radius: 4px;
+            display: inline-block;
+            height: 1em;
+            width: 70%;
+        }
+
+        .skeleton-avatar {
+            border-radius: 50%;
+            background-color: #2B2D32;
+        }
+
+        .skeleton-banner {
+            border-radius: 4px;
+            background-color: #2B2D32;
+        }
+
+        .skeleton-icon {
+            border-radius: 5px;
+            background-color: #2B2D32;
+        }
+
+        .skeleton-container {
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div>
+            <h3 class="sidebar-category">home</h3>
+            <ul class="sidebar-menu">
+                <a href="/dashboard" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item active">
+                        <i class="fas fa-user"></i>
+                        Profile
+                    </li>
+                </a>
+                <a href="/collectibles" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item">
+                        <i class="fas fa-at"></i>
+                        Collectibles
+                    </li>
+                </a>
+                <a href="/integrations" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item">
+                        <i class="fas fa-plug"></i>
+                        Integrations
+                    </li>
+                </a>
+            </ul>
+
+            <h3 class="sidebar-category">Image</h3>
+            <ul class="sidebar-menu">
+                <a href="/images" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item">
+                        <i class="fas fa-image"></i>
+                        Host
+                    </li>
+                </a>
+                <li class="sidebar-menu-item">
+                    <i class="fas fa-user"></i>
+                    Page
+                </li>
+            </ul>
+
+            <h3 class="sidebar-category">Settings</h3>
+            <ul class="sidebar-menu">
+                <a href="/account" style="text-decoration: none; color: inherit;">
+                    <li class="sidebar-menu-item">
+                        <i class="fas fa-cog"></i>
+                        Account
+                    </li>
+                </a>
+                <li class="sidebar-menu-item">
+                    <i class="fas fa-lock"></i>
+                    Privacy
+                </li>
+                <li class="sidebar-menu-item">
+                    <i class="fas fa-shield-alt"></i>
+                    Security
+                </li>
+            </ul>
+        </div>
+
+        <div class="user-box">
+            <div class="avatar">
+                <img src="https://fights.cfd/assets/avatar.png" alt="User Avatar">
+            </div>
+            <div class="username">Username</div>
+            <div class="menu-dots">
+                <i class="fas fa-ellipsis-v"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1 class="page-title"></h1>
+            <p class="page-description">Use this section to control your profile & account</p>
+        </div>
+        <div class="container">
+            <div class="profile-container">
+                <div class="profile-banner"></div>
+                <div class="profile-avatar"></div>
+                <div class="profile-details">
+                    <div class="profile-name-container">
+                        <div class="profile-name"></div>
+                        <i class="fas fa-edit profile-edit-icon" onclick="openModal('edit-name')"></i>
+                    </div>
+                    <div class="profile-username">
+                        <span></span>
+                    </div>
+                    <div class="profile-bio-container">
+                        <div class="profile-bio">
+                        </div>
+                        <i class="fas fa-edit profile-edit-icon" onclick="openModal('edit-bio')"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-header">
+            <h1 class="page-title">Connections</h1>
+            <p class="page-description">Connections section to manage your connections</p>
+        </div>
+        <div class="row-container">
+            <div class="half-container">
+                <div class="social-navigation">
+                    <button class="nav-button" onclick="scrollSocials(1)">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                    <button class="nav-button" onclick="scrollSocials(-1)">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="social-list" id="socialList">
+                    <div class="social-item">
+                        <div class="social-connection-content">
+                            <div class="social-icon twitter">
+                                <i class="fab fa-twitter fa-2x"></i>
+                            </div>
+                            <div>
+                                <h3>Twitter</h3>
+                                <p>@username</p>
+                            </div>
+                        </div>
+                        <div class="social-actions">
+                            <button class="action-icon go"><i class="fas fa-arrow-right"></i></button>
+                            <button class="action-icon edit"><i class="fas fa-edit"></i></button>
+                            <button class="action-icon delete"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="half-container">
+                <div class="social-icons-grid">
+                    <!-- Discord -->
+                    <div class="social-icon-large discord">
+                        <i class="fab fa-discord" style="color: #7289da;"></i>
+                    </div>
+
+                    <!-- Instagram -->
+                    <div class="social-icon-large instagram">
+                        <i class="fab fa-instagram" style="color: #E4405F;"></i>
+                    </div>
+
+                    <!-- Tiktok -->
+                    <div class="social-icon-large tiktok">
+                        <i class="fab fa-tiktok" style="color: #fff;"></i>
+                    </div>
+
+                    <!-- Youtube -->
+                    <div class="social-icon-large youtube">
+                        <i class="fab fa-youtube" style="color: #FF0000;"></i>
+                    </div>
+
+                    <!-- Pinterest -->
+                    <div class="social-icon-large pinterest">
+                        <i class="fab fa-pinterest" style="color: #E60023;"></i>
+                    </div>
+
+                    <!-- Spotify -->
+                    <div class="social-icon-large spotify">
+                        <i class="fab fa-spotify" style="color: #1DB954;"></i>
+                    </div>
+
+                    <!-- Soundcloud -->
+                    <div class="social-icon-large soundcloud">
+                        <i class="fab fa-soundcloud" style="color: #FF5500;"></i>
+                    </div>
+
+                    <!-- Twitch -->
+                    <div class="social-icon-large twitch">
+                        <i class="fab fa-twitch" style="color: #9146FF;"></i>
+                    </div>
+
+                    <!-- Twitter -->
+                    <div class="social-icon-large twitter">
+                        <i class="fab fa-twitter" style="color: #1DA1F2;"></i>
+                    </div>
+
+                    <!-- Telegram -->
+                    <div class="social-icon-large telegram">
+                        <i class="fab fa-telegram" style="color: #0088cc;"></i>
+                    </div>
+
+                    <!-- Snapchat -->
+                    <div class="social-icon-large snapchat">
+                        <i class="fab fa-snapchat" style="color: #FFFC00;"></i>
+                    </div>
+
+                    <!-- GitHub -->
+                    <div class="social-icon-large github">
+                        <i class="fab fa-github" style="color: #f9f9f9;"></i>
+                    </div>
+
+                    <!-- Domain -->
+                    <div class="social-icon-large domain">
+                        <i class="fas fa-earth-americas" style="color: gray;"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="connectionModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h2 id="modalTitle">Edit Connection</h2>
+            <input type="text" id="connectionInput" class="modal-input" placeholder="Enter connection details">
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="modal-btn modal-btn-confirm" id="modalConfirmBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        async function getAuthToken() {
+            const token = document.cookie.split("; ")
+                .find(t => t.startsWith("auth_token="))
+                ?.split("=")[1];
+            if (!token) throw new Error("No authentication token found");
+            return token;
+        }
+
+        function getPlatformUrl(platform, input) {
+            const exceptions = {
+                "t.me": "https://t.me/",
+                "telegram.org": "https://telegram.org/",
+                "twitch.tv": "https://twitch.tv/"
+            };
+
+            return exceptions[platform] ? `${exceptions[platform]}${input}` : `https://${platform}.com/${input}`;
+        }
+
+        async function updateProfileAPI(profileData) {
+            try {
+                const token = await getAuthToken();
+                const response = await fetch('https://fights.cfd/api/account/edit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(profileData)
+                });
+
+                const data = await response.json();
+                if (!data.success) {
+                    throw new Error(data.message || 'Profile update failed');
+                }
+
+                return data;
+            } catch (error) {
+                console.error('Profile update error:', error);
+                alert(error.message);
+                return null;
+            }
+        }
+
+        async function createConnectionAPI(connectionData) {
+            try {
+                const token = await getAuthToken();
+                const response = await fetch('https://fights.cfd/api/connection/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(connectionData)
+                });
+
+                const data = await response.json();
+                if (!data.success) {
+                    throw new Error(data.message || 'Connection creation failed');
+                }
+
+                return data;
+            } catch (error) {
+                console.error('Connection creation error:', error);
+                alert(error.message);
+                throw error;
+            }
+        }
+
+        async function editConnectionAPI(connectionData) {
+            try {
+                const token = await getAuthToken();
+                const response = await fetch('https://fights.cfd/api/connections/edit', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(connectionData)
+                });
+
+                const data = await response.json();
+                if (!data.success) {
+                    throw new Error(data.message || 'Connection edit failed');
+                }
+
+                return data;
+            } catch (error) {
+                console.error('Connection edit error:', error);
+                alert(error.message);
+                throw error;
+            }
+        }
+
+        async function deleteConnectionAPI(connectionId) {
+            try {
+                const token = await getAuthToken();
+                const response = await fetch('https://fights.cfd/api/connections/delete', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        connection_id: connectionId
+                    })
+                });
+
+                const data = await response.json();
+                if (!data.success) {
+                    throw new Error(data.message || 'Connection deletion failed');
+                }
+
+                return data;
+            } catch (error) {
+                console.error('Connection delete error:', error);
+                alert(error.message);
+                throw error;
+            }
+        }
+
+        let currentScroll = 0;
+        const socialList = document.getElementById('socialList');
+        const itemHeight = 100;
+
+        function scrollSocials(direction) {
+            const maxScroll = -(socialList.children.length - 3) * itemHeight;
+            currentScroll += direction * itemHeight;
+
+            currentScroll = Math.max(maxScroll, Math.min(0, currentScroll));
+
+            socialList.style.transform = `translateY(${currentScroll}px)`;
+        }
+
+
+        const modal = document.getElementById('connectionModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const connectionInput = document.getElementById('connectionInput');
+        const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+        let currentAction = null;
+        let currentItem = null;
+
+        function openModal(action, item = null) {
+            connectionInput.style.display = 'block';
+            connectionInput.value = '';
+
+            currentAction = action;
+            currentItem = item;
+
+            switch (action) {
+                case 'edit':
+                    modalTitle.textContent = 'Edit Connection';
+                    connectionInput.value = item ? item.querySelector('p').textContent : '';
+                    connectionInput.placeholder = 'Enter new connection handle';
+                    break;
+                case 'delete':
+                    modalTitle.textContent = 'Delete Connection';
+                    connectionInput.style.display = 'none';
+                    break;
+                case 'add':
+                    modalTitle.textContent = 'Add Connection';
+                    connectionInput.placeholder = 'Enter connection handle';
+                    break;
+                case 'edit-name':
+                    modalTitle.textContent = 'Edit Name';
+                    connectionInput.value = document.querySelector('.profile-name').textContent;
+                    connectionInput.placeholder = 'Enter new name';
+                    break;
+                case 'edit-bio':
+                    modalTitle.textContent = 'Edit Bio';
+                    connectionInput.value = document.querySelector('.profile-bio').textContent;
+                    connectionInput.placeholder = 'Enter new bio';
+                    break;
+            }
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
+        }
+
+        function closeModal() {
+            modal.classList.remove('show');
+
+            setTimeout(() => {
+                currentAction = null;
+                currentItem = null;
+                connectionInput.style.display = 'block';
+            }, 300);
+        }
+
+        function confirmAction() {
+            const inputValue = connectionInput.value;
+
+            switch (currentAction) {
+                case 'edit': {
+                    const connectionId = currentItem.getAttribute('data-connection-id');
+                    const currentPlatform = currentItem.querySelector('h3').textContent.toLowerCase();
+
+                    editConnectionAPI({
+                        connection_id: connectionId,
+                        name: inputValue,
+                        url: `https://${currentPlatform}.com/${inputValue}`
+                    }).then(result => {
+                        if (result) {
+                            currentItem.querySelector('p').textContent = inputValue;
+                            closeModal();
+                        }
+                    }).catch(error => {
+                        console.error('Connection edit failed:', error);
+                        alert('Failed to edit connection');
+                    });
+                    break;
+                }
+                case 'delete': {
+                    const connectionId = currentItem.getAttribute('data-connection-id');
+
+                    deleteConnectionAPI(connectionId).then(result => {
+                        if (result) {
+                            currentItem.remove();
+                            closeModal();
+                        }
+                    }).catch(error => {
+                        console.error('Connection delete failed:', error);
+                        alert('Failed to delete connection');
+                    });
+                    break;
+                }
+                case 'add': {
+                    const selectedIcon = document.querySelector('.social-icon-large.selected');
+                    if (selectedIcon && inputValue) {
+                        const platformKey = selectedIcon.classList[1];
+
+                        const domainMapping = {
+                            'discord.com': 'discord',
+                            'x.com': 'twitter',
+                            'twitter.com': 'twitter',
+                            'instagram.com': 'instagram',
+                            'github.com': 'github',
+                            'youtube.com': 'youtube',
+                            'twitch.tv': 'twitch',
+                            'spotify.com': 'spotify',
+                            'pinterest.com': 'pinterest',
+                            'tiktok.com': 'tiktok',
+                            'reddit.com': 'reddit',
+                            'linkedin.com': 'linkedin',
+                            'facebook.com': 'facebook',
+                            'snapchat.com': 'snapchat',
+                            'telegram.org': 'telegram',
+                            't.me': 'telegram',
+                            'whatsapp.com': 'whatsapp',
+                            'soundcloud.com': 'soundcloud'
+                        };
+
+                        const platformDomain = Object.entries(domainMapping).find(([domain, key]) => key === platformKey)?.[0];
+                        const profileUrl = platformDomain ? `https://${platformDomain}/${inputValue}` : `https://${inputValue}`;
+
+                        createConnectionAPI({
+                            name: inputValue,
+                            url: profileUrl
+                        }).then(result => {
+                            if (result) {
+                                fetchProfileData();
+                                closeModal();
+                            }
+                        }).catch(error => {
+                            console.error('Connection creation failed:', error);
+                            alert('Failed to add connection');
+                        });
+                    }
+                    break;
+                }
+
+
+                case 'edit-name': {
+                    updateProfileAPI({
+                        display_name: inputValue
+                    }).then(result => {
+                        if (result) {
+                            document.querySelector('.profile-name').textContent = inputValue;
+                            closeModal();
+                        }
+                    }).catch(error => {
+                        console.error('Name update failed:', error);
+                        alert('Failed to update name');
+                    });
+                    break;
+                }
+                case 'edit-bio': {
+                    updateProfileAPI({
+                        bio: inputValue
+                    }).then(result => {
+                        if (result) {
+                            document.querySelector('.profile-bio').textContent = inputValue;
+                            closeModal();
+                        }
+                    }).catch(error => {
+                        console.error('Bio update failed:', error);
+                        alert('Failed to update bio');
+                    });
+                    break;
+                }
+            }
+        }
+
+        document.querySelectorAll('.action-icon.edit').forEach(btn => {
+            btn.addEventListener('click', () => openModal('edit', btn.closest('.social-item')));
+        });
+
+        document.querySelectorAll('.action-icon.delete').forEach(btn => {
+            btn.addEventListener('click', () => openModal('delete', btn.closest('.social-item')));
+        });
+
+        document.querySelectorAll('.social-icon-large').forEach(icon => {
+            icon.addEventListener('click', () => {
+                document.querySelectorAll('.social-icon-large.selected').forEach(
+                    selected => selected.classList.remove('selected')
+                );
+
+                icon.classList.add('selected');
+                openModal('add');
+            });
+        });
+
+        modalConfirmBtn.addEventListener('click', confirmAction);
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        async function exchange() {
+            let t = document.cookie.split("; ").find(t => t.startsWith("auth_token="))?.split("=")[1];
+            if (!t) return null;
+            try {
+                let e = await fetch("https://fights.cfd/api/token/exchange", {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${t}`
+                    }
+                });
+                if (400 === e.status || 401 === e.status) throw Error("Invalid token");
+                let a = await e.json();
+                return a.success ? a.user : null;
+            } catch (n) {
+                return null
+            }
+        }
+
+        function updateProfile(user) {
+            if (user.avatar) {
+                const avatarImg = document.querySelector('.user-box .avatar img');
+                if (avatarImg) {
+                    avatarImg.src = user.avatar;
+                }
+
+                const profileAvatar = document.querySelector('.profile-avatar');
+                if (profileAvatar) {
+                    profileAvatar.style.backgroundImage = `url('${user.avatar}')`;
+                }
+            }
+
+            if (user.banner) {
+                const profileBanner = document.querySelector('.profile-banner');
+                if (profileBanner) {
+                    profileBanner.style.backgroundImage = `url('${user.banner}')`;
+                }
+            }
+
+            if (user.display_name) {
+                const profileNames = document.querySelectorAll('.profile-name');
+                profileNames.forEach(nameEl => {
+                    nameEl.textContent = user.display_name;
+                });
+
+                const morningGreeting = document.querySelector('.page-title');
+                if (morningGreeting) {
+                    morningGreeting.textContent = `Good morning, ${user.display_name}`;
+                }
+            }
+
+            if (user.username) {
+                const usernameEl = document.querySelector('.profile-username span');
+                if (usernameEl) {
+                    usernameEl.textContent = `@${user.username}`;
+                }
+
+                const sidebarUsername = document.querySelector('.user-box .username');
+                if (sidebarUsername) {
+                    sidebarUsername.textContent = user.display_name;
+                }
+            }
+
+            if (user.bio) {
+                const bioEl = document.querySelector('.profile-bio');
+                if (bioEl) {
+                    bioEl.textContent = user.bio;
+                }
+            }
+        }
+
+        function updateConnections(connections) {
+            const socialList = document.getElementById('socialList');
+            if (!socialList) return;
+
+            socialList.innerHTML = '';
+
+            const platformIcons = {
+                'discord': 'fab fa-discord discord',
+                'twitter': 'fab fa-twitter twitter',
+                'twitch': 'fab fa-twitch twitch',
+                'youtube': 'fab fa-youtube youtube',
+                'pinterest': 'fab fa-pinterest pinterest',
+                'instagram': 'fab fa-instagram instagram',
+                'github': 'fab fa-github github',
+                'spotify': 'fab fa-spotify spotify',
+                'tiktok': 'fab fa-tiktok tiktok',
+                'soundcloud': 'fab fa-soundcloud soundcloud',
+                'snapchat': 'fab fa-snapchat snapchat',
+                'telegram': 'fab fa-telegram telegram',
+                'whatsapp': 'fab fa-whatsapp whatsapp',
+                'other': 'fas fa-earth-americas other'
+            };
+            connections.forEach(connection => {
+                const platform = getPlatformFromUrl(connection.url) || 'link';
+                const iconClass = platformIcons[platform] || 'fas fa-earth-americas';
+
+                const connectionItem = `
+<div class="social-item" data-connection-id="${connection.connection_id}">
+    <div class="social-connection-content">
+        <div class="social-icon ${platform}">
+            <i class="${iconClass} fa-2x"></i>
+        </div>
+        <div>
+            <h3>${platform.charAt(0).toUpperCase() + platform.slice(1)}</h3>
+            <p>${connection.name}</p>
+        </div>
+    </div>
+    <div class="social-actions">
+        <button class="action-icon go" onclick="window.open('${connection.url}', '_blank')">
+            <i class="fas fa-arrow-right"></i>
+        </button>
+        <button class="action-icon edit" onclick="openModal('edit', this.closest('.social-item'))">
+            <i class="fas fa-edit"></i>
+        </button>
+        <button class="action-icon delete" onclick="openModal('delete', this.closest('.social-item'))">
+            <i class="fas fa-trash"></i>
+        </button>
+    </div>
+</div>`;
+
+                socialList.insertAdjacentHTML('beforeend', connectionItem);
+            });
+        }
+
+        function getPlatformFromUrl(url) {
+            if (!url) return null;
+            const platformMappings = {
+                'discord.com': 'discord',
+                'x.com': 'twitter',
+                'twitter.com': 'twitter',
+                'instagram.com': 'instagram',
+                'github.com': 'github',
+                'youtube.com': 'youtube',
+                'twitch.tv': 'twitch',
+                'spotify.com': 'spotify',
+                'pinterest.com': 'pinterest',
+                'tiktok.com': 'tiktok',
+                'reddit.com': 'reddit',
+                'linkedin.com': 'linkedin',
+                'facebook.com': 'facebook',
+                'snapchat.com': 'snapchat',
+                'telegram.org': 'telegram',
+                't.me': 'telegram',
+                'whatsapp.com': 'whatsapp',
+                'soundcloud.com': 'soundcloud'
+            };
+
+            for (const [domain, platform] of Object.entries(platformMappings)) {
+                if (url.includes(domain)) return platform;
+            }
+            return null;
+        }
+
+        async function fetchProfileData() {
+            try {
+                const tokenUser = await exchange();
+                if (!tokenUser) {
+                    console.error('No authenticated user found');
+                    return;
+                }
+
+                const response = await fetch(`https://fights.cfd/api/${tokenUser.id}`);
+
+                if (!response.ok) {
+                    throw new Error('API response was not ok');
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    updateProfile(data.user);
+                    updateConnections(data.connections);
+                    removeSkeletonLoading();
+                } else {
+                    console.error('API returned error:', data);
+                }
+            } catch (error) {
+                console.error('Failed to fetch profile data:', error);
+            }
+        }
+
+        async function handleImageUpload(type) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+
+            input.onchange = async (event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                try {
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    const token = await getAuthToken();
+                    const uploadResponse = await fetch('https://fights.cfd/api/image/upload', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: formData
+                    });
+
+                    const uploadResult = await uploadResponse.json();
+
+                    if (uploadResult.success) {
+                        const imageUrl = uploadResult.image.url;
+
+                        const updateData = type === 'avatar' ?
+                            {
+                                avatar: imageUrl
+                            } :
+                            {
+                                banner: imageUrl
+                            };
+
+                        const updateResponse = await updateProfileAPI(updateData);
+
+                        if (updateResponse) {
+                            if (type === 'avatar') {
+                                document.querySelector('.user-box .avatar img').src = imageUrl;
+                                document.querySelector('.profile-avatar').style.backgroundImage = `url('${imageUrl}')`;
+                            } else {
+                                document.querySelector('.profile-banner').style.backgroundImage = `url('${imageUrl}')`;
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.error('Image upload failed:', error);
+                    alert('Failed to upload image');
+                }
+            };
+
+            input.click();
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchProfileData);
+        document.addEventListener('DOMContentLoaded', () => {
+            const profileAvatar = document.querySelector('.profile-avatar');
+            const profileBanner = document.querySelector('.profile-banner');
+
+            if (profileAvatar) {
+                profileAvatar.addEventListener('mouseover', () => {
+                    profileAvatar.style.cursor = 'pointer';
+                    profileAvatar.style.opacity = '0.7';
+                });
+                profileAvatar.addEventListener('mouseout', () => {
+                    profileAvatar.style.opacity = '1';
+                });
+                profileAvatar.addEventListener('click', () => handleImageUpload('avatar'));
+            }
+
+            if (profileBanner) {
+                profileBanner.addEventListener('mouseover', () => {
+                    profileBanner.style.cursor = 'pointer';
+                    profileBanner.style.opacity = '0.7';
+                });
+                profileBanner.addEventListener('mouseout', () => {
+                    profileBanner.style.opacity = '1';
+                });
+                profileBanner.addEventListener('click', () => handleImageUpload('banner'));
+            }
+        });
+        function applySkeletonLoading() {
+            document.querySelector('.profile-name').classList.add('skeleton', 'skeleton-text');
+            document.querySelector('.profile-username span').classList.add('skeleton', 'skeleton-text');
+            document.querySelector('.profile-bio').classList.add('skeleton', 'skeleton-text');
+            document.querySelector('.profile-avatar').classList.add('skeleton', 'skeleton-avatar');
+            document.querySelector('.profile-banner').classList.add('skeleton', 'skeleton-banner');
+            document.querySelector('.page-title').classList.add('skeleton', 'skeleton-text');
+            document.querySelector('.user-box .avatar img').classList.add('skeleton', 'skeleton-avatar');
+            document.querySelector('.user-box .username').classList.add('skeleton', 'skeleton-text');
+
+            const socialList = document.getElementById('socialList');
+            const socialItems = socialList.querySelectorAll('.social-item');
+            socialItems.forEach(item => {
+                item.classList.add('skeleton-container');
+                item.querySelector('h3').classList.add('skeleton', 'skeleton-text');
+                item.querySelector('p').classList.add('skeleton', 'skeleton-text');
+                item.querySelector('.social-icon').classList.add('skeleton', 'skeleton-icon');
+            });
+
+            const socialIcons = document.querySelectorAll('.social-icon-large');
+            socialIcons.forEach(icon => {
+                icon.classList.add('skeleton');
+            });
+        }
+
+        function removeSkeletonLoading() {
+            document.querySelectorAll('.skeleton').forEach(el => {
+                el.classList.remove('skeleton', 'skeleton-text', 'skeleton-avatar', 'skeleton-banner', 'skeleton-icon');
+            });
+            document.querySelectorAll('.skeleton-container').forEach(el => {
+                el.classList.remove('skeleton-container');
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applySkeletonLoading();
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            const socialList = document.getElementById('socialList');
+
+            const sortable = new Sortable(socialList, {
+                animation: 150,
+                handle: '.social-connection-content',
+                ghostClass: 'sortable-ghost',
+                chosenClass: 'sortable-chosen',
+                dragClass: 'sortable-drag', 
+
+                onEnd: async function (evt) {
+                    const connections = Array.from(socialList.querySelectorAll('.social-item'))
+                        .map((item, index) => ({
+                            connection_id: item.getAttribute('data-connection-id'),
+                            order: index
+                        }));
+
+                    await updateConnectionsOrder(connections);
+                }
+            });
+        });
+
+        async function updateConnectionsOrder(connectionsOrder) {
+            try {
+                const token = await getAuthToken();
+
+                const response = await fetch('https://fights.cfd/api/connections/reorder', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ connections: connectionsOrder })
+                });
+
+                const data = await response.json();
+
+                if (!data.success) {
+                    throw new Error(data.message || 'Failed to update connections order');
+                }
+
+                console.log('Connections order updated successfully');
+                return true;
+            } catch (error) {
+                console.error('Failed to update connections order:', error);
+                // alert('Failed to save the new order of your connections');
+                return false;
+            }
+        }
+
+        const style = document.createElement('style');
+        style.textContent = `
+  .sortable-ghost {
+    opacity: 0.4;
+    background-color: #f0f0f0;
+    border: 2px dashed #ccc;
+  }
+  
+  .sortable-chosen {
+    background-color: rgba(0, 123, 255, 0.05);
+  }
+  
+  .sortable-drag {
+    opacity: 0.8;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+  }
+  
+  .social-connection-content {
+    cursor: grab;
+  }
+  
+  .social-connection-content:active {
+    cursor: grabbing;
+  }
+  
+  /* Add a visual indicator that items are draggable */
+  .social-connection-content::before {
+    content: "≡";
+    padding-right: 8px;
+    color: #aaa;
+    font-weight: bold;
+  }
+`;
+        document.head.appendChild(style);
+
+        async function updateConnectionsOrderAPI(orderData) {
+            try {
+                const token = await getAuthToken();
+                const response = await fetch('https://fights.cfd/api/connections/reorder', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                const data = await response.json();
+                if (!data.success) {
+                    throw new Error(data.message || 'Connection reordering failed');
+                }
+
+                return data;
+            } catch (error) {
+                console.error('Connection reordering error:', error);
+                // alert(error.message);
+                return null;
+            }
+        }
+    </script>
+</body>
+
+</html>
