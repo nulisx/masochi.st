@@ -9,7 +9,7 @@
         return;
     }
 
-    fetch('https://fights.cfd/api/token/exchange', {
+    fetch('https://og.email/api/token/exchange', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

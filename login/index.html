@@ -4,19 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fights.cfd: login</title>
+    <title>og.email: login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @font-face {
             font-family: 'regular';
-            src: url('https://fights.cfd/assets/fonts/regular.woff2') format('woff2');
+            src: url('https://og.email/assets/fonts/regular.woff2') format('woff2');
             font-weight: normal;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'bold';
-            src: url('https://fights.cfd/assets/fonts/bold.woff2') format('woff2');
+            src: url('https://og.email/assets/fonts/bold.woff2') format('woff2');
             font-weight: bold;
             font-style: normal;
         }
@@ -172,7 +172,7 @@
 
 <body>
     <header>
-        <div>fights.cfd</div>
+        <div>og.email</div>
     </header>
 
     <div class="container">
@@ -206,7 +206,7 @@
                 responseMessage.remove();
             }
 
-            fetch("https://fights.cfd/api/login", {
+            fetch("https://og.email/api/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ identifier: email, password })
