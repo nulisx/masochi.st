@@ -1,709 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <script src="/assets/t.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>og.email: dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/global.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
-    <style>
-        @font-face {
-            font-family: 'regular';
-            src: url('/assets/fonts/regular.woff2') format('woff2');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        @font-face {
-            font-family: 'bold';
-            src: url('/assets/fonts/bold.woff2') format('woff2');
-            font-weight: bold;
-            font-style: normal;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'regular', Arial, sans-serif;
-        }
-
-        body {
-            display: flex;
-            background-color: #18191E;
-            min-height: 100vh;
-            color: white;
-        }
-
-        .sidebar {
-            width: 300px;
-            background-color: #1E2025;
-            border-right: 2px solid #2B2D32;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .sidebar-menu {
-            list-style-type: none;
-            margin-bottom: 20px;
-        }
-
-        .sidebar-menu-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 12px 15px;
-            color: #A0A0A0;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .sidebar-menu-item:hover {
-            background-color: #2B2D32;
-            color: white;
-        }
-
-        .sidebar-menu-item.active {
-            background-color: #2B2D32;
-            color: white;
-        }
-
-        .sidebar-menu-item i {
-            font-size: 20px;
-            width: 25px;
-            text-align: center;
-        }
-
-        .sidebar-category {
-            color: #A0A0A0;
-            font-family: 'bold', Arial, sans-serif;
-            font-size: 14px;
-            text-transform: uppercase;
-            margin: 20px 15px 10px;
-            letter-spacing: 1px;
-        }
-
-        .user-box {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px;
-            border-radius: 10px;
-            border: 2px solid #2B2D32;
-            background-color: #1e1f23;
-            margin-top: auto;
-        }
-
-        .avatar {
-            width: 40px;
-            height: 40px;
-            background-color: #555;
-            border-radius: 50%;
-        }
-
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-        }
-
-        .username {
-            color: white;
-            font-size: 16px;
-            flex: 1;
-            margin-left: 10px;
-            font-family: 'bold', Arial, sans-serif;
-        }
-
-        .menu-dots {
-            font-size: 20px;
-            color: white;
-            cursor: pointer;
-        }
-
-
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            padding: 50px;
-        }
-
-        .page-header {
-            width: 1040px;
-            text-align: left;
-        }
-
-        .page-title {
-            font-family: 'bold', Arial, sans-serif;
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-
-        .page-description {
-            color: #A0A0A0;
-            font-size: 16px;
-            margin-bottom: 20px;
-            max-width: 500px;
-        }
-
-        .container {
-            background-color: #1E2025;
-            border: 2px solid #2B2D32;
-            padding: 30px;
-            border-radius: 10px;
-            width: 1040px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .row-container {
-            border-radius: 10px;
-            width: 1040px;
-            flex: 1;
-            display: flex;
-            gap: 20px;
-            position: relative;
-        }
-
-        .half-container {
-            background-color: #1E2025;
-            border: 2px solid #2B2D32;
-            padding: 30px;
-            border-radius: 10px;
-            flex: 1;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .social-navigation {
-            position: absolute;
-            left: 10px;
-            top: 0;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 10px;
-            z-index: 10;
-            border-right: 2px solid #2B2D32;
-            padding-right: 10px;
-        }
-
-        .nav-button {
-            background-color: #2B2D32;
-            color: white;
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s ease;
-        }
-
-        .nav-button:hover {
-            background-color: #3A3C41;
-        }
-
-        .social-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            transition: transform 0.3s ease;
-            position: absolute;
-            width: 100%;
-            padding: 35px;
-            padding-top: 0;
-            padding-bottom: 0;
-        }
-
-        .social-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            padding: 15px;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
-            width: 90%;
-            border: 1px solid #2B2D32;
-        }
-
-        .social-connection-content {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .social-item h3 {
-            font-family: 'bold', Arial, sans-serif;
-        }
-
-        .social-item p {
-            font-family: 'bold', Arial, sans-serif;
-            color: gray;
-
-        }
-
-        .social-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .action-icon {
-            background: none;
-            border: none;
-            color: #A0A0A0;
-            cursor: pointer;
-            transition: color 0.3s ease;
-            padding: 5px;
-            border-radius: 5px;
-        }
-
-        .action-icon:hover {
-            color: white;
-            background-color: #2B2D32;
-        }
-
-        .action-icon.go:hover {
-            color: #4CAF50;
-        }
-
-        .action-icon.edit:hover {
-            color: #2196F3;
-        }
-
-        .action-icon.delete:hover {
-            color: #F44336;
-        }
-
-        .social-item:hover {
-            background-color: #2B2D32;
-        }
-
-        .social-icon {
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 10px;
-        }
-
-        .social-icon.twitter {
-            color: #1DA1F2;
-        }
-
-        .social-icon.discord {
-            color: #5E69F2;
-        }
-
-        .social-icon.github {
-            color: #f9f9f9;
-        }
-
-        .social-icon.twitch {
-            color: #9146FF;
-        }
-
-        .social-icon.youtube {
-            color: #FF0000;
-        }
-
-        .social-icon.pinterest {
-            color: #d23838;
-        }
-
-        .social-icon.instagram {
-            color: #E1306C;
-        }
-
-        .social-icon.spotify {
-            color: #1DB954;
-        }
-
-        .social-icon.tiktok {
-            color: #000000;
-        }
-
-        .social-icon.soundcloud {
-            color: #FF4500;
-        }
-
-        .social-icon.linkedin {
-            color: #0077B5;
-        }
-
-        .social-icon.facebook {
-            color: #1877F2;
-        }
-
-        .social-icon.snapchat {
-            color: #FFFC00;
-        }
-
-        .social-icon.telegram {
-            color: #0088cc;
-        }
-
-        .social-icon.whatsapp {
-            color: #25D366;
-        }
-
-        .social-icon.domain {
-            color: #4f4f4f;
-        }
-
-        .social-icon.other {
-            color: #4f4f4f;
-        }
-
-        .social-icons-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            width: 100%;
-            height: 100%;
-            padding-left: 25px;
-            padding-top: 15px;
-            align-content: flex-start;
-            overflow: hidden;
-        }
-
-        .social-icon-large {
-            width: 60px;
-            height: 60px;
-            background-color: #2B2D32;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s ease;
-            cursor: pointer;
-        }
-
-        .social-icon-large:hover {
-            background-color: #3A3C41;
-        }
-
-        .social-icon-large i {
-            color: white;
-            font-size: 30px;
-        }
-    </style>
-
-    <style>
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-
-        .modal h2 {
-            font-size: 1rem;
-        }
-
-        .modal.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content {
-            background-color: #1E2025;
-            border: 2px solid #2B2D32;
-            border-radius: 10px;
-            width: 400px;
-            padding: 30px;
-            transform: scale(0.9);
-            opacity: 0;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-
-        .modal.show .modal-content {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #A0A0A0;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .modal-input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            background-color: #2B2D32;
-            border: 1px solid #3A3C41;
-            border-radius: 5px;
-            color: white;
-        }
-
-        .modal-buttons {
-            display: flex;
-            margin-top: 20px;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .modal-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            font-family: 'bold', Arial, sans-serif;
-        }
-
-        .modal-btn-cancel {
-            background-color: #2B2D32;
-            border: 1px solid #3A3C41;
-            color: white;
-        }
-
-        .modal-btn:hover {
-            background-color: #3A3C41;
-        }
-
-        .modal-btn-confirm:hover {
-            background-color: #fff;
-        }
-    </style>
-
-    <style>
-        .profile-container {
-            width: 100%;
-            position: relative;
-        }
-
-        .profile-banner {
-            width: 100%;
-            height: 150px;
-            background-color: #2B2D32;
-            background-image: url('');
-        }
-
-        .profile-avatar {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 4px solid #1E2025;
-            background-image: url('');
-            background-size: cover;
-            background-position: center;
-            top: 90px;
-            left: 30px;
-        }
-
-        .profile-details {
-            margin-top: 20px;
-            margin-left: 180px;
-            position: relative;
-        }
-
-        .profile-name-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .profile-edit-icon {
-            color: #A0A0A0;
-            cursor: pointer;
-            transition: color 0.3s ease;
-            font-size: 10px;
-        }
-
-        .profile-edit-icon:hover {
-            color: #2196F3;
-        }
-
-        .profile-name {
-            font-family: 'bold', Arial, sans-serif;
-            font-size: 24px;
-            color: white;
-            margin-bottom: 10px;
-        }
-
-        .profile-username {
-            font-family: 'bold', Arial, sans-serif;
-            font-size: 0.8rem;
-            color: gray;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .profile-bio-container {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .profile-bio {
-            font-family: 'regular', Arial, sans-serif;
-            color: #A0A0A0;
-            max-width: 500px;
-            word-break: break-word;
-            line-height: 1.5;
-            flex-grow: 1;
-        }
-
-        /* Loading Skeleton Animation CSS */
-        @keyframes pulse {
-            0% {
-                background-position: 0% 0%;
-            }
-
-            100% {
-                background-position: -135% 0%;
-            }
-        }
-
-        .skeleton {
-            background: linear-gradient(90deg, #2B2D32 25%, #353740 50%, #2B2D32 75%);
-            background-size: 400% 100%;
-            animation: pulse 1.5s ease-in-out infinite;
-            color: transparent !important;
-            border-color: transparent !important;
-            user-select: none;
-        }
-
-        .skeleton-text {
-            border-radius: 4px;
-            display: inline-block;
-            height: 1em;
-            width: 70%;
-        }
-
-        .skeleton-avatar {
-            border-radius: 50%;
-            background-color: #2B2D32;
-        }
-
-        .skeleton-banner {
-            border-radius: 4px;
-            background-color: #2B2D32;
-        }
-
-        .skeleton-icon {
-            border-radius: 5px;
-            background-color: #2B2D32;
-        }
-
-        .skeleton-container {
-            pointer-events: none;
-        }
-    </style>
+    <title>Dashboard - og.email</title>
 </head>
-
 <body>
-
     <div class="sidebar">
+        <div class="sidebar-header">
+            <a href="/" class="sidebar-logo">og.email</a>
+        </div>
         <div>
-            <h3 class="sidebar-category">home</h3>
             <ul class="sidebar-menu">
-                <a href="/dashboard" style="text-decoration: none; color: inherit;">
+                <a href="/dashboard">
                     <li class="sidebar-menu-item active">
                         <i class="fas fa-user"></i>
                         Profile
                     </li>
                 </a>
-                <a href="/collectibles" style="text-decoration: none; color: inherit;">
+                <a href="/collectibles">
                     <li class="sidebar-menu-item">
                         <i class="fas fa-at"></i>
                         Collectibles
                     </li>
                 </a>
-                <a href="/integrations" style="text-decoration: none; color: inherit;">
+                <a href="/integrations">
                     <li class="sidebar-menu-item">
                         <i class="fas fa-plug"></i>
                         Integrations
                     </li>
                 </a>
-            </ul>
-
-            <h3 class="sidebar-category">Image</h3>
-            <ul class="sidebar-menu">
-                <a href="/images" style="text-decoration: none; color: inherit;">
+                <a href="/images">
                     <li class="sidebar-menu-item">
                         <i class="fas fa-image"></i>
-                        Host
+                        Images
                     </li>
                 </a>
-                <li class="sidebar-menu-item">
-                    <i class="fas fa-user"></i>
-                    Page
-                </li>
-            </ul>
-
-            <h3 class="sidebar-category">Settings</h3>
-            <ul class="sidebar-menu">
-                <a href="/account" style="text-decoration: none; color: inherit;">
+                <a href="/account">
                     <li class="sidebar-menu-item">
                         <i class="fas fa-cog"></i>
                         Account
                     </li>
                 </a>
-                <li class="sidebar-menu-item">
-                    <i class="fas fa-lock"></i>
-                    Privacy
-                </li>
-                <li class="sidebar-menu-item">
-                    <i class="fas fa-shield-alt"></i>
-                    Security
-                </li>
             </ul>
         </div>
-
-        <div class="user-box">
-            <div class="avatar">
-                <img src="/assets/avatar.png" alt="User Avatar">
-            </div>
-            <div class="username">Username</div>
-            <div class="menu-dots">
-                <i class="fas fa-ellipsis-v"></i>
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <img src="/assets/avatar.png" alt="User Avatar" class="user-avatar">
+                <div class="user-info">
+                    <div class="user-name">Username</div>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="main-content">
-        <div class="page-header">
-            <h1 class="page-title"></h1>
-            <p class="page-description">Use this section to control your profile & account</p>
+        <div class="content-header">
+            <h1 class="content-title"></h1>
+            <p class="content-subtitle">Use this section to control your profile & account</p>
         </div>
-        <div class="container">
+        
+        <div class="card">
             <div class="profile-container">
                 <div class="profile-banner"></div>
                 <div class="profile-avatar"></div>
@@ -716,20 +78,20 @@
                         <span></span>
                     </div>
                     <div class="profile-bio-container">
-                        <div class="profile-bio">
-                        </div>
+                        <div class="profile-bio"></div>
                         <i class="fas fa-edit profile-edit-icon" onclick="openModal('edit-bio')"></i>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="page-header">
-            <h1 class="page-title">Connections</h1>
-            <p class="page-description">Connections section to manage your connections</p>
+        <div class="content-header">
+            <h1 class="content-title">Connections</h1>
+            <p class="content-subtitle">Manage your social connections</p>
         </div>
-        <div class="row-container">
-            <div class="half-container">
+        
+        <div style="display: flex; gap: 1.5rem; width: 100%;">
+            <div class="card" style="flex: 1; position: relative; overflow: hidden;">
                 <div class="social-navigation">
                     <button class="nav-button" onclick="scrollSocials(1)">
                         <i class="fas fa-chevron-up"></i>
@@ -757,88 +119,392 @@
                     </div>
                 </div>
             </div>
-            <div class="half-container">
+            
+            <div class="card" style="flex: 1;">
                 <div class="social-icons-grid">
-                    <!-- Discord -->
                     <div class="social-icon-large discord">
                         <i class="fab fa-discord" style="color: #7289da;"></i>
                     </div>
-
-                    <!-- Instagram -->
                     <div class="social-icon-large instagram">
                         <i class="fab fa-instagram" style="color: #E4405F;"></i>
                     </div>
-
-                    <!-- Tiktok -->
                     <div class="social-icon-large tiktok">
                         <i class="fab fa-tiktok" style="color: #fff;"></i>
                     </div>
-
-                    <!-- Youtube -->
                     <div class="social-icon-large youtube">
                         <i class="fab fa-youtube" style="color: #FF0000;"></i>
                     </div>
-
-                    <!-- Pinterest -->
                     <div class="social-icon-large pinterest">
                         <i class="fab fa-pinterest" style="color: #E60023;"></i>
                     </div>
-
-                    <!-- Spotify -->
                     <div class="social-icon-large spotify">
                         <i class="fab fa-spotify" style="color: #1DB954;"></i>
                     </div>
-
-                    <!-- Soundcloud -->
-                    <div class="social-icon-large soundcloud">
-                        <i class="fab fa-soundcloud" style="color: #FF5500;"></i>
+                    <div class="social-icon-large github">
+                        <i class="fab fa-github" style="color: #fff;"></i>
                     </div>
-
-                    <!-- Twitch -->
                     <div class="social-icon-large twitch">
                         <i class="fab fa-twitch" style="color: #9146FF;"></i>
                     </div>
-
-                    <!-- Twitter -->
-                    <div class="social-icon-large twitter">
-                        <i class="fab fa-twitter" style="color: #1DA1F2;"></i>
+                    <div class="social-icon-large soundcloud">
+                        <i class="fab fa-soundcloud" style="color: #FF4500;"></i>
                     </div>
-
-                    <!-- Telegram -->
+                    <div class="social-icon-large reddit">
+                        <i class="fab fa-reddit" style="color: #FF4500;"></i>
+                    </div>
+                    <div class="social-icon-large linkedin">
+                        <i class="fab fa-linkedin" style="color: #0077B5;"></i>
+                    </div>
                     <div class="social-icon-large telegram">
                         <i class="fab fa-telegram" style="color: #0088cc;"></i>
                     </div>
-
-                    <!-- Snapchat -->
-                    <div class="social-icon-large snapchat">
-                        <i class="fab fa-snapchat" style="color: #FFFC00;"></i>
-                    </div>
-
-                    <!-- GitHub -->
-                    <div class="social-icon-large github">
-                        <i class="fab fa-github" style="color: #f9f9f9;"></i>
-                    </div>
-
-                    <!-- Domain -->
-                    <div class="social-icon-large domain">
-                        <i class="fas fa-earth-americas" style="color: gray;"></i>
-                    </div>
                 </div>
             </div>
-
         </div>
     </div>
+
     <div id="connectionModal" class="modal">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
-            <h2 id="modalTitle">Edit Connection</h2>
-            <input type="text" id="connectionInput" class="modal-input" placeholder="Enter connection details">
+            <h2 id="modalTitle">Modal Title</h2>
+            <input type="text" id="connectionInput" class="modal-input" placeholder="Enter value">
             <div class="modal-buttons">
                 <button class="modal-btn modal-btn-cancel" onclick="closeModal()">Cancel</button>
                 <button class="modal-btn modal-btn-confirm" id="modalConfirmBtn">Confirm</button>
             </div>
         </div>
     </div>
+
+    <style>
+        .profile-container {
+            width: 100%;
+            position: relative;
+        }
+        .profile-banner {
+            width: 100%;
+            height: 150px;
+            background-color: rgba(217, 70, 239, 0.1);
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px 20px 0 0;
+        }
+        .profile-avatar {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            border: 4px solid var(--black);
+            background-size: cover;
+            background-position: center;
+            background-color: rgba(217, 70, 239, 0.2);
+            top: 90px;
+            left: 30px;
+            box-shadow: 0 0 20px var(--pink-glow);
+        }
+        .profile-details {
+            margin-top: 20px;
+            margin-left: 180px;
+            position: relative;
+        }
+        .profile-name-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .profile-edit-icon {
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: color 0.3s ease;
+            font-size: 14px;
+        }
+        .profile-edit-icon:hover {
+            color: var(--pink);
+        }
+        .profile-name {
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 24px;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+        .profile-username {
+            font-family: 'regular', Arial, sans-serif;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .profile-bio-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .profile-bio {
+            font-family: 'regular', Arial, sans-serif;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 500px;
+            word-break: break-word;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+        .social-navigation {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 10;
+        }
+        .nav-button {
+            background-color: rgba(217, 70, 239, 0.1);
+            color: var(--white);
+            border: 1px solid var(--border);
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .nav-button:hover {
+            background-color: rgba(217, 70, 239, 0.2);
+            border-color: var(--pink);
+        }
+        .social-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-left: 50px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .social-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border-radius: 12px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        .social-item:hover {
+            border-color: var(--border-hover);
+            background-color: rgba(217, 70, 239, 0.05);
+        }
+        .social-connection-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .social-item h3 {
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+        .social-item p {
+            font-family: 'regular', Arial, sans-serif;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        .social-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .action-icon {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: color 0.3s ease;
+            padding: 8px;
+            border-radius: 8px;
+        }
+        .action-icon:hover {
+            color: var(--white);
+            background-color: rgba(217, 70, 239, 0.1);
+        }
+        .action-icon.go:hover { color: #4CAF50; }
+        .action-icon.edit:hover { color: var(--pink); }
+        .action-icon.delete:hover { color: #F44336; }
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .social-icons-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            padding: 15px;
+        }
+        .social-icon-large {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .social-icon-large:hover {
+            background-color: rgba(217, 70, 239, 0.1);
+            border-color: var(--pink);
+            box-shadow: 0 0 20px rgba(217, 70, 239, 0.3);
+            transform: translateY(-2px);
+        }
+        .social-icon-large.selected {
+            background-color: rgba(217, 70, 239, 0.2);
+            border-color: var(--pink);
+            box-shadow: 0 0 20px var(--pink-glow);
+        }
+        .social-icon-large i {
+            font-size: 28px;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            width: 400px;
+            padding: 30px;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .modal.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .modal h2 {
+            font-family: 'bold', Arial, sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+        .modal-input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background-color: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--white);
+            font-family: 'regular', Arial, sans-serif;
+            transition: border-color 0.3s ease;
+        }
+        .modal-input:focus {
+            outline: none;
+            border-color: var(--pink);
+        }
+        .modal-buttons {
+            display: flex;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        .modal-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'bold', Arial, sans-serif;
+        }
+        .modal-btn-cancel {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            color: var(--white);
+        }
+        .modal-btn-cancel:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-color: var(--border-hover);
+        }
+        .modal-btn-confirm {
+            background: linear-gradient(135deg, var(--pink) 0%, var(--pink-light) 100%);
+            color: var(--white);
+            border: 1px solid var(--pink);
+            box-shadow: 0 4px 20px var(--pink-glow);
+        }
+        .modal-btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--pink-glow);
+        }
+        @keyframes pulse {
+            0% { background-position: 0% 0%; }
+            100% { background-position: -135% 0%; }
+        }
+        .skeleton {
+            background: linear-gradient(90deg, rgba(217, 70, 239, 0.05) 25%, rgba(217, 70, 239, 0.1) 50%, rgba(217, 70, 239, 0.05) 75%);
+            background-size: 400% 100%;
+            animation: pulse 1.5s ease-in-out infinite;
+            color: transparent !important;
+            border-color: transparent !important;
+            user-select: none;
+        }
+        .skeleton-text {
+            border-radius: 8px;
+            display: inline-block;
+            height: 1em;
+            width: 70%;
+        }
+        .skeleton-avatar {
+            border-radius: 20px;
+        }
+        .skeleton-banner {
+            border-radius: 20px;
+        }
+        .skeleton-container {
+            pointer-events: none;
+        }
+        .sortable-ghost {
+            opacity: 0.4;
+            background-color: rgba(217, 70, 239, 0.1);
+            border: 2px dashed var(--pink);
+        }
+        .sortable-chosen {
+            background-color: rgba(217, 70, 239, 0.1);
+        }
+        .sortable-drag {
+            opacity: 0.8;
+            box-shadow: 0 5px 15px rgba(217, 70, 239, 0.3);
+        }
+        .social-connection-content {
+            cursor: grab;
+        }
+        .social-connection-content:active {
+            cursor: grabbing;
+        }
+    </style>
+
     <script>
         async function getAuthToken() {
             const token = document.cookie.split("; ")
@@ -848,21 +514,72 @@
             return token;
         }
 
-        function getPlatformUrl(platform, input) {
-            const exceptions = {
-                "t.me": "https://t.me/",
-                "telegram.org": "https://telegram.org/",
-                "twitch.tv": "https://twitch.tv/"
-            };
+        async function createConnectionAPI(connectionData) {
+            try {
+                const token = await getAuthToken();
+                const response = await fetch('https://og.email/api/connections', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(connectionData)
+                });
 
-            return exceptions[platform] ? `${exceptions[platform]}${input}` : `https://${platform}.com/${input}`;
+                const data = await response.json();
+                return data.success;
+            } catch (error) {
+                console.error('Create connection error:', error);
+                return false;
+            }
+        }
+
+        async function editConnectionAPI(connectionData) {
+            try {
+                const token = await getAuthToken();
+                const response = await fetch(`https://og.email/api/connections/${connectionData.connection_id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        name: connectionData.name,
+                        url: connectionData.url
+                    })
+                });
+
+                const data = await response.json();
+                return data.success;
+            } catch (error) {
+                console.error('Edit connection error:', error);
+                return false;
+            }
+        }
+
+        async function deleteConnectionAPI(connectionId) {
+            try {
+                const token = await getAuthToken();
+                const response = await fetch(`https://og.email/api/connections/${connectionId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+                return data.success;
+            } catch (error) {
+                console.error('Delete connection error:', error);
+                return false;
+            }
         }
 
         async function updateProfileAPI(profileData) {
             try {
                 const token = await getAuthToken();
-                const response = await fetch('https://og.email/api/account/edit', {
-                    method: 'POST',
+                const response = await fetch('https://og.email/api/profile', {
+                    method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
@@ -871,108 +588,26 @@
                 });
 
                 const data = await response.json();
-                if (!data.success) {
-                    throw new Error(data.message || 'Profile update failed');
-                }
-
-                return data;
+                return data.success;
             } catch (error) {
-                console.error('Profile update error:', error);
-                alert(error.message);
-                return null;
+                console.error('Update profile error:', error);
+                return false;
             }
         }
 
-        async function createConnectionAPI(connectionData) {
-            try {
-                const token = await getAuthToken();
-                const response = await fetch('https://og.email/api/connection/create', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(connectionData)
-                });
-
-                const data = await response.json();
-                if (!data.success) {
-                    throw new Error(data.message || 'Connection creation failed');
-                }
-
-                return data;
-            } catch (error) {
-                console.error('Connection creation error:', error);
-                alert(error.message);
-                throw error;
-            }
-        }
-
-        async function editConnectionAPI(connectionData) {
-            try {
-                const token = await getAuthToken();
-                const response = await fetch('https://og.email/api/connections/edit', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(connectionData)
-                });
-
-                const data = await response.json();
-                if (!data.success) {
-                    throw new Error(data.message || 'Connection edit failed');
-                }
-
-                return data;
-            } catch (error) {
-                console.error('Connection edit error:', error);
-                alert(error.message);
-                throw error;
-            }
-        }
-
-        async function deleteConnectionAPI(connectionId) {
-            try {
-                const token = await getAuthToken();
-                const response = await fetch('https://og.email/api/connections/delete', {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        connection_id: connectionId
-                    })
-                });
-
-                const data = await response.json();
-                if (!data.success) {
-                    throw new Error(data.message || 'Connection deletion failed');
-                }
-
-                return data;
-            } catch (error) {
-                console.error('Connection delete error:', error);
-                alert(error.message);
-                throw error;
-            }
-        }
-
-        let currentScroll = 0;
-        const socialList = document.getElementById('socialList');
-        const itemHeight = 100;
-
+        let scrollPosition = 0;
         function scrollSocials(direction) {
-            const maxScroll = -(socialList.children.length - 3) * itemHeight;
-            currentScroll += direction * itemHeight;
+            const socialList = document.getElementById('socialList');
+            const items = socialList.querySelectorAll('.social-item');
+            
+            if (items.length === 0) return;
 
-            currentScroll = Math.max(maxScroll, Math.min(0, currentScroll));
-
-            socialList.style.transform = `translateY(${currentScroll}px)`;
+            const itemHeight = items[0].offsetHeight + 15;
+            scrollPosition += direction * itemHeight;
+            scrollPosition = Math.max(0, Math.min(scrollPosition, (items.length - 3) * itemHeight));
+            
+            socialList.style.transform = `translateY(-${scrollPosition}px)`;
         }
-
 
         const modal = document.getElementById('connectionModal');
         const modalTitle = document.getElementById('modalTitle');
@@ -1109,8 +744,6 @@
                     }
                     break;
                 }
-
-
                 case 'edit-name': {
                     updateProfileAPI({
                         display_name: inputValue
@@ -1190,7 +823,7 @@
 
         function updateProfile(user) {
             if (user.avatar) {
-                const avatarImg = document.querySelector('.user-box .avatar img');
+                const avatarImg = document.querySelector('.user-avatar');
                 if (avatarImg) {
                     avatarImg.src = user.avatar;
                 }
@@ -1214,9 +847,14 @@
                     nameEl.textContent = user.display_name;
                 });
 
-                const morningGreeting = document.querySelector('.page-title');
+                const morningGreeting = document.querySelector('.content-title');
                 if (morningGreeting) {
                     morningGreeting.textContent = `Good morning, ${user.display_name}`;
+                }
+                
+                const userName = document.querySelector('.user-name');
+                if (userName) {
+                    userName.textContent = user.display_name;
                 }
             }
 
@@ -1224,11 +862,6 @@
                 const usernameEl = document.querySelector('.profile-username span');
                 if (usernameEl) {
                     usernameEl.textContent = `@${user.username}`;
-                }
-
-                const sidebarUsername = document.querySelector('.user-box .username');
-                if (sidebarUsername) {
-                    sidebarUsername.textContent = user.display_name;
                 }
             }
 
@@ -1390,7 +1023,7 @@
 
                         if (updateResponse) {
                             if (type === 'avatar') {
-                                document.querySelector('.user-box .avatar img').src = imageUrl;
+                                document.querySelector('.user-avatar').src = imageUrl;
                                 document.querySelector('.profile-avatar').style.backgroundImage = `url('${imageUrl}')`;
                             } else {
                                 document.querySelector('.profile-banner').style.backgroundImage = `url('${imageUrl}')`;
@@ -1433,34 +1066,44 @@
                 profileBanner.addEventListener('click', () => handleImageUpload('banner'));
             }
         });
+        
         function applySkeletonLoading() {
-            document.querySelector('.profile-name').classList.add('skeleton', 'skeleton-text');
-            document.querySelector('.profile-username span').classList.add('skeleton', 'skeleton-text');
-            document.querySelector('.profile-bio').classList.add('skeleton', 'skeleton-text');
-            document.querySelector('.profile-avatar').classList.add('skeleton', 'skeleton-avatar');
-            document.querySelector('.profile-banner').classList.add('skeleton', 'skeleton-banner');
-            document.querySelector('.page-title').classList.add('skeleton', 'skeleton-text');
-            document.querySelector('.user-box .avatar img').classList.add('skeleton', 'skeleton-avatar');
-            document.querySelector('.user-box .username').classList.add('skeleton', 'skeleton-text');
+            const profileName = document.querySelector('.profile-name');
+            const profileUsername = document.querySelector('.profile-username span');
+            const profileBio = document.querySelector('.profile-bio');
+            const profileAvatar = document.querySelector('.profile-avatar');
+            const profileBanner = document.querySelector('.profile-banner');
+            const contentTitle = document.querySelector('.content-title');
+            const userAvatar = document.querySelector('.user-avatar');
+            const userName = document.querySelector('.user-name');
+
+            if (profileName) profileName.classList.add('skeleton', 'skeleton-text');
+            if (profileUsername) profileUsername.classList.add('skeleton', 'skeleton-text');
+            if (profileBio) profileBio.classList.add('skeleton', 'skeleton-text');
+            if (profileAvatar) profileAvatar.classList.add('skeleton', 'skeleton-avatar');
+            if (profileBanner) profileBanner.classList.add('skeleton', 'skeleton-banner');
+            if (contentTitle) contentTitle.classList.add('skeleton', 'skeleton-text');
+            if (userAvatar) userAvatar.classList.add('skeleton', 'skeleton-avatar');
+            if (userName) userName.classList.add('skeleton', 'skeleton-text');
 
             const socialList = document.getElementById('socialList');
-            const socialItems = socialList.querySelectorAll('.social-item');
-            socialItems.forEach(item => {
-                item.classList.add('skeleton-container');
-                item.querySelector('h3').classList.add('skeleton', 'skeleton-text');
-                item.querySelector('p').classList.add('skeleton', 'skeleton-text');
-                item.querySelector('.social-icon').classList.add('skeleton', 'skeleton-icon');
-            });
-
-            const socialIcons = document.querySelectorAll('.social-icon-large');
-            socialIcons.forEach(icon => {
-                icon.classList.add('skeleton');
-            });
+            if (socialList) {
+                const socialItems = socialList.querySelectorAll('.social-item');
+                socialItems.forEach(item => {
+                    item.classList.add('skeleton-container');
+                    const h3 = item.querySelector('h3');
+                    const p = item.querySelector('p');
+                    const icon = item.querySelector('.social-icon');
+                    if (h3) h3.classList.add('skeleton', 'skeleton-text');
+                    if (p) p.classList.add('skeleton', 'skeleton-text');
+                    if (icon) icon.classList.add('skeleton');
+                });
+            }
         }
 
         function removeSkeletonLoading() {
             document.querySelectorAll('.skeleton').forEach(el => {
-                el.classList.remove('skeleton', 'skeleton-text', 'skeleton-avatar', 'skeleton-banner', 'skeleton-icon');
+                el.classList.remove('skeleton', 'skeleton-text', 'skeleton-avatar', 'skeleton-banner');
             });
             document.querySelectorAll('.skeleton-container').forEach(el => {
                 el.classList.remove('skeleton-container');
@@ -1470,6 +1113,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             applySkeletonLoading();
         });
+        
         document.addEventListener('DOMContentLoaded', () => {
             const socialList = document.getElementById('socialList');
 
@@ -1515,72 +1159,9 @@
                 return true;
             } catch (error) {
                 console.error('Failed to update connections order:', error);
-                // alert('Failed to save the new order of your connections');
                 return false;
-            }
-        }
-
-        const style = document.createElement('style');
-        style.textContent = `
-  .sortable-ghost {
-    opacity: 0.4;
-    background-color: #f0f0f0;
-    border: 2px dashed #ccc;
-  }
-  
-  .sortable-chosen {
-    background-color: rgba(0, 123, 255, 0.05);
-  }
-  
-  .sortable-drag {
-    opacity: 0.8;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
-  }
-  
-  .social-connection-content {
-    cursor: grab;
-  }
-  
-  .social-connection-content:active {
-    cursor: grabbing;
-  }
-  
-  /* Add a visual indicator that items are draggable */
-  .social-connection-content::before {
-    content: "≡";
-    padding-right: 8px;
-    color: #aaa;
-    font-weight: bold;
-  }
-`;
-        document.head.appendChild(style);
-
-        async function updateConnectionsOrderAPI(orderData) {
-            try {
-                const token = await getAuthToken();
-                const response = await fetch('https://og.email/api/connections/reorder', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(orderData)
-                });
-
-                const data = await response.json();
-                if (!data.success) {
-                    throw new Error(data.message || 'Connection reordering failed');
-                }
-
-                return data;
-            } catch (error) {
-                console.error('Connection reordering error:', error);
-                // alert(error.message);
-                return null;
             }
         }
     </script>
 </body>
-
 </html>
