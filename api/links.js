@@ -16,7 +16,8 @@ export default async function handler(req, res) {
       // ----------------- CREATE LINK -----------------
       if (req.method === 'POST') {
         const { title, url, icon, position } = req.body;
-        if (!title || !url) return res.status(400).json({ error: 'Title and URL are required' });
+        if (!title || !url)
+          return res.status(400).json({ error: 'Title and URL are required' });
 
         const newLink = await runQuery('links', {
           user_id: userId,
@@ -26,7 +27,11 @@ export default async function handler(req, res) {
           position: position || null
         });
 
-        return res.status(201).json({ message: 'Link created', link: newLink });
+        // Supabase returns id in newLink.id, SQLite returns lastInsertRowid
+        const linkId = newLink.id || newLink.lastInsertRowid;
+        const createdLink = await getQuery('links', 'id', linkId);
+
+        return res.status(201).json({ message: 'Link created', link: createdLink });
       }
 
       // ----------------- UPDATE LINK -----------------
@@ -35,15 +40,17 @@ export default async function handler(req, res) {
         if (!id) return res.status(400).json({ error: 'Link ID is required' });
 
         const link = await getQuery('links', 'id', id);
-        if (!link || link.user_id !== userId) return res.status(403).json({ error: 'Not authorized' });
+        if (!link || link.user_id !== userId)
+          return res.status(403).json({ error: 'Not authorized' });
 
-        const updatedLink = await runQuery(
+        await runQuery(
           'links',
           { title, url, icon, position },
           'update',
           { column: 'id', value: id }
         );
 
+        const updatedLink = await getQuery('links', 'id', id);
         return res.status(200).json({ message: 'Link updated', link: updatedLink });
       }
 
@@ -53,7 +60,8 @@ export default async function handler(req, res) {
         if (!id) return res.status(400).json({ error: 'Link ID is required' });
 
         const link = await getQuery('links', 'id', id);
-        if (!link || link.user_id !== userId) return res.status(403).json({ error: 'Not authorized' });
+        if (!link || link.user_id !== userId)
+          return res.status(403).json({ error: 'Not authorized' });
 
         await runQuery('links', {}, 'delete', { column: 'id', value: id });
         return res.status(200).json({ message: 'Link deleted' });
