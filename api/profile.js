@@ -22,7 +22,8 @@ export default async function handler(req, res) {
         const profile = await getQuery('profiles', 'user_id', userId);
         if (!profile) return res.status(404).json({ error: 'Profile not found' });
 
-        const updatedProfile = await runQuery(
+        // Update the profile
+        await runQuery(
           'profiles',
           {
             bio: bio ?? profile.bio,
@@ -34,6 +35,8 @@ export default async function handler(req, res) {
           { column: 'user_id', value: userId }
         );
 
+        // Fetch updated profile for response
+        const updatedProfile = await getQuery('profiles', 'user_id', userId);
         return res.status(200).json({ message: 'Profile updated', profile: updatedProfile });
       }
 
@@ -41,7 +44,7 @@ export default async function handler(req, res) {
       return res.status(405).json({ error: 'Method not allowed' });
 
     } catch (err) {
-      console.error(err);
+      console.error('Profile API error:', err);
       return res.status(500).json({ error: 'Profile operation failed' });
     }
   });
