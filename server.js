@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import { body, validationResult } from 'express-validator';
 import { runQuery, getQuery, allQuery } from './lib/db.js';
 import { authenticateToken, JWT_SECRET } from './lib/middleware.js';
+import { hashEmail } from './lib/crypto-utils.js';
 
 // Import modular API routes
 import linksHandler from './api/links.js';
@@ -49,13 +50,14 @@ app.post(
       const existingUser = await getQuery('users', 'username', username);
       if (existingUser) return res.status(400).json({ error: 'Username already exists' });
 
-      const existingEmail = await getQuery('users', 'email', email);
+      const emailHash = hashEmail(email);
+      const existingEmail = await getQuery('users', 'email', emailHash);
       if (existingEmail) return res.status(400).json({ error: 'Email already exists' });
 
       const passwordHash = await bcrypt.hash(password, 12);
       const newUser = await runQuery('users', {
         username,
-        email,
+        email: emailHash,
         password_hash: passwordHash,
         display_name: username,
         role: invite.role,
@@ -92,7 +94,13 @@ app.post(
 app.post('/api/auth/login', async (req, res) => {
   const { username, password } = req.body;
   try {
-    const user = await getQuery('users', 'username', username);
+    let user = await getQuery('users', 'username', username);
+    
+    if (!user && username.includes('@')) {
+      const emailHash = hashEmail(username);
+      user = await getQuery('users', 'email', emailHash);
+    }
+    
     if (!user) return res.status(401).json({ error: 'Invalid credentials' });
 
     const valid = await bcrypt.compare(password, user.password_hash);

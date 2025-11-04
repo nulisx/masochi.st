@@ -1,0 +1,40 @@
+01:33:45.458 Running build in Washington, D.C., USA (East) – iad1
+01:33:45.458 Build machine configuration: 2 cores, 8 GB
+01:33:45.608 Cloning github.com/nulisx/masochi.st (Branch: main, Commit: 942dee1)
+01:33:46.070 Cloning completed: 462.000ms
+01:33:46.124 Found .vercelignore
+01:33:46.130 Removed 27 ignored files defined in .vercelignore
+01:33:46.130   /.git/config
+01:33:46.130   /.git/description
+01:33:46.130   /.git/FETCH_HEAD
+01:33:46.130   /.git/HEAD
+01:33:46.131   /.git/hooks/applypatch-msg.sample
+01:33:46.131   /.git/hooks/commit-msg.sample
+01:33:46.131   /.git/hooks/fsmonitor-watchman.sample
+01:33:46.131   /.git/hooks/post-update.sample
+01:33:46.131   /.git/hooks/pre-applypatch.sample
+01:33:46.131   /.git/hooks/pre-commit.sample
+01:33:46.195 Restored build cache from previous deployment (7q5owHhpWGqbdKU1w5FWbXEdkiKK)
+01:33:46.530 Running "vercel build"
+01:33:46.925 Vercel CLI 48.8.2
+01:33:47.108 WARN! Due to `builds` existing in your configuration file, the Build and Development Settings defined in your Project Settings will not apply. Learn More: https://vercel.link/unused-build-settings
+01:33:47.622 Installing dependencies...
+01:33:49.768 npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+01:33:49.784 npm warn deprecated npmlog@6.0.2: This package is no longer supported.
+01:33:49.790 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+01:33:49.811 npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+01:33:49.828 npm warn deprecated @npmcli/move-file@1.1.2: This functionality has been moved to @npmcli/fs
+01:33:49.855 npm warn deprecated are-we-there-yet@3.0.1: This package is no longer supported.
+01:33:49.883 npm warn deprecated gauge@4.0.4: This package is no longer supported.
+01:33:50.323 
+01:33:50.323 added 89 packages in 2s
+01:33:50.324 
+01:33:50.324 25 packages are looking for funding
+01:33:50.324   run `npm fund` for details
+01:33:52.473 Build Completed in /vercel/output [5s]
+01:33:52.664 Deploying outputs...
+01:33:59.025 Deployment completed
+01:34:00.024 Creating build cache...
+01:34:02.162 Created build cache: 2.132s
+01:34:02.162 Uploading build cache [12.69 MB]
+01:34:02.443 Build cache uploaded: 285.876ms
