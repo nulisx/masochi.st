@@ -12,22 +12,18 @@ export default async function handler(req, res) {
   if (!username || !password) return res.status(400).json({ error: 'Username and password are required' });
 
   try {
-    // Get user from DB
     const user = await getQuery('users', 'username', username);
     if (!user) return res.status(401).json({ error: 'Invalid credentials' });
 
-    // Compare password
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
 
-    // Generate JWT
     const token = jwt.sign(
       { id: user.id, username: user.username, role: user.role },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
 
-    // Set cookie
     res.setHeader('Set-Cookie', cookie.serialize('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -36,7 +32,6 @@ export default async function handler(req, res) {
       maxAge: 7 * 24 * 60 * 60
     }));
 
-    // Return user info
     res.status(200).json({
       message: 'Login successful',
       user: {
