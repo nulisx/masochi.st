@@ -16,30 +16,83 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(__dirname));
 
-let db;
 const isProduction = process.env.NODE_ENV === 'production';
+let db;
 
 if (isProduction) {
-    // Supabase client
     const supabaseUrl = 'https://zngfwjhxqrgoikvmwtfx.supabase.co';
-    const supabaseKey = process.env.SUPABASE_KEY; // set this in Vercel env vars
+    const supabaseKey = process.env.SUPABASE_KEY;
     db = createClient(supabaseUrl, supabaseKey);
     console.log('✅ Using Supabase hosted database');
 } else {
-    // SQLite local
     const Database = require('better-sqlite3');
     const dbPath = path.join(__dirname, 'database.db');
     db = new Database(dbPath);
     db.pragma('journal_mode = WAL');
     console.log('✅ Using local SQLite database at', dbPath);
+
+    // Initialize tables for local development
+    db.exec(`
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            password_hash TEXT NOT NULL,
+            display_name TEXT,
+            custom_url TEXT UNIQUE,
+            role TEXT DEFAULT 'user',
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE TABLE IF NOT EXISTS profiles (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER UNIQUE NOT NULL,
+            bio TEXT,
+            avatar_url TEXT,
+            theme TEXT DEFAULT 'default',
+            custom_css TEXT
+        );
+        CREATE TABLE IF NOT EXISTS links (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            title TEXT NOT NULL,
+            url TEXT NOT NULL,
+            icon TEXT,
+            clicks INTEGER DEFAULT 0,
+            position INTEGER,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE TABLE IF NOT EXISTS invites (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            code TEXT UNIQUE NOT NULL,
+            created_by INTEGER,
+            role TEXT DEFAULT 'user',
+            max_uses INTEGER DEFAULT 1,
+            uses_count INTEGER DEFAULT 0,
+            used INTEGER DEFAULT 0,
+            used_by INTEGER,
+            expires_at DATETIME,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            used_at DATETIME
+        );
+    `);
+
+    const existingOwner = db.prepare('SELECT * FROM users WHERE username = ?').get('r');
+    if (!existingOwner) {
+        const passwordHash = bcrypt.hashSync('ACK071675$!', 12);
+        db.prepare(`
+            INSERT INTO users (username, email, password_hash, display_name, role)
+            VALUES (?, ?, ?, ?, ?)
+        `).run('r', 'asmo@drugsellers.com', passwordHash, 'r', 'owner');
+        console.log('✅ Default owner account created');
+    }
 }
 
 // ---------- Abstracted DB functions ----------
 async function runQuery(table, values) {
     if (isProduction) {
-        const { data, error } = await db.from(table).insert(values);
+        const { data, error } = await db.from(table).insert(values).select();
         if (error) throw error;
-        return data;
+        return data[0];
     } else {
         const keys = Object.keys(values);
         const vals = Object.values(values);
@@ -69,71 +122,10 @@ async function allQuery(table, column, value) {
     }
 }
 
-// ---------- DATABASE INITIALIZATION (only SQLite) ----------
-if (!isProduction) {
-    db.exec(`
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL,
-            display_name TEXT,
-            custom_url TEXT UNIQUE,
-            role TEXT DEFAULT 'user',
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
-
-        CREATE TABLE IF NOT EXISTS profiles (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER UNIQUE NOT NULL,
-            bio TEXT,
-            avatar_url TEXT,
-            theme TEXT DEFAULT 'default',
-            custom_css TEXT
-        );
-
-        CREATE TABLE IF NOT EXISTS links (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
-            title TEXT NOT NULL,
-            url TEXT NOT NULL,
-            icon TEXT,
-            clicks INTEGER DEFAULT 0,
-            position INTEGER,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
-
-        CREATE TABLE IF NOT EXISTS invites (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            code TEXT UNIQUE NOT NULL,
-            created_by INTEGER,
-            role TEXT DEFAULT 'user',
-            max_uses INTEGER DEFAULT 1,
-            uses_count INTEGER DEFAULT 0,
-            used INTEGER DEFAULT 0,
-            used_by INTEGER,
-            expires_at DATETIME,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            used_at DATETIME
-        );
-    `);
-
-    const existingOwner = db.prepare('SELECT * FROM users WHERE username = ?').get('r');
-    if (!existingOwner) {
-        const passwordHash = bcrypt.hashSync('ACK071675$!', 12);
-        db.prepare(`
-            INSERT INTO users (username, email, password_hash, display_name, role)
-            VALUES (?, ?, ?, ?, ?)
-        `).run('r', 'asmo@drugsellers.com', passwordHash, 'r', 'owner');
-        console.log('✅ Default owner account created');
-    }
-}
-
-// ---------- AUTH MIDDLEWARE ----------
+// ---------- Auth middleware ----------
 const authenticateToken = (req, res, next) => {
     const token = req.cookies.token;
     if (!token) return res.status(401).json({ error: 'Authentication required' });
-
     jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) return res.status(403).json({ error: 'Invalid token' });
         req.user = user;
@@ -147,8 +139,9 @@ const requireRole = (minRole) => (req, res, next) => {
     next();
 };
 
-// ---------- ROUTES ----------
-// Example for register using abstracted functions
+// ---------- Routes ----------
+
+// Register
 app.post('/api/auth/register', [
     body('username').isLength({ min: 1, max: 20 }).matches(/^[a-zA-Z0-9_]+$/),
     body('email').isEmail(),
@@ -176,9 +169,18 @@ app.post('/api/auth/register', [
     }
 });
 
-// You would similarly replace login, profile, and links routes to use runQuery/getQuery/allQuery
-// Keep all the frontend routes (sendFile) the same
+// Add login, profile, links, invites routes here using getQuery/runQuery/allQuery same way
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Server running on http://0.0.0.0:${PORT}`);
-});
+// Frontend routes
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'login', 'index.html')));
+app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'register', 'index.html')));
+app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'dashboard', 'index.html')));
+app.get('/account', (req, res) => res.sendFile(path.join(__dirname, 'account', 'account.html')));
+app.get('/collectibles', (req, res) => res.sendFile(path.join(__dirname, 'collectibles', 'index.html')));
+app.get('/integrations', (req, res) => res.sendFile(path.join(__dirname, 'integrations', 'index.html')));
+app.get('/images', (req, res) => res.sendFile(path.join(__dirname, 'images', 'index.html')));
+
+app.use((req, res) => res.status(404).sendFile(path.join(__dirname, '404.html')));
+
+app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Server running on http://0.0.0.0:${PORT}`));
