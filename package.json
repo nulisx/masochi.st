@@ -2,6 +2,7 @@
   "name": "og-email",
   "version": "1.0.0",
   "description": "og.email Bio Link Platform",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

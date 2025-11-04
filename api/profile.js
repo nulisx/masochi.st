@@ -1,5 +1,5 @@
-import { authenticateToken } from '../../lib/middleware';
-import { getQuery, runQuery } from '../../lib/db';
+import { authenticateToken } from '../lib/middleware.js';
+import { getQuery, runQuery } from '../lib/db.js';
 
 export default async function handler(req, res) {
   await authenticateToken(req, res, async () => {

@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
-import { getQuery } from '../../lib/db';
+import { getQuery } from '../../lib/db.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret';
 

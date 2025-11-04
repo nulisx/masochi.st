@@ -3,9 +3,9 @@ import path from 'path';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
-import crypto from 'crypto';
 import { body, validationResult } from 'express-validator';
 import { runQuery, getQuery, allQuery } from './lib/db.js';
+import { authenticateToken, JWT_SECRET } from './lib/middleware.js';
 
 // Import modular API routes
 import linksHandler from './api/links.js';
@@ -14,31 +14,11 @@ import invitesHandler from './api/invites.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const JWT_SECRET = process.env.JWT_SECRET || crypto.randomBytes(64).toString('hex');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.resolve()));
-
-// ---------- Auth middleware ----------
-export const authenticateToken = (req, res, next) => {
-  const token = req.cookies.token;
-  if (!token) return res.status(401).json({ error: 'Authentication required' });
-
-  jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.status(403).json({ error: 'Invalid token' });
-    req.user = user;
-    next();
-  });
-};
-
-const roleHierarchy = { owner: 5, manager: 4, admin: 3, mod: 2, user: 1 };
-export const requireRole = (minRole) => (req, res, next) => {
-  if (roleHierarchy[req.user.role] < roleHierarchy[minRole])
-    return res.status(403).json({ error: 'Insufficient permissions' });
-  next();
-};
 
 // ---------- Auth routes ----------
 

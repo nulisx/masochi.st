@@ -1,5 +1,5 @@
 import express from 'express';
-import { authenticateToken, requireRole } from '../server.js';
+import { authenticateToken, requireRole } from '../lib/middleware.js';
 import { runQuery, getQuery, allQuery } from '../lib/db.js';
 
 const router = express.Router();

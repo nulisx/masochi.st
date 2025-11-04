@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { getQuery, runQuery } from '../../lib/db';
+import { getQuery, runQuery } from '../../lib/db.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
