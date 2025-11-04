@@ -3,12 +3,11 @@ const path = require('path');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-const Database = require('better-sqlite3');
-const { body, validationResult } = require('express-validator');
 const crypto = require('crypto');
+const { body, validationResult } = require('express-validator');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || crypto.randomBytes(64).toString('hex');
 
 app.use(express.json());
@@ -16,99 +15,166 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(__dirname));
 
-const db = new Database('database.db');
-db.pragma('journal_mode = WAL');
+let db;
+const isProduction = process.env.NODE_ENV === 'production';
 
-function initializeDatabase() {
-    db.exec(`
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL,
-            display_name TEXT,
-            custom_url TEXT UNIQUE,
-            role TEXT DEFAULT 'user' CHECK(role IN ('owner', 'manager', 'admin', 'mod', 'user')),
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
+// ---------- DATABASE SETUP ----------
+if (isProduction && process.env.DATABASE_URL) {
+    // Hosted DB (PostgreSQL / Supabase / Vercel)
+    const { Pool } = require('pg');
+    db = new Pool({ connectionString: process.env.DATABASE_URL });
+    console.log('✅ Using hosted PostgreSQL database');
+} else {
+    // Local SQLite
+    const Database = require('better-sqlite3');
 
-        CREATE TABLE IF NOT EXISTS invites (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            code TEXT UNIQUE NOT NULL,
-            created_by INTEGER,
-            role TEXT DEFAULT 'user' CHECK(role IN ('owner', 'manager', 'admin', 'mod', 'user')),
-            max_uses INTEGER DEFAULT 1,
-            uses_count INTEGER DEFAULT 0,
-            used INTEGER DEFAULT 0,
-            used_by INTEGER,
-            expires_at DATETIME,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            used_at DATETIME,
-            FOREIGN KEY (created_by) REFERENCES users(id),
-            FOREIGN KEY (used_by) REFERENCES users(id)
-        );
+    // Use absolute path in a writable directory
+    const dbPath = path.join(__dirname, 'database.db');
 
-        CREATE TABLE IF NOT EXISTS profiles (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER UNIQUE NOT NULL,
-            bio TEXT,
-            avatar_url TEXT,
-            theme TEXT DEFAULT 'default',
-            custom_css TEXT,
-            FOREIGN KEY (user_id) REFERENCES users(id)
-        );
-
-        CREATE TABLE IF NOT EXISTS links (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
-            title TEXT NOT NULL,
-            url TEXT NOT NULL,
-            icon TEXT,
-            clicks INTEGER DEFAULT 0,
-            position INTEGER,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(id)
-        );
-
-        CREATE TABLE IF NOT EXISTS social_links (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
-            platform TEXT NOT NULL,
-            url TEXT NOT NULL,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(id)
-        );
-
-        CREATE TABLE IF NOT EXISTS analytics (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER,
-            link_id INTEGER,
-            event_type TEXT,
-            ip_address TEXT,
-            user_agent TEXT,
-            referrer TEXT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(id),
-            FOREIGN KEY (link_id) REFERENCES links(id)
-        );
-    `);
-
-    const existingOwner = db.prepare('SELECT * FROM users WHERE username = ?').get('r');
-    
-    if (!existingOwner) {
-        const passwordHash = bcrypt.hashSync('ACK071675$!', 12);
-        
-        db.prepare(`
-            INSERT INTO users (username, email, password_hash, display_name, role)
-            VALUES (?, ?, ?, ?, ?)
-        `).run('r', 'asmo@drugsellers.com', passwordHash, 'r', 'owner');
-        
-        console.log('✅ Default owner account created');
+    try {
+        db = new Database(dbPath);
+        db.pragma('journal_mode = WAL');
+        console.log('✅ Using local SQLite database at', dbPath);
+    } catch (err) {
+        console.error('❌ Failed to open SQLite database:', err);
+        process.exit(1);
     }
 }
 
-initializeDatabase();
+// Helper function to run SQL safely for both SQLite and Postgres
+async function runQuery(sql, params = []) {
+    if (isProduction && process.env.DATABASE_URL) {
+        const client = await db.connect();
+        try {
+            const res = await client.query(sql, params);
+            return res;
+        } finally {
+            client.release();
+        }
+    } else {
+        return db.prepare(sql).run(...params);
+    }
+}
 
+async function getQuery(sql, params = []) {
+    if (isProduction && process.env.DATABASE_URL) {
+        const client = await db.connect();
+        try {
+            const res = await client.query(sql, params);
+            return res.rows[0];
+        } finally {
+            client.release();
+        }
+    } else {
+        return db.prepare(sql).get(...params);
+    }
+}
+
+async function allQuery(sql, params = []) {
+    if (isProduction && process.env.DATABASE_URL) {
+        const client = await db.connect();
+        try {
+            const res = await client.query(sql, params);
+            return res.rows;
+        } finally {
+            client.release();
+        }
+    } else {
+        return db.prepare(sql).all(...params);
+    }
+}
+
+// ---------- DATABASE INITIALIZATION ----------
+async function initializeDatabase() {
+    if (!isProduction) {
+        db.exec(`
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                email TEXT UNIQUE NOT NULL,
+                password_hash TEXT NOT NULL,
+                display_name TEXT,
+                custom_url TEXT UNIQUE,
+                role TEXT DEFAULT 'user' CHECK(role IN ('owner', 'manager', 'admin', 'mod', 'user')),
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            );
+
+            CREATE TABLE IF NOT EXISTS invites (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                code TEXT UNIQUE NOT NULL,
+                created_by INTEGER,
+                role TEXT DEFAULT 'user' CHECK(role IN ('owner', 'manager', 'admin', 'mod', 'user')),
+                max_uses INTEGER DEFAULT 1,
+                uses_count INTEGER DEFAULT 0,
+                used INTEGER DEFAULT 0,
+                used_by INTEGER,
+                expires_at DATETIME,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                used_at DATETIME,
+                FOREIGN KEY (created_by) REFERENCES users(id),
+                FOREIGN KEY (used_by) REFERENCES users(id)
+            );
+
+            CREATE TABLE IF NOT EXISTS profiles (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER UNIQUE NOT NULL,
+                bio TEXT,
+                avatar_url TEXT,
+                theme TEXT DEFAULT 'default',
+                custom_css TEXT,
+                FOREIGN KEY (user_id) REFERENCES users(id)
+            );
+
+            CREATE TABLE IF NOT EXISTS links (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                title TEXT NOT NULL,
+                url TEXT NOT NULL,
+                icon TEXT,
+                clicks INTEGER DEFAULT 0,
+                position INTEGER,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id)
+            );
+
+            CREATE TABLE IF NOT EXISTS social_links (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                platform TEXT NOT NULL,
+                url TEXT NOT NULL,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id)
+            );
+
+            CREATE TABLE IF NOT EXISTS analytics (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER,
+                link_id INTEGER,
+                event_type TEXT,
+                ip_address TEXT,
+                user_agent TEXT,
+                referrer TEXT,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id),
+                FOREIGN KEY (link_id) REFERENCES links(id)
+            );
+        `);
+
+        const existingOwner = db.prepare('SELECT * FROM users WHERE username = ?').get('r');
+        if (!existingOwner) {
+            const passwordHash = bcrypt.hashSync('ACK071675$!', 12);
+            db.prepare(`
+                INSERT INTO users (username, email, password_hash, display_name, role)
+                VALUES (?, ?, ?, ?, ?)
+            `).run('r', 'asmo@drugsellers.com', passwordHash, 'r', 'owner');
+            console.log('✅ Default owner account created');
+        }
+    }
+}
+
+initializeDatabase().catch(console.error);
+
+// ---------- REST OF YOUR ROUTES ----------
 const authenticateToken = (req, res, next) => {
     const token = req.cookies.token;
     if (!token) return res.status(401).json({ error: 'Authentication required' });
