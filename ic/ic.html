@@ -49,12 +49,26 @@
       });
 
       document.getElementById('generate-btn').addEventListener('click', function() {
-         fetch('/generate_invite', { method: 'POST' })
-            .then(response => response.json())
+         fetch('/generate_invite', { 
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+         })
+            .then(response => {
+               if (!response.ok) {
+                  throw new Error('Failed to generate invite code');
+               }
+               return response.json();
+            })
             .then(data => {
                document.getElementById('invite-code').innerText = 'Invite Code: ' + data.code;
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+               console.error('Error:', error);
+               alert('Error: ' + error.message);
+            });
       });
    </script>
 </body>

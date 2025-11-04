@@ -1,0 +1,8 @@
+database.db
+database.db-shm
+database.db-wal
+node_modules
+.git
+.env
+.replit
+replit.nix

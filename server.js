@@ -11,6 +11,10 @@ import { authenticateToken, JWT_SECRET } from './lib/middleware.js';
 import linksHandler from './api/links.js';
 import profileHandler from './api/profile.js';
 import invitesHandler from './api/invites.js';
+import imagesHandler from './api/images.js';
+import connectionsHandler from './api/connections.js';
+import collectiblesHandler from './api/collectibles.js';
+import tokenHandler from './api/token.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -120,6 +124,65 @@ app.post('/api/auth/logout', authenticateToken, async (req, res) => {
 app.use('/api/links', linksHandler);
 app.use('/api/profile', profileHandler);
 app.use('/api/invites', invitesHandler);
+app.use('/api/images', imagesHandler);
+app.use('/api/connections', connectionsHandler);
+app.use('/api', collectiblesHandler);
+app.use('/api/token', tokenHandler);
+
+// User profile API endpoint for public access
+app.get('/api/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await getQuery('users', 'id', userId);
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const profile = await getQuery('profiles', 'user_id', userId);
+    const links = await allQuery('links', 'user_id', userId);
+
+    res.status(200).json({
+      user: {
+        id: user.id,
+        username: user.username,
+        display_name: user.display_name
+      },
+      profile,
+      links
+    });
+  } catch (err) {
+    console.error('User API error:', err);
+    res.status(500).json({ error: 'Failed to fetch user data' });
+  }
+});
+
+// Invite code generation endpoint (for ic.html page)
+app.post('/generate_invite', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await getQuery('users', 'id', userId);
+    
+    if (!user || user.role !== 'owner') {
+      return res.status(403).json({ error: 'Only owners can generate invite codes' });
+    }
+
+    const crypto = await import('crypto');
+    const inviteCode = crypto.default.randomBytes(4).toString('hex');
+
+    await runQuery('invites', {
+      code: inviteCode,
+      created_by: userId,
+      role: 'user',
+      max_uses: 1
+    });
+
+    res.status(200).json({ code: inviteCode });
+  } catch (err) {
+    console.error('Generate invite error:', err);
+    res.status(500).json({ error: 'Failed to generate invite code' });
+  }
+});
 
 // ---------- Frontend routes ----------
 app.get('/', (req, res) => res.sendFile(path.join(path.resolve(), 'index.html')));
@@ -130,6 +193,7 @@ app.get('/account', (req, res) => res.sendFile(path.join(path.resolve(), 'accoun
 app.get('/collectibles', (req, res) => res.sendFile(path.join(path.resolve(), 'collectibles', 'index.html')));
 app.get('/integrations', (req, res) => res.sendFile(path.join(path.resolve(), 'integrations', 'index.html')));
 app.get('/images', (req, res) => res.sendFile(path.join(path.resolve(), 'images', 'index.html')));
+app.get('/ic', (req, res) => res.sendFile(path.join(path.resolve(), 'ic', 'ic.html')));
 
 // 404 fallback
 app.use((req, res) => res.status(404).sendFile(path.join(path.resolve(), '404.html')));
