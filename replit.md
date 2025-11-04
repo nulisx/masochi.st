@@ -67,20 +67,44 @@ An exclusive, invite-only bio link platform (similar to Linktree) that allows us
 - `POST /api/auth/register` - Register new user (requires valid invite code)
 - `POST /api/auth/login` - User login
 - `POST /api/auth/logout` - User logout
-- `GET /api/auth/me` - Get current user info
+- `POST /api/token/exchange` - Exchange/refresh authentication token
 
 ### Invite Management
-- `POST /api/invites/create` - Create new invite code (role-restricted)
-- `GET /api/invites` - List user's created invites
-- `DELETE /api/invites/:id` - Delete an invite code
+- `POST /api/invites` - Create new invite code (admin+ role)
+- `GET /api/invites` - List all invites (admin+ role)
+- `PUT /api/invites/:code` - Update invite code (admin+ role)
+- `DELETE /api/invites/:code` - Delete invite code (admin+ role)
+- `POST /generate_invite` - Generate invite code (owner only, for ic.html page)
 
 ### User Profile
-- `GET /api/profile/:username` - Get user profile
+- `GET /api/:userId` - Get public user profile with links and data
+- `GET /api/profile` - Get current user's profile
 - `PUT /api/profile` - Update profile
+
+### Links
 - `GET /api/links` - Get user's links
 - `POST /api/links` - Create new link
 - `PUT /api/links/:id` - Update link
 - `DELETE /api/links/:id` - Delete link
+
+### Images
+- `GET /api/images` - Get all images for authenticated user
+- `POST /api/images/upload` - Upload a new image
+- `GET /api/images/:imageId` - Get specific image
+- `DELETE /api/images/:imageId` - Delete an image
+
+### Connections
+- `GET /api/connections` - Get all connections for authenticated user
+- `POST /api/connections` - Create a new connection
+- `GET /api/connections/:connectionId` - Get specific connection
+- `PUT /api/connections/:connectionId` - Update a connection
+- `DELETE /api/connections/:connectionId` - Delete a connection
+
+### Collectibles
+- `GET /api/:userId/collectibles` - Get all collectibles for a user (public)
+- `POST /api/:userId/collectibles` - Claim a new collectible (authenticated)
+- `GET /api/:userId/collectibles/:collectibleId` - Get specific collectible
+- `DELETE /api/:userId/collectibles/:collectibleId` - Delete a collectible
 
 ## Database Schema
 
@@ -159,6 +183,30 @@ An exclusive, invite-only bio link platform (similar to Linktree) that allows us
 - All database tables are created automatically on server startup
 
 ## Recent Changes
+
+- 2025-11-04: Complete API implementation and Vercel deployment fixes
+  - Implemented all requested API endpoints:
+    - Token exchange endpoint (/api/token/exchange)
+    - Public user profile endpoint (/api/:userId)
+    - Complete images API (GET, POST upload, DELETE)
+    - Complete connections API (GET, POST, PUT, DELETE)
+    - Complete collectibles API (GET, POST, DELETE)
+  - Fixed Vercel deployment configuration:
+    - Updated lib/db.js to throw clear error when Supabase credentials missing
+    - Added proper environment detection for production vs development
+    - Increased lambda size to 50mb in vercel.json
+    - Added .vercelignore to exclude local database files
+  - Integrated ic.html invite generation with main server:
+    - Added /ic route for invite code generation page
+    - Updated endpoint to use authentication cookies
+    - Restricted to owner role only
+  - Fixed circular dependency issues:
+    - Moved middleware to lib/middleware.js
+    - Updated all API imports to use ES modules with .js extensions
+  - Created comprehensive database initialization script (lib/init-db.js)
+  - Added database tables for images, connections, collectibles, analytics
+  - Created DEPLOYMENT_GUIDE.md with complete setup instructions
+
 - 2025-11-02: Complete purple-pink (#d946ef) redesign with external CSS architecture
   - Created comprehensive CSS design system with 4 external stylesheets:
     - `static/css/global.css`: Shared color variables, fonts, and base styles
