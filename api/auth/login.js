@@ -6,28 +6,19 @@ import { getQuery } from '../../lib/db';
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret';
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { username, password } = req.body;
-
-  if (!username || !password) {
-    return res.status(400).json({ error: 'Username and password are required' });
-  }
+  if (!username || !password) return res.status(400).json({ error: 'Username and password are required' });
 
   try {
-    // Get user from DB (Supabase in prod, SQLite locally)
+    // Get user from DB
     const user = await getQuery('users', 'username', username);
-    if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
+    if (!user) return res.status(401).json({ error: 'Invalid credentials' });
 
-    // Compare password securely
+    // Compare password
     const valid = await bcrypt.compare(password, user.password_hash);
-    if (!valid) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
+    if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
 
     // Generate JWT
     const token = jwt.sign(
@@ -36,16 +27,16 @@ export default async function handler(req, res) {
       { expiresIn: '7d' }
     );
 
-    // Set cookie (httpOnly)
+    // Set cookie
     res.setHeader('Set-Cookie', cookie.serialize('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
-      maxAge: 7 * 24 * 60 * 60 // 7 days
+      maxAge: 7 * 24 * 60 * 60
     }));
 
-    // Respond with user info
+    // Return user info
     res.status(200).json({
       message: 'Login successful',
       user: {
