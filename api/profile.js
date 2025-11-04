@@ -2,7 +2,6 @@ import { authenticateToken } from '../../lib/middleware';
 import { getQuery, runQuery } from '../../lib/db';
 
 export default async function handler(req, res) {
-  // Protect all /profile routes
   await authenticateToken(req, res, async () => {
     const userId = req.user.id;
 
@@ -22,7 +21,6 @@ export default async function handler(req, res) {
         const profile = await getQuery('profiles', 'user_id', userId);
         if (!profile) return res.status(404).json({ error: 'Profile not found' });
 
-        // Update the profile
         await runQuery(
           'profiles',
           {
@@ -35,7 +33,6 @@ export default async function handler(req, res) {
           { column: 'user_id', value: userId }
         );
 
-        // Fetch updated profile for response
         const updatedProfile = await getQuery('profiles', 'user_id', userId);
         return res.status(200).json({ message: 'Profile updated', profile: updatedProfile });
       }
