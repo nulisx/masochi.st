@@ -50,4 +50,20 @@ export default async function handler(req, res) {
       // ----------------- DELETE LINK -----------------
       if (req.method === 'DELETE') {
         const { id } = req.body;
-        if (!id) return res.status(400).j
+        if (!id) return res.status(400).json({ error: 'Link ID is required' });
+
+        const link = await getQuery('links', 'id', id);
+        if (!link || link.user_id !== userId) return res.status(403).json({ error: 'Not authorized' });
+
+        await runQuery('links', {}, 'delete', { column: 'id', value: id });
+        return res.status(200).json({ message: 'Link deleted' });
+      }
+
+      // ----------------- METHOD NOT ALLOWED -----------------
+      return res.status(405).json({ error: 'Method not allowed' });
+    } catch (err) {
+      console.error('Links API error:', err);
+      return res.status(500).json({ error: 'Links operation failed' });
+    }
+  });
+}
