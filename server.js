@@ -10,6 +10,7 @@ import { runQuery, getQuery, allQuery } from './lib/db.js';
 // Import modular API routes
 import linksHandler from './api/links.js';
 import profileHandler from './api/profile.js';
+import invitesHandler from './api/invites.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -138,6 +139,7 @@ app.post('/api/auth/logout', authenticateToken, async (req, res) => {
 // ---------- Modular API routes ----------
 app.use('/api/links', linksHandler);
 app.use('/api/profile', profileHandler);
+app.use('/api/invites', invitesHandler);
 
 // ---------- Frontend routes ----------
 app.get('/', (req, res) => res.sendFile(path.join(path.resolve(), 'index.html')));
@@ -149,6 +151,7 @@ app.get('/collectibles', (req, res) => res.sendFile(path.join(path.resolve(), 'c
 app.get('/integrations', (req, res) => res.sendFile(path.join(path.resolve(), 'integrations', 'index.html')));
 app.get('/images', (req, res) => res.sendFile(path.join(path.resolve(), 'images', 'index.html')));
 
+// 404 fallback
 app.use((req, res) => res.status(404).sendFile(path.join(path.resolve(), '404.html')));
 
 // ---------- Start server ----------
