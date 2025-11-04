@@ -5,8 +5,11 @@ import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
 import crypto from 'crypto';
 import { body, validationResult } from 'express-validator';
-import { createClient } from '@supabase/supabase-js';
-import { runQuery, getQuery, allQuery } from './lib/db.js'; // abstracted DB functions
+import { runQuery, getQuery, allQuery } from './lib/db.js';
+
+// Import modular API routes
+import linksHandler from './api/links.js';
+import profileHandler from './api/profile.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -36,7 +39,7 @@ export const requireRole = (minRole) => (req, res, next) => {
   next();
 };
 
-// ---------- Routes ----------
+// ---------- Auth routes ----------
 
 // Register
 app.post(
@@ -54,22 +57,17 @@ app.post(
     const { username, email, password, inviteCode } = req.body;
 
     try {
-      // Validate invite
       const invite = await getQuery('invites', 'code', inviteCode);
       if (!invite || invite.used || (invite.expires_at && new Date(invite.expires_at) < new Date()))
         return res.status(400).json({ error: 'Invalid or expired invite code' });
 
-      // Check username/email uniqueness
       const existingUser = await getQuery('users', 'username', username);
       if (existingUser) return res.status(400).json({ error: 'Username already exists' });
 
       const existingEmail = await getQuery('users', 'email', email);
       if (existingEmail) return res.status(400).json({ error: 'Email already exists' });
 
-      // Hash password
       const passwordHash = await bcrypt.hash(password, 12);
-
-      // Create user
       const newUser = await runQuery('users', {
         username,
         email,
@@ -78,26 +76,26 @@ app.post(
         role: invite.role,
       });
 
-      // Create profile
+      const userId = newUser.id || newUser.lastInsertRowid;
+
       await runQuery('profiles', {
-        user_id: newUser.id || newUser.lastInsertRowid,
+        user_id: userId,
         bio: '',
         avatar_url: '',
         theme: 'default',
       });
 
-      // Update invite usage
       const newUsesCount = (invite.uses_count || 0) + 1;
       const isFullyUsed = newUsesCount >= invite.max_uses ? 1 : 0;
-      await runQuery('invites', {
-        id: invite.id,
-        uses_count: newUsesCount,
-        used: isFullyUsed,
-        used_by: newUser.id || newUser.lastInsertRowid,
-        used_at: new Date().toISOString(),
-      });
 
-      res.status(200).json({ message: 'Registration successful', userId: newUser.id || newUser.lastInsertRowid });
+      await runQuery(
+        'invites',
+        { id: invite.id, uses_count: newUsesCount, used: isFullyUsed, used_by: userId, used_at: new Date().toISOString() },
+        'update',
+        { column: 'id', value: invite.id }
+      );
+
+      res.status(200).json({ message: 'Registration successful', userId });
     } catch (err) {
       console.error('Register error:', err);
       res.status(500).json({ error: 'Registration failed due to server error' });
@@ -128,31 +126,18 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
-// Profile
-app.get('/api/profile', authenticateToken, async (req, res) => {
-  try {
-    const profile = await getQuery('profiles', 'user_id', req.user.id);
-    res.status(200).json({ profile });
-  } catch (err) {
-    console.error('Profile error:', err);
-    res.status(500).json({ error: 'Failed to fetch profile' });
-  }
+// Logout
+app.post('/api/auth/logout', authenticateToken, async (req, res) => {
+  res.setHeader(
+    'Set-Cookie',
+    `token=; HttpOnly; Path=/; Max-Age=0`
+  );
+  res.status(200).json({ message: 'Logged out successfully' });
 });
 
-// Links
-import linksHandler from './api/links.js';
+// ---------- Modular API routes ----------
 app.use('/api/links', linksHandler);
-
-// Invites (example route)
-app.get('/api/invites', authenticateToken, requireRole('admin'), async (req, res) => {
-  try {
-    const invites = await allQuery('invites', 'id', '>=0'); // fetch all
-    res.status(200).json({ invites });
-  } catch (err) {
-    console.error('Invites error:', err);
-    res.status(500).json({ error: 'Failed to fetch invites' });
-  }
-});
+app.use('/api/profile', profileHandler);
 
 // ---------- Frontend routes ----------
 app.get('/', (req, res) => res.sendFile(path.join(path.resolve(), 'index.html')));
