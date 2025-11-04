@@ -6,37 +6,33 @@ export default async function handler(req, res) {
 
   const { username, email, password, inviteCode } = req.body;
 
-  // ----------------- BASIC VALIDATION -----------------
-  if (!username || !email || !password || !inviteCode) {
+  // Basic validation
+  if (!username || !email || !password || !inviteCode) 
     return res.status(400).json({ error: 'All fields are required' });
-  }
-
-  if (username.length > 20 || username.length < 1 || !/^[a-zA-Z0-9_]+$/.test(username)) {
+  
+  if (username.length > 20 || username.length < 1 || !/^[a-zA-Z0-9_]+$/.test(username)) 
     return res.status(400).json({ error: 'Invalid username format' });
-  }
 
-  if (password.length < 8) {
+  if (password.length < 8) 
     return res.status(400).json({ error: 'Password must be at least 8 characters' });
-  }
 
   try {
-    // ----------------- VALIDATE INVITE -----------------
+    // Validate invite code
     const invite = await getQuery('invites', 'code', inviteCode);
-    if (!invite || invite.used || (invite.expires_at && new Date(invite.expires_at) < new Date())) {
+    if (!invite || invite.used || (invite.expires_at && new Date(invite.expires_at) < new Date()))
       return res.status(400).json({ error: 'Invalid or expired invite code' });
-    }
 
-    // ----------------- CHECK USER EXISTENCE -----------------
-    const existingUser = await getQuery('users', 'username', username);
-    if (existingUser) return res.status(400).json({ error: 'Username already exists' });
+    // Check if username/email exists
+    if (await getQuery('users', 'username', username))
+      return res.status(400).json({ error: 'Username already exists' });
+    
+    if (await getQuery('users', 'email', email))
+      return res.status(400).json({ error: 'Email already exists' });
 
-    const existingEmail = await getQuery('users', 'email', email);
-    if (existingEmail) return res.status(400).json({ error: 'Email already exists' });
-
-    // ----------------- HASH PASSWORD -----------------
+    // Hash password
     const passwordHash = await bcrypt.hash(password, 12);
 
-    // ----------------- CREATE USER -----------------
+    // Create user
     const newUser = await runQuery('users', {
       username,
       email,
@@ -47,7 +43,7 @@ export default async function handler(req, res) {
 
     const userId = newUser.id || newUser.lastInsertRowid;
 
-    // ----------------- CREATE PROFILE -----------------
+    // Create profile
     await runQuery('profiles', {
       user_id: userId,
       bio: '',
@@ -56,7 +52,7 @@ export default async function handler(req, res) {
       custom_css: ''
     });
 
-    // ----------------- UPDATE INVITE USAGE -----------------
+    // Update invite usage
     const newUsesCount = (invite.uses_count || 0) + 1;
     const isFullyUsed = newUsesCount >= invite.max_uses ? 1 : 0;
 
