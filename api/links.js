@@ -2,7 +2,6 @@ import { authenticateToken } from '../../lib/middleware';
 import { runQuery, getQuery, allQuery } from '../../lib/db';
 
 export default async function handler(req, res) {
-  // Protect all /links routes
   await authenticateToken(req, res, async () => {
     const userId = req.user.id;
 
