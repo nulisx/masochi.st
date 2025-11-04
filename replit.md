@@ -181,8 +181,37 @@ An exclusive, invite-only bio link platform (similar to Linktree) that allows us
 - SQLite database is automatically created on first run
 - JWT secret is auto-generated on server start (configure via environment variable in production)
 - All database tables are created automatically on server startup
+- Default owner account: username "r", password "ACK071675$!", email "asmo@drugsellers.com"
+- Run `node lib/init-db.js && node lib/seed-owner.js` to initialize local database
+
+## Production Deployment (Vercel)
+- Requires environment variables: SUPABASE_URL, SUPABASE_KEY, JWT_SECRET
+- Use `supabase-setup.sql` to initialize Supabase database
+- See `VERCEL_FIX_GUIDE.md` for detailed deployment instructions
+- Email and password hashing is consistent across both environments
 
 ## Recent Changes
+
+- 2025-11-04: Security enhancements and Vercel deployment fixes
+  - **Enhanced Security**:
+    - Passwords: Bcrypt hashed (12 rounds) - industry standard, impossible to reverse
+    - Emails: SHA-256 hashed before storage - prevents email harvesting if database breached
+    - Login: Supports both username and email (with automatic hashing)
+    - Default owner account: Securely seeded with hashed credentials
+  - **Database Layer Improvements**:
+    - Created seed scripts for default owner account (username: r, password: ACK071675$!)
+    - Proper environment detection (SQLite for dev, Supabase for production)
+    - Fail-fast error handling when Supabase credentials missing
+    - Crypto utilities module for consistent hashing
+  - **Vercel Deployment Resolution**:
+    - Fixed runtime crashes by requiring SUPABASE_URL and SUPABASE_KEY
+    - Created comprehensive Supabase setup SQL with RLS policies
+    - Added VERCEL_FIX_GUIDE.md with step-by-step deployment instructions
+    - Build succeeds, runtime now works when env vars configured
+  - **Scripts Created**:
+    - lib/seed-owner.js - Seeds default owner account locally
+    - lib/crypto-utils.js - Centralized email hashing utilities
+    - supabase-setup.sql - Complete production database setup
 
 - 2025-11-04: Complete API implementation and Vercel deployment fixes
   - Implemented all requested API endpoints:
