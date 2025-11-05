@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/static/cdn/favicon.ico">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/global.css">
+    <link rel="stylesheet" href="/static/css/pages.css">
+    <title>Pricing - og.email</title>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">og.email</div>
+        <div class="nav-pills">
+            <a href="/" class="nav-pill">Home</a>
+            <a href="/about" class="nav-pill">About</a>
+            <a href="/#features" class="nav-pill">Features</a>
+            <a href="/pricing" class="nav-pill">Pricing</a>
+            <a href="/privacy" class="nav-pill">Privacy</a>
+            <a href="/login" class="nav-pill nav-pill-login">Login</a>
+        </div>
+        <div class="mobile-menu">
+            <button class="mobile-menu-button" onclick="toggleMobileMenu()">☰</button>
+            <div class="mobile-dropdown" id="mobileDropdown">
+                <button class="mobile-button" onclick="window.location.href='/'">Home</button>
+                <button class="mobile-button" onclick="window.location.href='/about'">About</button>
+                <button class="mobile-button" onclick="window.location.href='/#features'">Features</button>
+                <button class="mobile-button" onclick="window.location.href='/pricing'">Pricing</button>
+                <button class="mobile-button" onclick="window.location.href='/privacy'">Privacy</button>
+                <button class="mobile-button" onclick="window.location.href='/login'">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-container">
+        <div class="page-header">
+            <h1>Pricing</h1>
+            <p class="page-subtitle">One simple, lifetime plan. <span class="highlight">No subscriptions.</span> No hidden fees.</p>
+        </div>
+
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="pricing-badge">Coming soon</div>
+                <h2 class="plan-name">og.email Free</h2>
+                <div class="price">
+                    <span class="price-amount">Free</span>
+                </div>
+                <p class="price-subtitle">No payment required</p>
+                
+                <div class="features-list">
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>Built with privacy as the main focus</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>5 MB storage</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>Basic customization</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>Minimal logging</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>You control your data, export anytime</span>
+                    </div>
+                </div>
+
+                <button class="pricing-button" disabled>Coming Soon</button>
+            </div>
+
+            <div class="pricing-card pricing-card-premium">
+                <div class="pricing-badge premium-badge">
+                    <i class="fas fa-star"></i> Lifetime
+                </div>
+                <h2 class="plan-name">og.email Premium</h2>
+                <div class="price">
+                    <span class="price-amount">$10</span>
+                </div>
+                <p class="price-subtitle">One-time payment</p>
+                
+                <div class="features-list">
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>Built with privacy as the main focus</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>100 MB storage</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>Advanced customization + custom CSS</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>Priority support & early access to new features</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>Full data portability & export on demand</span>
+                    </div>
+                </div>
+
+                <button class="pricing-button pricing-button-premium">Buy with Crypto</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMobileMenu() {
+            const dropdown = document.getElementById('mobileDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const dropdown = document.getElementById('mobileDropdown');
+            if (mobileMenu && !mobileMenu.contains(event.target) && dropdown && dropdown.classList.contains('show')) {
+                dropdown.classList.toggle('show');
+            }
+        });
+    </script>
+</body>
+</html>

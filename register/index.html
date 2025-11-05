@@ -10,8 +10,30 @@
     <title>Register - og.email</title>
 </head>
 <body>
+    <div class="navbar">
+        <div class="logo">og.email</div>
+        <div class="nav-pills">
+            <a href="/" class="nav-pill">Home</a>
+            <a href="/about" class="nav-pill">About</a>
+            <a href="/#features" class="nav-pill">Features</a>
+            <a href="/pricing" class="nav-pill">Pricing</a>
+            <a href="/privacy" class="nav-pill">Privacy</a>
+            <a href="/login" class="nav-pill nav-pill-login">Login</a>
+        </div>
+        <div class="mobile-menu">
+            <button class="mobile-menu-button" onclick="toggleMobileMenu()">☰</button>
+            <div class="mobile-dropdown" id="mobileDropdown">
+                <button class="mobile-button" onclick="window.location.href='/'">Home</button>
+                <button class="mobile-button" onclick="window.location.href='/about'">About</button>
+                <button class="mobile-button" onclick="window.location.href='/#features'">Features</button>
+                <button class="mobile-button" onclick="window.location.href='/pricing'">Pricing</button>
+                <button class="mobile-button" onclick="window.location.href='/privacy'">Privacy</button>
+                <button class="mobile-button" onclick="window.location.href='/login'">Login</button>
+            </div>
+        </div>
+    </div>
+
     <div class="auth-container">
-        <a href="/" class="logo-link">og.email</a>
         <h1>Create Account</h1>
         <p class="subtitle">Join og.email today</p>
         
@@ -88,6 +110,19 @@
             } catch (error) {
                 errorMessage.textContent = 'An error occurred. Please try again.';
                 errorMessage.classList.add('show');
+            }
+        });
+
+        function toggleMobileMenu() {
+            const dropdown = document.getElementById('mobileDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const dropdown = document.getElementById('mobileDropdown');
+            if (mobileMenu && !mobileMenu.contains(event.target) && dropdown && dropdown.classList.contains('show')) {
+                dropdown.classList.toggle('show');
             }
         });
     </script>

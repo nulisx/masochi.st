@@ -6,8 +6,8 @@
     <link rel="icon" type="image/x-icon" href="/static/cdn/favicon.ico">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/global.css">
-    <link rel="stylesheet" href="/static/css/auth.css">
-    <title>Login - og.email</title>
+    <link rel="stylesheet" href="/static/css/pages.css">
+    <title>About - og.email</title>
 </head>
 <body>
     <div class="navbar">
@@ -33,62 +33,58 @@
         </div>
     </div>
 
-    <div class="auth-container">
-        <h1>Welcome Back</h1>
-        <p class="subtitle">Login to access your account</p>
-        
-        <div id="errorMessage" class="error-message"></div>
-        
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Enter your username" required autocomplete="username">
+    <div class="page-container">
+        <div class="page-header">
+            <h1>About og.email</h1>
+            <p class="page-subtitle">Your complete digital identity platform</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Our Mission</h2>
+            <p class="mission-text">To provide a comprehensive, privacy-focused platform that empowers you to manage your digital presence. og.email is not merely a bio link service; it is a declaration of digital independence and self-expression.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-card-icon">
+                    <i class="fas fa-link"></i>
+                </div>
+                <h3>Biolink Platform</h3>
+                <p>Create stunning, customizable bio links that showcase your entire digital presence in one place.</p>
             </div>
-            
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
+
+            <div class="feature-card">
+                <div class="feature-card-icon">
+                    <i class="fas fa-shield-halved"></i>
+                </div>
+                <h3>E2EE File Hosting</h3>
+                <p>End-to-end encrypted file hosting ensures your data remains completely private and secure.</p>
             </div>
-            
-            <button type="submit" class="auth-button">Login</button>
-        </form>
-        
-        <div class="auth-link">
-            Don't have an account? <a href="/register">Sign up</a>
+
+            <div class="feature-card">
+                <div class="feature-card-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Privacy First</h3>
+                <p>Zero logging of IP addresses, metadata, or user activity. Your digital footprint disappears.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-card-icon">
+                    <i class="fas fa-gem"></i>
+                </div>
+                <h3>Collectibles</h3>
+                <p>Manage and showcase your digital collectibles, including usernames and exclusive gifts.</p>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Got questions?</h2>
+            <p>Email us at <a href="mailto:support@og.email" class="email-link">support@og.email</a></p>
         </div>
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const errorMessage = document.getElementById('errorMessage');
-            
-            try {
-                const response = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ username, password }),
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    window.location.href = '/dashboard';
-                } else {
-                    errorMessage.textContent = data.error || 'Login failed';
-                    errorMessage.classList.add('show');
-                }
-            } catch (error) {
-                errorMessage.textContent = 'An error occurred. Please try again.';
-                errorMessage.classList.add('show');
-            }
-        });
-
         function toggleMobileMenu() {
             const dropdown = document.getElementById('mobileDropdown');
             dropdown.classList.toggle('show');
