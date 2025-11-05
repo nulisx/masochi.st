@@ -1,7 +1,5 @@
 body {
     background: var(--black);
-    position: relative;
-    overflow-x: hidden;
 }
 
 body::before {
@@ -10,150 +8,99 @@ body::before {
     top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(circle, var(--pink-glow) 0%, transparent 70%);
-    filter: blur(100px);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.05) 0%, transparent 70%);
+    filter: blur(60px);
     z-index: -1;
     pointer-events: none;
-    opacity: 0.3;
 }
 
 .profile-container {
     background: rgba(10, 10, 10, 0.8);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(12px);
     border: 1px solid var(--border);
-    border-radius: 1.5rem;
-    padding: 2.5rem 3rem;
-    width: min(650px, 90%);
-    min-height: 380px;
+    border-radius: 12px;
+    padding: 28px 32px;
+    width: min(600px, 90%);
+    min-height: 320px;
     position: relative;
     margin: 4rem auto;
-    box-shadow: 0 0 60px var(--pink-glow);
-    overflow: hidden;
-}
-
-.profile-container::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
-    animation: rotate 25s linear infinite;
-    z-index: 0;
-}
-
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.profile-container > * {
-    position: relative;
-    z-index: 1;
 }
 
 .profile-avatar {
-    width: 150px;
-    height: 150px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
-    border: 4px solid var(--black);
-    box-shadow: 0 0 40px var(--pink-glow), 0 0 0 1px var(--pink);
+    border: 3px solid var(--black);
     position: absolute;
-    top: -75px;
-    left: 3rem;
-    background: var(--dark-bg);
+    top: -65px;
+    left: 32px;
+    background: rgba(10, 10, 10, 0.8);
     object-fit: cover;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .profile-avatar:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 60px var(--pink-glow), 0 0 0 2px var(--pink);
+    transform: scale(1.02);
 }
 
 .username {
     position: relative;
-    font-size: 1.375rem;
-    left: 180px;
-    top: 0.25rem;
+    font-size: 22px;
+    left: 160px;
+    top: 2px;
     color: var(--white);
-    font-family: 'bold', Arial, sans-serif;
-    font-weight: 700;
-    text-align: left;
-    max-width: fit-content;
+    font-weight: 600;
     letter-spacing: -0.02em;
-    text-shadow: 0 0 25px var(--white-glow);
 }
 
 .bio {
     position: relative;
-    left: 180px;
-    top: 0.5rem;
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.7);
-    text-align: left;
-    line-height: 1.6;
-    margin: 0.5rem 0;
-    max-width: 380px;
+    left: 160px;
+    top: 6px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.5;
+    margin: 8px 0;
+    max-width: 360px;
     word-wrap: break-word;
-    min-height: 60px;
+    min-height: 50px;
 }
 
 .connections {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    margin-top: 2rem;
-    gap: 1rem;
-    padding-top: 1.5rem;
+    margin-top: 24px;
+    gap: 10px;
+    padding-top: 20px;
     border-top: 1px solid var(--border);
 }
 
-a {
-    text-decoration: none;
-}
-
 .connection-box {
-    background: rgba(15, 15, 15, 0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    padding: 0.75rem 1.25rem;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 10px 18px;
     border: 1px solid var(--border);
-    border-radius: 0.75rem;
+    border-radius: 8px;
     display: flex;
     align-items: center;
-    gap: 0.625rem;
+    gap: 8px;
     color: var(--white);
-    font-size: 0.9rem;
+    font-size: 13px;
     font-weight: 500;
-    min-width: 140px;
-    text-align: center;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
+    min-width: 130px;
+    transition: all 0.2s ease;
 }
 
 .connection-box:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 0 25px var(--pink-glow);
-    border-color: var(--pink);
-    background: rgba(236, 72, 153, 0.1);
-}
-
-.connection-box:active {
-    transform: translateY(0) scale(1);
+    border-color: rgba(124, 58, 237, 0.3);
+    background: rgba(124, 58, 237, 0.06);
 }
 
 .connection-box img {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     filter: brightness(0) invert(1);
     opacity: 0.9;
 }
@@ -161,100 +108,56 @@ a {
 @media (max-width: 768px) {
     .profile-container {
         width: 95%;
-        padding: 2rem 1.5rem;
+        padding: 24px 28px;
         margin: 3rem auto;
     }
 
     .profile-avatar {
-        width: 120px;
-        height: 120px;
-        top: -60px;
-        left: 1.5rem;
+        width: 110px;
+        height: 110px;
+        top: -55px;
+        left: 28px;
     }
 
     .username {
-        font-size: 1.25rem;
-        left: 150px;
-        top: 0;
+        font-size: 20px;
+        left: 140px;
     }
 
     .bio {
-        left: 150px;
-        font-size: 0.875rem;
-        max-width: calc(100% - 160px);
-        min-height: 50px;
+        left: 140px;
+        font-size: 12px;
+        max-width: calc(100% - 150px);
     }
 
     .connections {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-        gap: 0.75rem;
-        margin-top: 1.5rem;
-        padding-top: 1.25rem;
-    }
-
-    .connection-box {
-        width: 100%;
-        font-size: 0.85rem;
-        padding: 0.625rem 1rem;
-        min-width: auto;
-        justify-content: center;
-    }
-
-    .connection-box img {
-        width: 18px;
-        height: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 8px;
     }
 }
 
 @media (max-width: 480px) {
     .profile-container {
-        width: 95%;
-        padding: 1.75rem 1.25rem;
+        padding: 20px 24px;
         margin: 2.5rem auto;
     }
 
     .profile-avatar {
-        width: 100px;
-        height: 100px;
-        top: -50px;
-        left: 1.25rem;
+        width: 90px;
+        height: 90px;
+        top: -45px;
+        left: 24px;
     }
 
     .username {
-        font-size: 1.125rem;
+        font-size: 18px;
         left: 120px;
-        top: 0;
     }
 
     .bio {
         left: 120px;
-        font-size: 0.8rem;
+        font-size: 11px;
         max-width: calc(100% - 130px);
-        line-height: 1.5;
-        min-height: 45px;
-    }
-
-    .connections {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 0.625rem;
-        margin-top: 1.25rem;
-        padding-top: 1rem;
-    }
-
-    .connection-box {
-        font-size: 0.8rem;
-        padding: 0.5rem 0.875rem;
-    }
-
-    .connection-box img {
-        width: 16px;
-        height: 16px;
-    }
-}
-
-@media (min-width: 769px) {
-    .profile-container {
-        min-height: 350px;
     }
 }
