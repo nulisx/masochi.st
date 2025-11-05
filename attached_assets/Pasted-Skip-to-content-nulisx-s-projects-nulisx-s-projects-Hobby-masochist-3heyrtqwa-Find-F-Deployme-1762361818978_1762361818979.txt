@@ -1,0 +1,171 @@
+Skip to content
+nulisx's projects
+nulisx's projects
+
+Hobby
+
+masochist
+
+3heyrtqwa
+
+
+Find…
+F
+
+Deployment Details
+Created
+nulisx Avatar
+nulisx
+23h ago
+Status
+Ready
+Latest
+Duration
+12s
+23h ago
+Environment
+Production
+Current
+Domains
+og.email
++3
+masochist-git-main-nulisxs-projects.vercel.app
+masochist-r5gupmlh0-nulisxs-projects.vercel.app
+Source
+main
+8184a70
+Improve security and fix deployment errors for the platform
+
+Deployment Settings
+3 Recommendations
+Recommendations
+Build Multiple Deployments Simultaneously
+Never wait for a queued build.
+Get builds up to 40% faster
+Switch to a bigger build machine.
+Prevent Frontend-Backend Mismatches
+Automatically sync client and server versions to avoid deployment conflicts.
+Build Settings
+On-Demand Concurrent Builds
+Disabled
+Build Machine
+Standard
+4 vCPUs
+8 GB Memory
+Prioritize Production Builds
+Enabled
+Runtime Settings
+Fluid Compute
+Enabled
+Function CPU
+Standard
+1 vCPU
+2 GB Memory
+Deployment Protection
+Standard Protection
+Skew Protection
+Disabled
+Cold Start Prevention
+Build Logs
+12s
+33 lines
+Find in logs
+CtrlF
+12:43:20.015 
+Vercel CLI 48.8.2
+12:43:20.195 
+WARN! Due to `builds` existing in your configuration file, the Build and Development Settings defined in your Project Settings will not apply. Learn More: https://vercel.link/unused-build-settings
+12:43:20.852 
+Installing dependencies...
+12:43:22.157 
+12:43:22.157 
+up to date in 1s
+12:43:22.157 
+12:43:22.157 
+25 packages are looking for funding
+12:43:22.158 
+  run `npm fund` for details
+12:43:24.340 
+Build Completed in /vercel/output [4s]
+12:43:24.548 
+Deploying outputs...
+12:43:31.037 
+Deployment completed
+12:43:31.816 
+Creating build cache...
+12:43:34.000 
+Created build cache: 2.174s
+12:43:34.000 
+Uploading build cache [12.69 MB]
+12:43:34.317 
+Build cache uploaded: 326.209ms
+Deployment Summary
+No framework detected
+
+
+Functions
+
+
+All (1)
+
+
+/server.js
+Node.js 22.x
+2.1 MB
+iad1
+
+Deployment Checks
+No checks configured
+
+Use events or statuses from your checks provider to determine when a deployment is promoted to Production.
+
+Assigning Custom Domains
+og.email
+·
+Custom Domain
+
+Manage
+www.og.email
+·
+Custom Domain
+
+Manage
+masochist.vercel.app
+·
+Custom Domain
+
+Manage
+Runtime Logs
+
+View and debug runtime logs & errors
+
+Observability
+
+Monitor app health & performance
+
+Speed Insights
+
+Not Enabled
+Performance metrics from real users
+
+Web Analytics
+
+No Data
+Analyze visitors & traffic in real-time
+
+Home
+Docs
+Guides
+Academy
+Help
+Contact
+All systems normal.
+
+Select a display theme:
+
+system
+
+light
+
+dark
+masochist – Deployment Overview – Vercel
