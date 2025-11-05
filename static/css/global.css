@@ -20,8 +20,9 @@
     --white: #ffffff;
     --white-dim: #a0a0a0;
     --gray: #505050;
-    --purple: #7c3aed;
-    --purple-dim: #6d28d9;
+    --green: #10b981;
+    --green-dim: #059669;
+    --green-light: #6ee7b7;
     --border: rgba(255, 255, 255, 0.05);
 }
 
@@ -136,14 +137,14 @@ body::after {
 }
 
 .nav-pill-login {
-    background: linear-gradient(135deg, var(--purple) 0%, #9333ea 100%);
+    background: linear-gradient(135deg, var(--green) 0%, #059669 100%);
     color: var(--white);
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
 }
 
 .nav-pill-login:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
 }
 
 .flashes {

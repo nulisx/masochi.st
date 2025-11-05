@@ -15,7 +15,7 @@ body::before {
     transform: translateX(-50%);
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(124, 58, 237, 0.04) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.04) 0%, transparent 70%);
     filter: blur(60px);
     z-index: -2;
     pointer-events: none;
@@ -34,58 +34,145 @@ body::before {
 }
 
 .hero-badge {
+    position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, rgba(147, 51, 234, 0.06) 100%);
-    border: 1px solid rgba(124, 58, 237, 0.2);
-    padding: 10px 20px;
-    border-radius: 50px;
+    gap: 12px;
+    padding: 16px 32px;
     margin-bottom: 32px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(5, 150, 105, 0.06) 100%);
+    border: 1.5px solid transparent;
+    border-radius: 50px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.15);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 32px rgba(16, 185, 129, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .hero-badge::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, transparent 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    border-radius: 50px;
+    padding: 1.5px;
+    background: linear-gradient(135deg, rgba(110, 231, 183, 0.4), rgba(16, 185, 129, 0.6), rgba(5, 150, 105, 0.4));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.8;
+    animation: gradientRotate 4s linear infinite;
 }
 
-.hero-badge:hover::before {
-    opacity: 1;
+.hero-badge::after {
+    content: '';
+    position: absolute;
+    inset: -100%;
+    background: conic-gradient(from 0deg, transparent, rgba(110, 231, 183, 0.3), transparent 30%);
+    animation: badgeSpin 6s linear infinite;
+}
+
+@keyframes gradientRotate {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.02); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes badgeSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .hero-badge:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(124, 58, 237, 0.25);
-    border-color: rgba(124, 58, 237, 0.3);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(16, 185, 129, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-.badge-icon {
-    font-size: 16px;
-    filter: drop-shadow(0 0 8px rgba(124, 58, 237, 0.5));
-    animation: float 3s ease-in-out infinite;
+.badge-glow {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 8px;
+    height: 8px;
+    z-index: 2;
 }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-4px); }
+.badge-glow::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, var(--green-light), var(--green));
+    border-radius: 50%;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    box-shadow: 0 0 12px var(--green-light), 0 0 24px var(--green);
+}
+
+.badge-glow::after {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(110, 231, 183, 0.4), transparent);
+    border-radius: 50%;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite reverse;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.6; }
+}
+
+.badge-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, var(--green-light), transparent);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particleFloat 4s ease-in-out infinite;
+    z-index: 1;
+}
+
+.badge-particle:nth-child(1) {
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.badge-particle:nth-child(2) {
+    top: 30%;
+    right: 15%;
+    animation-delay: 1.5s;
+}
+
+.badge-particle:nth-child(3) {
+    bottom: 25%;
+    left: 20%;
+    animation-delay: 3s;
+}
+
+@keyframes particleFloat {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translateY(-12px) translateX(8px);
+        opacity: 0.8;
+    }
 }
 
 .badge-text {
-    font-size: 13px;
-    font-weight: 600;
-    background: linear-gradient(135deg, #a78bfa 0%, #c084fc 100%);
+    position: relative;
+    font-size: 14px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #6ee7b7 0%, #10b981 50%, #059669 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.02em;
+    z-index: 2;
+    text-shadow: 0 0 20px rgba(110, 231, 183, 0.3);
 }
 
 .hero-container h1 {
@@ -128,23 +215,23 @@ body::before {
 }
 
 .button-primary {
-    background: linear-gradient(135deg, var(--purple) 0%, #9333ea 100%);
+    background: linear-gradient(135deg, var(--green) 0%, #059669 100%);
     color: var(--white);
-    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
 }
 
 .button-primary::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
 .button-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(124, 58, 237, 0.5);
+    box-shadow: 0 12px 32px rgba(16, 185, 129, 0.5);
 }
 
 .button-primary:hover::before {
@@ -196,16 +283,16 @@ body::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at top right, rgba(124, 58, 237, 0.08) 0%, transparent 70%);
+    background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
 .feature-box:hover {
-    border-color: rgba(124, 58, 237, 0.3);
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border-color: rgba(16, 185, 129, 0.3);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
     transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(124, 58, 237, 0.2);
+    box-shadow: 0 12px 40px rgba(16, 185, 129, 0.2);
 }
 
 .feature-box:hover::before {
@@ -214,24 +301,24 @@ body::before {
 
 .feature-icon {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 24px;
+    right: 24px;
     width: 48px;
     height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 20px;
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(147, 51, 234, 0.08) 100%);
-    border: 1px solid rgba(124, 58, 237, 0.2);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.08) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.2);
     border-radius: 12px;
-    color: #c084fc;
+    color: #6ee7b7;
     transition: all 0.3s ease;
 }
 
 .feature-box:hover .feature-icon {
     transform: scale(1.1) rotate(-5deg);
-    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
 }
 
 .feature-box h2 {
@@ -240,6 +327,7 @@ body::before {
     margin-bottom: 8px;
     color: var(--white);
     letter-spacing: -0.02em;
+    padding-right: 60px;
 }
 
 .feature-box p {
@@ -247,6 +335,7 @@ body::before {
     color: rgba(255, 255, 255, 0.45);
     line-height: 1.5;
     letter-spacing: -0.01em;
+    padding-right: 60px;
 }
 
 .socials-slider,
@@ -280,7 +369,7 @@ body::before {
 }
 
 .socials-box:hover {
-    border-color: rgba(124, 58, 237, 0.15);
+    border-color: rgba(16, 185, 129, 0.15);
     background: rgba(255, 255, 255, 0.03);
 }
 

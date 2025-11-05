@@ -10,7 +10,7 @@ I want to be asked before you make major changes.
 ## System Architecture
 
 ### UI/UX Decisions
-The platform features an ultra-minimal, clean design inspired by alo.ne and playlist.studio. The color scheme uses a pure black (#000000) background with white text and subtle purple (#7c3aed) accents. Typography is set at a 13px base font size, emphasizing a "less is more" philosophy with maximum whitespace and minimal animations. Subtle hover states and a grain texture overlay are used for depth.
+The platform features an ultra-minimal, clean design inspired by elyria.cc with advanced CSS animations and effects. The color scheme uses a pure black (#000000) background with white text and vibrant green (#10b981) accents. Typography is set at a 13px base font size, emphasizing a "less is more" philosophy with maximum whitespace and professional animations. The hero badge features advanced particle animations, glowing effects, and gradient rotations. Subtle hover states, glassmorphic effects, and a grain texture overlay are used for depth.
 
 ### Technical Implementations
 - **Frontend**: Static HTML/CSS/JavaScript.
