@@ -6,7 +6,9 @@ import cookieParser from 'cookie-parser';
 import { body, validationResult } from 'express-validator';
 import { runQuery, getQuery, allQuery } from './lib/db.js';
 import { authenticateToken, JWT_SECRET } from './lib/middleware.js';
-import { hashEmail } from './lib/crypto-utils.js';
+import { hashEmail, generateRecoveryCode } from './lib/crypto-utils.js';
+import { rateLimit } from './lib/rate-limit.js';
+import crypto from 'crypto';
 
 // Import modular API routes
 import linksHandler from './api/links.js';
@@ -82,7 +84,19 @@ app.post(
         { column: 'id', value: invite.id }
       );
 
-      res.status(200).json({ message: 'Registration successful', userId });
+      const recoveryCode = generateRecoveryCode();
+      const recoveryCodeHash = await bcrypt.hash(recoveryCode, 12);
+      
+      await runQuery('recovery_codes', {
+        user_id: userId,
+        code_hash: recoveryCodeHash
+      });
+
+      res.status(200).json({ 
+        message: 'Registration successful', 
+        userId,
+        recoveryCode: recoveryCode
+      });
     } catch (err) {
       console.error('Register error:', err);
       res.status(500).json({ error: 'Registration failed due to server error' });
@@ -127,6 +141,154 @@ app.post('/api/auth/logout', authenticateToken, async (req, res) => {
   );
   res.status(200).json({ message: 'Logged out successfully' });
 });
+
+// Password Reset - Verify recovery code and issue reset token
+app.post(
+  '/api/auth/reset/verify',
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    maxAttempts: 5,
+    keyGenerator: (req) => {
+      const email = req.body.email || '';
+      return hashEmail(email) + (req.ip || req.connection.remoteAddress);
+    }
+  }),
+  async (req, res) => {
+    const { email, recoveryCode } = req.body;
+
+    if (!email || !recoveryCode) {
+      return res.status(400).json({ error: 'Email and recovery code are required' });
+    }
+
+    try {
+      const emailHash = hashEmail(email);
+      const user = await getQuery('users', 'email', emailHash);
+
+      if (!user) {
+        return res.status(400).json({ error: 'Invalid email or recovery code. Please try again.' });
+      }
+
+      const recoveryRecord = await getQuery('recovery_codes', 'user_id', user.id);
+
+      if (!recoveryRecord) {
+        return res.status(400).json({ error: 'Invalid email or recovery code. Please try again.' });
+      }
+
+      if (recoveryRecord.consumed_at) {
+        return res.status(400).json({ error: 'Invalid email or recovery code. Please try again.' });
+      }
+
+      const attempts = (recoveryRecord.attempts || 0) + 1;
+
+      if (attempts > 5) {
+        return res.status(400).json({ error: 'Invalid email or recovery code. Please try again.' });
+      }
+
+      const validCode = await bcrypt.compare(recoveryCode, recoveryRecord.code_hash);
+
+      if (!validCode) {
+        await runQuery(
+          'recovery_codes',
+          {
+            id: recoveryRecord.id,
+            attempts: attempts,
+            last_attempt_at: new Date().toISOString()
+          },
+          'update',
+          { column: 'id', value: recoveryRecord.id }
+        );
+
+        return res.status(400).json({ error: 'Invalid email or recovery code. Please try again.' });
+      }
+
+      const resetToken = crypto.randomBytes(32).toString('hex');
+      const tokenHash = crypto.createHash('sha256').update(resetToken).digest('hex');
+      const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString();
+
+      await runQuery('password_resets', {
+        user_id: user.id,
+        token_hash: tokenHash,
+        expires_at: expiresAt
+      });
+
+      await runQuery(
+        'recovery_codes',
+        { user_id: user.id, consumed_at: new Date().toISOString() },
+        'update',
+        { column: 'user_id', value: user.id }
+      );
+
+      res.status(200).json({
+        message: 'Recovery code verified successfully',
+        resetToken
+      });
+    } catch (err) {
+      console.error('Password reset verification error:', err);
+      res.status(500).json({ error: 'Failed to verify recovery code' });
+    }
+  }
+);
+
+// Password Reset - Complete password reset with token
+app.post(
+  '/api/auth/reset/complete',
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    maxAttempts: 3,
+    keyGenerator: (req) => req.body.resetToken || (req.ip || req.connection.remoteAddress)
+  }),
+  [
+    body('resetToken').notEmpty(),
+    body('newPassword').isLength({ min: 8 })
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: 'Invalid input. Password must be at least 8 characters.' });
+    }
+
+    const { resetToken, newPassword } = req.body;
+
+    try {
+      const tokenHash = crypto.createHash('sha256').update(resetToken).digest('hex');
+      
+      const resetRecord = await getQuery('password_resets', 'token_hash', tokenHash);
+
+      if (!resetRecord) {
+        return res.status(404).json({ error: 'Invalid or expired reset token' });
+      }
+
+      if (resetRecord.used_at) {
+        return res.status(400).json({ error: 'Reset token has already been used' });
+      }
+
+      if (new Date(resetRecord.expires_at) < new Date()) {
+        return res.status(400).json({ error: 'Reset token has expired' });
+      }
+
+      const newPasswordHash = await bcrypt.hash(newPassword, 12);
+
+      await runQuery(
+        'users',
+        { id: resetRecord.user_id, password_hash: newPasswordHash },
+        'update',
+        { column: 'id', value: resetRecord.user_id }
+      );
+
+      await runQuery(
+        'password_resets',
+        { id: resetRecord.id, used_at: new Date().toISOString() },
+        'update',
+        { column: 'id', value: resetRecord.id }
+      );
+
+      res.status(200).json({ message: 'Password reset successfully' });
+    } catch (err) {
+      console.error('Password reset completion error:', err);
+      res.status(500).json({ error: 'Failed to reset password' });
+    }
+  }
+);
 
 // ---------- Modular API routes ----------
 app.use('/api/links', linksHandler);
@@ -196,6 +358,7 @@ app.post('/generate_invite', authenticateToken, async (req, res) => {
 app.get('/', (req, res) => res.sendFile(path.join(path.resolve(), 'index.html')));
 app.get('/login', (req, res) => res.sendFile(path.join(path.resolve(), 'login', 'index.html')));
 app.get('/register', (req, res) => res.sendFile(path.join(path.resolve(), 'register', 'index.html')));
+app.get('/reset', (req, res) => res.sendFile(path.join(path.resolve(), 'reset', 'index.html')));
 app.get('/dashboard', (req, res) => res.sendFile(path.join(path.resolve(), 'dashboard', 'index.html')));
 app.get('/account', (req, res) => res.sendFile(path.join(path.resolve(), 'account', 'account.html')));
 app.get('/collectibles', (req, res) => res.sendFile(path.join(path.resolve(), 'collectibles', 'index.html')));
