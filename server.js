@@ -11,7 +11,6 @@ import { hashEmail, generateRecoveryCode } from './lib/crypto-utils.js';
 import { rateLimit } from './lib/rate-limit.js';
 import crypto from 'crypto';
 
-// Import modular API routes
 import linksHandler from './api/links.js';
 import profileHandler from './api/profile.js';
 import invitesHandler from './api/invites.js';
@@ -31,9 +30,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(__dirname));
 
-// ---------- Auth routes ----------
-
-// Register
 app.post(
   '/api/auth/register',
   [
@@ -53,16 +49,17 @@ app.post(
       if (!invite || invite.used || (invite.expires_at && new Date(invite.expires_at) < new Date()))
         return res.status(400).json({ error: 'Invalid or expired invite code' });
 
-      const existingUser = await getQuery('users', 'username', username);
+      const usernameLower = username.toLowerCase();
+      const existingUser = await getQuery('users', 'username', usernameLower);
       if (existingUser) return res.status(400).json({ error: 'Username already exists' });
 
-      const emailHash = hashEmail(email);
+      const emailHash = hashEmail(email.toLowerCase());
       const existingEmail = await getQuery('users', 'email', emailHash);
       if (existingEmail) return res.status(400).json({ error: 'Email already exists' });
 
       const passwordHash = await bcrypt.hash(password, 12);
       const newUser = await runQuery('users', {
-        username,
+        username: usernameLower,
         email: emailHash,
         password_hash: passwordHash,
         display_name: username,
@@ -108,14 +105,14 @@ app.post(
   }
 );
 
-// Login
 app.post('/api/auth/login', async (req, res) => {
   const { username, password } = req.body;
   try {
-    let user = await getQuery('users', 'username', username);
+    const usernameInput = username.toLowerCase();
+    let user = await getQuery('users', 'username', usernameInput);
     
     if (!user && username.includes('@')) {
-      const emailHash = hashEmail(username);
+      const emailHash = hashEmail(usernameInput);
       user = await getQuery('users', 'email', emailHash);
     }
     
@@ -137,7 +134,6 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
-// Logout
 app.post('/api/auth/logout', authenticateToken, async (req, res) => {
   res.setHeader(
     'Set-Cookie',
@@ -146,7 +142,6 @@ app.post('/api/auth/logout', authenticateToken, async (req, res) => {
   res.status(200).json({ message: 'Logged out successfully' });
 });
 
-// Password Reset - Verify recovery code and issue reset token
 app.post(
   '/api/auth/reset/verify',
   rateLimit({
@@ -233,7 +228,6 @@ app.post(
   }
 );
 
-// Password Reset - Complete password reset with token
 app.post(
   '/api/auth/reset/complete',
   rateLimit({
@@ -294,7 +288,6 @@ app.post(
   }
 );
 
-// ---------- Modular API routes ----------
 app.use('/api/links', linksHandler);
 app.use('/api/profile', profileHandler);
 app.use('/api/invites', invitesHandler);
@@ -303,7 +296,6 @@ app.use('/api/connections', connectionsHandler);
 app.use('/api', collectiblesHandler);
 app.use('/api/token', tokenHandler);
 
-// User profile API endpoint for public access
 app.get('/api/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
@@ -331,7 +323,6 @@ app.get('/api/:userId', async (req, res) => {
   }
 });
 
-// Invite code generation endpoint (for ic.html page)
 app.post('/generate_invite', authenticateToken, async (req, res) => {
   try {
     const userId = req.user.id;
@@ -358,7 +349,6 @@ app.post('/generate_invite', authenticateToken, async (req, res) => {
   }
 });
 
-// ---------- Frontend routes ----------
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'login', 'index.html')));
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'register', 'index.html')));
@@ -370,13 +360,10 @@ app.get('/integrations', (req, res) => res.sendFile(path.join(__dirname, 'integr
 app.get('/images', (req, res) => res.sendFile(path.join(__dirname, 'images', 'index.html')));
 app.get('/ic', (req, res) => res.sendFile(path.join(__dirname, 'ic', 'ic.html')));
 
-// 404 fallback
 app.use((req, res) => res.status(404).sendFile(path.join(__dirname, '404.html')));
 
-// ---------- Start server (local dev only) ----------
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Server running on http://0.0.0.0:${PORT}`));
 }
 
-// Export for Vercel serverless
 export default app;

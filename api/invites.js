@@ -4,10 +4,9 @@ import { runQuery, getQuery, allQuery } from '../lib/db.js';
 
 const router = express.Router();
 
-// ----------------- GET ALL INVITES -----------------
 router.get('/', authenticateToken, requireRole('admin'), async (req, res) => {
   try {
-    const invites = await allQuery('invites', 'id', '>=0'); // fetch all
+    const invites = await allQuery('invites', 'id', '>=0');
     res.status(200).json({ invites });
   } catch (err) {
     console.error('Invites GET error:', err);
@@ -15,7 +14,6 @@ router.get('/', authenticateToken, requireRole('admin'), async (req, res) => {
   }
 });
 
-// ----------------- CREATE INVITE -----------------
 router.post('/', authenticateToken, requireRole('admin'), async (req, res) => {
   const { code, role = 'user', max_uses = 1, expires_at = null } = req.body;
   if (!code) return res.status(400).json({ error: 'Invite code is required' });
@@ -43,7 +41,6 @@ router.post('/', authenticateToken, requireRole('admin'), async (req, res) => {
   }
 });
 
-// ----------------- UPDATE INVITE -----------------
 router.put('/:code', authenticateToken, requireRole('admin'), async (req, res) => {
   const { code } = req.params;
   const { role, max_uses, expires_at } = req.body;
@@ -67,7 +64,6 @@ router.put('/:code', authenticateToken, requireRole('admin'), async (req, res) =
   }
 });
 
-// ----------------- DELETE INVITE -----------------
 router.delete('/:code', authenticateToken, requireRole('admin'), async (req, res) => {
   const { code } = req.params;
 
