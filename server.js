@@ -206,5 +206,10 @@ app.get('/ic', (req, res) => res.sendFile(path.join(path.resolve(), 'ic', 'ic.ht
 // 404 fallback
 app.use((req, res) => res.status(404).sendFile(path.join(path.resolve(), '404.html')));
 
-// ---------- Start server ----------
-app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Server running on http://0.0.0.0:${PORT}`));
+// ---------- Start server (local dev only) ----------
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Server running on http://0.0.0.0:${PORT}`));
+}
+
+// Export for Vercel serverless
+export default app;
