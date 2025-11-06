@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
@@ -19,13 +20,16 @@ import connectionsHandler from './api/connections.js';
 import collectiblesHandler from './api/collectibles.js';
 import tokenHandler from './api/token.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.resolve()));
+app.use(express.static(__dirname));
 
 // ---------- Auth routes ----------
 
@@ -355,19 +359,19 @@ app.post('/generate_invite', authenticateToken, async (req, res) => {
 });
 
 // ---------- Frontend routes ----------
-app.get('/', (req, res) => res.sendFile(path.join(path.resolve(), 'index.html')));
-app.get('/login', (req, res) => res.sendFile(path.join(path.resolve(), 'login', 'index.html')));
-app.get('/register', (req, res) => res.sendFile(path.join(path.resolve(), 'register', 'index.html')));
-app.get('/reset', (req, res) => res.sendFile(path.join(path.resolve(), 'reset', 'index.html')));
-app.get('/dashboard', (req, res) => res.sendFile(path.join(path.resolve(), 'dashboard', 'index.html')));
-app.get('/account', (req, res) => res.sendFile(path.join(path.resolve(), 'account', 'account.html')));
-app.get('/collectibles', (req, res) => res.sendFile(path.join(path.resolve(), 'collectibles', 'index.html')));
-app.get('/integrations', (req, res) => res.sendFile(path.join(path.resolve(), 'integrations', 'index.html')));
-app.get('/images', (req, res) => res.sendFile(path.join(path.resolve(), 'images', 'index.html')));
-app.get('/ic', (req, res) => res.sendFile(path.join(path.resolve(), 'ic', 'ic.html')));
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'login', 'index.html')));
+app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'register', 'index.html')));
+app.get('/reset', (req, res) => res.sendFile(path.join(__dirname, 'login', 'reset', 'index.html')));
+app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'dashboard', 'index.html')));
+app.get('/account', (req, res) => res.sendFile(path.join(__dirname, 'account', 'account.html')));
+app.get('/collectibles', (req, res) => res.sendFile(path.join(__dirname, 'collectibles', 'index.html')));
+app.get('/integrations', (req, res) => res.sendFile(path.join(__dirname, 'integrations', 'index.html')));
+app.get('/images', (req, res) => res.sendFile(path.join(__dirname, 'images', 'index.html')));
+app.get('/ic', (req, res) => res.sendFile(path.join(__dirname, 'ic', 'ic.html')));
 
 // 404 fallback
-app.use((req, res) => res.status(404).sendFile(path.join(path.resolve(), '404.html')));
+app.use((req, res) => res.status(404).sendFile(path.join(__dirname, '404.html')));
 
 // ---------- Start server (local dev only) ----------
 if (process.env.NODE_ENV !== 'production') {
