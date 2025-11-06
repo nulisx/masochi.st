@@ -1,9 +1,11 @@
+import express from 'express';
 import { authenticateToken } from '../lib/middleware.js';
 import { runQuery, getQuery, allQuery } from '../lib/db.js';
 
-export default async function handler(req, res) {
-  await authenticateToken(req, res, async () => {
-    const userId = req.user.id;
+const router = express.Router();
+
+router.all('/', authenticateToken, async (req, res) => {
+  const userId = req.user.id;
 
     try {
       // ----------------- GET LINKS -----------------
@@ -69,8 +71,9 @@ export default async function handler(req, res) {
       // ----------------- METHOD NOT ALLOWED -----------------
       return res.status(405).json({ error: 'Method not allowed' });
     } catch (err) {
-      console.error('Links API error:', err);
-      return res.status(500).json({ error: 'Links operation failed' });
-    }
-  });
-}
+    console.error('Links API error:', err);
+    return res.status(500).json({ error: 'Links operation failed' });
+  }
+});
+
+export default router;

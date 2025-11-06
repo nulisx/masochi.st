@@ -1,9 +1,11 @@
+import express from 'express';
 import { authenticateToken } from '../lib/middleware.js';
 import { getQuery, runQuery } from '../lib/db.js';
 
-export default async function handler(req, res) {
-  await authenticateToken(req, res, async () => {
-    const userId = req.user.id;
+const router = express.Router();
+
+router.all('/', authenticateToken, async (req, res) => {
+  const userId = req.user.id;
 
     try {
       // ----------------- GET PROFILE -----------------
@@ -40,9 +42,10 @@ export default async function handler(req, res) {
       // ----------------- METHOD NOT ALLOWED -----------------
       return res.status(405).json({ error: 'Method not allowed' });
 
-    } catch (err) {
-      console.error('Profile API error:', err);
-      return res.status(500).json({ error: 'Profile operation failed' });
-    }
-  });
-}
+  } catch (err) {
+    console.error('Profile API error:', err);
+    return res.status(500).json({ error: 'Profile operation failed' });
+  }
+});
+
+export default router;
