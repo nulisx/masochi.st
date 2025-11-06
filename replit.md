@@ -15,7 +15,7 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
 ### Technical Implementations
 - **Frontend**: Static HTML/CSS/JavaScript.
 - **Backend**: Node.js with Express.
-- **Database**: SQLite for development, Supabase (PostgreSQL) for production.
+- **Database**: MariaDB (mysql2 driver with connection pooling).
 - **Authentication**: JWT-based with bcrypt (12 rounds) for password hashing and SHA-256 for email hashing.
 - **Server Configuration**: Runs on port 5000 and host 0.0.0.0 for Replit compatibility.
 
@@ -58,8 +58,14 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
     - `password_resets`: Manages password reset tokens with expiration and usage tracking.
 - **Security**: JWT authentication (7-day expiration), bcrypt password hashing (12 rounds), role-based access control, invite code validation, multi-use invite tracking, session management, input validation via express-validator, rate limiting for password resets, one-time recovery codes, and normalized error responses to prevent enumeration attacks.
 
+## Recent Changes (November 6, 2025)
+1. **Database Migration**: Migrated from SQLite/Supabase to MariaDB using mysql2 with connection pooling
+2. **Vercel Routing Fix**: Added explicit routes for /about, /pricing, /privacy, and /ic pages to prevent 404 errors on production
+3. **IC Page Styling**: Created static/css/ic.css matching the site's glassmorphic design patterns with animations
+4. **Environment Variables**: Now using MARIADB_HOST, MARIADB_USER, MARIADB_PASSWORD, MARIADB_DATABASE, MARIADB_PORT for database connection
+
 ## External Dependencies
 - **Database**:
-    - **Supabase**: Used for production environment (PostgreSQL compatible).
+    - **MariaDB**: Primary database with mysql2 driver for connection pooling and async/await support
 - **Deployment**:
     - **Vercel**: Platform for production deployment.
