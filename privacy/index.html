@@ -11,7 +11,7 @@
 </head>
 <body>
     <div class="navbar">
-        <div class="logo">Drugs.RIP</div>
+        <div class="logo">🍃 Drugs.RIP</div>
         <div class="nav-pills">
             <a href="/" class="nav-pill">Home</a>
             <a href="/about" class="nav-pill">About</a>
@@ -132,8 +132,72 @@
         <div class="contact-section">
             <h2>Law Enforcement Contact</h2>
             <p>For official legal requests and court orders</p>
-            <a href="mailto:legal@drugs.rip" class="contact-email">legal@drugs.rip
+            <a href="mailto:legal@drugs.rip" class="contact-email">
+                <i class="fas fa-envelope"></i>
+                legal@drugs.rip
+            </a>
             <p class="response-time">Expected response time: 24-72 hours</p>
+            
+            <button class="privacy-toggle-btn" onclick="togglePrivacyPolicy()">
+                <span id="toggleText">Hide full privacy policy</span>
+                <i class="fas fa-chevron-up" id="toggleIcon"></i>
+            </button>
+        </div>
+
+        <div class="full-privacy-section" id="fullPrivacySection">
+            <div class="privacy-content">
+                <h2>Complete Data Collection Policy</h2>
+                <p>Comprehensive details about what data we collect, store, and how we handle it.</p>
+
+                <div class="privacy-subsection">
+                    <h3>1. Personal Information Collection</h3>
+                    <p>Drugs.RIP collects only the minimal data necessary to provide our service. This includes:</p>
+                    <ul>
+                        <li><strong>Username:</strong> Your chosen username for logging in.</li>
+                        <li><strong>Domain Selection:</strong> The domain you choose (e.g., drugs.rip).</li>
+                        <li><strong>Password Hash:</strong> Your password, hashed using bcrypt for maximum security. We never store plain-text passwords.</li>
+                        <li><strong>Account Creation Date:</strong> The date your account was created.</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-subsection">
+                    <h3>2. Technical Data</h3>
+                    <p>We handle technical data with extreme care for your privacy:</p>
+                    <ul>
+                        <li><strong>IP Addresses:</strong> IP addresses are stored in memory only and are wiped after 1 minute of inactivity. They are never logged to disk.</li>
+                        <li><strong>Session Data:</strong> Necessary session information (e.g., session tokens) is stored to maintain your login state, expounded upon in our documentation.</li>
+                        <li><strong>Server Logs:</strong> Minimal anonymized server logs are kept for debugging and performance monitoring, containing no personally identifiable information.</li>
+                        <li><strong>Email Content:</strong> All content is end-to-end encrypted and stored in a zero-knowledge architecture. We cannot access or decrypt your data.</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-subsection">
+                    <h3>3. Data We Do NOT Collect</h3>
+                    <p>We explicitly do NOT collect the following:</p>
+                    <ul>
+                        <li>Real names or personal identification</li>
+                        <li>Phone numbers or alternate contact information</li>
+                        <li>Payment information (we accept only anonymous cryptocurrency donations)</li>
+                        <li>Location data beyond general country-level IP resolution (not logged)</li>
+                        <li>Browser fingerprints or device identifiers</li>
+                        <li>Any data that could be used to identify you personally beyond your chosen username and hashed password.</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-subsection">
+                    <h3>4. Data Retention</h3>
+                    <p>Account data is retained only as long as the account remains active. Users may delete their accounts at any time through the dashboard, resulting in immediate and irreversible data deletion. Inactive accounts may be subject to deletion after extended periods of non-use, as outlined in our Terms and Conditions.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-nav">
+            <a href="/" class="footer-link">Home</a>
+            <a href="/about" class="footer-link">About</a>
+            <a href="/#features" class="footer-link">Roadmap</a>
+            <a href="/pricing" class="footer-link">Pricing</a>
+            <a href="/privacy" class="footer-link">Privacy</a>
+            <a href="/login" class="footer-link">Login</a>
         </div>
     </div>
 
@@ -149,6 +213,27 @@
             if (mobileMenu && !mobileMenu.contains(event.target) && dropdown && dropdown.classList.contains('show')) {
                 dropdown.classList.toggle('show');
             }
+        });
+
+        function togglePrivacyPolicy() {
+            const section = document.getElementById('fullPrivacySection');
+            const text = document.getElementById('toggleText');
+            const icon = document.getElementById('toggleIcon');
+            
+            section.classList.toggle('expanded');
+            
+            if (section.classList.contains('expanded')) {
+                text.textContent = 'Hide full privacy policy';
+                icon.className = 'fas fa-chevron-up';
+            } else {
+                text.textContent = 'Read full privacy policy';
+                icon.className = 'fas fa-chevron-down';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const section = document.getElementById('fullPrivacySection');
+            section.classList.add('expanded');
         });
     </script>
 </body>
