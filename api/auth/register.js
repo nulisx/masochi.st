@@ -6,7 +6,6 @@ export default async function handler(req, res) {
 
   const { username, email, password, inviteCode } = req.body;
 
-  // Basic validation
   if (!username || !email || !password || !inviteCode) 
     return res.status(400).json({ error: 'All fields are required' });
 

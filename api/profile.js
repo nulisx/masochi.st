@@ -8,7 +8,6 @@ router.all('/', authenticateToken, async (req, res) => {
   const userId = req.user.id;
 
     try {
-      // ----------------- GET PROFILE -----------------
       if (req.method === 'GET') {
         const profile = await getQuery('profiles', 'user_id', userId);
         if (!profile) return res.status(404).json({ error: 'Profile not found' });
@@ -16,7 +15,6 @@ router.all('/', authenticateToken, async (req, res) => {
         return res.status(200).json({ profile });
       }
 
-      // ----------------- UPDATE PROFILE -----------------
       if (req.method === 'PUT') {
         const { bio, avatar_url, theme, custom_css } = req.body;
 
@@ -39,7 +37,6 @@ router.all('/', authenticateToken, async (req, res) => {
         return res.status(200).json({ message: 'Profile updated', profile: updatedProfile });
       }
 
-      // ----------------- METHOD NOT ALLOWED -----------------
       return res.status(405).json({ error: 'Method not allowed' });
 
   } catch (err) {
