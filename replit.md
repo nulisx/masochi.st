@@ -29,8 +29,16 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
     - Username requirements: 1-20 alphanumeric characters and underscores.
     - Support for multi-use and time-expiring invite codes.
     - Username serves as the default display name.
+    - Recovery codes (32-character hex) are generated during registration for password reset.
+- **Password Reset System**:
+    - Self-service password reset using email and recovery code.
+    - Two-step verification flow: verify recovery code → set new password.
+    - Recovery codes are bcrypt-hashed and one-time use (consumed after verification).
+    - Rate limiting: 5 attempts per 15 minutes per email/IP combination.
+    - Reset tokens expire after 10 minutes.
+    - Normalized error messages prevent email enumeration.
 - **API Endpoints**:
-    - **Authentication**: Register, Login, Logout, Token Exchange.
+    - **Authentication**: Register, Login, Logout, Token Exchange, Password Reset (Verify & Complete).
     - **Invite Management**: Create, List, Update, Delete invite codes.
     - **User Profile**: Get public profile, Get/Update current user's profile.
     - **Links**: Get, Create, Update, Delete user links.
@@ -46,7 +54,9 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
     - `links`: Stores user's custom links with click tracking.
     - `social_links`: Stores external social media links.
     - `analytics`: Tracks link clicks and user events.
-- **Security**: JWT authentication (7-day expiration), bcrypt password hashing, role-based access control, invite code validation, multi-use invite tracking, session management, and input validation via express-validator.
+    - `recovery_codes`: Stores bcrypt-hashed recovery codes with attempt tracking and consumption timestamps.
+    - `password_resets`: Manages password reset tokens with expiration and usage tracking.
+- **Security**: JWT authentication (7-day expiration), bcrypt password hashing (12 rounds), role-based access control, invite code validation, multi-use invite tracking, session management, input validation via express-validator, rate limiting for password resets, one-time recovery codes, and normalized error responses to prevent enumeration attacks.
 
 ## External Dependencies
 - **Database**:
