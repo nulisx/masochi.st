@@ -32,6 +32,22 @@
       "dest": "/images/$1"
     },
     {
+      "src": "/about/?",
+      "dest": "/about/index.html"
+    },
+    {
+      "src": "/pricing/?",
+      "dest": "/pricing/index.html"
+    },
+    {
+      "src": "/privacy/?",
+      "dest": "/privacy/index.html"
+    },
+    {
+      "src": "/ic/?",
+      "dest": "/ic/ic.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/api/index.js"
     }
