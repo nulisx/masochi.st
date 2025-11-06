@@ -100,6 +100,16 @@ body::after {
     padding: 0 8px;
     filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.6));
     animation: logoGlow 3s ease-in-out infinite;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-icon {
+    width: 20px;
+    height: 20px;
+    fill: var(--green-light);
+    flex-shrink: 0;
 }
 
 @keyframes logoGlow {

@@ -62,23 +62,10 @@ body::before {
     animation: gradientRotate 4s linear infinite;
 }
 
-.hero-badge::after {
-    content: '';
-    position: absolute;
-    inset: -100%;
-    background: conic-gradient(from 0deg, transparent, rgba(110, 231, 183, 0.3), transparent 30%);
-    animation: badgeSpin 6s linear infinite;
-}
-
 @keyframes gradientRotate {
     0% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(180deg) scale(1.02); }
+    50% { transform: rotate(180deg) scale(1.01); }
     100% { transform: rotate(360deg) scale(1); }
-}
-
-@keyframes badgeSpin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
 
 .hero-badge:hover {
