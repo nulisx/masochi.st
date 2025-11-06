@@ -1,4 +1,4 @@
--- OG.Email Supabase Database Setup
+-- Drugs.RIP Supabase Database Setup
 -- Run this SQL in your Supabase SQL Editor to set up the production database
 
 -- ============================================

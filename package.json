@@ -1,7 +1,7 @@
 {
-  "name": "og-email",
+  "name": "drugs-rip",
   "version": "1.0.0",
-  "description": "og.email Bio Link Platform",
+  "description": "Drugs.RIP Bio Link Platform",
   "type": "module",
   "main": "server.js",
   "scripts": {

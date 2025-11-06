@@ -9,7 +9,7 @@
         return;
     }
 
-    fetch('https://og.email/api/token/exchange', {
+    fetch('https://drugs.rip/api/token/exchange', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

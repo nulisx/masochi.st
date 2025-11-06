@@ -1,4 +1,4 @@
-# OG.Email API Fixes & Deployment Guide
+# Drugs.RIP API Fixes & Deployment Guide
 
 ## Summary of Changes
 
@@ -238,7 +238,7 @@ To test the new endpoints:
    - Check deployment logs to verify no errors
 
 4. **Verify**:
-   - Test your live site at og.email
+   - Test your live site at drugs.rip
    - Try registering a user
    - Test API endpoints
 

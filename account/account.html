@@ -7,12 +7,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/global.css">
     <link rel="stylesheet" href="/static/css/dashboard.css">
-    <title>Account Settings - og.email</title>
+    <title>Account Settings - Drugs.RIP</title>
 </head>
 <body>
     <div class="sidebar">
         <div class="sidebar-header">
-            <a href="/" class="sidebar-logo">og.email</a>
+            <a href="/" class="sidebar-logo">Drugs.RIP</a>
         </div>
         <div>
             <ul class="sidebar-menu">
@@ -75,7 +75,7 @@
             let t = document.cookie.split("; ").find(t => t.startsWith("auth_token="))?.split("=")[1];
             if (!t) return null;
             try {
-                let e = await fetch("https://og.email/api/token/exchange", {
+                let e = await fetch("https://drugs.rip/api/token/exchange", {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -98,7 +98,7 @@
                     return;
                 }
 
-                const response = await fetch(`https://og.email/api/${tokenUser.id}`);
+                const response = await fetch(`https://drugs.rip/api/${tokenUser.id}`);
 
                 if (!response.ok) {
                     throw new Error('API response was not ok');
