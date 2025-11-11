@@ -323,6 +323,19 @@ app.get('/api/:userId', async (req, res) => {
   }
 });
 
+function generateInviteCode() {
+  const hasS = Math.random() > 0.5;
+  const prefix = hasS ? 'Drugs' : 'Drug';
+  
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let code = '';
+  for (let i = 0; i < 4; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  
+  return prefix + code;
+}
+
 app.post('/generate_invite', authenticateToken, async (req, res) => {
   try {
     const userId = req.user.id;
@@ -332,8 +345,19 @@ app.post('/generate_invite', authenticateToken, async (req, res) => {
       return res.status(403).json({ error: 'Only owners can generate invite codes' });
     }
 
-    const crypto = await import('crypto');
-    const inviteCode = crypto.default.randomBytes(4).toString('hex');
+    let inviteCode;
+    let attempts = 0;
+    let existing;
+    
+    do {
+      inviteCode = generateInviteCode();
+      existing = await getQuery('invites', 'code', inviteCode);
+      attempts++;
+    } while (existing && attempts < 10);
+
+    if (existing) {
+      return res.status(500).json({ error: 'Failed to generate unique invite code' });
+    }
 
     await runQuery('invites', {
       code: inviteCode,
@@ -350,15 +374,18 @@ app.post('/generate_invite', authenticateToken, async (req, res) => {
 });
 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.get('/about', (req, res) => res.sendFile(path.join(__dirname, 'about', 'index.html')));
+app.get('/pricing', (req, res) => res.sendFile(path.join(__dirname, 'pricing', 'index.html')));
+app.get('/privacy', (req, res) => res.sendFile(path.join(__dirname, 'privacy', 'index.html')));
 app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'login', 'index.html')));
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'register', 'index.html')));
 app.get('/reset', (req, res) => res.sendFile(path.join(__dirname, 'login', 'reset', 'index.html')));
 app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'dashboard', 'index.html')));
-app.get('/account', (req, res) => res.sendFile(path.join(__dirname, 'account', 'account.html')));
-app.get('/collectibles', (req, res) => res.sendFile(path.join(__dirname, 'collectibles', 'index.html')));
-app.get('/integrations', (req, res) => res.sendFile(path.join(__dirname, 'integrations', 'index.html')));
-app.get('/images', (req, res) => res.sendFile(path.join(__dirname, 'images', 'index.html')));
-app.get('/ic', (req, res) => res.sendFile(path.join(__dirname, 'ic', 'ic.html')));
+app.get('/account', (req, res) => res.sendFile(path.join(__dirname, 'dashboard', 'account', 'account.html')));
+app.get('/collectibles', (req, res) => res.sendFile(path.join(__dirname, 'dashboard', 'collectibles', 'index.html')));
+app.get('/integrations', (req, res) => res.sendFile(path.join(__dirname, 'dashboard', 'integrations', 'index.html')));
+app.get('/images', (req, res) => res.sendFile(path.join(__dirname, 'dashboard', 'images', 'index.html')));
+app.get('/ic', (req, res) => res.sendFile(path.join(__dirname, 'ic', 'index.html')));
 
 app.use((req, res) => res.status(404).sendFile(path.join(__dirname, '404.html')));
 
