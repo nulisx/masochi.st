@@ -70,7 +70,7 @@ Copy the output - this is your JWT secret.
 
 ### Step 6: Test Your Site
 
-1. Visit your deployed site (drugs.rip)
+1. Visit your deployed site (glowi.es)
 2. Go to `/login`
 3. Login with the default owner account:
    - Username: `r`

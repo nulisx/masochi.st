@@ -1,4 +1,4 @@
-# Drugs.RIP API Fixes & Deployment Guide
+# Glowi.es API Fixes & Deployment Guide
 
 ## Summary of Changes
 
@@ -238,7 +238,7 @@ To test the new endpoints:
    - Check deployment logs to verify no errors
 
 4. **Verify**:
-   - Test your live site at drugs.rip
+   - Test your live site at glowi.es
    - Try registering a user
    - Test API endpoints
 

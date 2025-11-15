@@ -1,4 +1,4 @@
--- MariaDB Database Setup for Drugs.RIP Bio Link Platform
+-- MariaDB Database Setup for Glowi.es Bio Link Platform Service
 
 CREATE TABLE IF NOT EXISTS users (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
