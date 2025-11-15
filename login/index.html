@@ -86,7 +86,7 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    window.location.href = '/dashboard';
+                    window.location.href = '/dash';
                 } else {
                     errorMessage.textContent = data.error || 'Login failed';
                     errorMessage.classList.add('show');
