@@ -1,7 +1,7 @@
 {
-  "name": "drugs-rip",
+  "name": "Glowi.es",
   "version": "1.0.0",
-  "description": "Drugs.RIP Bio Link Platform",
+  "description": "Glowi.es Bio Link Platform Service",
   "type": "module",
   "main": "server.js",
   "scripts": {

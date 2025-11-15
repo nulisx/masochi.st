@@ -9,7 +9,7 @@
         return;
     }
 
-    fetch('https://drugs.rip/api/token/exchange', {
+    fetch('https://Glowi.es/api/token/exchange', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
