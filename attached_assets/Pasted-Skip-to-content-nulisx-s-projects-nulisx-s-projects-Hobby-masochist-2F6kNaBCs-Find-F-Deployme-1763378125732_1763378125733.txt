@@ -1,0 +1,294 @@
+Skip to content
+nulisx's projects
+nulisx's projects
+
+Hobby
+
+masochist
+
+2F6kNaBCs
+
+
+Find…
+F
+
+Deployment Details
+Created
+nulisx Avatar
+nulisx
+1m ago
+Status
+Ready
+Latest
+Duration
+13s
+1m ago
+Environment
+Production
+Current
+Domains
+glowi.es
++3
+masochist-git-main-nulisxs-projects.vercel.app
+masochist-p5zmk6mtq-nulisxs-projects.vercel.app
+Source
+main
+446c73d
+Saved progress at the end of the loop
+
+Deployment Settings
+3 Recommendations
+Recommendations
+Build Multiple Deployments Simultaneously
+Never wait for a queued build.
+Get builds up to 40% faster
+Switch to a bigger build machine.
+Prevent Frontend-Backend Mismatches
+Automatically sync client and server versions to avoid deployment conflicts.
+Build Settings
+On-Demand Concurrent Builds
+Disabled
+Build Machine
+Standard
+4 vCPUs
+8 GB Memory
+Prioritize Production Builds
+Enabled
+Runtime Settings
+Fluid Compute
+Enabled
+Function CPU
+Standard
+1 vCPU
+2 GB Memory
+Deployment Protection
+Standard Protection
+Skew Protection
+Disabled
+Cold Start Prevention
+Build Logs
+17s
+33 lines
+Find in logs
+CtrlF
+06:12:29.849 
+Running build in Washington, D.C., USA (East) – iad1
+06:12:29.853 
+Build machine configuration: 2 cores, 8 GB
+06:12:30.208 
+Cloning github.com/nulisx/masochi.st (Branch: main, Commit: 446c73d)
+06:12:31.515 
+Cloning completed: 1.306s
+06:12:31.555 
+Found .vercelignore
+06:12:31.561 
+Removed 26 ignored files defined in .vercelignore
+06:12:31.561 
+  /.git/config
+06:12:31.561 
+  /.git/description
+06:12:31.561 
+  /.git/FETCH_HEAD
+06:12:31.561 
+  /.git/HEAD
+06:12:31.561 
+  /.git/hooks/applypatch-msg.sample
+06:12:31.561 
+  /.git/hooks/commit-msg.sample
+06:12:31.561 
+  /.git/hooks/fsmonitor-watchman.sample
+06:12:31.561 
+  /.git/hooks/post-update.sample
+06:12:31.561 
+  /.git/hooks/pre-applypatch.sample
+Deployment Summary
+No framework detected
+
+
+Static Assets
+
+
+All (46)
+
+
+CSS (11)
+
+
+Image (29)
+
+
+Font (6)
+
+
+/fonts/bold.woff2
+38 kB
+
+
+/fonts/regular.woff2
+40 kB
+
+
+/static/cdn/avatar.png
+2.87 kB
+
+
+/static/cdn/avatars/7axAHBQLSaip.png
+323 kB
+
+
+/static/cdn/avatars/800fUMfXOjTF.png
+69 kB
+
+
+/static/cdn/avatars/ccxKrjOXjZjB.jpg
+50 kB
+
+
+/static/cdn/avatars/CKEie4so71Fq.jpg
+111 kB
+
+
+/static/cdn/avatars/CWXAk7CFbPib.jpg
+19 kB
+
+
+/static/cdn/avatars/DpU6HDHw34Fn.jpg
+6.14 kB
+
+
+/static/cdn/avatars/eRVt2RnA598z.jpg
+54 kB
+
+
+/static/cdn/avatars/gnFgtlqp9e3E.png
+874 kB
+
+
+/static/cdn/avatars/gUjlXYNrp7gi.png
+686 kB
+
+
+/static/cdn/avatars/hYpDtVL0gHKy.jpg
+39 kB
+
+
+/static/cdn/avatars/mbKXi7UwbQmS.gif
+459 kB
+
+
+/static/cdn/avatars/n622QvyVt9f1.jpg
+57 kB
+
+
+/static/cdn/avatars/ovXx0FmqKnQw.jpg
+51 kB
+
+
+/static/cdn/avatars/P18mfiKsgEW9.jpg
+49 kB
+
+
+/static/cdn/avatars/ucZ7eItgcofG.jpg
+152 kB
+
+
+/static/cdn/discord.png
+8.29 kB
+
+
+/static/cdn/favicon.ico
+10 kB
+
+
+/static/cdn/favicon.png
+70 kB
+
+
+Functions
+
+
+All (1)
+
+
+/api/index.js
+Node.js 22.x
+1.3 MB
+iad1
+
+Deployment Checks
+No checks configured
+
+Use events or statuses from your checks provider to determine when a deployment is promoted to Production.
+
+Assigning Custom Domains
+glowi.es
+·
+Custom Domain
+
+Manage
+www.glowi.es
+·
+Custom Domain
+
+Manage
+masochist.vercel.app
+·
+Custom Domain
+
+Manage
+marit.al
+·
+Custom Domain
+
+Manage
+og.email
+·
+Custom Domain
+
+Manage
+www.marit.al
+·
+Custom Domain
+
+Manage
+www.og.email
+·
+Custom Domain
+
+Manage
+Runtime Logs
+
+View and debug runtime logs & errors
+
+Observability
+
+Monitor app health & performance
+
+Speed Insights
+
+Not Enabled
+Performance metrics from real users
+
+Web Analytics
+
+No Data
+Analyze visitors & traffic in real-time
+
+Home
+Docs
+Guides
+Academy
+Help
+Contact
+All systems normal.
+
+Select a display theme:
+
+system
+
+light
+
+dark
+masochist – Deployment Overview – Vercel
+05:28:10
+76

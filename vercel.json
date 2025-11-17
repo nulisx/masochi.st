@@ -14,7 +14,11 @@
       "use": "@vercel/static"
     },
     {
-      "src": "images/**",
+      "src": "dashfiles/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "node_modules/@vercel/speed-insights/**",
       "use": "@vercel/static"
     }
   ],
@@ -28,8 +32,12 @@
       "dest": "/fonts/$1"
     },
     {
-      "src": "/images/(.*)",
-      "dest": "/images/$1"
+      "src": "/dashfiles/(.*)",
+      "dest": "/dashfiles/$1"
+    },
+    {
+      "src": "/node_modules/@vercel/speed-insights/(.*)",
+      "dest": "/node_modules/@vercel/speed-insights/$1"
     },
     {
       "src": "/about/?",
@@ -48,8 +56,39 @@
       "dest": "/ic/ic.html"
     },
     {
+      "src": "/dash/?",
+      "dest": "/dash/index.html"
+    },
+    {
+      "src": "/account/?",
+      "dest": "/dash/account/account.html"
+    },
+    {
+      "src": "/collectibles/?",
+      "dest": "/dash/collectibles/index.html"
+    },
+    {
+      "src": "/integrations/?",
+      "dest": "/dash/integrations/index.html"
+    },
+    {
+      "src": "/images/?",
+      "dest": "/dash/images/index.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/api/index.js"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
     }
   ]
 }

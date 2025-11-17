@@ -58,7 +58,20 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
     - `password_resets`: Manages password reset tokens with expiration and usage tracking.
 - **Security**: JWT authentication (7-day expiration), bcrypt password hashing (12 rounds), role-based access control, invite code validation, multi-use invite tracking, session management, input validation via express-validator, rate limiting for password resets, one-time recovery codes, and normalized error responses to prevent enumeration attacks.
 
-## Recent Changes (November 6, 2025)
+## Recent Changes
+
+### November 17, 2025
+1. **Vercel Speed Insights Integration**: Added @vercel/speed-insights package and integrated speed insights script across all main HTML pages (index, login, register, dashboard) for real-time performance monitoring
+2. **Vercel Configuration Updates**: 
+   - Added dashfiles assets routing to serve compiled Vue.js dashboard components
+   - Added explicit Cache-Control headers (no-cache) to prevent caching issues
+   - Added dashboard routes (/dash, /dash/*) for proper routing
+   - Added node_modules/@vercel/speed-insights routing for speed insights assets
+3. **Dashboard Routing Fix**: Fixed critical bug where server.js routes were pointing to `/dashboard/` folder instead of actual `/dash/` folder, causing 404 errors on all dashboard pages
+4. **IC Page Route Fix**: Corrected /ic route to point to ic/ic.html instead of ic/index.html
+5. **Vue.js Dashboard Integration**: Created dash/index-new.html that integrates compiled Vue.js assets from dashfiles folder for modernized dashboard experience
+
+### November 6, 2025
 1. **Database Migration**: Migrated from SQLite/Supabase to MariaDB using mysql2 with connection pooling
 2. **Vercel Routing Fix**: Added explicit routes for /about, /pricing, /privacy, and /ic pages to prevent 404 errors on production
 3. **IC Page Styling**: Created static/css/ic.css matching the site's glassmorphic design patterns with animations
@@ -68,4 +81,6 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
 - **Database**:
     - **MariaDB**: Primary database with mysql2 driver for connection pooling and async/await support
 - **Deployment**:
-    - **Vercel**: Platform for production deployment.
+    - **Vercel**: Platform for production deployment with Speed Insights integration
+- **Monitoring**:
+    - **Vercel Speed Insights**: Real-time performance monitoring from actual users

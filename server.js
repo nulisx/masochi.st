@@ -380,12 +380,12 @@ app.get('/privacy', (req, res) => res.sendFile(path.join(__dirname, 'privacy', '
 app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'login', 'index.html')));
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'register', 'index.html')));
 app.get('/reset', (req, res) => res.sendFile(path.join(__dirname, 'login', 'reset', 'index.html')));
-app.get('/dash', (req, res) => res.sendFile(path.join(__dirname, 'dashboard', 'index.html')));
-app.get('/account', (req, res) => res.sendFile(path.join(__dirname, 'dashboard', 'account', 'account.html')));
-app.get('/collectibles', (req, res) => res.sendFile(path.join(__dirname, 'dashboard', 'collectibles', 'index.html')));
-app.get('/integrations', (req, res) => res.sendFile(path.join(__dirname, 'dashboard', 'integrations', 'index.html')));
-app.get('/images', (req, res) => res.sendFile(path.join(__dirname, 'dashboard', 'images', 'index.html')));
-app.get('/ic', (req, res) => res.sendFile(path.join(__dirname, 'ic', 'index.html')));
+app.get('/dash', (req, res) => res.sendFile(path.join(__dirname, 'dash', 'index.html')));
+app.get('/account', (req, res) => res.sendFile(path.join(__dirname, 'dash', 'account', 'account.html')));
+app.get('/collectibles', (req, res) => res.sendFile(path.join(__dirname, 'dash', 'collectibles', 'index.html')));
+app.get('/integrations', (req, res) => res.sendFile(path.join(__dirname, 'dash', 'integrations', 'index.html')));
+app.get('/images', (req, res) => res.sendFile(path.join(__dirname, 'dash', 'images', 'index.html')));
+app.get('/ic', (req, res) => res.sendFile(path.join(__dirname, 'ic', 'ic.html')));
 
 app.use((req, res) => res.status(404).sendFile(path.join(__dirname, '404.html')));
 
