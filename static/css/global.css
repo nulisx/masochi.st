@@ -211,9 +211,9 @@ body::after {
 }
 
 .flash-success {
-    background: rgba(34, 197, 94, 0.08);
-    color: #22c55e;
-    border-color: rgba(34, 197, 94, 0.2);
+    background: rgba(139, 92, 246, 0.08);
+    color: #8b5cf6;
+    border-color: rgba(139, 92, 246, 0.2);
 }
 
 .flash-error {

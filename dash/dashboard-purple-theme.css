@@ -492,7 +492,7 @@ tbody tr:hover {
 /* High contrast mode support */
 @media (prefers-contrast: high) {
   :root {
-    --dash-primary: #22c55e;
+    --dash-primary: #8b5cf6;
     --dash-border: rgba(139, 92, 246, 0.4);
   }
 }
