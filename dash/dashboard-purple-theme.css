@@ -1,61 +1,61 @@
 /**
- * Alo.ne Dashboard - Dark Green Theme
- * Replaces blue accents with elegant dark green tones
+ * Alo.ne Dashboard - Dark Purple Theme
+ * Replaces blue accents with elegant dark purple tones
  * Inspired by modern dashboard designs but better
  */
 
 :root {
-  /* Dark Green Color Palette */
-  --green-50: #ecfdf5;
-  --green-100: #d1fae5;
-  --green-200: #a7f3d0;
-  --green-300: #6ee7b7;
-  --green-400: #34d399;
-  --green-500: #10b981;
-  --green-600: #059669;
-  --green-700: #047857;
-  --green-800: #065f46;
-  --green-900: #064e3b;
-  --green-950: #022c22;
+  /* Dark Purple Color Palette */
+  --purple-50: #faf5ff;
+  --purple-100: #e9d5ff;
+  --purple-200: #d8b4fe;
+  --purple-300: #c4b5fd;
+  --purple-400: #a78bfa;
+  --purple-500: #8b5cf6;
+  --purple-600: #7c3aed;
+  --purple-700: #6d28d9;
+  --purple-800: #5b21b6;
+  --purple-900: #4c1d95;
+  --purple-950: #3b0764;
 
   /* Dashboard-specific colors */
-  --dash-primary: var(--green-500);
-  --dash-primary-hover: var(--green-600);
-  --dash-primary-light: var(--green-400);
-  --dash-accent: var(--green-600);
-  --dash-accent-dark: var(--green-700);
-  --dash-glow: rgba(16, 185, 129, 0.2);
-  --dash-glow-strong: rgba(16, 185, 129, 0.3);
+  --dash-primary: var(--purple-500);
+  --dash-primary-hover: var(--purple-600);
+  --dash-primary-light: var(--purple-400);
+  --dash-accent: var(--purple-600);
+  --dash-accent-dark: var(--purple-700);
+  --dash-glow: rgba(139, 92, 246, 0.2);
+  --dash-glow-strong: rgba(139, 92, 246, 0.3);
   
   /* Background colors */
   --dash-bg: #0a0a0a;
-  --dash-card-bg: rgba(16, 185, 129, 0.03);
+  --dash-card-bg: rgba(139, 92, 246, 0.03);
   --dash-sidebar-bg: #0f0f0f;
-  --dash-hover-bg: rgba(16, 185, 129, 0.08);
+  --dash-hover-bg: rgba(139, 92, 246, 0.08);
   
   /* Border colors */
-  --dash-border: rgba(16, 185, 129, 0.15);
-  --dash-border-hover: rgba(16, 185, 129, 0.25);
+  --dash-border: rgba(139, 92, 246, 0.15);
+  --dash-border-hover: rgba(139, 92, 246, 0.25);
 }
 
 /* ============================================================================
    GLOBAL DASHBOARD OVERRIDES
    ============================================================================ */
 
-/* Replace all blue gradients with green */
+/* Replace all blue gradients with purple */
 .bg-gradient-to-r.from-\[#818cf8\],
 .from-indigo-400,
 .from-blue-400 {
-  --tw-gradient-from: var(--green-400) !important;
+  --tw-gradient-from: var(--purple-400) !important;
 }
 
 .to-\[#60a5fa\],
 .to-blue-400,
 .to-indigo-500 {
-  --tw-gradient-to: var(--green-600) !important;
+  --tw-gradient-to: var(--purple-600) !important;
 }
 
-/* Replace blue text colors with green */
+/* Replace blue text colors with purple */
 .text-\[#818cf8\],
 .text-blue-400,
 .text-indigo-400 {
@@ -68,7 +68,7 @@
   color: var(--dash-accent) !important;
 }
 
-/* Replace blue backgrounds with green */
+/* Replace blue backgrounds with purple */
 .bg-\[#818cf8\],
 .bg-blue-400,
 .bg-indigo-400 {
@@ -81,7 +81,7 @@
   background-color: var(--dash-accent) !important;
 }
 
-/* Replace blue borders with green */
+/* Replace blue borders with purple */
 .border-\[#818cf8\],
 .border-blue-400,
 .border-indigo-400 {
@@ -105,7 +105,7 @@ aside[class*="sidebar"],
 [class*="w-64"][class*="bg-"],
 [class*="fixed"][class*="left-0"][class*="h-full"] {
   background: var(--dash-sidebar-bg) !important;
-  border-right: 1px solid rgba(16, 185, 129, 0.1) !important;
+  border-right: 1px solid rgba(139, 92, 246, 0.1) !important;
 }
 
 /* Sidebar navigation items */
@@ -130,11 +130,11 @@ nav a[class*="flex items-center"][class*="bg-"],
 nav a.active,
 .sidebar-link.active {
   background: linear-gradient(90deg, 
-    rgba(16, 185, 129, 0.15) 0%, 
-    rgba(16, 185, 129, 0.05) 100%) !important;
+    rgba(139, 92, 246, 0.15) 0%, 
+    rgba(139, 92, 246, 0.05) 100%) !important;
   border-left: 3px solid var(--dash-primary);
   padding-left: calc(1rem - 3px);
-  color: var(--green-400) !important;
+  color: var(--purple-400) !important;
 }
 
 /* Sidebar icons */
@@ -163,8 +163,8 @@ nav a.active svg {
 .dashboard-card,
 .card {
   background: linear-gradient(135deg, 
-    rgba(16, 185, 129, 0.02) 0%, 
-    rgba(16, 185, 129, 0.05) 100%) !important;
+    rgba(139, 92, 246, 0.02) 0%, 
+    rgba(139, 92, 246, 0.05) 100%) !important;
   border: 1px solid var(--dash-border) !important;
   backdrop-filter: blur(10px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -175,14 +175,14 @@ nav a.active svg {
 .dashboard-card:hover,
 .card:hover {
   border-color: var(--dash-border-hover) !important;
-  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.08);
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.08);
   transform: translateY(-2px);
 }
 
 /* Card headers */
 .card-header,
 [class*="flex items-center justify-between mb-4"] {
-  border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+  border-bottom: 1px solid rgba(139, 92, 246, 0.1);
   padding-bottom: 0.75rem;
   margin-bottom: 1rem;
 }
@@ -191,9 +191,9 @@ nav a.active svg {
 [class*="p-2 rounded-lg bg-zinc-800"],
 [class*="rounded-lg bg-zinc-800/50"] {
   background: linear-gradient(135deg, 
-    var(--green-900) 0%, 
-    var(--green-950) 100%) !important;
-  border: 1px solid rgba(16, 185, 129, 0.2);
+    var(--purple-900) 0%, 
+    var(--purple-950) 100%) !important;
+  border: 1px solid rgba(139, 92, 246, 0.2);
 }
 
 [class*="p-2 rounded-lg bg-zinc-800"] svg,
@@ -208,7 +208,7 @@ nav a.active svg {
 /* Large stat numbers */
 [class*="text-2xl font-bold"],
 .stat-number {
-  background: linear-gradient(135deg, var(--green-400), var(--green-600));
+  background: linear-gradient(135deg, var(--purple-400), var(--purple-600));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -255,7 +255,7 @@ button[class*="border-indigo"],
 button[class*="border-blue"]:hover,
 button[class*="border-indigo"]:hover,
 .btn-secondary:hover {
-  background: rgba(16, 185, 129, 0.1) !important;
+  background: rgba(139, 92, 246, 0.1) !important;
   border-color: var(--dash-primary-hover) !important;
 }
 
@@ -293,16 +293,16 @@ a[class*="text-indigo"]:hover::after,
 /* Success/Active badges */
 [class*="bg-green"] {
   background: linear-gradient(135deg, 
-    var(--green-600) 0%, 
-    var(--green-700) 100%) !important;
+    var(--purple-600) 0%, 
+    var(--purple-700) 100%) !important;
 }
 
 /* Info badges - convert blue to green */
 [class*="bg-blue"][class*="badge"],
 .badge-info {
   background: linear-gradient(135deg, 
-    var(--green-500) 0%, 
-    var(--green-600) 100%) !important;
+    var(--purple-500) 0%, 
+    var(--purple-600) 100%) !important;
 }
 
 /* Status dots */
@@ -339,8 +339,8 @@ input[class*="pl-10"]::before,
 [class*="bg-blue"][class*="progress"],
 .progress-bar {
   background: linear-gradient(90deg, 
-    var(--green-600) 0%, 
-    var(--green-400) 100%) !important;
+    var(--purple-600) 0%, 
+    var(--purple-400) 100%) !important;
 }
 
 /* Loading spinners */
@@ -356,13 +356,13 @@ input[class*="pl-10"]::before,
 
 /* Table header */
 thead {
-  background: rgba(16, 185, 129, 0.03);
+  background: rgba(139, 92, 246, 0.03);
   border-bottom: 2px solid var(--dash-border);
 }
 
 /* Table row hover */
 tbody tr:hover {
-  background: rgba(16, 185, 129, 0.03);
+  background: rgba(139, 92, 246, 0.03);
 }
 
 /* ============================================================================
@@ -372,7 +372,7 @@ tbody tr:hover {
 /* Info alerts - convert to green */
 [class*="bg-blue-500/10"],
 .alert-info {
-  background: rgba(16, 185, 129, 0.1) !important;
+  background: rgba(139, 92, 246, 0.1) !important;
   border-left: 4px solid var(--dash-primary);
 }
 
@@ -391,7 +391,7 @@ tbody tr:hover {
   position: absolute;
   inset: -2px;
   border-radius: inherit;
-  background: linear-gradient(135deg, var(--green-500), var(--green-700));
+  background: linear-gradient(135deg, var(--purple-500), var(--purple-700));
   opacity: 0;
   z-index: -1;
   filter: blur(10px);
@@ -415,9 +415,9 @@ tbody tr:hover {
 .animated-gradient {
   background: linear-gradient(
     135deg,
-    var(--green-900),
-    var(--green-800),
-    var(--green-900)
+    var(--purple-900),
+    var(--purple-800),
+    var(--purple-900)
   );
   background-size: 200% 200%;
   animation: gradient-shift 8s ease infinite;
@@ -436,19 +436,19 @@ tbody tr:hover {
 
 .dashboard-content::-webkit-scrollbar-track,
 [class*="overflow-y-auto"]::-webkit-scrollbar-track {
-  background: rgba(16, 185, 129, 0.03);
+  background: rgba(139, 92, 246, 0.03);
   border-radius: 4px;
 }
 
 .dashboard-content::-webkit-scrollbar-thumb,
 [class*="overflow-y-auto"]::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--green-700), var(--green-800));
+  background: linear-gradient(180deg, var(--purple-700), var(--purple-800));
   border-radius: 4px;
 }
 
 .dashboard-content::-webkit-scrollbar-thumb:hover,
 [class*="overflow-y-auto"]::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, var(--green-600), var(--green-700));
+  background: linear-gradient(180deg, var(--purple-600), var(--purple-700));
 }
 
 /* ============================================================================
@@ -493,6 +493,6 @@ tbody tr:hover {
 @media (prefers-contrast: high) {
   :root {
     --dash-primary: #22c55e;
-    --dash-border: rgba(16, 185, 129, 0.4);
+    --dash-border: rgba(139, 92, 246, 0.4);
   }
 }

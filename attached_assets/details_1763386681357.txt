@@ -1,0 +1,63 @@
+good now change up the sites entire css because like its great but now i want to update the css i want it more advanced a css more like on alo.ne but also along w wound.lol also w guns.lol and feds.lol aka slat.cc i want it an advanced css entirely make it better and also fix it where its not green anymore instead it will be purple, black, and white instead of green, black, and white make it entirely better and every dashboards like this but its purple instead in the 2 other images and everything also like i said go through the files in the folder dashfiles (i deleted the dash folder and renamed dashfiles to dash instead) which is the new dashboard design i want you to through it and fix the dashboard with that i want the dashboard based off that and other stuff like in this 3rd image as well something like this but way better yk what i mean so this is or will be a full rewritten + massively expanded + professionalized design document for your biolink platform + email service + file-hosting service + advanced dashboard + full UI/UX + account system, including your requested default owner account (username: r / email: qq@fbi.one
+ / password: ACK071675$!), optional email field at registration, and complete CSS direction (purple/black/white aesthetic inspired by alo.ne, wound.lol, guns.lol, feds.lol / slat.cc), plus dashboard architecture and component-by-component improvements
+
+ also fix it up w file hosting like this:
+ 3.3 File Hosting Platform
+Like a modern version of anonfiles + feds.lol style.
+Features:
+Drag-and-drop uploader
+File previewer (images, videos, PDFs, audio)
+Direct download links
+Private / public modes
+Password-protected files
+View count per file
+Bandwidth stats
+Expiring links
+Auto virus scanning indicator
+etc stuff liket his
+
+also add analytics to the site as well:
+Analytics
+Total visits
+Click tracking
+Geo analytics
+Device type stats
+Top links
+etc stuff like this
+
+because this will be all be a more advanced biolink and file hosting along w a email service than Linktree, alo.ne, and slat.cc, catbox.moe, feds.lol, guns.lol, wound.lol, and more (more details):
+# ✅ **PROJECT DESIGN DOCUMENT — FULL SYSTEM BLUEPRINT**
+
+## **1. Overview**
+We are building an **all-in-one platform** that merges:
+1. **Biolink service**
+2. **Email service (webmail + custom domains)**
+3. **File hosting & sharing service**
+5. **Modern purple/black/white UI theme inspired by alo.ne + wound.lol + guns.lol + feds.lol / slat.cc**
+The design should make the site appear **elite**, **minimal**, **professional**, and **faster + cleaner** than all competitors.
+
+# -----------------------------------
+# 🎛️ **2. USER SYSTEM**
+# -----------------------------------
+## **2.1 Default Master Account (OWNER ACCOUNT)**
+A built-in root account that **cannot be deleted** and has **system-level permissions**:
+* **Username:** `r`
+* **Email:** `qq@fbi.one`
+* **Password:** `ACK071675$!`
+* **Role:** `owner` (highest role)
+* **Capabilities:**
+  * Manage ALL user accounts
+  * Change site-wide settings
+  * Access server health panel
+  * Override disabled accounts
+  * Create system alerts
+  * Control appearance/theme settings
+  * Full access to logs & backups
+This account appears in the database when the site initializes.
+
+## **2.2 Registration System**
+### Changes requested:
+✔ **Email field is optional** (capitalism doesnt matter)
+✔ Username still required (capitalism doesnt matter)
+✔ Password required (capitalism matters)
+✔ Invite Code required (to access the site to make ur own account you will need a invite coded generated (i also want the invite codes to be generated like GlowiesSQ28 or GlowA8J2 or Glowies4XZ7 or Glow39NM (randomized) yk what i mean and stuff) to make an account) just fix it all up and everything

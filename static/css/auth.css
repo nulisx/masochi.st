@@ -14,7 +14,7 @@ body::before {
     transform: translate(-50%, -50%);
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba(16, 185, 129, 0.05) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.05) 0%, transparent 70%);
     filter: blur(60px);
     z-index: -2;
     pointer-events: none;
@@ -33,8 +33,8 @@ body::before {
 }
 
 .auth-container:hover {
-    border-color: rgba(16, 185, 129, 0.25);
-    box-shadow: 0 24px 70px rgba(16, 185, 129, 0.15);
+    border-color: rgba(139, 92, 246, 0.25);
+    box-shadow: 0 24px 70px rgba(139, 92, 246, 0.15);
 }
 
 h1 {
@@ -80,7 +80,7 @@ input {
 
 input:focus {
     outline: none;
-    border-color: rgba(16, 185, 129, 0.5);
+    border-color: rgba(139, 92, 246, 0.5);
     background: rgba(0, 0, 0, 0.4);
 }
 
@@ -91,7 +91,7 @@ input::placeholder {
 .auth-button {
     width: 100%;
     padding: 14px 20px;
-    background: linear-gradient(135deg, var(--green) 0%, #059669 100%);
+    background: linear-gradient(135deg, var(--purple) 0%, #7c3aed 100%);
     border: none;
     border-radius: 50px;
     color: var(--white);
@@ -100,7 +100,7 @@ input::placeholder {
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     margin-top: 8px;
-    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+    box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
     position: relative;
     overflow: hidden;
 }
@@ -109,14 +109,14 @@ input::placeholder {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
 .auth-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(16, 185, 129, 0.5);
+    box-shadow: 0 12px 32px rgba(139, 92, 246, 0.5);
 }
 
 .auth-button:hover::before {
@@ -136,14 +136,14 @@ input::placeholder {
 }
 
 .auth-link a {
-    color: var(--green);
+    color: var(--purple);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s ease;
 }
 
 .auth-link a:hover {
-    color: var(--green-dim);
+    color: var(--purple-dim);
 }
 
 .error-message,
@@ -170,8 +170,8 @@ input::placeholder {
 }
 
 .invite-code-info {
-    background: rgba(16, 185, 129, 0.05);
-    border: 1px solid rgba(16, 185, 129, 0.15);
+    background: rgba(139, 92, 246, 0.05);
+    border: 1px solid rgba(139, 92, 246, 0.15);
     color: rgba(255, 255, 255, 0.6);
     display: block;
 }

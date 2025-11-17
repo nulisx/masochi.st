@@ -69,11 +69,11 @@
 }
 
 .integration-card.connected {
-    border-color: rgba(16, 185, 129, 0.3);
+    border-color: rgba(139, 92, 246, 0.3);
 }
 
 .integration-card.connected::before {
-    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    background: linear-gradient(90deg, #8b5cf6 0%, #7c3aed 100%);
 }
 
 .integration-header {
@@ -96,7 +96,7 @@
 }
 
 .integration-icon.connected {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
 }
 
 .integration-info {
@@ -121,9 +121,9 @@
 }
 
 .integration-status.connected {
-    background: rgba(16, 185, 129, 0.15);
-    color: #10b981;
-    border: 1px solid rgba(16, 185, 129, 0.2);
+    background: rgba(139, 92, 246, 0.15);
+    color: #8b5cf6;
+    border: 1px solid rgba(139, 92, 246, 0.2);
 }
 
 .integration-status.available {
@@ -228,8 +228,8 @@
     align-items: center;
     gap: 12px;
     padding: 12px;
-    background: rgba(16, 185, 129, 0.05);
-    border: 1px solid rgba(16, 185, 129, 0.2);
+    background: rgba(139, 92, 246, 0.05);
+    border: 1px solid rgba(139, 92, 246, 0.2);
     border-radius: 8px;
     margin-bottom: 16px;
 }
