@@ -1,9 +1,9 @@
 {
-  "SESSION_SECRET": "6S8fjHF8dvrMzbb8SIrqLkx+hrpDipJDTYIrjQxSwizI/1i55/sijOFDZIjpBOS2MsF/MrDj1o/OHW3gaPsrUA==",
+  "SESSION_SECRET": "S0cwfPaWB6OQlnoXmjlO/SmhSXuh8D/rTMmQrirMxXAWwvsv7ulWUSY+ncdNuVCLSrm0A7Wq8ZZ9Bia2OmWkpQ==",
   "MARIADB_DATABASE": "sql5806443",
   "MARIADB_HOST": "sql5.freesqldatabase.com",
   "MARIADB_PASSWORD": "ixITtEn7vM",
   "MARIADB_PORT": "3306",
   "MARIADB_USER": "sql5806443",
-  "FRONTEND_URL": "https://masochist.vercel.app"
+  "FRONTEND_URL": "https://masochist.vercel.app/"
 }
