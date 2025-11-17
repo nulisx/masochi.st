@@ -20,10 +20,15 @@
     --white: #ffffff;
     --white-dim: #a0a0a0;
     --gray: #505050;
-    --green: #10b981;
-    --green-dim: #059669;
-    --green-light: #6ee7b7;
+    --purple: #8b5cf6;
+    --purple-dim: #7c3aed;
+    --purple-light: #c4b5fd;
+    --purple-glow: rgba(139, 92, 246, 0.5);
     --border: rgba(255, 255, 255, 0.05);
+    
+    --green: #8b5cf6;
+    --green-dim: #7c3aed;
+    --green-light: #c4b5fd;
 }
 
 *,
@@ -98,34 +103,34 @@ body::after {
     font-weight: 700;
     letter-spacing: 0.05em;
     padding: 0 8px;
-    background: linear-gradient(135deg, #10b981 0%, #6ee7b7 50%, #10b981 100%);
+    background: linear-gradient(135deg, #8b5cf6 0%, #c4b5fd 50%, #8b5cf6 100%);
     background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.8));
+    filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.8));
     animation: logoGlow 3s ease-in-out infinite, gradientShift 4s ease infinite;
     display: flex;
     align-items: center;
     gap: 8px;
     text-transform: uppercase;
-    text-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+    text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
 }
 
 .logo-icon {
     width: 20px;
     height: 20px;
-    fill: var(--green-light);
+    fill: var(--purple-light);
     flex-shrink: 0;
 }
 
 @keyframes logoGlow {
     0%, 100% {
-        filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.8));
+        filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.8));
         opacity: 0.95;
     }
     50% {
-        filter: drop-shadow(0 0 20px rgba(16, 185, 129, 1)) drop-shadow(0 0 30px rgba(16, 185, 129, 0.6));
+        filter: drop-shadow(0 0 20px rgba(139, 92, 246, 1)) drop-shadow(0 0 30px rgba(139, 92, 246, 0.6));
         opacity: 1;
     }
 }
@@ -176,14 +181,14 @@ body::after {
 }
 
 .nav-pill-login {
-    background: linear-gradient(135deg, var(--green) 0%, #059669 100%);
+    background: linear-gradient(135deg, var(--purple) 0%, #7c3aed 100%);
     color: var(--white);
-    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
 }
 
 .nav-pill-login:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
 }
 
 .flashes {
