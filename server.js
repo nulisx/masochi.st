@@ -34,7 +34,7 @@ app.post(
   '/api/auth/register',
   [
     body('username').isLength({ min: 1, max: 20 }).matches(/^[a-zA-Z0-9_]+$/),
-    body('email').isEmail(),
+    body('email').optional({ checkFalsy: true }).isEmail(),
     body('password').isLength({ min: 8 }),
     body('inviteCode').notEmpty(),
   ],
@@ -53,9 +53,12 @@ app.post(
       const existingUser = await getQuery('users', 'username', usernameLower);
       if (existingUser) return res.status(400).json({ error: 'Username already exists' });
 
-      const emailHash = hashEmail(email.toLowerCase());
-      const existingEmail = await getQuery('users', 'email', emailHash);
-      if (existingEmail) return res.status(400).json({ error: 'Email already exists' });
+      let emailHash = null;
+      if (email && email.trim()) {
+        emailHash = hashEmail(email.toLowerCase());
+        const existingEmail = await getQuery('users', 'email', emailHash);
+        if (existingEmail) return res.status(400).json({ error: 'Email already exists' });
+      }
 
       const passwordHash = await bcrypt.hash(password, 12);
       const newUser = await runQuery('users', {
@@ -385,7 +388,7 @@ app.get('/account', (req, res) => res.sendFile(path.join(__dirname, 'dash', 'acc
 app.get('/collectibles', (req, res) => res.sendFile(path.join(__dirname, 'dash', 'collectibles', 'index.html')));
 app.get('/integrations', (req, res) => res.sendFile(path.join(__dirname, 'dash', 'integrations', 'index.html')));
 app.get('/images', (req, res) => res.sendFile(path.join(__dirname, 'dash', 'images', 'index.html')));
-app.get('/ic', (req, res) => res.sendFile(path.join(__dirname, 'ic', 'ic.html')));
+app.get('/ic', (req, res) => res.sendFile(path.join(__dirname, 'ic', 'index.html')));
 
 app.use((req, res) => res.status(404).sendFile(path.join(__dirname, '404.html')));
 

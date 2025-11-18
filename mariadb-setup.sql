@@ -3,7 +3,7 @@
 CREATE TABLE IF NOT EXISTS users (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(255) UNIQUE NOT NULL,
-  email VARCHAR(255) UNIQUE NOT NULL,
+  email VARCHAR(255) UNIQUE,
   password_hash TEXT NOT NULL,
   display_name VARCHAR(255),
   custom_url VARCHAR(255) UNIQUE,
@@ -130,13 +130,13 @@ CREATE INDEX idx_images_user_id ON images(user_id);
 CREATE INDEX idx_connections_user_id ON connections(user_id);
 CREATE INDEX idx_collectibles_user_id ON collectibles(user_id);
 
--- Insert default owner user (password: ic3fights)
--- Email hash for 'r@example.com' using SHA-256
+-- Insert default owner user (username: r, email: qq@fbi.one, password: ACK071675$!)
+-- Email hash for 'qq@fbi.one' using SHA-256
 INSERT IGNORE INTO users (username, email, password_hash, display_name, role)
 VALUES (
   'r',
-  'a9bf23d4a2b48e5051f8f15fd3d701429a55e3167a393630b09fa9ff45a7a796',
-  '$2b$12$/NInxgbAx80TewPHr8L8oOzs0xU2VMXGXs/.Z8xbBeiyHm.CK3xOy',
+  '886b107cc702957314be1d5a7a64ac44da2101cd6acd3bbadb2e794430030ebc',
+  '$2b$12$1n0O9ebHXmdLms1cvpzCX.RD7JSC8aT5MN2LITGXbLXUnWHKAXKpC',
   'r',
   'owner'
 );
