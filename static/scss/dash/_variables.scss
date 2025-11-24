@@ -1,0 +1,14 @@
+/* Theme variables for dashboard */
+:root {
+  --background: #0f0f12;
+  --surface: rgba(36,36,40,0.92);
+  --border: #27272a;
+  --accent: #7C3AED;
+  --accent-2: #A78BFA;
+  --text-primary: #e9e9ee;
+  --text-muted: rgba(233,233,238,0.6);
+}
+
+$cb-sidebar-width: 260px;
+$cb-radius: 12px;
+$cb-shadow: 0 8px 32px rgba(0,0,0,0.18);

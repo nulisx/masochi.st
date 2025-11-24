@@ -1,0 +1,13 @@
+@import 'dash/_variables.scss';
+@import 'dash/_mixins.scss';
+@import 'dash/_components/_sidebar.scss';
+@import 'dash/_components/_card.scss';
+@import 'dash/_components/_files.scss';
+
+/* Additional global dashboard styles */
+body{font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background: var(--background); color:var(--text-primary);}
+.main-content{flex:1;padding:1.6rem;margin-left: $cb-sidebar-width}
+
+@media(max-width:900px){
+  .main-content{margin-left:0;padding-top:5.2rem}
+}

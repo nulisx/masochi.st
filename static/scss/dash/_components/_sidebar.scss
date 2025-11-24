@@ -1,0 +1,42 @@
+@import '../_variables.scss';
+@import '../_mixins.scss';
+
+.cb-sidebar{
+  width: $cb-sidebar-width;
+  background: linear-gradient(180deg, rgba(18,18,20,0.85), rgba(12,12,14,0.85));
+  border-right:1.5px solid var(--border);
+  padding: 1.2rem 1rem;
+  display:flex;
+  flex-direction:column;
+  position:fixed;
+  height:100vh;
+  @include cb-transition(width, background, box-shadow);
+  box-shadow: $cb-shadow;
+  backdrop-filter: blur(12px) saturate(140%);
+}
+
+.cb-sidebar.collapsed{width:72px}
+
+.cb-sidebar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.7rem}
+.cb-logo{color:var(--text-primary);font-weight:700;text-decoration:none;font-size:1rem}
+.cb-collapse{background:transparent;border:none;color:var(--text-muted);font-size:1.1rem;cursor:pointer}
+
+.cb-menu{list-style:none;padding:0;margin:0.5rem 0 0 0;display:flex;flex-direction:column;gap:0.4rem}
+.cb-menu-item{display:flex;align-items:center;gap:0.75rem;padding:0.6rem 0.9rem;border-radius:10px;color:var(--text-muted);cursor:pointer;@include cb-transition(background, color, transform)}
+.cb-menu-item .cb-icon{width:28px;text-align:center}
+.cb-menu-item .cb-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cb-menu-item:hover{background: rgba(124,58,237,0.06);color:var(--text-primary);transform:translateY(-1px)}
+.cb-menu-item.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border:1px solid rgba(255,255,255,0.06);box-shadow:0 8px 24px rgba(124,58,237,0.12)}
+
+.cb-footer{margin-top:auto;padding-top:0.8rem;border-top:1px solid rgba(255,255,255,0.02)}
+.cb-user{display:flex;gap:0.6rem;align-items:center}
+.cb-user-avatar{width:44px;height:44px;border-radius:10px;object-fit:cover;border:1px solid rgba(255,255,255,0.04)}
+.cb-user-name{font-weight:600;color:var(--text-primary)}
+.cb-user-role{font-size:0.78rem;color:var(--text-muted)}
+
+.cb-sidebar.collapsed .cb-label{display:none}
+.cb-sidebar.collapsed .cb-user-info{display:none}
+
+@media(max-width:900px){
+  .cb-sidebar{position:fixed;left:0;top:0;z-index:50;transform:translateX(0)}
+}

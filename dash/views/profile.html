@@ -1,0 +1,32 @@
+<div class="card profile-card">
+  <form id="cb-profile-form">
+    <div style="display:flex;gap:16px;align-items:center">
+      <div style="position:relative">
+        <img id="cb-avatar-img" src="../assets/user-placeholder.png" alt="avatar" style="width:96px;height:96px;border-radius:12px;object-fit:cover;border:1px solid rgba(255,255,255,0.04)" aria-hidden="true">
+        <input id="cb-avatar-input" aria-label="Change avatar" type="file" accept="image/*" style="position:absolute;left:0;right:0;top:0;bottom:0;opacity:0;cursor:pointer" title="Change avatar" />
+        <div aria-hidden="true" style="position:absolute;left:4px;bottom:4px;background:rgba(0,0,0,0.5);color:#fff;padding:4px 8px;border-radius:6px;font-size:0.8rem">Change</div>
+      </div>
+      <div style="flex:1">
+        <label style="display:block;font-weight:600;color:var(--text-muted);font-size:0.85rem">Display name</label>
+        <input id="cb-displayName" type="text" placeholder="Your display name" style="width:100%;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.04)" />
+        <div style="height:8px"></div>
+        <label style="display:block;font-weight:600;color:var(--text-muted);font-size:0.85rem">Bio</label>
+        <textarea id="cb-bio" rows="3" placeholder="Short bio" style="width:100%;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.04)"></textarea>
+      </div>
+    </div>
+
+    <hr style="margin:1rem 0;border-color:rgba(255,255,255,0.03)">
+
+    <div style="display:flex;gap:12px;align-items:center">
+      <div style="flex:1">
+        <label style="display:block;font-weight:600;color:var(--text-muted);font-size:0.85rem">Twitter</label>
+        <input id="cb-social-twitter" type="text" placeholder="@yourhandle" style="width:100%;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.04)" />
+      </div>
+      <div style="width:160px;text-align:right">
+        <div id="cb-profile-status" aria-live="polite" role="status" style="color:var(--text-muted);font-size:0.9rem;margin-bottom:6px"></div>
+        <progress id="cb-avatar-progress" value="0" max="100" style="width:100%;height:10px;display:none;margin-bottom:6px" aria-hidden="true"></progress>
+        <button id="cb-profile-save" class="btn">Save Profile</button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -242,6 +242,53 @@ To test the new endpoints:
    - Try registering a user
    - Test API endpoints
 
+## ☁️ Production File Uploads (S3 / R2)
+
+For production-ready file storage we recommend using direct-to-cloud uploads with presigned URLs. This keeps user uploads out of your web server filesystem and scales better with CDNs.
+
+Environment variables (add to Vercel / hosting):
+
+- `S3_BUCKET` — bucket name (R2 bucket or S3 bucket)
+- `S3_REGION` or `AWS_REGION` — region (used to build public URLs; optional for some providers)
+- `S3_ACCESS_KEY_ID` and `S3_SECRET_ACCESS_KEY` — credentials with permission to put objects (for presign generation)
+- `S3_ENDPOINT` — optional custom endpoint (e.g., Cloudflare R2 endpoint). If set, presign and public URL generation will use this endpoint.
+
+How it works (what the code implements):
+
+- Client POSTS `/api/images/presign` with `{ filename, contentType }`.
+- Server generates a signed PUT URL and returns `{ signedUrl, method: 'PUT', publicUrl, key }`.
+- Client `PUT`s the file directly to the signed URL (XHR is used in the dashboard to provide progress updates).
+- After successful upload, client `POST`s to `/api/images/upload` with metadata `filename`, `url` (the `publicUrl`) and `size` to register the object in the DB.
+
+Bucket policy and CORS:
+
+- Ensure your bucket allows `PUT` to the signed URL and CORS allows `PUT` from your frontend origin. Example minimal CORS for S3:
+
+```xml
+<CORSConfiguration>
+   <CORSRule>
+      <AllowedOrigin>*</AllowedOrigin>
+      <AllowedMethod>GET</AllowedMethod>
+      <AllowedMethod>PUT</AllowedMethod>
+      <AllowedHeader>*</AllowedHeader>
+      <MaxAgeSeconds>3000</MaxAgeSeconds>
+   </CORSRule>
+</CORSConfiguration>
+```
+
+For Cloudflare R2, configure the R2 bucket and use the R2 endpoint as `S3_ENDPOINT`.
+
+Serving files publicly:
+
+- If you want files public, put them in a public bucket and serve via CDN (Cloudflare, Fastly, AWS CloudFront) using the `publicUrl` returned by presign.
+- For private buckets, use signed GET URLs or a CDN with signed tokens.
+
+Retention and cleanup:
+
+- Implement lifecycle rules on your object store (e.g., S3 lifecycle rules or R2 lifecycle) to remove old/unreferenced objects.
+- Optionally run a periodic job that cross-references DB `images` rows with bucket contents and removes orphaned files.
+
+
 ## 🔒 Security Notes
 
 - All API endpoints requiring authentication check for valid JWT tokens

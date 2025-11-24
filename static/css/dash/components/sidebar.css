@@ -1,0 +1,51 @@
+/* Modular Sidebar styles (prefixed with cb- to avoid collisions) */
+:root{
+  --cb-sidebar-width:260px;
+  --cb-bg: #0f0f12;
+  --cb-surface: rgba(36,36,40,0.9);
+  --cb-border: #27272a;
+  --cb-accent: #7C3AED;
+  --cb-text: #e9e9ee;
+  --cb-muted: rgba(233,233,238,0.55);
+}
+
+.cb-sidebar{
+  width:var(--cb-sidebar-width);
+  background: linear-gradient(180deg, rgba(18,18,20,0.85), rgba(12,12,14,0.85));
+  border-right:1.5px solid var(--cb-border);
+  padding:20px 16px;
+  display:flex;
+  flex-direction:column;
+  position:fixed;
+  height:100vh;
+  box-shadow:0 8px 32px rgba(0,0,0,0.2);
+  backdrop-filter: blur(12px) saturate(140%);
+  transition:width .25s ease, background .25s ease;
+}
+
+.cb-sidebar.collapsed{width:72px}
+
+.cb-sidebar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cb-logo{color:var(--cb-text);font-weight:700;text-decoration:none;font-size:16px}
+.cb-collapse{background:transparent;border:none;color:var(--cb-muted);font-size:18px;cursor:pointer}
+
+.cb-menu{list-style:none;padding:0;margin:8px 0 0 0;display:flex;flex-direction:column;gap:6px}
+.cb-menu-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:var(--cb-muted);cursor:pointer;transition:background .15s,color .15s,transform .15s}
+.cb-menu-item .cb-icon{width:28px;text-align:center}
+.cb-menu-item .cb-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cb-menu-item:hover{background:rgba(124,58,237,0.06);color:var(--cb-text);transform:translateY(-1px)}
+.cb-menu-item.active{background:linear-gradient(90deg,var(--cb-accent),#A78BFA);color:#fff;border:1px solid rgba(255,255,255,0.06);box-shadow:0 8px 24px rgba(124,58,237,0.12)}
+
+.cb-footer{margin-top:auto;padding-top:14px;border-top:1px solid rgba(255,255,255,0.02)}
+.cb-user{display:flex;gap:12px;align-items:center}
+.cb-user-avatar{width:44px;height:44px;border-radius:10px;object-fit:cover;border:1px solid rgba(255,255,255,0.04)}
+.cb-user-name{font-weight:600;color:var(--cb-text)}
+.cb-user-role{font-size:12px;color:var(--cb-muted)}
+
+/* Collapsed state: hide labels */
+.cb-sidebar.collapsed .cb-label{display:none}
+.cb-sidebar.collapsed .cb-user-info{display:none}
+
+@media(max-width:900px){
+  .cb-sidebar{position:fixed;left:0;top:0;z-index:50;transform:translateX(0)}
+}
