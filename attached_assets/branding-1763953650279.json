@@ -1,0 +1,121 @@
+{
+  "colorScheme": "dark",
+  "fonts": [
+    {
+      "family": "Satoshi",
+      "role": "body"
+    },
+    {
+      "family": "Roboto",
+      "role": "body"
+    },
+    {
+      "family": "Segoe UI",
+      "role": "body"
+    },
+    {
+      "family": "Helvetica",
+      "role": "body"
+    },
+    {
+      "family": "Arial",
+      "role": "body"
+    }
+  ],
+  "colors": {
+    "primary": "#341D3C",
+    "accent": "#481C4F",
+    "background": "#0A0A0A",
+    "textPrimary": "#FAFAFA",
+    "link": "#481C4F"
+  },
+  "typography": {
+    "fontFamilies": {
+      "primary": "Satoshi",
+      "heading": "Satoshi"
+    },
+    "fontStacks": {
+      "heading": [
+        "Satoshi",
+        "sans-serif"
+      ],
+      "body": [
+        "Satoshi",
+        "sans-serif"
+      ],
+      "paragraph": [
+        "Satoshi",
+        "sans-serif"
+      ]
+    },
+    "fontSizes": {
+      "h1": "28px",
+      "h2": "28px",
+      "body": "21px"
+    }
+  },
+  "spacing": {
+    "baseUnit": 4,
+    "borderRadius": "15px"
+  },
+  "components": {
+    "input": {
+      "borderColor": "#CCCCCC",
+      "borderRadius": "15px"
+    },
+    "buttonPrimary": {
+      "background": "#481C4F",
+      "textColor": "#FAFAFA",
+      "borderColor": "#511F59",
+      "borderRadius": "999px",
+      "shadow": "none"
+    },
+    "buttonSecondary": {
+      "background": "#2C1B31",
+      "textColor": "#FAFAFA",
+      "borderColor": "#231827",
+      "borderRadius": "12px",
+      "shadow": "none"
+    }
+  },
+  "images": {
+    "logo": "https://assets.guns.lol/guns_logo_no_background_cropped.png",
+    "favicon": "https://assets.guns.lol/favicon/apple-touch-icon.png",
+    "ogImage": "https://assets.guns.lol/guns_banner_embed.png"
+  },
+  "__framework_hints": [
+    "guns.lol"
+  ],
+  "__llm_logo_reasoning": {
+    "selectedIndex": 0,
+    "reasoning": "The logo matches the brand name 'guns.lol' and is located in the header, linking to the homepage, making it the main brand logo.",
+    "confidence": 0.98
+  },
+  "__llm_button_reasoning": {
+    "primary": {
+      "index": 1,
+      "text": "Get Started",
+      "reasoning": "Button #1 has a vibrant background color (#481C4F) and action-oriented text ('Get Started'), making it the primary CTA."
+    },
+    "secondary": {
+      "index": 0,
+      "text": "Sign Up Free",
+      "reasoning": "Button #0 has a different background color (#2C1B31) and is less prominent, making it suitable as the secondary button."
+    },
+    "confidence": 0.95
+  },
+  "personality": {
+    "tone": "modern",
+    "energy": "medium",
+    "targetAudience": "young adults interested in gaming and online communities"
+  },
+  "designSystem": {
+    "framework": "tailwind",
+    "componentLibrary": null
+  },
+  "confidence": {
+    "buttons": 0.95,
+    "colors": 0.9,
+    "overall": 0.925
+  }
+}

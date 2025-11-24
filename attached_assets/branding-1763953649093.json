@@ -1,0 +1,130 @@
+{
+  "colorScheme": "dark",
+  "fonts": [
+    {
+      "family": "Apple Color Emoji",
+      "role": "body"
+    },
+    {
+      "family": "Segoe UI Emoji",
+      "role": "body"
+    },
+    {
+      "family": "Segoe UI Symbol",
+      "role": "body"
+    },
+    {
+      "family": "Noto Color Emoji",
+      "role": "body"
+    }
+  ],
+  "colors": {
+    "primary": "#211010",
+    "accent": "#9CA3AF",
+    "background": "#0A0A0A",
+    "textPrimary": "#0A0A0A",
+    "link": "#9CA3AF"
+  },
+  "typography": {
+    "fontFamilies": {
+      "primary": "Apple Color Emoji",
+      "heading": "Apple Color Emoji"
+    },
+    "fontStacks": {
+      "heading": [
+        "ui-sans-serif",
+        "system-ui",
+        "sans-serif",
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji"
+      ],
+      "body": [
+        "ui-sans-serif",
+        "system-ui",
+        "sans-serif",
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji"
+      ],
+      "paragraph": [
+        "ui-sans-serif",
+        "system-ui",
+        "sans-serif",
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji"
+      ]
+    },
+    "fontSizes": {
+      "h1": "54px",
+      "h2": "36px",
+      "body": "18px"
+    }
+  },
+  "spacing": {
+    "baseUnit": 4,
+    "borderRadius": "8px"
+  },
+  "components": {
+    "input": {
+      "borderColor": "#CCCCCC",
+      "borderRadius": "8px"
+    },
+    "buttonPrimary": {
+      "background": "#0D0D11",
+      "textColor": "#D1D5DB",
+      "borderColor": "#27272A",
+      "borderRadius": "9999px",
+      "shadow": "none"
+    },
+    "buttonSecondary": {
+      "background": "#111111",
+      "textColor": "#FFFFFF",
+      "borderColor": "#27272A",
+      "borderRadius": "4px",
+      "shadow": "none"
+    }
+  },
+  "images": {
+    "logo": "https://i.ibb.co/hFsPJqM/image-2024-04-04-151451631-removebg-preview.png",
+    "favicon": "https://afra.id/file/7az7a6",
+    "ogImage": "https://afra.id/file/7az7a6"
+  },
+  "__framework_hints": [],
+  "__llm_logo_reasoning": {
+    "selectedIndex": 0,
+    "reasoning": "Logo #0 visually represents 'Alone Dashboard' and is located in the header with a link to the homepage, making it the primary brand logo.",
+    "confidence": 0.95
+  },
+  "__llm_button_reasoning": {
+    "primary": {
+      "index": 0,
+      "text": "Join our new Discord!",
+      "reasoning": "Button #0 has vibrant action-oriented text 'Join our new Discord!' and a distinct dark background color (#0D0D11), making it the primary CTA."
+    },
+    "secondary": {
+      "index": 5,
+      "text": "Claim Now",
+      "reasoning": "Button #5 has a different background color (#111111) and is less prominent compared to the primary button, making it suitable as the secondary CTA."
+    },
+    "confidence": 0.9
+  },
+  "personality": {
+    "tone": "modern",
+    "energy": "medium",
+    "targetAudience": "tech-savvy individuals and communities interested in biolink services"
+  },
+  "designSystem": {
+    "framework": "tailwind",
+    "componentLibrary": null
+  },
+  "confidence": {
+    "buttons": 0.9,
+    "colors": 0.95,
+    "overall": 0.925
+  }
+}

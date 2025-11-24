@@ -1,0 +1,94 @@
+{
+  "colorScheme": "dark",
+  "fonts": [
+    {
+      "family": "Lexend",
+      "role": "body"
+    }
+  ],
+  "colors": {
+    "primary": "#192E51",
+    "accent": "#3C83F6",
+    "background": "#0A0A0A",
+    "textPrimary": "#FFFFFF",
+    "link": "#3C83F6"
+  },
+  "typography": {
+    "fontFamilies": {
+      "primary": "Lexend",
+      "heading": "Lexend"
+    },
+    "fontStacks": {
+      "heading": [
+        "Lexend"
+      ],
+      "body": [
+        "Lexend"
+      ],
+      "paragraph": [
+        "Lexend"
+      ]
+    },
+    "fontSizes": {
+      "h1": "96px",
+      "h2": "30px",
+      "body": "18px"
+    }
+  },
+  "spacing": {
+    "baseUnit": 4,
+    "borderRadius": "4px"
+  },
+  "components": {
+    "input": {
+      "borderColor": "#CCCCCC",
+      "borderRadius": "4px"
+    },
+    "buttonPrimary": {
+      "background": "#3C83F6",
+      "textColor": "#FFFFFF",
+      "borderRadius": "16px",
+      "shadow": "none"
+    },
+    "buttonSecondary": {
+      "background": "#192E51",
+      "textColor": "#FFFFFF",
+      "borderColor": "#285398",
+      "borderRadius": "9.2px",
+      "shadow": "none"
+    }
+  },
+  "images": {
+    "logo": "https://wound.lol/favicon.ico",
+    "favicon": "https://wound.lol/favicon.ico",
+    "ogImage": null
+  },
+  "__framework_hints": [],
+  "__llm_button_reasoning": {
+    "primary": {
+      "index": 1,
+      "text": "Sign Up",
+      "reasoning": "Button #1 ('Sign Up') has a vibrant blue background (#3C83F6) and action-oriented text, making it the primary call-to-action. It stands out among the buttons and aligns with typical primary button characteristics."
+    },
+    "secondary": {
+      "index": 0,
+      "text": "Register",
+      "reasoning": "Button #0 ('Register') has a neutral vibrant background (#192E51) and is less action-oriented compared to Button #1. It serves as a secondary action, distinct from the primary button's color group."
+    },
+    "confidence": 0.95
+  },
+  "personality": {
+    "tone": "modern",
+    "energy": "medium",
+    "targetAudience": "young adults and tech-savvy users"
+  },
+  "designSystem": {
+    "framework": "tailwind",
+    "componentLibrary": null
+  },
+  "confidence": {
+    "buttons": 0.95,
+    "colors": 0.9,
+    "overall": 0.925
+  }
+}

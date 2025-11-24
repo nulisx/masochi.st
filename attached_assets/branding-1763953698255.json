@@ -2,7 +2,7 @@
   "colorScheme": "light",
   "fonts": [
     {
-      "family": "Times New Roman",
+      "family": "Helvetica",
       "role": "body"
     },
     {
@@ -11,59 +11,59 @@
     }
   ],
   "colors": {
-    "primary": "#0000EE",
-    "accent": "#0000EE",
-    "background": "#EFEFEF",
-    "textPrimary": "#000000",
-    "link": "#0000EE"
+    "primary": "#3F8694",
+    "accent": "#3F8694",
+    "background": "#FFFFFF",
+    "textPrimary": "#3F8694",
+    "link": "#3F8694"
   },
   "typography": {
     "fontFamilies": {
-      "primary": "Times New Roman",
-      "heading": "Times New Roman"
+      "primary": "Helvetica",
+      "heading": "Helvetica"
     },
     "fontStacks": {
       "heading": [
-        "Times New Roman"
+        "Helvetica"
       ],
       "body": [
-        "Times New Roman"
+        "Helvetica"
       ],
       "paragraph": [
-        "Times New Roman"
+        "Helvetica"
       ]
     },
     "fontSizes": {
-      "h1": "32px",
-      "h2": "24px",
+      "h1": "16px",
+      "h2": "16px",
       "body": "16px"
     }
   },
   "spacing": {
-    "baseUnit": 8,
-    "borderRadius": "0px"
+    "baseUnit": 4,
+    "borderRadius": "15px"
   },
   "components": {
     "input": {
       "borderColor": "#CCCCCC",
-      "borderRadius": "0px"
+      "borderRadius": "15px"
     }
   },
   "images": {
-    "logo": "File saved at: attached_assets/logo.svg",
-    "favicon": "File saved at: attached_assets/favicon.bin",
+    "logo": "https://catbox.moe/pictures/logo.png",
+    "favicon": "https://catbox.moe/pictures/favicon.ico",
     "ogImage": null
   },
   "__framework_hints": [],
   "__llm_logo_reasoning": {
     "selectedIndex": 0,
-    "reasoning": "The logo matches the brand name 'Glowi.es' and is located in the header, making it the main brand logo.",
+    "reasoning": "The logo matches the brand name 'Catbox' and is prominently displayed in the header, making it the main brand logo.",
     "confidence": 0.95
   },
   "personality": {
-    "tone": "modern",
+    "tone": "playful",
     "energy": "medium",
-    "targetAudience": "tech-savvy individuals and businesses looking for email solutions."
+    "targetAudience": "cat enthusiasts and casual internet users"
   },
   "designSystem": {
     "framework": "unknown",
