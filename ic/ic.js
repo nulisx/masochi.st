@@ -20,15 +20,23 @@ function generateInviteCode() {
 }
 
 app.post('/generate_invite', (req, res) => {
-    const inviteCode = generateInviteCode();
-    db.run('INSERT INTO invites (code) VALUES (?)', [inviteCode], function(err) {
-        if (err) {
-            console.error("Error inserting invite code:", err);
-            res.status(500).json({ error: 'Failed to generate invite code' });
-        } else {
-            res.json({ code: inviteCode });
-        }
-    });
+    let attempts = 0;
+    function tryInsert() {
+        attempts++;
+        const inviteCode = generateInviteCode();
+        db.run('INSERT INTO invites (code) VALUES (?)', [inviteCode], function(err) {
+            if (err) {
+                if (err && err.code === 'SQLITE_CONSTRAINT' && attempts < 10) {
+                    return tryInsert();
+                }
+                console.error("Error inserting invite code:", err);
+                return res.status(500).json({ error: 'Failed to generate invite code' });
+            }
+            return res.json({ code: inviteCode });
+        });
+    }
+
+    tryInsert();
 });
 
 app.use(express.static('static'));

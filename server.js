@@ -112,16 +112,20 @@ app.post(
 );
 
 app.post('/api/auth/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { username, identifier, password } = req.body;
   try {
-    const usernameInput = username.toLowerCase();
-    let user = await getQuery('users', 'username', usernameInput);
-    
-    if (!user && username.includes('@')) {
-      const emailHash = hashEmail(usernameInput);
+    const input = (username || identifier || '').toLowerCase().trim();
+
+    if (!input || !password) return res.status(400).json({ error: 'Missing credentials' });
+
+    let user = await getQuery('users', 'username', input);
+
+    // If not found by username and looks like an email, try email lookup (email is stored as hashed)
+    if (!user && input.includes('@')) {
+      const emailHash = hashEmail(input);
       user = await getQuery('users', 'email', emailHash);
     }
-    
+
     if (!user) return res.status(401).json({ error: 'Invalid credentials' });
 
     const valid = await bcrypt.compare(password, user.password_hash);
@@ -136,6 +140,9 @@ app.post('/api/auth/login', async (req, res) => {
     res.status(200).json({ message: 'Login successful', user: { id: user.id, username: user.username, role: user.role } });
   } catch (err) {
     console.error('Login error:', err);
+    if (err.message && err.message.includes('Access denied')) {
+      return res.status(500).json({ error: 'Database access denied. Check DB credentials and allowed hosts.' });
+    }
     res.status(500).json({ error: 'Login failed' });
   }
 });
@@ -330,16 +337,9 @@ app.get('/api/:userId', async (req, res) => {
 });
 
 function generateInviteCode() {
-  const hasS = Math.random() > 0.5;
-  const prefix = hasS ? 'Drugs' : 'Drug';
-  
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let code = '';
-  for (let i = 0; i < 4; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  
-  return prefix + code;
+  // Use crypto to generate short, collision-resistant codes
+  const buf = crypto.randomBytes(4).toString('hex').toUpperCase();
+  return `INV-${buf}`;
 }
 
 app.post('/generate_invite', authenticateToken, async (req, res) => {
@@ -354,23 +354,29 @@ app.post('/generate_invite', authenticateToken, async (req, res) => {
     let inviteCode;
     let attempts = 0;
     let existing;
-    
+
     do {
       inviteCode = generateInviteCode();
       existing = await getQuery('invites', 'code', inviteCode);
       attempts++;
-    } while (existing && attempts < 10);
+    } while (existing && attempts < 20);
 
     if (existing) {
+      console.error('Invite generation: exhausted attempts for unique code');
       return res.status(500).json({ error: 'Failed to generate unique invite code' });
     }
 
-    await runQuery('invites', {
-      code: inviteCode,
-      created_by: userId,
-      role: 'user',
-      max_uses: 1
-    });
+    try {
+      await runQuery('invites', {
+        code: inviteCode,
+        created_by: userId,
+        role: 'user',
+        max_uses: 1
+      });
+    } catch (err) {
+      console.error('Error storing invite code:', err);
+      return res.status(500).json({ error: 'Failed to save invite code' });
+    }
 
     res.status(200).json({ code: inviteCode });
   } catch (err) {

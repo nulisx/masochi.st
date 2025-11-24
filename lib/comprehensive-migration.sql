@@ -168,8 +168,8 @@ ALTER TABLE users MODIFY email VARCHAR(255) NULL;
 INSERT IGNORE INTO users (username, email, password_hash, display_name, role)
 VALUES (
   'r',
-  'yuriget@egirl.help',
-  '$2b$12$DEFAULTHASHREPLACETHISWITHACTUAL',
+  '886b107cc702957314be1d5a7a64ac44da2101cd6acd3bbadb2e794430030ebc',
+  '$2b$12$1n0O9ebHXmdLms1cvpzCX.RD7JSC8aT5MN2LITGXbLXUnWHKAXKpC',
   'r',
   'owner'
 );
