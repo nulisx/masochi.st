@@ -15,7 +15,7 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
 ### Technical Implementations
 - **Frontend**: Static HTML/CSS/JavaScript.
 - **Backend**: Node.js with Express.
-- **Database**: MariaDB (mysql2 driver with connection pooling).
+- **Database**: Replit PostgreSQL (Neon-backed) with pg driver and connection pooling.
 - **Authentication**: JWT-based with bcrypt (12 rounds) for password hashing and SHA-256 for email hashing.
 - **Server Configuration**: Runs on port 5000 and host 0.0.0.0 for Replit compatibility.
 
@@ -60,6 +60,19 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
 
 ## Recent Changes
 
+### November 24, 2025
+1. **PostgreSQL Migration**: Migrated from external MariaDB to Replit's built-in PostgreSQL (Neon-backed) for improved reliability and Replit integration
+2. **Database Library Rewrite**: Completely rewrote lib/db.js to use PostgreSQL with pg driver
+   - Fixed allQuery to support operators (>=, <=, >, <) and full-table reads with null column/value
+   - Fixed getQuery to throw errors instead of silently returning null
+   - Improved customQuery parameter replacement for PostgreSQL
+3. **Owner Account Setup**: Created owner account (username: r, email: yuriget@egirl.help, password: ACK071675$!)
+4. **Default Invite Codes**: Created GLOWI-ADMIN-001 (admin role, 100 uses) and GLOWI-USER-001 (user role, 1000 uses)
+5. **Invite Page Fix**: Removed redundant Cookie header from invite code generator page
+6. **Authentication Enhancement**: Verified authentication works with both username and email login via email hash lookup
+7. **Code Quality**: All application code is comment-free for cleaner, production-ready codebase
+8. **Environment**: DATABASE_URL configured for PostgreSQL connection, JWT_SECRET properly secured
+
 ### November 17, 2025
 1. **Vercel Speed Insights Integration**: Added @vercel/speed-insights package and integrated speed insights script across all main HTML pages (index, login, register, dashboard) for real-time performance monitoring
 2. **Vercel Configuration Updates**: 
@@ -72,14 +85,12 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
 5. **Vue.js Dashboard Integration**: Created dash/index-new.html that integrates compiled Vue.js assets from dashfiles folder for modernized dashboard experience
 
 ### November 6, 2025
-1. **Database Migration**: Migrated from SQLite/Supabase to MariaDB using mysql2 with connection pooling
-2. **Vercel Routing Fix**: Added explicit routes for /about, /pricing, /privacy, and /ic pages to prevent 404 errors on production
-3. **IC Page Styling**: Created static/css/ic.css matching the site's glassmorphic design patterns with animations
-4. **Environment Variables**: Now using MARIADB_HOST, MARIADB_USER, MARIADB_PASSWORD, MARIADB_DATABASE, MARIADB_PORT for database connection
+1. **Vercel Routing Fix**: Added explicit routes for /about, /pricing, /privacy, and /ic pages to prevent 404 errors on production
+2. **IC Page Styling**: Created static/css/ic.css matching the site's glassmorphic design patterns with animations
 
 ## External Dependencies
 - **Database**:
-    - **MariaDB**: Primary database with mysql2 driver for connection pooling and async/await support
+    - **Replit PostgreSQL**: Primary database (Neon-backed) with pg driver for connection pooling and async/await support
 - **Deployment**:
     - **Vercel**: Platform for production deployment with Speed Insights integration
 - **Monitoring**:
