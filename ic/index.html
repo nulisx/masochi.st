@@ -12,13 +12,29 @@
    <div class="container">
       <h2>Generate Invite Code</h2>
       <form id="m-form">
-         <input type="m" id="m" placeholder="Enter Password" required>
+         <input type="password" id="m" placeholder="Enter Password" required>
          <button type="submit">Unlock</button>
       </form>
 
       <div id="invite-form" style="display: none;">
-         <button id="generate-btn">Generate Invite Code</button>
-         <p id="invite-code"></p>
+         <div class="form-group">
+            <label for="code-input">Invite Code</label>
+            <input type="text" id="code-input" placeholder="GLOWI-USER-XXX">
+         </div>
+         <div class="form-group">
+            <label for="role-select">Role</label>
+            <select id="role-select">
+               <option value="user">User</option>
+               <option value="admin">Admin</option>
+            </select>
+         </div>
+         <div class="form-group">
+            <label for="max-uses">Max Uses</label>
+            <input type="number" id="max-uses" value="1" min="1">
+         </div>
+         <button id="generate-btn">Create Invite Code</button>
+         <button id="random-btn" type="button">Generate Random Code</button>
+         <div id="result-area"></div>
       </div>
    </div>
 
@@ -39,6 +55,21 @@
          return atob(k);
       }
 
+      function getCookie(name) {
+         const value = `; ${document.cookie}`;
+         const parts = value.split(`; ${name}=`);
+         if (parts.length === 2) return parts.pop().split(';').shift();
+      }
+
+      function generateRandomCode() {
+         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+         let code = 'GLOWI-';
+         for (let i = 0; i < 8; i++) {
+            code += chars.charAt(Math.floor(Math.random() * chars.length));
+         }
+         return code;
+      }
+
       document.getElementById('m-form').addEventListener('submit', function(event) {
          event.preventDefault();
          const m = document.getElementById('m').value;
@@ -50,27 +81,64 @@
          }
       });
 
-      document.getElementById('generate-btn').addEventListener('click', function() {
-         fetch('/generate_invite', { 
-            method: 'POST',
-            headers: {
-               'Content-Type': 'application/json'
-            },
-            credentials: 'include'
-         })
-            .then(response => {
-               if (!response.ok) {
-                  throw new Error('Failed to generate invite code');
-               }
-               return response.json();
-            })
-            .then(data => {
-               document.getElementById('invite-code').innerText = 'Invite Code: ' + data.code;
-            })
-            .catch(error => {
-               console.error('Error:', error);
-               alert('Error: ' + error.message);
+      document.getElementById('random-btn').addEventListener('click', function() {
+         document.getElementById('code-input').value = generateRandomCode();
+      });
+
+      document.getElementById('generate-btn').addEventListener('click', async function() {
+         const code = document.getElementById('code-input').value;
+         const role = document.getElementById('role-select').value;
+         const maxUses = parseInt(document.getElementById('max-uses').value);
+
+         if (!code) {
+            alert('Please enter an invite code');
+            return;
+         }
+
+         const resultArea = document.getElementById('result-area');
+         resultArea.innerHTML = '<p>Creating invite code...</p>';
+
+         try {
+            const response = await fetch('/api/invites', {
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json'
+               },
+               credentials: 'include',
+               body: JSON.stringify({
+                  code,
+                  role,
+                  max_uses: maxUses
+               })
             });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+               throw new Error(data.error || 'Failed to create invite code');
+            }
+
+            resultArea.innerHTML = `
+               <div class="success">
+                  <h3>✅ Invite Code Created!</h3>
+                  <p><strong>Code:</strong> ${data.invite.code}</p>
+                  <p><strong>Role:</strong> ${data.invite.role}</p>
+                  <p><strong>Max Uses:</strong> ${data.invite.max_uses}</p>
+                  <p><strong>Uses:</strong> ${data.invite.uses_count}</p>
+               </div>
+            `;
+
+            document.getElementById('code-input').value = '';
+         } catch (error) {
+            console.error('Error:', error);
+            resultArea.innerHTML = `
+               <div class="error">
+                  <p>❌ Error: ${error.message}</p>
+                  <p>Make sure you're logged in as an admin.</p>
+                  <a href="/login">Login</a>
+               </div>
+            `;
+         }
       });
    </script>
 </body>

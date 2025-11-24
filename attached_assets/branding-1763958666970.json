@@ -1,0 +1,122 @@
+{
+  "colorScheme": "light",
+  "fonts": [
+    {
+      "family": "fasterOne",
+      "role": "display"
+    },
+    {
+      "family": "gta",
+      "role": "body"
+    }
+  ],
+  "colors": {
+    "primary": "#605CFE",
+    "accent": "#2647D9",
+    "background": "#0A0A0A",
+    "textPrimary": "#0A0A0A",
+    "link": "#2647D9"
+  },
+  "typography": {
+    "fontFamilies": {
+      "primary": "gta",
+      "heading": "fasterOne"
+    },
+    "fontStacks": {
+      "heading": [
+        "ui-sans-serif",
+        "system-ui",
+        "sans-serif",
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji"
+      ],
+      "body": [
+        "ui-sans-serif",
+        "system-ui",
+        "sans-serif",
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji"
+      ],
+      "paragraph": [
+        "ui-sans-serif",
+        "system-ui",
+        "sans-serif",
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji"
+      ]
+    },
+    "fontSizes": {
+      "h1": "72px",
+      "h2": "36px",
+      "body": "18px"
+    }
+  },
+  "spacing": {
+    "baseUnit": 4,
+    "borderRadius": "0px"
+  },
+  "components": {
+    "input": {
+      "borderColor": "#CCCCCC",
+      "borderRadius": "0px"
+    },
+    "buttonPrimary": {
+      "background": "#262626",
+      "textColor": "#FFFFFF",
+      "borderColor": "#404040",
+      "borderRadius": "8px",
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px"
+    },
+    "buttonSecondary": {
+      "background": "transparent",
+      "textColor": "#FFFFFF",
+      "borderColor": "#474747",
+      "borderRadius": "12px",
+      "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px"
+    }
+  },
+  "images": {
+    "logo": "https://feds.lol/_next/image?url=%2Flogo.png&w=96&q=100",
+    "favicon": null,
+    "ogImage": "https://feds.lol/apple-touch-icon.png"
+  },
+  "__framework_hints": [],
+  "__llm_logo_reasoning": {
+    "selectedIndex": 0,
+    "reasoning": "Logo #0 visually represents the brand name 'feds.lol' and is located in the header, linking to the homepage, making it the primary brand logo.",
+    "confidence": 0.95
+  },
+  "__llm_button_reasoning": {
+    "primary": {
+      "index": 0,
+      "text": "Get Started",
+      "reasoning": "Button #0 has a dark background color (#262626) but is the most action-oriented with the text 'Get Started', making it the primary CTA despite not being vibrant. It stands out as the main action button."
+    },
+    "secondary": {
+      "index": 1,
+      "text": "Register",
+      "reasoning": "Button #1 has a transparent background, making it less prominent and suitable as a secondary action. It is different from the primary button's color group."
+    },
+    "confidence": 0.9
+  },
+  "personality": {
+    "tone": "modern",
+    "energy": "medium",
+    "targetAudience": "tech-savvy individuals and gamers"
+  },
+  "designSystem": {
+    "framework": "tailwind",
+    "componentLibrary": null
+  },
+  "confidence": {
+    "buttons": 0.9,
+    "colors": 0.95,
+    "overall": 0.925
+  }
+}
