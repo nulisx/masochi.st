@@ -1,0 +1,49 @@
+it still says "Invalid credentials
+" i updated the email from qq@fbi.one to yuriget@egirl.help instead fix it anywhere else i didnt update and also fix up the login page where its optional to either login with username or email not just username also it isnt letting me login it still says "Invalid credentials
+" what is the mariadb-setup.sql and comprehensive-migration.sql for where do i set those up where do i set everything up im on a school chromebook using vercel which is why im also using replit agent to fix everything else fix this all up entirely i want it to be the best entirely i want it the best ever made and did you even analyze the files in the dash folders like with what ive said which is for you to fix up the dashboard with the dash files in the dash folder which is also with dash/js and dash/assets which is also with dash/assets/js and also fix it up with the dash css with the css in static/css/dash along with static/css/dash/assets and everything fix it all up entirely make it the best and everything entirely fix it all up i dont want any comments in my code and while ur doing this i want you to fix up the css everywhere on the entire site make it entirely better as well it looks vibe coded and i dont want that so fix that up as well and everything fix it entirely up thats all i want you to do fix up the css make it better than what it is now i want it entirely better than alo.ne along with guns.lol and slat.cc aka feds.lol and also wound.lol and even catbox.moe like fix up the css with entirely everything fix up the css entirely right now make it the best css you ever seen in ur life on any biolink service or email service or file hosting service i want this to be entirely the best so fix up the dashboard and everything to actually work rewrite them entirely to actually work and everything fix it all up entirely rewrite the js files all of them and everything to actually work and everything fix it up entirely ur messing it up
+
+i want it better and everything actually fix this get the right api's and everything i want it entirely the best dont give up push through it and work hard on it entirely okay fix all the other errors read the errors txt i pasted from the console fix that as well idk how to fix that tell me how and eveyrthing entirely fix this up read the Pasted--Glowi-es-1-0-0-start-node-server-js-MariaDB-connection-pool-initialized-successfully-Data-1763957768275_1763957768277.txt
+ file and everything make this the best
+
+ errors:
+
+> Glowi.es@1.0.0 start
+✅ MariaDB connection pool initialized successfully
+📊 Database: sql5806443 on sql5.freesqldatabase.com:3306
+🚀 Server running on http://0.0.0.0:5000
+Database error in getQuery (users.username): Error: Access denied for user 'sql5806443'@'34.136.133.171' (using password: YES)
+    at Packet.asError (/home/runner/workspace/node_modules/mysql2/lib/packets/packet.js:740:17)
+    at ClientHandshake.execute (/home/runner/workspace/node_modules/mysql2/lib/commands/command.js:29:26)
+    at PoolConnection.handlePacket (/home/runner/workspace/node_modules/mysql2/lib/base/connection.js:477:34)
+    at PacketParser.onPacket (/home/runner/workspace/node_modules/mysql2/lib/base/connection.js:93:12)
+    at PacketParser.executeStart (/home/runner/workspace/node_modules/mysql2/lib/packet_parser.js:75:16)
+    at Socket.<anonymous> (/home/runner/workspace/node_modules/mysql2/lib/base/connection.js:100:25)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5) {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'sql5806443'@'34.136.133.171' (using password: YES)",
+  sql: undefined
+}
+Database error in getQuery (users.username): Error: Access denied for user 'sql5806443'@'34.136.133.171' (using password: YES)
+    at Packet.asError (/home/runner/workspace/node_modules/mysql2/lib/packets/packet.js:740:17)
+    at ClientHandshake.execute (/home/runner/workspace/node_modules/mysql2/lib/commands/command.js:29:26)
+    at PoolConnection.handlePacket (/home/runner/workspace/node_modules/mysql2/lib/base/connection.js:477:34)
+    at PacketParser.onPacket (/home/runner/workspace/node_modules/mysql2/lib/base/connection.js:93:12)
+    at PacketParser.executeStart (/home/runner/workspace/node_modules/mysql2/lib/packet_parser.js:75:16)
+    at Socket.<anonymous> (/home/runner/workspace/node_modules/mysql2/lib/base/connection.js:100:25)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5) {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'sql5806443'@'34.136.133.171' (using password: YES)",
+  sql: undefined
+}
+
+errors for ic (invite code generator for sign up/register page): Error: Failed to generate invite code
