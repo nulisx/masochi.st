@@ -161,14 +161,14 @@ CREATE INDEX idx_email_messages_folder ON email_messages(folder);
 ALTER TABLE users MODIFY email VARCHAR(255) NULL;
 
 -- ============================================================================
--- DEFAULT OWNER ACCOUNT (username: r, email: qq@fbi.one, password: ACK071675$!)
+-- DEFAULT OWNER ACCOUNT (username: r, email: yuriget@egirl.help, password: ACK071675$!)
 -- ============================================================================
 
 -- Insert default owner account
 INSERT IGNORE INTO users (username, email, password_hash, display_name, role)
 VALUES (
   'r',
-  'qq@fbi.one',
+  'yuriget@egirl.help',
   '$2b$12$DEFAULTHASHREPLACETHISWITHACTUAL',
   'r',
   'owner'

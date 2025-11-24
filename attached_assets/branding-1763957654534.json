@@ -88,26 +88,26 @@
   ],
   "__llm_logo_reasoning": {
     "selectedIndex": 0,
-    "reasoning": "The logo matches the brand name 'guns.lol' and is located in the header, linking to the homepage, making it the main brand logo.",
+    "reasoning": "The logo matches the brand name 'guns.lol' and is located in the header, linking to the homepage, making it the primary brand logo.",
     "confidence": 0.98
   },
   "__llm_button_reasoning": {
     "primary": {
       "index": 1,
       "text": "Get Started",
-      "reasoning": "Button #1 has a vibrant background color (#481C4F) and action-oriented text ('Get Started'), making it the primary CTA."
+      "reasoning": "Button #1 ('Get Started') has a vibrant background color (#481C4F) and action-oriented text, making it the primary call-to-action."
     },
     "secondary": {
       "index": 0,
       "text": "Sign Up Free",
-      "reasoning": "Button #0 has a different background color (#2C1B31) and is less prominent, making it suitable as the secondary button."
+      "reasoning": "Button #0 ('Sign Up Free') has a different background color (#2C1B31) from the primary button and is less prominent, making it suitable as the secondary action."
     },
     "confidence": 0.95
   },
   "personality": {
     "tone": "modern",
     "energy": "medium",
-    "targetAudience": "young adults interested in gaming and online communities"
+    "targetAudience": "young adults and tech-savvy individuals interested in gaming and online communities."
   },
   "designSystem": {
     "framework": "tailwind",

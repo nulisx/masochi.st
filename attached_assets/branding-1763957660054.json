@@ -89,19 +89,19 @@
   "__framework_hints": [],
   "__llm_logo_reasoning": {
     "selectedIndex": 0,
-    "reasoning": "Logo #0 visually represents the brand name 'feds.lol' and is located in the header, linking to the homepage, making it the most suitable choice.",
+    "reasoning": "Logo #0 is the only one that visually represents the brand name 'feds.lol' and is located in the header, linking to the homepage, making it the primary brand logo.",
     "confidence": 0.95
   },
   "__llm_button_reasoning": {
     "primary": {
       "index": 0,
       "text": "Get Started",
-      "reasoning": "Button #0 has a dark background color (#262626) and action-oriented text 'Get Started', making it the most prominent call-to-action on the site."
+      "reasoning": "Button #0 has a dark background color (#262626) but is the only button with action-oriented text 'Get Started', making it the primary CTA despite not being vibrant. It stands out as the main action button on the page."
     },
     "secondary": {
       "index": 1,
       "text": "Register",
-      "reasoning": "Button #1 has a transparent background, which makes it less prominent compared to Button #0. It is also from a different color group, fulfilling the requirement for a secondary button."
+      "reasoning": "Button #1 has a transparent background, which makes it less prominent compared to Button #0. It serves as a secondary action with the text 'Register', which is less urgent than 'Get Started'."
     },
     "confidence": 0.9
   },

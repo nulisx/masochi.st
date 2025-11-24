@@ -130,8 +130,8 @@ CREATE INDEX idx_images_user_id ON images(user_id);
 CREATE INDEX idx_connections_user_id ON connections(user_id);
 CREATE INDEX idx_collectibles_user_id ON collectibles(user_id);
 
--- Insert default owner user (username: r, email: qq@fbi.one, password: ACK071675$!)
--- Email hash for 'qq@fbi.one' using SHA-256
+-- Insert default owner user (username: r, email: yuriget@egirl.help, password: ACK071675$!)
+-- Email hash for 'yuriget@egirl.help' using SHA-256
 INSERT IGNORE INTO users (username, email, password_hash, display_name, role)
 VALUES (
   'r',
