@@ -7,13 +7,28 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import os from 'os';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const uploadDir = path.join(__dirname, '..', 'static', 'uploads');
 import fs from 'fs';
-try{ fs.mkdirSync(uploadDir, { recursive: true }); }catch(e){console.warn('Could not create uploads dir', e)}
+
+// On serverless platforms (Vercel) writing into the project directory
+// can fail or be ephemeral. Use the system temp directory there and
+// fall back to `static/uploads` for local/dev environments.
+let uploadDir;
+if (process.env.VERCEL || process.env.SERVERLESS) {
+  uploadDir = path.join(os.tmpdir(), 'glowi_uploads');
+} else {
+  uploadDir = path.join(__dirname, '..', 'static', 'uploads');
+}
+
+try {
+  fs.mkdirSync(uploadDir, { recursive: true });
+} catch (e) {
+  console.warn('Could not create uploads dir', e);
+}
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -83,6 +98,9 @@ router.post('/upload-file', authenticateToken, upload.single('file'), async (req
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
     const userId = req.user.id;
     const filename = req.file.originalname;
+    // Prefer the public static path so existing front-end expects the same
+    // value. Note: on serverless this file may not be publicly served —
+    // encourage using S3 presigned uploads in production.
     const urlPath = `/static/uploads/${req.file.filename}`;
     const size = req.file.size;
     const mime_type = req.file.mimetype || 'application/octet-stream';

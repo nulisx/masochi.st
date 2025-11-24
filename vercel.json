@@ -22,7 +22,6 @@
       "use": "@vercel/static"
     }
   ],
-  "buildCommand": "npm install && node lib/seed-owner.js",
   "routes": [
     {
       "src": "/static/(.*)",
