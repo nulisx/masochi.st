@@ -28,7 +28,10 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(__dirname));
+app.use('/static', express.static(path.join(__dirname, 'static')));
+app.use('/fonts', express.static(path.join(__dirname, 'fonts')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/dash', express.static(path.join(__dirname, 'dash')));
 
 app.post(
   '/api/auth/register',
