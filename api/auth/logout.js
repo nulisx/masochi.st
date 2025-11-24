@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/',
-    expires: new Date(0) // immediately expire
+    expires: new Date(0) 
   }));
 
   res.status(200).json({ message: 'Logout successful' });

@@ -1,11 +1,6 @@
-/**
- * Alo.ne Dashboard - Dark Purple Theme
- * Replaces blue accents with elegant dark purple tones
- * Inspired by modern dashboard designs but better
- */
 
 :root {
-  /* Dark Purple Color Palette */
+  
   --purple-50: #faf5ff;
   --purple-100: #e9d5ff;
   --purple-200: #d8b4fe;
@@ -18,7 +13,7 @@
   --purple-900: #4c1d95;
   --purple-950: #3b0764;
 
-  /* Dashboard-specific colors */
+  
   --dash-primary: var(--purple-500);
   --dash-primary-hover: var(--purple-600);
   --dash-primary-light: var(--purple-400);
@@ -27,22 +22,19 @@
   --dash-glow: rgba(139, 92, 246, 0.2);
   --dash-glow-strong: rgba(139, 92, 246, 0.3);
   
-  /* Background colors */
+  
   --dash-bg: #0a0a0a;
   --dash-card-bg: rgba(139, 92, 246, 0.03);
   --dash-sidebar-bg: #0f0f0f;
   --dash-hover-bg: rgba(139, 92, 246, 0.08);
   
-  /* Border colors */
+  
   --dash-border: rgba(139, 92, 246, 0.15);
   --dash-border-hover: rgba(139, 92, 246, 0.25);
 }
 
-/* ============================================================================
-   GLOBAL DASHBOARD OVERRIDES
-   ============================================================================ */
 
-/* Replace all blue gradients with purple */
+
 .bg-gradient-to-r.from-\[#818cf8\],
 .from-indigo-400,
 .from-blue-400 {
@@ -55,7 +47,7 @@
   --tw-gradient-to: var(--purple-600) !important;
 }
 
-/* Replace blue text colors with purple */
+
 .text-\[#818cf8\],
 .text-blue-400,
 .text-indigo-400 {
@@ -68,7 +60,7 @@
   color: var(--dash-accent) !important;
 }
 
-/* Replace blue backgrounds with purple */
+
 .bg-\[#818cf8\],
 .bg-blue-400,
 .bg-indigo-400 {
@@ -81,7 +73,7 @@
   background-color: var(--dash-accent) !important;
 }
 
-/* Replace blue borders with purple */
+
 .border-\[#818cf8\],
 .border-blue-400,
 .border-indigo-400 {
@@ -94,11 +86,8 @@
   border-color: var(--dash-accent) !important;
 }
 
-/* ============================================================================
-   SIDEBAR STYLING (inspired by reference image)
-   ============================================================================ */
 
-/* Sidebar container */
+
 nav[class*="sidebar"],
 aside[class*="sidebar"],
 .sidebar,
@@ -108,7 +97,7 @@ aside[class*="sidebar"],
   border-right: 1px solid rgba(139, 92, 246, 0.1) !important;
 }
 
-/* Sidebar navigation items */
+
 nav a[class*="flex items-center"],
 .sidebar-link,
 [class*="nav-link"] {
@@ -125,7 +114,7 @@ nav a[class*="flex items-center"]:hover,
   padding-left: calc(1rem - 3px);
 }
 
-/* Active sidebar item */
+
 nav a[class*="flex items-center"][class*="bg-"],
 nav a.active,
 .sidebar-link.active {
@@ -137,7 +126,7 @@ nav a.active,
   color: var(--purple-400) !important;
 }
 
-/* Sidebar icons */
+
 nav a[class*="flex items-center"] svg,
 .sidebar-link svg {
   color: rgba(255, 255, 255, 0.6);
@@ -153,11 +142,8 @@ nav a.active svg {
   color: var(--dash-primary) !important;
 }
 
-/* ============================================================================
-   CARD COMPONENTS (inspired by reference image)
-   ============================================================================ */
 
-/* Main dashboard cards */
+
 [class*="rounded-xl"][class*="bg-zinc-900"],
 [class*="rounded-lg"][class*="bg-zinc-900"],
 .dashboard-card,
@@ -179,7 +165,7 @@ nav a.active svg {
   transform: translateY(-2px);
 }
 
-/* Card headers */
+
 .card-header,
 [class*="flex items-center justify-between mb-4"] {
   border-bottom: 1px solid rgba(139, 92, 246, 0.1);
@@ -187,7 +173,7 @@ nav a.active svg {
   margin-bottom: 1rem;
 }
 
-/* Card icons in circular backgrounds */
+
 [class*="p-2 rounded-lg bg-zinc-800"],
 [class*="rounded-lg bg-zinc-800/50"] {
   background: linear-gradient(135deg, 
@@ -201,11 +187,8 @@ nav a.active svg {
   color: var(--dash-primary) !important;
 }
 
-/* ============================================================================
-   STATS & METRICS
-   ============================================================================ */
 
-/* Large stat numbers */
+
 [class*="text-2xl font-bold"],
 .stat-number {
   background: linear-gradient(135deg, var(--purple-400), var(--purple-600));
@@ -214,17 +197,14 @@ nav a.active svg {
   background-clip: text;
 }
 
-/* Stat labels */
+
 [class*="text-sm"][class*="text-zinc-400"],
 .stat-label {
   color: rgba(255, 255, 255, 0.5);
 }
 
-/* ============================================================================
-   BUTTONS & INTERACTIVE ELEMENTS
-   ============================================================================ */
 
-/* Primary buttons */
+
 button[class*="bg-blue"],
 button[class*="bg-indigo"],
 .btn-primary {
@@ -244,7 +224,7 @@ button[class*="bg-indigo"]:hover,
   filter: brightness(1.1);
 }
 
-/* Secondary/outline buttons */
+
 button[class*="border-blue"],
 button[class*="border-indigo"],
 .btn-secondary {
@@ -259,7 +239,7 @@ button[class*="border-indigo"]:hover,
   border-color: var(--dash-primary-hover) !important;
 }
 
-/* Action links */
+
 a[class*="text-blue"],
 a[class*="text-indigo"],
 .action-link {
@@ -286,18 +266,15 @@ a[class*="text-indigo"]:hover::after,
   width: 100%;
 }
 
-/* ============================================================================
-   BADGES & STATUS INDICATORS
-   ============================================================================ */
 
-/* Success/Active badges */
+
 [class*="bg-green"] {
   background: linear-gradient(135deg, 
     var(--purple-600) 0%, 
     var(--purple-700) 100%) !important;
 }
 
-/* Info badges - convert blue to green */
+
 [class*="bg-blue"][class*="badge"],
 .badge-info {
   background: linear-gradient(135deg, 
@@ -305,18 +282,15 @@ a[class*="text-indigo"]:hover::after,
     var(--purple-600) 100%) !important;
 }
 
-/* Status dots */
+
 .status-dot[class*="bg-blue"],
 .status-dot-blue {
   background: var(--dash-primary) !important;
   box-shadow: 0 0 8px var(--dash-glow);
 }
 
-/* ============================================================================
-   INPUTS & FORMS
-   ============================================================================ */
 
-/* Focus states */
+
 input:focus,
 textarea:focus,
 select:focus {
@@ -325,17 +299,14 @@ select:focus {
   outline: none;
 }
 
-/* Input icons */
+
 input[class*="pl-10"]::before,
 .input-icon {
   color: var(--dash-primary);
 }
 
-/* ============================================================================
-   PROGRESS BARS & LOADERS
-   ============================================================================ */
 
-/* Progress bars */
+
 [class*="bg-blue"][class*="progress"],
 .progress-bar {
   background: linear-gradient(90deg, 
@@ -343,44 +314,35 @@ input[class*="pl-10"]::before,
     var(--purple-400) 100%) !important;
 }
 
-/* Loading spinners */
+
 .spinner[class*="border-blue"],
 .loading-spinner {
   border-color: var(--dash-primary) !important;
   border-top-color: transparent !important;
 }
 
-/* ============================================================================
-   TABLES & LISTS
-   ============================================================================ */
 
-/* Table header */
+
 thead {
   background: rgba(139, 92, 246, 0.03);
   border-bottom: 2px solid var(--dash-border);
 }
 
-/* Table row hover */
+
 tbody tr:hover {
   background: rgba(139, 92, 246, 0.03);
 }
 
-/* ============================================================================
-   ALERTS & NOTIFICATIONS
-   ============================================================================ */
 
-/* Info alerts - convert to green */
+
 [class*="bg-blue-500/10"],
 .alert-info {
   background: rgba(139, 92, 246, 0.1) !important;
   border-left: 4px solid var(--dash-primary);
 }
 
-/* ============================================================================
-   SPECIAL EFFECTS
-   ============================================================================ */
 
-/* Glow effects on hover */
+
 .glow-on-hover {
   position: relative;
   transition: all 0.3s;
@@ -402,7 +364,7 @@ tbody tr:hover {
   opacity: 0.3;
 }
 
-/* Animated gradient background for special cards */
+
 @keyframes gradient-shift {
   0%, 100% {
     background-position: 0% 50%;
@@ -423,11 +385,8 @@ tbody tr:hover {
   animation: gradient-shift 8s ease infinite;
 }
 
-/* ============================================================================
-   SCROLLBAR CUSTOMIZATION
-   ============================================================================ */
 
-/* Dashboard scrollbars */
+
 .dashboard-content::-webkit-scrollbar,
 [class*="overflow-y-auto"]::-webkit-scrollbar {
   width: 8px;
@@ -451,36 +410,30 @@ tbody tr:hover {
   background: linear-gradient(180deg, var(--purple-600), var(--purple-700));
 }
 
-/* ============================================================================
-   RESPONSIVE ADJUSTMENTS
-   ============================================================================ */
 
 @media (max-width: 768px) {
-  /* Adjust sidebar for mobile */
+  
   nav[class*="sidebar"],
   aside[class*="sidebar"] {
     background: rgba(15, 15, 15, 0.98);
     backdrop-filter: blur(20px);
   }
 
-  /* Adjust card padding for mobile */
+  
   [class*="rounded-xl"][class*="bg-zinc-900"],
   .dashboard-card {
     padding: 1rem;
   }
 }
 
-/* ============================================================================
-   ACCESSIBILITY
-   ============================================================================ */
 
-/* Focus visible indicators */
+
 *:focus-visible {
   outline: 2px solid var(--dash-primary);
   outline-offset: 2px;
 }
 
-/* Reduced motion support */
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
@@ -489,7 +442,7 @@ tbody tr:hover {
   }
 }
 
-/* High contrast mode support */
+
 @media (prefers-contrast: high) {
   :root {
     --dash-primary: #8b5cf6;

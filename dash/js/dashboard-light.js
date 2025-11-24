@@ -1,5 +1,5 @@
-// npm package: apexcharts
-// github link: https://github.com/apexcharts/apexcharts.js
+
+
 
 $(function() {
   'use strict';
@@ -23,7 +23,7 @@ $(function() {
 
 
 
-  // Apex Line chart start
+  
   if ($('#apexLine').length) {
     var lineChartOptions = {
       chart: {
@@ -104,11 +104,11 @@ $(function() {
     var apexLineChart = new ApexCharts(document.querySelector("#apexLine"), lineChartOptions);
     apexLineChart.render();
   }
-  // Apex Line chart end
+  
 
 
 
-  // Apex Bar chart start
+  
   if ($('#apexBar').length) {
     var options = {
       chart: {
@@ -176,12 +176,12 @@ $(function() {
     var apexBarChart = new ApexCharts(document.querySelector("#apexBar"), options);
     apexBarChart.render();
   }
-  // Apex Bar chart end
+  
 
 
 
 
-  // Apex Area chart start
+  
   if ($('#apexArea').length) {
     var options = {
       chart: {
@@ -213,13 +213,13 @@ $(function() {
         name: 'Logs',
         data: generateDayWiseTimeSeries(0, 18)
       }],
-      // markers: {
-      //   size: 5,
-      //   strokeWidth: 3,
-      //   hover: {
-      //     size: 7
-      //   }
-      // },
+      
+      
+      
+      
+      
+      
+      
       xaxis: {
         type: "datetime",
         axisBorder: {
@@ -236,7 +236,7 @@ $(function() {
         tickAmount: 4,
         min: 0,
         labels: {
-          // offsetX: -6,
+          
         },
         tooltip: {
           enabled: true
@@ -293,12 +293,12 @@ $(function() {
       return series;
     }
   }
-  // Apex Area chart end
+  
 
 
 
 
-  // Apex Mixed chart start
+  
   if ($('#apexMixed').length) {
     var options = {
       chart: {
@@ -405,12 +405,12 @@ $(function() {
     );
     chart.render();
   }
-  // Apex Mixed chart end
+  
 
 
 
 
-  // Apex Donut chart start
+  
   if ($('#apexDonut').length) {
     var options = {
       chart: {
@@ -451,12 +451,12 @@ $(function() {
     var chart = new ApexCharts(document.querySelector("#apexDonut"), options);
     chart.render();
   }
-  // Apex Donut chart start
+  
 
 
 
   
-  // Apex Pie chart end
+  
   if ($('#apexPie').length) {
     var options = {
       chart: {
@@ -497,12 +497,12 @@ $(function() {
     var chart = new ApexCharts(document.querySelector("#apexPie"), options);
     chart.render();  
   }
-  // Apex Pie chart end
+  
 
 
 
 
-  // Apex Heat chart start
+  
   if ($('#apexHeatMap').length) {
     function generateData(count, yrange) {
       var i = 0;
@@ -645,12 +645,12 @@ $(function() {
     var chart = new ApexCharts(document.querySelector("#apexHeatMap"), options);
     chart.render();
   }
-  // Apex Heat chart end
+  
 
 
 
 
-  // Apex Radar chart start
+  
   if ($('#apexRadar').length) {
     var options = {
       chart: {
@@ -743,12 +743,12 @@ $(function() {
     var chart = new ApexCharts(document.querySelector("#apexRadar"), options );
     chart.render();
   }
-  // Apex Radar chart end
+  
 
 
 
   
-  // Apex Scatter chart start
+  
   if ($('#apexScatter').length) {
     var options = {
       chart: {
@@ -834,12 +834,12 @@ $(function() {
     );
     chart.render();
   }
-  // Apex Scatter chart end
+  
 
 
 
 
-  // Apex Radialbar chart start
+  
   if ($('#apexRadialBar').length) {
     var options = {
       chart: {
@@ -903,6 +903,6 @@ $(function() {
     chart.render();
     var chartAreaBounds = chart.w.globals.dom.baseEl.querySelector('.apexcharts-inner').getBoundingClientRect();
   }
-  // Apex Radialbar chart end  
+  
 
 });
