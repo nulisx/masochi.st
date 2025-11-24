@@ -1,4 +1,4 @@
-/* Modular Sidebar styles (prefixed with cb- to avoid collisions) */
+
 :root{
   --cb-sidebar-width:260px;
   --cb-bg: #0f0f12;
@@ -42,7 +42,7 @@
 .cb-user-name{font-weight:600;color:var(--cb-text)}
 .cb-user-role{font-size:12px;color:var(--cb-muted)}
 
-/* Collapsed state: hide labels */
+
 .cb-sidebar.collapsed .cb-label{display:none}
 .cb-sidebar.collapsed .cb-user-info{display:none}
 

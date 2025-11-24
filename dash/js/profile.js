@@ -1,6 +1,6 @@
-// Profile client module
+
 export function initProfile() {
-  // ensure only initialized once
+
   if (window.__cb_profile_inited) return;
   window.__cb_profile_inited = true;
 
@@ -23,7 +23,7 @@ export function initProfile() {
     let lastErr = null;
     while (attempt <= maxRetries) {
       try {
-        // request presigned URL
+
         const metaRes = await fetch('/api/images/presign', {
           method: 'POST',
           credentials: 'include',
@@ -33,7 +33,6 @@ export function initProfile() {
         if (!metaRes.ok) throw new Error('Failed to get presigned url');
         const meta = await metaRes.json();
 
-        // upload with XHR to allow progress
         await new Promise((resolve, reject) => {
           const xhr = new XMLHttpRequest();
           xhr.open('PUT', meta.signedUrl, true);
@@ -51,7 +50,6 @@ export function initProfile() {
           xhr.send(file);
         });
 
-        // register file in the app DB via existing metadata endpoint
         const registerRes = await fetch('/api/images/upload', {
           method: 'POST',
           credentials: 'include',
@@ -65,7 +63,7 @@ export function initProfile() {
         lastErr = err;
         attempt += 1;
         if (attempt > maxRetries) break;
-        // exponential-ish backoff
+
         await new Promise((r) => setTimeout(r, 250 * attempt));
       }
     }
@@ -84,7 +82,6 @@ export function initProfile() {
     const statusEl = $('#cb-profile-status', form);
     const progressEl = $('#cb-avatar-progress', form);
 
-    // load existing profile
     const profile = await fetchProfile();
     if (profile) {
       $('#cb-displayName', form).value = profile.display_name || '';
@@ -150,17 +147,14 @@ export function initProfile() {
     });
   }
 
-  // init on view load
   window.addEventListener('cb:view:loaded', (e) => {
     if (e.detail && e.detail.view === 'profile') init();
   });
 
-  // also attempt to init now in case the view is already loaded
   setTimeout(()=>{
     const evt = new CustomEvent('cb:profile:tryinit');
     window.dispatchEvent(evt);
   }, 200);
 }
 
-// auto-register init function for importers that want to call it
 export default initProfile;

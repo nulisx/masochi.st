@@ -288,6 +288,22 @@ Retention and cleanup:
 - Implement lifecycle rules on your object store (e.g., S3 lifecycle rules or R2 lifecycle) to remove old/unreferenced objects.
 - Optionally run a periodic job that cross-references DB `images` rows with bucket contents and removes orphaned files.
 
+## ⚠️ Vercel deployment errors & common fixes
+
+If your Vercel build fails during `npm install` with messages like "No matching version found for multer@^1.4.5", consider the following fixes:
+
+- Ensure `multer` is listed in `dependencies` (not `devDependencies`) because the server uses it at runtime. We moved `multer` to `dependencies` and pinned to a known stable version in the repo.
+- If you pin a version that doesn't exist in the npm registry, adjust it to a stable version like `^1.4.4`.
+- Clear the build cache from the Vercel project settings and re-deploy after updating `package.json`.
+
+If you see runtime errors like `getaddrinfo ENOTFOUND base` when your functions run, this means the database host name is unresolved (often due to a misconfigured `DATABASE_URL` or DB host env var):
+
+- Verify `DATABASE_URL` in your Vercel Environment Variables — it must be a valid Postgres connection string, e.g. `postgres://user:password@hostname:5432/dbname`.
+- If you use a managed service, copy the full connection string from the provider dashboard; do not use placeholder hostnames like `base`.
+- If you use MariaDB/MySQL, provide the `MARIADB_HOST`, `MARIADB_USER`, `MARIADB_PASSWORD`, and `MARIADB_DATABASE` variables instead of `DATABASE_URL`.
+
+After updating env vars, re-deploy and watch the build and runtime logs for a successful DB connection message.
+
 
 ## 🔒 Security Notes
 

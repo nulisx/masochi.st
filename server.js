@@ -120,7 +120,6 @@ app.post('/api/auth/login', async (req, res) => {
 
     let user = await getQuery('users', 'username', input);
 
-    // If not found by username and looks like an email, try email lookup (email is stored as hashed)
     if (!user && input.includes('@')) {
       const emailHash = hashEmail(input);
       user = await getQuery('users', 'email', emailHash);
@@ -337,7 +336,7 @@ app.get('/api/:userId', async (req, res) => {
 });
 
 function generateInviteCode() {
-  // Use crypto to generate short, collision-resistant codes
+
   const buf = crypto.randomBytes(4).toString('hex').toUpperCase();
   return `INV-${buf}`;
 }

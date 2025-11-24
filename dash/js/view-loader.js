@@ -1,4 +1,4 @@
-// Simple view fragment loader
+
 export async function loadView(viewName = 'dashboard', {containerSelector = '#cb-main'} = {}){
   const container = document.querySelector(containerSelector);
   if(!container) return;
@@ -8,7 +8,7 @@ export async function loadView(viewName = 'dashboard', {containerSelector = '#cb
     if(!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
     const html = await res.text();
     container.innerHTML = html;
-    // Dispatch event so newly injected content can initialize
+
     window.dispatchEvent(new CustomEvent('cb:view:loaded', {detail:{view:viewName}}));
   }catch(err){
     console.error('View loader error', err);
@@ -16,13 +16,12 @@ export async function loadView(viewName = 'dashboard', {containerSelector = '#cb
   }
 }
 
-// auto handler for cb:navigate events
 if(typeof window !== 'undefined'){
   window.addEventListener('cb:navigate', (e)=>{
     const view = e.detail && e.detail.view ? e.detail.view : 'dashboard';
     loadView(view);
   });
-  // load default dashboard view on DOMContentLoaded if container present
+
   window.addEventListener('DOMContentLoaded', ()=>{
     const main = document.querySelector('#cb-main');
     if(main && main.innerHTML.trim()==='') loadView('dashboard');

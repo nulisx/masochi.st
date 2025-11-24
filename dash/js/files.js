@@ -1,4 +1,4 @@
-// Files component JS: handles listing, upload (demo using object URL), preview and delete
+
 const API_BASE = '/api/images';
 
 async function fetchFiles(){
@@ -48,13 +48,12 @@ async function deleteFile(id, tileEl){
 }
 
 async function tryMultipartUpload(file, onProgress){
-  // Try multipart upload to server endpoint '/api/images/upload-file'
+
   try{
     if(!(window && window.FormData)) throw new Error('FormData not available');
     const form = new FormData();
     form.append('file', file, file.name);
 
-    // Use fetch; browsers don't provide upload progress for fetch, so use XHR when onProgress provided
     if(typeof onProgress === 'function'){
       return await new Promise((resolve,reject)=>{
         const xhr = new XMLHttpRequest();
@@ -78,11 +77,11 @@ async function tryMultipartUpload(file, onProgress){
 }
 
 function uploadFiles(files, onProgress){
-  // Attempt multipart upload first; if server doesn't accept, fall back to metadata-only POST
+
   return Promise.all(Array.from(files).map(file=>{
     return new Promise(async (resolve,reject)=>{
       try{
-        // Try multipart endpoint
+
         try{
           const img = await tryMultipartUpload(file, onProgress);
           resolve(img);
@@ -91,7 +90,6 @@ function uploadFiles(files, onProgress){
           console.warn('Multipart upload failed, falling back to metadata POST', multipartErr);
         }
 
-        // Fallback: create object URL and POST metadata to /upload
         const objUrl = URL.createObjectURL(file);
         const body = { filename: file.name, url: objUrl, size: file.size, mime_type: file.type };
         const res = await fetch(API_BASE + '/upload', {method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify(body)});
@@ -110,10 +108,8 @@ export function initFiles(){
   const list = document.getElementById('cb-files-list');
   if(!list) return;
 
-  // load existing
   fetchFiles().then(items=>renderFiles(items, list));
 
-  // dropzone click to open input
   drop.addEventListener('click', ()=>input.click());
   drop.addEventListener('dragover', (e)=>{e.preventDefault(); drop.style.opacity='0.9'});
   drop.addEventListener('dragleave', ()=>{drop.style.opacity='1'});
@@ -124,14 +120,13 @@ export function initFiles(){
     uploadBtn.disabled = true; uploadBtn.textContent = 'Uploading...';
     try{
       const uploaded = await uploadFiles(input.files);
-      // refresh list
+
       const items = await fetchFiles(); renderFiles(items, list);
     }catch(err){console.error(err); alert('Upload failed')}
     uploadBtn.disabled = false; uploadBtn.textContent = 'Upload'; input.value='';
   });
 }
 
-// auto-init when view is loaded
 if(typeof window !== 'undefined'){
   window.addEventListener('cb:view:loaded', (e)=>{ if(e.detail&&e.detail.view==='files'){ try{ initFiles() }catch(err){console.warn('files init error',err)} } });
 }
