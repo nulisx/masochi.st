@@ -8,5 +8,6 @@
   "FRONTEND_URL": "https://masochist.vercel.app/",
   "SUPABASE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ycHhjZndtbm5nY3Ntbm5wbnhoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2Mzk0MjcxMywiZXhwIjoyMDc5NTE4NzEzfQ.Cs5Td8r0F20BNhmrX_d-ODlMs0tzL3_lf4CW_nk7muU",
   "SUPABASE_URL": "https://nrpxcfwmnngcsmnnpnxh.supabase.co",
+  "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ycHhjZndtbm5nY3Ntbm5wbnhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5NDI3MTMsImV4cCI6MjA3OTUxODcxM30.hum5Hat1h_kq3YjIZMTj0XqIIcd8LJF-vSUbspFIEv0",
   "JWT_SECRET": "30828993a2e7957071f6686b9900af1861d8838068d7cbe07b47ab428f9e605ea62c34b7faafaaea285756ee919916937fdc72af9f7de20b4da67e9418cd3fb4"
 }
