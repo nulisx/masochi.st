@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use('/fonts', express.static(path.join(__dirname, 'fonts')));
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/assets', express.static(path.join(__dirname, 'static', 'css', 'dash', 'assets')));
 app.use('/dash', express.static(path.join(__dirname, 'dash')));
 
 app.post(
