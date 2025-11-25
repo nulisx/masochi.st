@@ -62,21 +62,28 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
 
 ### November 25, 2025 (Dashboard Authentication Fix)
 1. **Fixed Dashboard Login Loop**: Resolved issue where users were redirected to old alo.ne login page instead of dashboard
-2. **New Authentication System**: 
+2. **Branded Loading Screen**: 
+   - Created `/dash/loading.html` with branded "Welcome [username] to Glowi.es" message
+   - Shows privacy-focused tagline: "The privacy based luxury service"
+   - Automatically fetches user info and redirects to dashboard after 1.5 seconds
+3. **New Authentication Flow**: 
+   - Login → `/dash/loading.html` (branded loading screen) → `/dash` (actual dashboard)
+   - `/dash` now serves the actual dashboard at `dashboard.html`
    - Added `/api/auth/me` endpoint to verify authentication via HttpOnly cookies
-   - Created new dashboard loader at `/dash/index.html` that checks authentication before loading content
-   - Built new functional dashboard at `/dash/dashboard.html` with role-based features
    - Moved old Vue SPA dashboard to `/dash/app` for potential future use
-3. **Security Improvements**:
+4. **Security Improvements**:
    - Added `Secure` flag to all authentication cookies (login and logout)
    - Configured cookies with `HttpOnly; Secure; SameSite=Strict` attributes
    - Prevents cookie exposure over HTTP and mitigates CSRF attacks
-4. **Dashboard Features**:
+5. **Registration Fix**:
+   - Fixed error handling to properly display validation errors from express-validator
+   - Frontend now correctly parses both single errors and validation error arrays
+6. **Dashboard Features**:
    - Shows user information and role in navbar
    - Displays admin notice for owner/admin/manager roles
    - Role-based access to invite codes and admin panel
    - Links to biolink page, file storage, profile settings
-5. **Default Owner Credentials** (from OWNER_SETUP.md):
+7. **Default Owner Credentials** (from OWNER_SETUP.md):
    - Username: `r`
    - Password: `ACK071675$!`
    - Email: `yuriget@egirl.help`
