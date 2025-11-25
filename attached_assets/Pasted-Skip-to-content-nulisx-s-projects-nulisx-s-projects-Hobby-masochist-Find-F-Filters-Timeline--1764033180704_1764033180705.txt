@@ -1,0 +1,394 @@
+Skip to content
+nulisx's projects
+nulisx's projects
+
+Hobby
+
+masochist
+
+
+Find…
+F
+
+Filters
+
+Timeline
+
+Combobox Menu
+Last 30 minutes
+
+Contains Console Level
+
+​
+Warning
+​
+Error
+​
+Fatal
+
+Resource
+3
+
+
+
+
+
+
+Environment
+
+
+
+
+Route
+
+
+
+Request Path
+
+
+
+Status Code
+
+
+
+Request Type
+
+
+
+
+
+
+
+
+Host
+
+
+
+Request Method
+
+
+
+Cache
+
+
+
+Branch
+
+
+
+Deployment ID
+
+
+Search Logs
+Search logs…
+18:54:00
+19:11:10
+19:41:10
+Time
+Status
+Host
+Request
+Messages
+Nov 24 19:41:06.43
+GET
+---
+masochist-mloq4hh2n-nulisxs-projects.vercel.app
+/favicon.png
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:41:04.18
+GET
+---
+masochist-mloq4hh2n-nulisxs-projects.vercel.app
+/favicon.png
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:41:02.88
+GET
+---
+masochist-mloq4hh2n-nulisxs-projects.vercel.app
+/favicon.png
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:41:02.67
+GET
+---
+og.email
+/register
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:41:02.65
+GET
+---
+masochist-mloq4hh2n-nulisxs-projects.vercel.app
+/favicon.ico
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:41:01.93
+GET
+500
+og.email
+/register
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:41:01.67
+GET
+500
+og.email
+/register
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:41:01.38
+GET
+---
+og.email
+/register
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:41:00.77
+GET
+---
+og.email
+/register
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:41:00.34
+GET
+---
+masochist-mloq4hh2n-nulisxs-projects.vercel.app
+/favicon.ico
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:41:00.07
+GET
+500
+og.email
+/register
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:40:59.93
+GET
+500
+og.email
+/register
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:40:59.69
+GET
+500
+og.email
+/register
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:40:59.07
+GET
+500
+masochist-mloq4hh2n-nulisxs-projects.vercel.app
+/favicon.ico
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:40:58.83
+GET
+500
+og.email
+/ic
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:40:58.73
+GET
+500
+masochist-mloq4hh2n-nulisxs-projects.vercel.app
+/
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:40:58.09
+GET
+500
+og.email
+/login
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:40:57.41
+GET
+500
+og.email
+/login
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:40:57.14
+GET
+500
+masochist-mloq4hh2n-nulisxs-projects.vercel.app
+/
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:40:56.27
+GET
+500
+masochist-mloq4hh2n-nulisxs-projects.vercel.app
+/
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:40:55.11
+GET
+500
+og.email
+/register
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:40:54.17
+GET
+500
+og.email
+/ic
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:40:52.83
+GET
+500
+masochist-mloq4hh2n-nulisxs-projects.vercel.app
+/favicon.ico
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:40:52.70
+GET
+---
+masochist-mloq4hh2n-nulisxs-projects.vercel.app
+/favicon.ico
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:40:52.59
+GET
+500
+og.email
+/login
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue. /var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:40:52.34
+GET
+500
+masochist-mloq4hh2n-nulisxs-projects.vercel.app
+/
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:40:52.34
+GET
+500
+masochist-mloq4hh2n-nulisxs-projects.vercel.app
+/
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:40:51.16
+GET
+500
+masochist-mloq4hh2n-nulisxs-projects.vercel.app
+/
+/var/task/api/index.cjs:7 const expressApp = await import('../server.js'); ^^^^^ SyntaxError: await is only valid in async functions and the top level bodies of modules at new Script (node:vm:117:7) at Object.precompile (/opt/rust/bytecode.js:2:426) at Module.<anonymous> (/opt/rust/bytecode.js:2:1392) at A.l._compile (/opt/rust/bytecode.js:2:3167) at Object..js (node:internal/modules/cjs/loader:1839:10) at Module.load (node:internal/modules/cjs/loader:1441:32) at Function.<anonymous> (node:internal/modules/cjs/loader:1263:12) at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:35:31.25
+GET
+500
+og.email
+/
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:33:46.85
+GET
+500
+masochist-p2aot3xse-nulisxs-projects.vercel.app
+/favicon.png
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:33:44.60
+GET
+500
+masochist-p2aot3xse-nulisxs-projects.vercel.app
+/favicon.png
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:33:43.40
+GET
+500
+masochist-p2aot3xse-nulisxs-projects.vercel.app
+/favicon.png
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:33:43.20
+GET
+500
+masochist-p2aot3xse-nulisxs-projects.vercel.app
+/favicon.ico
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:33:40.97
+GET
+500
+masochist-p2aot3xse-nulisxs-projects.vercel.app
+/favicon.ico
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:33:39.67
+GET
+500
+masochist-p2aot3xse-nulisxs-projects.vercel.app
+/favicon.ico
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:33:39.37
+GET
+500
+masochist-p2aot3xse-nulisxs-projects.vercel.app
+/
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:33:38.12
+GET
+500
+masochist-p2aot3xse-nulisxs-projects.vercel.app
+/
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:33:34.75
+GET
+500
+og.email
+/ic
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:33:34.00
+GET
+500
+og.email
+/ic
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:33:33.16
+GET
+500
+og.email
+/login
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:33:32.25
+GET
+500
+og.email
+/register
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:30:33.46
+GET
+500
+masochist-p2aot3xse-nulisxs-projects.vercel.app
+/favicon.ico
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:30:33.41
+GET
+500
+masochist-p2aot3xse-nulisxs-projects.vercel.app
+/favicon.ico
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:30:33.09
+GET
+500
+masochist-p2aot3xse-nulisxs-projects.vercel.app
+/
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue. Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:30:33.03
+GET
+500
+masochist-p2aot3xse-nulisxs-projects.vercel.app
+/
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:30:32.46
+GET
+500
+masochist-p2aot3xse-nulisxs-projects.vercel.app
+/
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:30:32.43
+GET
+500
+masochist-p2aot3xse-nulisxs-projects.vercel.app
+/
+Error [ERR_REQUIRE_ESM]: require() of ES Module /var/task/server.js from /var/task/api/index.cjs not supported. Instead change the require of server.js in /var/task/api/index.cjs to a dynamic import() which is available in all CommonJS modules. at /opt/rust/nodejs.js:2:13527 at Function.Jr (/opt/rust/nodejs.js:2:13905) at Ue.e.<computed>.Be._load (/opt/rust/nodejs.js:2:13497) at TracingChannel.traceSync (node:diagnostics_channel:322:14) { code: 'ERR_REQUIRE_ESM' } Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Live Mode
+Nov 24 19:22:22.11
+GET
+---
+masochist-b9c7oxayt-nulisxs-projects.vercel.app
+/favicon.png
+SyntaxError: Unexpected token '.' at compileSourceTextModule (node:internal/modules/esm/utils:346:16) at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:107:18) at #translate (node:internal/modules/esm/loader:546:20) at afterLoad (node:internal/modules/esm/loader:596:29) at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:601:12) at #createModuleJob (node:internal/modules/esm/loader:624:36) at #getJobFromResolveResult (node:internal/modules/esm/loader:343:34) at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:311:41) at process.processTicksAndRejections (node:internal/process/task_queues:105:5) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:22:19.63
+GET
+500
+masochist-b9c7oxayt-nulisxs-projects.vercel.app
+/favicon.png
+SyntaxError: Unexpected token '.' at compileSourceTextModule (node:internal/modules/esm/utils:346:16) at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:107:18) at #translate (node:internal/modules/esm/loader:546:20) at afterLoad (node:internal/modules/esm/loader:596:29) at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:601:12) at #createModuleJob (node:internal/modules/esm/loader:624:36) at #getJobFromResolveResult (node:internal/modules/esm/loader:343:34) at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:311:41) at process.processTicksAndRejections (node:internal/process/task_queues:105:5) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Nov 24 19:22:18.63
+GET
+500
+og.email
+/favicon.ico
+SyntaxError: Unexpected token '.' at compileSourceTextModule (node:internal/modules/esm/utils:346:16) at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:107:18) at #translate (node:internal/modules/esm/loader:546:20) at afterLoad (node:internal/modules/esm/loader:596:29) at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:601:12) at #createModuleJob (node:internal/modules/esm/loader:624:36) at #getJobFromResolveResult (node:internal/modules/esm/loader:343:34) at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:311:41) at process.processTicksAndRejections (node:internal/process/task_queues:105:5) Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+masochist – Logs – Vercel
+19:11:10

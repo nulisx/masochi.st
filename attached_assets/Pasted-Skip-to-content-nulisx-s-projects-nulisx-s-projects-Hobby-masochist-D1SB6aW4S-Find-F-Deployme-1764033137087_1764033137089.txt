@@ -1,0 +1,268 @@
+Skip to content
+nulisx's projects
+nulisx's projects
+
+Hobby
+
+masochist
+
+D1SB6aW4S
+
+
+Find…
+F
+
+Deployment Details
+Created
+nulisx Avatar
+nulisx
+3m ago
+Status
+Ready
+Latest
+Duration
+20s
+2m ago
+Environment
+Production
+Current
+Domains
+glowi.es
++3
+masochist-git-main-nulisxs-projects.vercel.app
+masochist-qxb3sv3b7-nulisxs-projects.vercel.app
+Source
+main
+3f211c0
+Saved progress at the end of the loop
+
+Deployment Settings
+3 Recommendations
+Provisioning Integrations
+
+masochist
+Build Logs
+20s
+33 lines
+Find in logs
+CtrlF
+20:09:22.541 
+Vercel CLI 48.10.5
+20:09:22.721 
+WARN! Due to `builds` existing in your configuration file, the Build and Development Settings defined in your Project Settings will not apply. Learn More: https://vercel.link/unused-build-settings
+20:09:23.475 
+Installing dependencies...
+20:09:24.945 
+20:09:24.946 
+up to date in 1s
+20:09:24.946 
+20:09:24.947 
+62 packages are looking for funding
+20:09:24.947 
+  run `npm fund` for details
+20:09:32.771 
+Build Completed in /vercel/output [9s]
+20:09:33.144 
+Deploying outputs...
+20:09:41.228 
+Deployment completed
+20:09:41.877 
+Creating build cache...
+20:09:47.845 
+Created build cache: 5.967s
+20:09:47.847 
+Uploading build cache [27.09 MB]
+20:09:48.280 
+Build cache uploaded: 432.593ms
+Deployment Summary
+No framework detected
+
+
+Static Assets
+
+
+All (168)
+
+
+JS (64)
+
+
+CSS (65)
+
+
+Image (31)
+
+
+Font (8)
+
+
+/assets/avatar.png
+2.87 kB
+
+
+/assets/fonts/bold.woff2
+37 kB
+
+
+/assets/fonts/regular.woff2
+35 kB
+
+
+/assets/placeholder.png
+5.13 kB
+
+
+/assets/t.js
+882 B 
+
+
+/dash/admin-DGMd25hE.js
+1.35 kB
+
+
+/dash/AdminView-C0yKbKFB.js
+7.45 kB
+
+
+/dash/assets/admin-DGMd25hE.js
+1.35 kB
+
+
+/dash/assets/AdminView-C0yKbKFB.js
+8.6 kB
+
+
+/dash/assets/BioProfileView-C39LxBAD.js
+33 kB
+
+
+/dash/assets/BioSettingsView-BVjGz2gL.js
+61 kB
+
+
+/dash/assets/BioSocialsView-BF4-dObm.js
+393 kB
+
+
+/dash/assets/DashView-seS7qg5J.js
+76 kB
+
+
+/dash/assets/DownloadFileView-DdPeDNt6.js
+44 kB
+
+
+/dash/assets/EmailHomeView-Rra_7dYN.js
+7.52 kB
+
+
+/dash/assets/EmailImapView-DWIV5wHo.js
+2.38 kB
+
+
+/dash/assets/EmailView-Bk6Zp6-F.js
+27 kB
+
+
+/dash/assets/file-D13pyCko.js
+72 kB
+
+
+/dash/assets/FilesView-DA6FGKzh.js
+99 kB
+
+
+/dash/assets/HomeView-DN8qKBZZ.js
+34 kB
+
+
+/dash/assets/index-CRQdNere.js
+427 kB
+
+
+Functions
+
+
+All (1)
+
+
+/api/index.cjs
+Node.js 22.x
+7.1 MB
+iad1
+
+Deployment Checks
+No checks configured
+
+Use events or statuses from your checks provider to determine when a deployment is promoted to Production.
+
+Assigning Custom Domains
+glowi.es
+·
+Custom Domain
+
+Manage
+og.email
+·
+Custom Domain
+
+Manage
+masochist.vercel.app
+·
+Custom Domain
+
+Manage
+marit.al
+·
+Custom Domain
+
+Manage
+www.glowi.es
+·
+Custom Domain
+
+Manage
+www.marit.al
+·
+Custom Domain
+
+Manage
+www.og.email
+·
+Custom Domain
+
+Manage
+Runtime Logs
+
+View and debug runtime logs & errors
+
+Observability
+
+Monitor app health & performance
+
+Speed Insights
+
+Performance metrics from real users
+
+Web Analytics
+
+No Data
+Analyze visitors & traffic in real-time
+
+Home
+Docs
+Guides
+Academy
+Help
+Contact
+All systems normal.
+
+Select a display theme:
+
+system
+
+light
+
+dark
+masochist – Deployment Overview
+50
