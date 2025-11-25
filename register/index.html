@@ -109,7 +109,11 @@
                 if (response.ok) {
                     showRecoveryCodeModal(data.recoveryCode);
                 } else {
-                    errorMessage.textContent = data.error || 'Registration failed';
+                    if (data.errors && Array.isArray(data.errors)) {
+                        errorMessage.textContent = data.errors.map(e => e.msg).join(', ');
+                    } else {
+                        errorMessage.textContent = data.error || 'Registration failed';
+                    }
                     errorMessage.classList.add('show');
                 }
             } catch (error) {
