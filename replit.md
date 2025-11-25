@@ -15,7 +15,7 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
 ### Technical Implementations
 - **Frontend**: Static HTML/CSS/JavaScript.
 - **Backend**: Node.js with Express.
-- **Database**: Replit PostgreSQL (Neon-backed) with pg driver and connection pooling.
+- **Database**: Neon PostgreSQL with pg driver and connection pooling.
 - **Authentication**: JWT-based with bcrypt (12 rounds) for password hashing and SHA-256 for email hashing.
 - **Server Configuration**: Runs on port 5000 and host 0.0.0.0 for Replit compatibility.
 
@@ -60,8 +60,14 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
 
 ## Recent Changes
 
+### November 25, 2025
+1. **Neon Database Migration**: Migrated to Neon PostgreSQL for production-grade managed database service
+2. **Database Library Cleanup**: Removed all MySQL/MariaDB code and dependencies, now exclusively using PostgreSQL
+3. **Vercel Deployment Fix**: Fixed api/index.cjs to use async handler pattern and guarded app.listen() to prevent execution in serverless environment
+4. **Code Quality**: Removed all comments from codebase for clean, production-ready code
+
 ### November 24, 2025
-1. **PostgreSQL Migration**: Migrated from external MariaDB to Replit's built-in PostgreSQL (Neon-backed) for improved reliability and Replit integration
+1. **PostgreSQL Migration**: Migrated from external MariaDB to PostgreSQL for improved reliability
 2. **Database Library Rewrite**: Completely rewrote lib/db.js to use PostgreSQL with pg driver
    - Fixed allQuery to support operators (>=, <=, >, <) and full-table reads with null column/value
    - Fixed getQuery to throw errors instead of silently returning null
@@ -90,7 +96,7 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
 
 ## External Dependencies
 - **Database**:
-    - **Replit PostgreSQL**: Primary database (Neon-backed) with pg driver for connection pooling and async/await support
+    - **Neon PostgreSQL**: Production database with pg driver for connection pooling and async/await support
 - **Deployment**:
     - **Vercel**: Platform for production deployment with Speed Insights integration
 - **Monitoring**:
