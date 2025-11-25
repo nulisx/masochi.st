@@ -60,7 +60,16 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
 
 ## Recent Changes
 
-### November 25, 2025
+### November 25, 2025 (Replit Migration)
+1. **Replit PostgreSQL Database**: Created Replit PostgreSQL database for development environment
+2. **Environment File Rename**: Renamed MariaDB.env/MariaDB.json to PostgreSQL.env/PostgreSQL.json to reflect current database technology
+3. **Seed Script Update**: Rewrote lib/seed-owner.js to use PostgreSQL with pg driver instead of MySQL
+4. **Environment Cleanup**: Removed unused MARIADB_* and SUPABASE_* environment variables from configuration files
+5. **Documentation Update**: Updated OWNER_SETUP.md to reflect PostgreSQL usage and Replit database setup
+6. **File Cleanup**: Deleted obsolete mariadb-setup.sql file
+7. **Owner Account**: Verified owner account exists (username: r, email: yuriget@egirl.help)
+
+### November 25, 2025 (Earlier)
 1. **Neon Database Migration**: Migrated to Neon PostgreSQL for production-grade managed database service
 2. **Database Library Cleanup**: Removed all MySQL/MariaDB code and dependencies, now exclusively using PostgreSQL
 3. **Vercel Deployment Fix**: Fixed api/index.cjs to use async handler pattern and guarded app.listen() to prevent execution in serverless environment
