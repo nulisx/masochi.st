@@ -14,9 +14,6 @@ const __dirname = path.dirname(__filename);
 
 import fs from 'fs';
 
-// On serverless platforms (Vercel) writing into the project directory
-// can fail or be ephemeral. Use the system temp directory there and
-// fall back to `static/uploads` for local/dev environments.
 let uploadDir;
 if (process.env.VERCEL || process.env.SERVERLESS) {
   uploadDir = path.join(os.tmpdir(), 'glowi_uploads');
@@ -98,9 +95,6 @@ router.post('/upload-file', authenticateToken, upload.single('file'), async (req
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
     const userId = req.user.id;
     const filename = req.file.originalname;
-    // Prefer the public static path so existing front-end expects the same
-    // value. Note: on serverless this file may not be publicly served —
-    // encourage using S3 presigned uploads in production.
     const urlPath = `/static/uploads/${req.file.filename}`;
     const size = req.file.size;
     const mime_type = req.file.mimetype || 'application/octet-stream';
@@ -145,7 +139,6 @@ router.post('/presign', authenticateToken, async (req, res) => {
 
     let publicUrl;
     if (process.env.S3_ENDPOINT) {
-
       const endpoint = process.env.S3_ENDPOINT.replace(/\/$/, '');
       publicUrl = `${endpoint}/${bucket}/${key}`;
     } else {

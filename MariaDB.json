@@ -1,5 +1,5 @@
 {
-  "SESSION_SECRET": "1/9h3ywmZMWxwtBnDCA6cEFLlEwodcd3An5NSx4lBd2V16xL34z9vm8/30Uf+r8es1B/d0VXAmPlThGPRO/hjA==",
+  "SESSION_SECRET": "tlu1KyzS5G0r2i8vrrizkAbrzWIPzTnGwhUac+FsaMiloOR3nrCUqXRFXkIdUzYbtMg5JGF41q82Szih2/pngA==",
   "MARIADB_DATABASE": "railway",
   "MARIADB_HOST": "containers-us-west-123.railway.app",
   "MARIADB_PASSWORD": "ydlqKYLNMRMFdBPISKwbDEsBPyqxhQQH",
