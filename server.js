@@ -134,7 +134,7 @@ app.post('/api/auth/login', async (req, res) => {
 
     res.setHeader(
       'Set-Cookie',
-      `token=${token}; HttpOnly; Path=/; Max-Age=${7 * 24 * 60 * 60}`
+      `token=${token}; HttpOnly; Path=/; Max-Age=${7 * 24 * 60 * 60}; SameSite=Strict`
     );
     res.status(200).json({ message: 'Login successful', user: { id: user.id, username: user.username, role: user.role } });
   } catch (err) {
@@ -143,6 +143,25 @@ app.post('/api/auth/login', async (req, res) => {
       return res.status(500).json({ error: 'Database access denied. Check DB credentials and allowed hosts.' });
     }
     res.status(500).json({ error: 'Login failed' });
+  }
+});
+
+app.get('/api/auth/me', authenticateToken, async (req, res) => {
+  try {
+    const user = await getQuery('users', 'id', req.user.id);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    
+    res.status(200).json({ 
+      user: { 
+        id: user.id, 
+        username: user.username, 
+        display_name: user.display_name,
+        role: user.role 
+      } 
+    });
+  } catch (err) {
+    console.error('Get user error:', err);
+    res.status(500).json({ error: 'Failed to retrieve user information' });
   }
 });
 
