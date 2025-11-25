@@ -30,6 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use('/fonts', express.static(path.join(__dirname, 'fonts')));
+app.use('/assets/fonts', express.static(path.join(__dirname, 'fonts')));
 app.use('/assets', express.static(path.join(__dirname, 'static', 'css', 'dash', 'assets')));
 app.use('/dash/app', express.static(path.join(__dirname, 'dash-app'), { index: 'index.html' }));
 app.get('/dash/app', (req, res) => res.sendFile(path.join(__dirname, 'dash-app', 'index.html')));
@@ -412,7 +413,7 @@ app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'login', 'inde
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'register', 'index.html')));
 app.get('/login/reset', (req, res) => res.sendFile(path.join(__dirname, 'login', 'reset', 'index.html')));
 app.get('/dash/loading.html', (req, res) => res.sendFile(path.join(__dirname, 'dash', 'loading.html')));
-app.get('/dash', (req, res) => res.redirect('/dash/app'));
+app.get('/dash', (req, res) => res.redirect('/dash/app#/dash'));
 app.get('/ic', (req, res) => res.sendFile(path.join(__dirname, 'ic', 'index.html')));
 
 app.use((req, res) => res.status(404).sendFile(path.join(__dirname, '404.html')));
