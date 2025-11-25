@@ -60,7 +60,29 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
 
 ## Recent Changes
 
-### November 25, 2025 (Replit Migration)
+### November 25, 2025 (Dashboard Authentication Fix)
+1. **Fixed Dashboard Login Loop**: Resolved issue where users were redirected to old alo.ne login page instead of dashboard
+2. **New Authentication System**: 
+   - Added `/api/auth/me` endpoint to verify authentication via HttpOnly cookies
+   - Created new dashboard loader at `/dash/index.html` that checks authentication before loading content
+   - Built new functional dashboard at `/dash/dashboard.html` with role-based features
+   - Moved old Vue SPA dashboard to `/dash/app` for potential future use
+3. **Security Improvements**:
+   - Added `Secure` flag to all authentication cookies (login and logout)
+   - Configured cookies with `HttpOnly; Secure; SameSite=Strict` attributes
+   - Prevents cookie exposure over HTTP and mitigates CSRF attacks
+4. **Dashboard Features**:
+   - Shows user information and role in navbar
+   - Displays admin notice for owner/admin/manager roles
+   - Role-based access to invite codes and admin panel
+   - Links to biolink page, file storage, profile settings
+5. **Default Owner Credentials** (from OWNER_SETUP.md):
+   - Username: `r`
+   - Password: `ACK071675$!`
+   - Email: `yuriget@egirl.help`
+   - Role: `owner`
+
+### November 25, 2025 (Replit Migration - Earlier)
 1. **Replit PostgreSQL Database**: Created Replit PostgreSQL database for development environment
 2. **Environment File Rename**: Renamed MariaDB.env/MariaDB.json to PostgreSQL.env/PostgreSQL.json to reflect current database technology
 3. **Seed Script Update**: Rewrote lib/seed-owner.js to use PostgreSQL with pg driver instead of MySQL
