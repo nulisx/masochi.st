@@ -1,2 +1,2 @@
-const app = require('../server.js');
-module.exports = app;
+const expressApp = await import('../server.js');
+export default expressApp.default;
