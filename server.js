@@ -413,7 +413,8 @@ app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'login', 'inde
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'register', 'index.html')));
 app.get('/login/reset', (req, res) => res.sendFile(path.join(__dirname, 'login', 'reset', 'index.html')));
 app.get('/dash/loading.html', (req, res) => res.sendFile(path.join(__dirname, 'dash', 'loading.html')));
-app.get('/dash', (req, res) => res.redirect('/dash/app#/dash'));
+app.get('/dash', (req, res) => res.redirect('/dashboard'));
+app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'dash', 'app.html')));
 app.get('/ic', (req, res) => res.sendFile(path.join(__dirname, 'ic', 'index.html')));
 
 app.use((req, res) => res.status(404).sendFile(path.join(__dirname, '404.html')));

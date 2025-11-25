@@ -60,6 +60,29 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
 
 ## Recent Changes
 
+### November 25, 2025 (Dashboard Rebuild with Local API)
+1. **Complete Dashboard Rebuild**: Created new custom dashboard (`/dash/app.html`) that works with local API endpoints
+   - The previous Vue.js dashboard was pre-compiled to use external API (`https://api.alo.ne`) which wasn't connected
+   - New dashboard uses the local `/api/` endpoints for all functionality
+2. **Dashboard Design**: Matches the design from Fix3-Fix10 images with:
+   - Sidebar navigation with sections: Overview (Dashboard), Upgrades (Store), Services (Biolink, File Host, Email), Administration (Admin Panel, Mod Panel)
+   - Modern dark theme with purple accents
+   - Responsive layout with collapsible sidebar
+3. **Admin Panel with Invite Code Management**: Built-in invite code management in the Admin Panel
+   - Create invite codes with custom roles (User, Mod, Admin)
+   - View all invite codes with status (Active, Used, Expired)
+   - Delete invite codes
+   - User management section for banning users
+4. **Mod Panel with Invite Code Management**: Built-in invite code management for moderators
+   - Create invite codes for new users
+   - View own invite codes
+   - Delete invite codes
+5. **Dashboard Routes Updated**:
+   - `/dash` now redirects to `/dashboard`
+   - `/dashboard` serves the new custom dashboard
+   - All dashboard links updated throughout the application
+6. **New CSS**: Created `/static/css/dashboard-app.css` with complete styling for the new dashboard
+
 ### November 25, 2025 (Dashboard Authentication & Routing Fix)
 1. **Fixed Dashboard Routing**: Authenticated users are now correctly redirected from HomeView (marketing page) to DashView (actual dashboard)
 2. **Auth Check Bootstrap Script**: Added inline auth check in `dash-app/index.html` that:
