@@ -71,29 +71,31 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
 5. **Note**: Vue.js app source code is pre-compiled; further Vue component changes require the original source code
 
 ### November 25, 2025 (Dashboard Authentication Fix)
-1. **Fixed Dashboard Login Loop**: Resolved issue where users were redirected to old alo.ne login page instead of dashboard
+1. **Fixed Dashboard Login Redirect**: Resolved issue where users were redirected to old alo.ne landing page instead of modern Vue.js dashboard
 2. **Branded Loading Screen**: 
    - Created `/dash/loading.html` with branded "Welcome [username] to Glowi.es" message
    - Shows privacy-focused tagline: "The privacy based luxury service"
-   - Automatically fetches user info and redirects to dashboard after 1.5 seconds
+   - Now redirects to `/dash/app#/dash` for the modern Vue.js dashboard
 3. **New Authentication Flow**: 
-   - Login → `/dash/loading.html` (branded loading screen) → `/dash` (actual dashboard)
-   - `/dash` now serves the actual dashboard at `dashboard.html`
+   - Login → `/dash/loading.html` (branded loading screen) → `/dash/app#/dash` (Vue.js dashboard)
+   - `/dash` route now redirects to `/dash/app#/dash` for proper Vue SPA routing
    - Added `/api/auth/me` endpoint to verify authentication via HttpOnly cookies
-   - Moved old Vue SPA dashboard to `/dash/app` for potential future use
-4. **Security Improvements**:
+4. **Asset Path Fixes**:
+   - Added `/assets/fonts` static route to serve custom fonts at correct path
+   - Fonts (bold.woff2, regular.woff2) now served from both `/fonts/` and `/assets/fonts/`
+5. **Security Improvements**:
    - Added `Secure` flag to all authentication cookies (login and logout)
    - Configured cookies with `HttpOnly; Secure; SameSite=Strict` attributes
    - Prevents cookie exposure over HTTP and mitigates CSRF attacks
-5. **Registration Fix**:
+6. **Registration Fix**:
    - Fixed error handling to properly display validation errors from express-validator
    - Frontend now correctly parses both single errors and validation error arrays
-6. **Dashboard Features**:
+7. **Dashboard Features**:
    - Shows user information and role in navbar
    - Displays admin notice for owner/admin/manager roles
    - Role-based access to invite codes and admin panel
    - Links to biolink page, file storage, profile settings
-7. **Default Owner Credentials** (from OWNER_SETUP.md):
+8. **Default Owner Credentials** (from OWNER_SETUP.md):
    - Username: `r`
    - Password: `ACK071675$!`
    - Email: `yuriget@egirl.help`
