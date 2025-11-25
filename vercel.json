@@ -41,7 +41,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/server.js"
+      "dest": "/api/index.cjs"
     }
   ]
 }
