@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Glowi.es</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 499.8 499.8'%3E%3Cpath fill='%238b5cf6' d='M477.16,292.045c0,0-62.848-4.221-125.061,22.069c11.664-13.634,23.084-28.804,33.416-45.603c51.428-83.723,56.047-174.385,56.047-174.385s-78.774,45.1-130.221,128.822c-7.563,12.3-13.99,24.738-19.668,37.029c3.467-20.557,5.744-42.617,5.744-65.72C297.417,86.977,249.892,0,249.892,0s-47.506,86.977-47.506,194.259c0,23.102,2.279,45.163,5.742,65.713c-5.68-12.293-12.123-24.723-19.67-37.023C137.017,139.227,58.238,94.127,58.238,94.127s4.623,90.662,56.05,174.385c10.329,16.799,21.75,31.969,33.416,45.603C85.472,287.824,22.64,292.045,22.64,292.045s37.99,47.329,100.418,73.905c23.818,10.137,47.734,15.764,68.231,18.881c-9.681,0.716-19.997,2.132-30.503,4.71c-45.443,11.111-77.006,38.909-77.006,38.909s42.105,9.768,87.561-1.351c29.467-7.217,52.928-21.347,65.893-30.448l-10.852,86.821c-0.506,4.125,0.635,8.272,3.157,11.404c2.522,3.125,6.147,4.923,9.974,4.923h20.791c3.826,0,7.451-1.798,9.975-4.923c2.522-3.132,3.66-7.279,3.156-11.404l-10.852-86.814c12.967,9.103,36.426,23.225,65.875,30.441c45.457,11.118,87.561,1.351,87.561,1.351s-31.564-27.798-77.002-38.909c-10.512-2.578-20.828-3.994-30.508-4.71c20.504-3.117,44.42-8.744,68.238-18.881C439.173,339.374,477.16,292.045,477.16,292.045z'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="/static/css/global.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #09090b;
+            color: #fff;
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background: #0f0f0f;
+            border-bottom: 1px solid #1c1c1c;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            fill: #8b5cf6;
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: #1c1c1c;
+            border-radius: 8px;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .user-role {
+            font-size: 0.75rem;
+            color: #a1a1aa;
+            text-transform: uppercase;
+        }
+        
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: background 0.2s;
+        }
+        
+        .logout-btn:hover {
+            background: #dc2626;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .welcome {
+            margin-bottom: 2rem;
+        }
+        
+        .welcome h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .welcome p {
+            color: #a1a1aa;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: #1c1c1c;
+            border: 1px solid #27272a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        
+        .card:hover {
+            border-color: #8b5cf6;
+            transform: translateY(-2px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+        
+        .card-icon {
+            font-size: 1.5rem;
+        }
+        
+        .card-content {
+            color: #a1a1aa;
+            margin-bottom: 1rem;
+        }
+        
+        .card-action {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #8b5cf6;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: background 0.2s;
+        }
+        
+        .card-action:hover {
+            background: #7c3aed;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: #1c1c1c;
+            border: 1px solid #27272a;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .stat-label {
+            color: #a1a1aa;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #8b5cf6;
+        }
+        
+        .admin-notice {
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .admin-notice h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .admin-notice p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <svg class="logo-icon" viewBox="0 0 499.8 499.8" xmlns="http://www.w3.org/2000/svg">
+                <path d="M477.16,292.045c0,0-62.848-4.221-125.061,22.069c11.664-13.634,23.084-28.804,33.416-45.603c51.428-83.723,56.047-174.385,56.047-174.385s-78.774,45.1-130.221,128.822c-7.563,12.3-13.99,24.738-19.668,37.029c3.467-20.557,5.744-42.617,5.744-65.72C297.417,86.977,249.892,0,249.892,0s-47.506,86.977-47.506,194.259c0,23.102,2.279,45.163,5.742,65.713c-5.68-12.293-12.123-24.723-19.67-37.023C137.017,139.227,58.238,94.127,58.238,94.127s4.623,90.662,56.05,174.385c10.329,16.799,21.75,31.969,33.416,45.603C85.472,287.824,22.64,292.045,22.64,292.045s37.99,47.329,100.418,73.905c23.818,10.137,47.734,15.764,68.231,18.881c-9.681,0.716-19.997,2.132-30.503,4.71c-45.443,11.111-77.006,38.909-77.006,38.909s42.105,9.768,87.561-1.351c29.467-7.217,52.928-21.347,65.893-30.448l-10.852,86.821c-0.506,4.125,0.635,8.272,3.157,11.404c2.522,3.125,6.147,4.923,9.974,4.923h20.791c3.826,0,7.451-1.798,9.975-4.923c2.522-3.132,3.66-7.279,3.156-11.404l-10.852-86.814c12.967,9.103,36.426,23.225,65.875,30.441c45.457,11.118,87.561,1.351,87.561,1.351s-31.564-27.798-77.002-38.909c-10.512-2.578-20.828-3.994-30.508-4.71c20.504-3.117,44.42-8.744,68.238-18.881C439.173,339.374,477.16,292.045,477.16,292.045z"/>
+            </svg>
+            Glowi.es
+        </div>
+        <div class="nav-right">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">?</div>
+                <div class="user-details">
+                    <div class="user-name" id="userName">Loading...</div>
+                    <div class="user-role" id="userRole">user</div>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="welcome">
+            <h1>Welcome to your Dashboard</h1>
+            <p>Manage your Glowi.es account and settings</p>
+        </div>
+
+        <div id="adminNotice" style="display: none;" class="admin-notice">
+            <h2>🎉 Administrator Access</h2>
+            <p>You have elevated privileges on this platform</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Account Status</div>
+                <div class="stat-value">✓</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Role</div>
+                <div class="stat-value" id="roleDisplay">User</div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Biolink Page</div>
+                    <div class="card-icon">🔗</div>
+                </div>
+                <div class="card-content">
+                    Create and manage your personal biolink page with custom links and socials.
+                </div>
+                <a href="/@YOUR_USERNAME" class="card-action" id="biolink">View Biolink</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">File Storage</div>
+                    <div class="card-icon">📁</div>
+                </div>
+                <div class="card-content">
+                    Upload and manage your files with secure cloud storage.
+                </div>
+                <a href="/dash/app#/file" class="card-action">Manage Files</a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Profile Settings</div>
+                    <div class="card-icon">⚙️</div>
+                </div>
+                <div class="card-content">
+                    Update your profile information, avatar, and preferences.
+                </div>
+                <a href="/dash/app#/security" class="card-action">Edit Profile</a>
+            </div>
+
+            <div class="card" id="inviteCard" style="display: none;">
+                <div class="card-header">
+                    <div class="card-title">Invite Codes</div>
+                    <div class="card-icon">🎫</div>
+                </div>
+                <div class="card-content">
+                    Generate invite codes for new users (Admin only).
+                </div>
+                <a href="/ic" class="card-action">Manage Invites</a>
+            </div>
+
+            <div class="card" id="adminCard" style="display: none;">
+                <div class="card-header">
+                    <div class="card-title">Admin Panel</div>
+                    <div class="card-icon">👑</div>
+                </div>
+                <div class="card-content">
+                    Access advanced administration and moderation tools.
+                </div>
+                <a href="/dash/app#/admin" class="card-action">Open Admin Panel</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        async function loadUserInfo() {
+            try {
+                const response = await fetch('/api/auth/me', {
+                    credentials: 'include'
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    currentUser = data.user;
+                    
+                    document.getElementById('userName').textContent = currentUser.display_name || currentUser.username;
+                    document.getElementById('userRole').textContent = currentUser.role;
+                    document.getElementById('roleDisplay').textContent = currentUser.role;
+                    document.getElementById('userAvatar').textContent = (currentUser.display_name || currentUser.username).charAt(0).toUpperCase();
+                    document.getElementById('biolink').href = `/@${currentUser.username}`;
+                    document.getElementById('biolink').textContent = 'View Your Biolink';
+                    
+                    if (currentUser.role === 'owner' || currentUser.role === 'admin' || currentUser.role === 'manager') {
+                        document.getElementById('adminNotice').style.display = 'block';
+                        document.getElementById('inviteCard').style.display = 'block';
+                        document.getElementById('adminCard').style.display = 'block';
+                    }
+                } else {
+                    window.location.href = '/login';
+                }
+            } catch (error) {
+                console.error('Failed to load user info:', error);
+                window.location.href = '/login';
+            }
+        }
+
+        async function logout() {
+            try {
+                await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+            window.location.href = '/login';
+        }
+
+        loadUserInfo();
+    </script>
+</body>
+</html>

@@ -96,9 +96,9 @@
                 if (response.ok) {
                     const data = await response.json();
                     sessionStorage.setItem('user', JSON.stringify(data.user));
-                    window.location.href = '/dash/app';
+                    window.location.replace('/dash/dashboard.html');
                 } else {
-                    window.location.href = '/login';
+                    window.location.replace('/login');
                 }
             } catch (error) {
                 console.error('Auth check failed:', error);

@@ -134,7 +134,7 @@ app.post('/api/auth/login', async (req, res) => {
 
     res.setHeader(
       'Set-Cookie',
-      `token=${token}; HttpOnly; Path=/; Max-Age=${7 * 24 * 60 * 60}; SameSite=Strict`
+      `token=${token}; HttpOnly; Secure; Path=/; Max-Age=${7 * 24 * 60 * 60}; SameSite=Strict`
     );
     res.status(200).json({ message: 'Login successful', user: { id: user.id, username: user.username, role: user.role } });
   } catch (err) {
@@ -168,7 +168,7 @@ app.get('/api/auth/me', authenticateToken, async (req, res) => {
 app.post('/api/auth/logout', authenticateToken, async (req, res) => {
   res.setHeader(
     'Set-Cookie',
-    `token=; HttpOnly; Path=/; Max-Age=0`
+    `token=; HttpOnly; Secure; Path=/; Max-Age=0; SameSite=Strict`
   );
   res.status(200).json({ message: 'Logged out successfully' });
 });
