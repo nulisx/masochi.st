@@ -60,15 +60,26 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
 
 ## Recent Changes
 
+### November 25, 2025 (Dashboard Authentication & Routing Fix)
+1. **Fixed Dashboard Routing**: Authenticated users are now correctly redirected from HomeView (marketing page) to DashView (actual dashboard)
+2. **Auth Check Bootstrap Script**: Added inline auth check in `dash-app/index.html` that:
+   - Always checks `/api/auth/me` when sessionStorage.user is absent (handles new tabs/incognito)
+   - Redirects authenticated users from public routes to `/dash/app#/dash` (dashboard)
+   - Redirects unauthenticated users from protected routes to `/login`
+   - Uses centralized `DASH_HOME` constant for consistent redirect targets
+3. **Vue Router Routes**:
+   - Public routes: `/`, `/register`, `/login`, `/loginselector`, `/tos`, `/privacy`
+   - Protected routes: `/dash`, `/store`, `/mail`, `/email`, `/imap`, `/file`, `/bio`, `/bio-socials`, `/security`, `/admin`, `/mod`, `/resellers-portal`
+4. **Note**: Vue.js app source code is pre-compiled; further Vue component changes require the original source code
+
 ### November 25, 2025 (Vue.js Dashboard Migration)
-1. **Dashboard Route Update**: `/dash` now redirects to `/dash/app` to serve the Vue.js dashboard application
+1. **Dashboard Route Update**: `/dash` now redirects to `/dash/app#/dash` to serve the Vue.js dashboard application
 2. **Asset Path Fix**: Fixed Vue.js asset paths in `dash-app/index.html` to use `/dash/app/assets/` instead of `/dash/assets/`
 3. **Invite Code Management Security**: Rewrote `/ic/index.html` to use proper session-based authentication instead of hardcoded password
    - Now checks authentication via `/api/auth/me` endpoint
    - Verifies user has admin/mod role before showing invite management UI
    - Features a modern grid layout with invite creation and listing
 4. **Route Configuration**: Added explicit Express routes for Vue.js app serving and index.html handling
-5. **Note**: Vue.js app source code is pre-compiled; further Vue component changes require the original source code
 
 ### November 25, 2025 (Dashboard Authentication Fix)
 1. **Fixed Dashboard Login Redirect**: Resolved issue where users were redirected to old alo.ne landing page instead of modern Vue.js dashboard
