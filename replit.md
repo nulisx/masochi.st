@@ -86,6 +86,29 @@ Dashboard Pages:
 - Fixed 404 page to dynamically display the attempted username (e.g., "@testuser is free & available to claim!")
 - Fixed connection editing API to handle both numeric IDs and platform names
 - Purple theme consistently applied (#9333ea primary, #a855f7 secondary)
+- Added LitterBox temporary file hosting (1GB limit, 1h/12h/1d/3d expiry options)
+- Created FAQ pages for both E2EE File Hosting and LitterBox
+- Implemented forbidden file type checking (.exe, .scr, .cpl, .doc*, .jar)
+- 16-character random codes for LitterBox vs 6-character for permanent files
+- Admin/Mod panels verified working with role-based access control
+- Session persistence via stateless JWT with HttpOnly/Secure/SameSite cookies
+
+### File Hosting Features
+**E2EE File Hosting (Images)**
+- Max file size: 200 MB
+- 6-character random file codes
+- AES-256-GCM encryption
+- Optional password protection
+- Optional expiration dates
+- Forbidden types: .exe, .scr, .cpl, .doc*, .jar
+
+**LitterBox (Temporary Files)**
+- Max file size: 1 GB
+- 16-character random file codes
+- AES-256-GCM encryption
+- Optional password protection
+- Expiry options: 1h, 12h, 1d, 3d
+- Auto-deletion after expiry
 
 ### URL Structure
 - Biolinks: `/@username` (e.g., `glowi.es/@john`)
