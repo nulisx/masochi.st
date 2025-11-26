@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Glowi.es</title>
+    <link rel="stylesheet" href="/static/css/profile.css">
+    <link rel="stylesheet" href="/static/css/global.css">
+    <link rel="icon" href="/static/cdn/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        
+        .profile-container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #9333ea;
+            margin-bottom: 20px;
+        }
+        
+        .profile-name {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .profile-username {
+            font-size: 16px;
+            color: #a0a0b0;
+            margin-bottom: 16px;
+        }
+        
+        .profile-bio {
+            font-size: 15px;
+            color: #c0c0d0;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+        
+        .connections-grid {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+        
+        .connection-icon {
+            width: 44px;
+            height: 44px;
+            background: #1a1a24;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: 1px solid #2a2a3a;
+        }
+        
+        .connection-icon:hover {
+            background: #9333ea;
+            border-color: #9333ea;
+            transform: translateY(-2px);
+        }
+        
+        .connection-icon img {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .link-item {
+            background: #16161f;
+            border: 1px solid #2a2a3a;
+            border-radius: 12px;
+            padding: 16px 20px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .link-item:hover {
+            background: #1e1e2a;
+            border-color: #9333ea;
+            transform: translateY(-2px);
+        }
+        
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 50vh;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #2a2a3a;
+            border-top-color: #9333ea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error-state {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .error-state h2 {
+            color: #ef4444;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container" id="profileContainer">
+        <div class="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 16px; color: #a0a0b0;">Loading profile...</p>
+        </div>
+    </div>
+    
+    <script>
+        const username = window.location.pathname.replace('/@', '');
+        
+        async function loadProfile() {
+            try {
+                const response = await fetch(`/api/biolink/${username}`);
+                
+                if (!response.ok) {
+                    throw new Error('Profile not found');
+                }
+                
+                const data = await response.json();
+                renderProfile(data);
+            } catch (error) {
+                document.getElementById('profileContainer').innerHTML = `
+                    <div class="error-state">
+                        <h2>Profile Not Found</h2>
+                        <p style="color: #a0a0b0;">The user @${username} does not exist.</p>
+                        <a href="/" style="color: #9333ea; margin-top: 20px; display: inline-block;">Go Home</a>
+                    </div>
+                `;
+            }
+        }
+        
+        function renderProfile(data) {
+            const { user, profile, links, connections } = data;
+            
+            let connectionsHtml = '';
+            if (connections && connections.length > 0) {
+                connectionsHtml = '<div class="connections-grid">';
+                connections.forEach(conn => {
+                    const iconPath = `/static/cdn/${conn.platform.toLowerCase()}.png`;
+                    const url = conn.url || conn.profile_url || '#';
+                    connectionsHtml += `
+                        <a href="${url}" target="_blank" rel="noopener" class="connection-icon" title="${conn.platform}">
+                            <img src="${iconPath}" alt="${conn.platform}" onerror="this.style.display='none'">
+                        </a>
+                    `;
+                });
+                connectionsHtml += '</div>';
+            }
+            
+            let linksHtml = '';
+            if (links && links.length > 0) {
+                linksHtml = '<div class="links-container">';
+                links.forEach(link => {
+                    linksHtml += `
+                        <a href="${link.url}" target="_blank" rel="noopener" class="link-item">
+                            ${link.title}
+                        </a>
+                    `;
+                });
+                linksHtml += '</div>';
+            }
+            
+            document.getElementById('profileContainer').innerHTML = `
+                <img src="${profile.avatar_url || '/static/cdn/avatar.png'}" alt="${user.display_name}" class="profile-avatar">
+                <h1 class="profile-name">${user.display_name || user.username}</h1>
+                <p class="profile-username">@${user.username}</p>
+                ${profile.bio ? `<p class="profile-bio">${profile.bio}</p>` : ''}
+                ${connectionsHtml}
+                ${linksHtml}
+            `;
+            
+            document.title = `${user.display_name || user.username} - Glowi.es`;
+        }
+        
+        loadProfile();
+    </script>
+</body>
+</html>

@@ -1,0 +1,446 @@
+nulisx's projects
+nulisx's projects
+
+Hobby
+
+masochist
+
+
+Find…
+F
+
+Filters
+
+Timeline
+
+Combobox Menu
+Last 30 minutes
+
+Contains Console Level
+
+​
+Error
+1
+
+​
+Warning
+0
+
+​
+Fatal
+0
+
+
+Resource
+3
+
+
+​
+Vercel Function
+28
+
+​
+Middleware
+0
+
+​
+Cache
+0
+
+
+Environment
+
+​
+Production
+28
+
+​
+Preview
+0
+
+
+Route
+
+Search Routes
+Search Routes…
+​
+/
+24
+
+​
+/api/profile
+1
+
+
+Request Path
+
+Search request paths
+Search request paths…
+​
+/static/css/global.css
+3
+
+​
+/login
+2
+
+​
+/static/css/auth.css
+2
+
+​
+/static/fonts/bold.woff2
+2
+
+​
+/static/fonts/regular.woff2
+2
+
+​
+/
+2
+
+​
+/static/cdn/avatar.png
+1
+
+​
+/favicon.ico
+1
+
+​
+/fonts/regular.woff2
+1
+
+​
+/static/cdn/twitter.png
+1
+
+​
+/static/cdn/twitch.png
+1
+
+​
+/dash
+1
+
+​
+/static/css/index.css
+1
+
+​
+/static/cdn/instagram.png
+1
+
+​
+/fonts/bold.woff2
+1
+
+​
+/favicon.png
+1
+
+​
+/static/cdn/discord.png
+1
+
+​
+/api/profile
+1
+
+​
+/static/js/dashboard.js
+1
+
+​
+/static/cdn/tiktok.png
+1
+
+​
+/static/css/dashboard.css
+1
+
+
+Status Code
+
+Search status
+Search status…
+​
+200 OK
+20
+
+​
+304 Not Modified
+4
+
+​
+500 Internal Server Error
+1
+
+
+Request Type
+
+​
+API Endpoint
+1
+
+​
+Server-side Rendering
+24
+
+​
+Incremental Static Regeneration
+0
+
+​
+Partial Prerendering
+0
+
+​
+Server Components
+0
+
+​
+Cron Job
+0
+
+
+Host
+
+Search hosts
+Search hosts…
+​
+og.email
+25
+
+​
+masochist-3embxjypa-nulisxs-projects.vercel.app
+1
+
+
+Request Method
+
+Search request methods
+Search request methods…
+​
+GET
+28
+
+​
+POST
+0
+
+​
+HEAD
+0
+
+​
+PUT
+0
+
+​
+DELETE
+0
+
+​
+OPTIONS
+0
+
+​
+PATCH
+0
+
+
+Cache
+
+​
+MISS
+25
+
+
+Branch
+
+Search branches
+Search branches…
+​
+main
+26
+
+​
+NONE
+0
+
+
+Deployment ID
+
+Search deployment IDs
+Search deployment IDs…
+​
+Current
+dpl_7RYPEnZ6MMPrKBsUtrMp1nSTEjRx
+28
+
+Search Logs
+Search logs…
+12:25:00
+12:36:50
+12:57:10
+Time
+Status
+Host
+Request
+Messages
+Nov 26 12:40:53.18
+GET
+304
+og.email
+/static/css/global.css
+Nov 26 12:40:53.18
+GET
+304
+og.email
+/static/css/auth.css
+Nov 26 12:40:52.91
+GET
+304
+og.email
+/login
+Nov 26 12:40:33.33
+GET
+200
+og.email
+/static/fonts/bold.woff2
+Nov 26 12:40:33.27
+GET
+200
+og.email
+/static/fonts/regular.woff2
+Nov 26 12:40:33.09
+GET
+200
+og.email
+/static/css/auth.css
+Nov 26 12:40:33.08
+GET
+304
+og.email
+/static/css/global.css
+Nov 26 12:40:32.72
+GET
+500
+og.email
+/api/profile
+5
+TypeError: Cannot read properties of undefined (reading 'apply') at /var/task/node_modules/express/lib/router/index.js:646:15 at next (/var/task/node_modules/express/lib/router/index.js:265:14) at Function.handle (/var/task/node_modules/express/lib/router/index.js:175:3) at Object.router [as handler] (/var/task/node_modules/express/lib/router/index.js:47:12) at r (/opt/rust/nodejs.js:2:15576) at Server.<anonymous> (/opt/rust/nodejs.js:2:11599) at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async Server.<anonymous> (/opt/rust/nodejs.js:16:7810)
+Nov 26 12:40:32.72
+GET
+200
+og.email
+/login
+Nov 26 12:40:32.17
+GET
+200
+og.email
+/fonts/regular.woff2
+4
+✅ PostgreSQL connection pool initialized successfully
+Nov 26 12:40:32.16
+GET
+200
+og.email
+/fonts/bold.woff2
+Nov 26 12:40:31.99
+GET
+200
+og.email
+/static/js/dashboard.js
+4
+✅ PostgreSQL connection pool initialized successfully
+Nov 26 12:40:31.99
+GET
+200
+og.email
+/static/css/dashboard.css
+Nov 26 12:40:31.99
+GET
+200
+og.email
+/static/cdn/avatar.png
+Nov 26 12:40:31.82
+GET
+200
+og.email
+/static/cdn/twitch.png
+4
+✅ PostgreSQL connection pool initialized successfully
+Nov 26 12:40:31.82
+GET
+200
+og.email
+/static/cdn/tiktok.png
+4
+✅ PostgreSQL connection pool initialized successfully
+Nov 26 12:40:31.82
+GET
+200
+og.email
+/static/cdn/instagram.png
+Nov 26 12:40:31.58
+GET
+200
+og.email
+/dash
+Nov 26 12:40:31.33
+GET
+200
+og.email
+/static/cdn/twitter.png
+Nov 26 12:40:31.32
+GET
+200
+og.email
+/static/css/index.css
+Nov 26 12:40:31.32
+GET
+200
+og.email
+/static/cdn/discord.png
+Nov 26 12:40:31.31
+GET
+200
+og.email
+/static/css/global.css
+Nov 26 12:40:30.82
+GET
+200
+og.email
+/
+Nov 26 12:38:27.73
+GET
+200
+og.email
+/static/fonts/regular.woff2
+Nov 26 12:38:27.73
+GET
+200
+og.email
+/static/fonts/bold.woff2
+Live Mode
+Nov 26 12:35:07.99
+GET
+---
+masochist-3embxjypa-nulisxs-projects.vercel.app
+/favicon.png
+Nov 26 12:35:07.87
+GET
+---
+masochist-3embxjypa-nulisxs-projects.vercel.app
+/favicon.ico
+Nov 26 12:35:06.24
+GET
+---
+masochist-3embxjypa-nulisxs-projects.vercel.app
+/
+4
+✅ PostgreSQL connection pool initialized successfully
+No more logs to show within selected timeline

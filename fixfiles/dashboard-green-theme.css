@@ -1,0 +1,498 @@
+/**
+ * Alo.ne Dashboard - Dark Green Theme
+ * Replaces blue accents with elegant dark green tones
+ * Inspired by modern dashboard designs but better
+ */
+
+:root {
+  /* Dark Green Color Palette */
+  --green-50: #ecfdf5;
+  --green-100: #d1fae5;
+  --green-200: #a7f3d0;
+  --green-300: #6ee7b7;
+  --green-400: #34d399;
+  --green-500: #10b981;
+  --green-600: #059669;
+  --green-700: #047857;
+  --green-800: #065f46;
+  --green-900: #064e3b;
+  --green-950: #022c22;
+
+  /* Dashboard-specific colors */
+  --dash-primary: var(--green-500);
+  --dash-primary-hover: var(--green-600);
+  --dash-primary-light: var(--green-400);
+  --dash-accent: var(--green-600);
+  --dash-accent-dark: var(--green-700);
+  --dash-glow: rgba(16, 185, 129, 0.2);
+  --dash-glow-strong: rgba(16, 185, 129, 0.3);
+  
+  /* Background colors */
+  --dash-bg: #0a0a0a;
+  --dash-card-bg: rgba(16, 185, 129, 0.03);
+  --dash-sidebar-bg: #0f0f0f;
+  --dash-hover-bg: rgba(16, 185, 129, 0.08);
+  
+  /* Border colors */
+  --dash-border: rgba(16, 185, 129, 0.15);
+  --dash-border-hover: rgba(16, 185, 129, 0.25);
+}
+
+/* ============================================================================
+   GLOBAL DASHBOARD OVERRIDES
+   ============================================================================ */
+
+/* Replace all blue gradients with green */
+.bg-gradient-to-r.from-\[#818cf8\],
+.from-indigo-400,
+.from-blue-400 {
+  --tw-gradient-from: var(--green-400) !important;
+}
+
+.to-\[#60a5fa\],
+.to-blue-400,
+.to-indigo-500 {
+  --tw-gradient-to: var(--green-600) !important;
+}
+
+/* Replace blue text colors with green */
+.text-\[#818cf8\],
+.text-blue-400,
+.text-indigo-400 {
+  color: var(--dash-primary) !important;
+}
+
+.text-\[#60a5fa\],
+.text-blue-500,
+.text-indigo-500 {
+  color: var(--dash-accent) !important;
+}
+
+/* Replace blue backgrounds with green */
+.bg-\[#818cf8\],
+.bg-blue-400,
+.bg-indigo-400 {
+  background-color: var(--dash-primary) !important;
+}
+
+.bg-\[#60a5fa\],
+.bg-blue-500,
+.bg-indigo-500 {
+  background-color: var(--dash-accent) !important;
+}
+
+/* Replace blue borders with green */
+.border-\[#818cf8\],
+.border-blue-400,
+.border-indigo-400 {
+  border-color: var(--dash-primary) !important;
+}
+
+.border-\[#60a5fa\],
+.border-blue-500,
+.border-indigo-500 {
+  border-color: var(--dash-accent) !important;
+}
+
+/* ============================================================================
+   SIDEBAR STYLING (inspired by reference image)
+   ============================================================================ */
+
+/* Sidebar container */
+nav[class*="sidebar"],
+aside[class*="sidebar"],
+.sidebar,
+[class*="w-64"][class*="bg-"],
+[class*="fixed"][class*="left-0"][class*="h-full"] {
+  background: var(--dash-sidebar-bg) !important;
+  border-right: 1px solid rgba(16, 185, 129, 0.1) !important;
+}
+
+/* Sidebar navigation items */
+nav a[class*="flex items-center"],
+.sidebar-link,
+[class*="nav-link"] {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 0.25rem 0.5rem;
+}
+
+nav a[class*="flex items-center"]:hover,
+.sidebar-link:hover {
+  background: var(--dash-hover-bg) !important;
+  border-left: 3px solid var(--dash-primary);
+  padding-left: calc(1rem - 3px);
+}
+
+/* Active sidebar item */
+nav a[class*="flex items-center"][class*="bg-"],
+nav a.active,
+.sidebar-link.active {
+  background: linear-gradient(90deg, 
+    rgba(16, 185, 129, 0.15) 0%, 
+    rgba(16, 185, 129, 0.05) 100%) !important;
+  border-left: 3px solid var(--dash-primary);
+  padding-left: calc(1rem - 3px);
+  color: var(--green-400) !important;
+}
+
+/* Sidebar icons */
+nav a[class*="flex items-center"] svg,
+.sidebar-link svg {
+  color: rgba(255, 255, 255, 0.6);
+  transition: color 0.2s;
+}
+
+nav a[class*="flex items-center"]:hover svg,
+.sidebar-link:hover svg {
+  color: var(--dash-primary) !important;
+}
+
+nav a.active svg {
+  color: var(--dash-primary) !important;
+}
+
+/* ============================================================================
+   CARD COMPONENTS (inspired by reference image)
+   ============================================================================ */
+
+/* Main dashboard cards */
+[class*="rounded-xl"][class*="bg-zinc-900"],
+[class*="rounded-lg"][class*="bg-zinc-900"],
+.dashboard-card,
+.card {
+  background: linear-gradient(135deg, 
+    rgba(16, 185, 129, 0.02) 0%, 
+    rgba(16, 185, 129, 0.05) 100%) !important;
+  border: 1px solid var(--dash-border) !important;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[class*="rounded-xl"][class*="bg-zinc-900"]:hover,
+[class*="rounded-lg"][class*="bg-zinc-900"]:hover,
+.dashboard-card:hover,
+.card:hover {
+  border-color: var(--dash-border-hover) !important;
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Card headers */
+.card-header,
+[class*="flex items-center justify-between mb-4"] {
+  border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* Card icons in circular backgrounds */
+[class*="p-2 rounded-lg bg-zinc-800"],
+[class*="rounded-lg bg-zinc-800/50"] {
+  background: linear-gradient(135deg, 
+    var(--green-900) 0%, 
+    var(--green-950) 100%) !important;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+[class*="p-2 rounded-lg bg-zinc-800"] svg,
+[class*="rounded-lg bg-zinc-800/50"] svg {
+  color: var(--dash-primary) !important;
+}
+
+/* ============================================================================
+   STATS & METRICS
+   ============================================================================ */
+
+/* Large stat numbers */
+[class*="text-2xl font-bold"],
+.stat-number {
+  background: linear-gradient(135deg, var(--green-400), var(--green-600));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Stat labels */
+[class*="text-sm"][class*="text-zinc-400"],
+.stat-label {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ============================================================================
+   BUTTONS & INTERACTIVE ELEMENTS
+   ============================================================================ */
+
+/* Primary buttons */
+button[class*="bg-blue"],
+button[class*="bg-indigo"],
+.btn-primary {
+  background: linear-gradient(135deg, 
+    var(--dash-primary) 0%, 
+    var(--dash-accent) 100%) !important;
+  border: 1px solid var(--dash-primary);
+  box-shadow: 0 4px 14px var(--dash-glow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button[class*="bg-blue"]:hover,
+button[class*="bg-indigo"]:hover,
+.btn-primary:hover {
+  box-shadow: 0 6px 20px var(--dash-glow-strong);
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+/* Secondary/outline buttons */
+button[class*="border-blue"],
+button[class*="border-indigo"],
+.btn-secondary {
+  border-color: var(--dash-primary) !important;
+  color: var(--dash-primary) !important;
+}
+
+button[class*="border-blue"]:hover,
+button[class*="border-indigo"]:hover,
+.btn-secondary:hover {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: var(--dash-primary-hover) !important;
+}
+
+/* Action links */
+a[class*="text-blue"],
+a[class*="text-indigo"],
+.action-link {
+  color: var(--dash-primary) !important;
+  position: relative;
+}
+
+a[class*="text-blue"]::after,
+a[class*="text-indigo"]::after,
+.action-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--dash-primary);
+  transition: width 0.3s;
+}
+
+a[class*="text-blue"]:hover::after,
+a[class*="text-indigo"]:hover::after,
+.action-link:hover::after {
+  width: 100%;
+}
+
+/* ============================================================================
+   BADGES & STATUS INDICATORS
+   ============================================================================ */
+
+/* Success/Active badges */
+[class*="bg-green"] {
+  background: linear-gradient(135deg, 
+    var(--green-600) 0%, 
+    var(--green-700) 100%) !important;
+}
+
+/* Info badges - convert blue to green */
+[class*="bg-blue"][class*="badge"],
+.badge-info {
+  background: linear-gradient(135deg, 
+    var(--green-500) 0%, 
+    var(--green-600) 100%) !important;
+}
+
+/* Status dots */
+.status-dot[class*="bg-blue"],
+.status-dot-blue {
+  background: var(--dash-primary) !important;
+  box-shadow: 0 0 8px var(--dash-glow);
+}
+
+/* ============================================================================
+   INPUTS & FORMS
+   ============================================================================ */
+
+/* Focus states */
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--dash-primary) !important;
+  box-shadow: 0 0 0 3px var(--dash-glow) !important;
+  outline: none;
+}
+
+/* Input icons */
+input[class*="pl-10"]::before,
+.input-icon {
+  color: var(--dash-primary);
+}
+
+/* ============================================================================
+   PROGRESS BARS & LOADERS
+   ============================================================================ */
+
+/* Progress bars */
+[class*="bg-blue"][class*="progress"],
+.progress-bar {
+  background: linear-gradient(90deg, 
+    var(--green-600) 0%, 
+    var(--green-400) 100%) !important;
+}
+
+/* Loading spinners */
+.spinner[class*="border-blue"],
+.loading-spinner {
+  border-color: var(--dash-primary) !important;
+  border-top-color: transparent !important;
+}
+
+/* ============================================================================
+   TABLES & LISTS
+   ============================================================================ */
+
+/* Table header */
+thead {
+  background: rgba(16, 185, 129, 0.03);
+  border-bottom: 2px solid var(--dash-border);
+}
+
+/* Table row hover */
+tbody tr:hover {
+  background: rgba(16, 185, 129, 0.03);
+}
+
+/* ============================================================================
+   ALERTS & NOTIFICATIONS
+   ============================================================================ */
+
+/* Info alerts - convert to green */
+[class*="bg-blue-500/10"],
+.alert-info {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-left: 4px solid var(--dash-primary);
+}
+
+/* ============================================================================
+   SPECIAL EFFECTS
+   ============================================================================ */
+
+/* Glow effects on hover */
+.glow-on-hover {
+  position: relative;
+  transition: all 0.3s;
+}
+
+.glow-on-hover::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--green-500), var(--green-700));
+  opacity: 0;
+  z-index: -1;
+  filter: blur(10px);
+  transition: opacity 0.3s;
+}
+
+.glow-on-hover:hover::before {
+  opacity: 0.3;
+}
+
+/* Animated gradient background for special cards */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animated-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--green-900),
+    var(--green-800),
+    var(--green-900)
+  );
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* ============================================================================
+   SCROLLBAR CUSTOMIZATION
+   ============================================================================ */
+
+/* Dashboard scrollbars */
+.dashboard-content::-webkit-scrollbar,
+[class*="overflow-y-auto"]::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dashboard-content::-webkit-scrollbar-track,
+[class*="overflow-y-auto"]::-webkit-scrollbar-track {
+  background: rgba(16, 185, 129, 0.03);
+  border-radius: 4px;
+}
+
+.dashboard-content::-webkit-scrollbar-thumb,
+[class*="overflow-y-auto"]::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--green-700), var(--green-800));
+  border-radius: 4px;
+}
+
+.dashboard-content::-webkit-scrollbar-thumb:hover,
+[class*="overflow-y-auto"]::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--green-600), var(--green-700));
+}
+
+/* ============================================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  /* Adjust sidebar for mobile */
+  nav[class*="sidebar"],
+  aside[class*="sidebar"] {
+    background: rgba(15, 15, 15, 0.98);
+    backdrop-filter: blur(20px);
+  }
+
+  /* Adjust card padding for mobile */
+  [class*="rounded-xl"][class*="bg-zinc-900"],
+  .dashboard-card {
+    padding: 1rem;
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ============================================================================ */
+
+/* Focus visible indicators */
+*:focus-visible {
+  outline: 2px solid var(--dash-primary);
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --dash-primary: #22c55e;
+    --dash-border: rgba(16, 185, 129, 0.4);
+  }
+}
