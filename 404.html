@@ -76,7 +76,7 @@
 <body>
     <div class="container">
         <div class="error-code">404</div>
-        <div class="error-message">unable to find that page!<br><span style="color: #3498db">@</span> is free & available to claim!</div>
+        <div class="error-message">unable to find that page!<br><span style="color: #8b5cf6" id="usernameDisplay">@user</span> is free & available to claim!</div>
 
         <a href="/" class="home-button">
             home
@@ -85,6 +85,15 @@
             claim username
         </a>
     </div>
+    <script>
+        (function() {
+            const path = window.location.pathname;
+            const match = path.match(/^\/@([a-zA-Z0-9_]+)/);
+            if (match && match[1]) {
+                document.getElementById('usernameDisplay').textContent = '@' + match[1];
+            }
+        })();
+    </script>
 </body>
 
 </html>

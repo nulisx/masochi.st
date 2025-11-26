@@ -463,8 +463,11 @@ class Dashboard {
                         
                         <div class="form-group">
                             <label class="form-label">Username</label>
-                            <input type="text" class="form-input" value="@${this.user?.username || ''}" disabled style="opacity: 0.6;">
-                            <p style="color: var(--text-muted); font-size: 12px; margin-top: 6px;">Username cannot be changed</p>
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <input type="text" class="form-input" id="usernameInput" value="${this.user?.username || ''}" placeholder="your_username" style="flex: 1;">
+                                <button type="button" class="btn btn-secondary" id="changeUsernameBtn" style="white-space: nowrap;">Change Username</button>
+                            </div>
+                            <p style="color: var(--text-muted); font-size: 12px; margin-top: 6px;">Letters, numbers, and underscores only. 1-20 characters.</p>
                         </div>
                         
                         <div class="form-group">
@@ -517,6 +520,53 @@ class Dashboard {
 
         this.setupProfileForm();
         this.setupAvatarUpload();
+        this.setupUsernameChange();
+    }
+
+    setupUsernameChange() {
+        const btn = document.getElementById('changeUsernameBtn');
+        const input = document.getElementById('usernameInput');
+        if (!btn || !input) return;
+
+        btn.addEventListener('click', async () => {
+            const newUsername = input.value.trim();
+            
+            if (!newUsername || newUsername.length < 1 || newUsername.length > 20) {
+                this.showToast('Username must be 1-20 characters', 'error');
+                return;
+            }
+
+            if (!/^[a-zA-Z0-9_]+$/.test(newUsername)) {
+                this.showToast('Username can only contain letters, numbers, and underscores', 'error');
+                return;
+            }
+
+            if (newUsername.toLowerCase() === this.user?.username?.toLowerCase()) {
+                this.showToast('This is already your username', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/profile/username', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ username: newUsername })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    this.user.username = data.username;
+                    this.updateUserDisplay();
+                    this.showToast('Username changed successfully', 'success');
+                } else {
+                    const data = await response.json();
+                    this.showToast(data.error || 'Failed to change username', 'error');
+                }
+            } catch (error) {
+                this.showToast('Failed to change username', 'error');
+            }
+        });
     }
 
     setupProfileForm() {

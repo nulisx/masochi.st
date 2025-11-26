@@ -66,7 +66,16 @@ router.put('/:connectionId', authenticateToken, async (req, res) => {
     const { connectionId } = req.params;
     const { platform, username, profile_url } = req.body;
 
-    const connection = await getQuery('connections', 'id', connectionId);
+    const isNumeric = /^\d+$/.test(connectionId);
+    let connection;
+    
+    if (isNumeric) {
+      connection = await getQuery('connections', 'id', parseInt(connectionId));
+    } else {
+      const connections = await allQuery('connections', 'user_id', req.user.id);
+      connection = connections.find(c => c.platform === connectionId);
+    }
+
     if (!connection) {
       return res.status(404).json({ error: 'Connection not found' });
     }
@@ -83,10 +92,10 @@ router.put('/:connectionId', authenticateToken, async (req, res) => {
         profile_url: profile_url ?? connection.profile_url
       },
       'update',
-      { column: 'id', value: connectionId }
+      { column: 'id', value: connection.id }
     );
 
-    const updatedConnection = await getQuery('connections', 'id', connectionId);
+    const updatedConnection = await getQuery('connections', 'id', connection.id);
     res.status(200).json({ message: 'Connection updated', connection: updatedConnection });
   } catch (err) {
     console.error('Connection PUT error:', err);

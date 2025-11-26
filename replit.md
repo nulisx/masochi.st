@@ -72,7 +72,20 @@ Dashboard Pages:
 #### Connections
 - `GET /api/connections` - List connections
 - `POST /api/connections` - Add connection
-- `DELETE /api/connections/:platform` - Remove connection
+- `PUT /api/connections/:platform` - Update connection (supports both numeric ID and platform name)
+- `DELETE /api/connections/:platform` - Remove connection (supports both numeric ID and platform name)
+
+#### Updates (Site Updates)
+- `GET /api/updates` - Get latest site updates
+- `POST /api/updates` - Create update (admin only)
+- `DELETE /api/updates/:id` - Delete update (admin only)
+
+### Recent Changes (November 2025)
+- Changed sidebar "Files" label to "Images" to match reference design
+- Added username change functionality with duplicate checking via `/api/profile/username`
+- Fixed 404 page to dynamically display the attempted username (e.g., "@testuser is free & available to claim!")
+- Fixed connection editing API to handle both numeric IDs and platform names
+- Purple theme consistently applied (#9333ea primary, #a855f7 secondary)
 
 ### URL Structure
 - Biolinks: `/@username` (e.g., `glowi.es/@john`)
