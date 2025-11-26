@@ -9,760 +9,989 @@
     <link rel="stylesheet" href="/static/css/dashboard-app.css">
 </head>
 <body>
-    <div class="dashboard-layout">
+    <div class="app-layout">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <a href="/" class="sidebar-logo">
-                    <svg viewBox="0 0 499.8 499.8" xmlns="http://www.w3.org/2000/svg">
+                <div class="logo-container">
+                    <svg class="logo-icon" viewBox="0 0 499.8 499.8" xmlns="http://www.w3.org/2000/svg">
                         <path d="M477.16,292.045c0,0-62.848-4.221-125.061,22.069c11.664-13.634,23.084-28.804,33.416-45.603c51.428-83.723,56.047-174.385,56.047-174.385s-78.774,45.1-130.221,128.822c-7.563,12.3-13.99,24.738-19.668,37.029c3.467-20.557,5.744-42.617,5.744-65.72C297.417,86.977,249.892,0,249.892,0s-47.506,86.977-47.506,194.259c0,23.102,2.279,45.163,5.742,65.713c-5.68-12.293-12.123-24.723-19.67-37.023C137.017,139.227,58.238,94.127,58.238,94.127s4.623,90.662,56.05,174.385c10.329,16.799,21.75,31.969,33.416,45.603C85.472,287.824,22.64,292.045,22.64,292.045s37.99,47.329,100.418,73.905c23.818,10.137,47.734,15.764,68.231,18.881c-9.681,0.716-19.997,2.132-30.503,4.71c-45.443,11.111-77.006,38.909-77.006,38.909s42.105,9.768,87.561-1.351c29.467-7.217,52.928-21.347,65.893-30.448l-10.852,86.821c-0.506,4.125,0.635,8.272,3.157,11.404c2.522,3.125,6.147,4.923,9.974,4.923h20.791c3.826,0,7.451-1.798,9.975-4.923c2.522-3.132,3.66-7.279,3.156-11.404l-10.852-86.814c12.967,9.103,36.426,23.225,65.875,30.441c45.457,11.118,87.561,1.351,87.561,1.351s-31.564-27.798-77.002-38.909c-10.512-2.578-20.828-3.994-30.508-4.71c20.504-3.117,44.42-8.744,68.238-18.881C439.173,339.374,477.16,292.045,477.16,292.045z"/>
                     </svg>
-                </a>
+                </div>
                 <button class="sidebar-toggle" onclick="toggleSidebar()">
                     <i class="fas fa-chevron-left"></i>
                 </button>
             </div>
-            
+
             <nav class="sidebar-nav">
                 <div class="nav-section">
-                    <div class="nav-section-title">Overview</div>
-                    <a class="nav-item active" data-view="dashboard" onclick="showView('dashboard')">
+                    <div class="nav-section-title">OVERVIEW</div>
+                    <a href="#" class="nav-item active" data-view="dashboard">
                         <i class="fas fa-th-large"></i>
                         <span>Dashboard</span>
                     </a>
                 </div>
-                
+
                 <div class="nav-section">
-                    <div class="nav-section-title">Upgrades</div>
-                    <a class="nav-item" data-view="store" onclick="showView('store')">
+                    <div class="nav-section-title">UPGRADES</div>
+                    <a href="#" class="nav-item" data-view="store">
                         <i class="fas fa-shopping-cart"></i>
                         <span>Store</span>
                     </a>
                 </div>
-                
+
                 <div class="nav-section">
-                    <div class="nav-section-title">Services</div>
-                    <div class="nav-item nav-item-expandable" onclick="toggleSubmenu('biolink')">
-                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div class="nav-section-title">SERVICES</div>
+                    <div class="nav-item-group">
+                        <a href="#" class="nav-item has-submenu" onclick="toggleSubmenu('biolink')">
                             <i class="fas fa-link"></i>
                             <span>Biolink</span>
+                            <i class="fas fa-chevron-down submenu-arrow"></i>
+                        </a>
+                        <div class="submenu" id="biolink-submenu">
+                            <a href="#" class="nav-item submenu-item" data-view="biolink-customize">
+                                <i class="fas fa-chevron-right"></i>
+                                <span>Customize</span>
+                            </a>
+                            <a href="#" class="nav-item submenu-item" data-view="biolink-socials">
+                                <i class="fas fa-chevron-right"></i>
+                                <span>Socials</span>
+                            </a>
                         </div>
-                        <i class="fas fa-chevron-down expand-icon"></i>
                     </div>
-                    <div class="nav-submenu" id="biolink-submenu">
-                        <a class="nav-item" data-view="biolink-customize" onclick="showView('biolink-customize')">
-                            <span>Customize</span>
-                        </a>
-                        <a class="nav-item" data-view="biolink-socials" onclick="showView('biolink-socials')">
-                            <span>Socials</span>
-                        </a>
-                    </div>
-                    <a class="nav-item" data-view="files" onclick="showView('files')">
+                    <a href="#" class="nav-item" data-view="filehost">
                         <i class="fas fa-folder"></i>
                         <span>File Host</span>
                     </a>
-                    <a class="nav-item" data-view="email" onclick="showView('email')">
+                    <a href="#" class="nav-item" data-view="email">
                         <i class="fas fa-envelope"></i>
                         <span>Email</span>
                     </a>
                 </div>
-                
+
                 <div class="nav-section" id="admin-section" style="display: none;">
-                    <div class="nav-section-title">Administration</div>
-                    <a class="nav-item" data-view="admin" onclick="showView('admin')">
+                    <div class="nav-section-title">ADMINISTRATION</div>
+                    <a href="#" class="nav-item" data-view="admin" id="admin-nav">
                         <i class="fas fa-crown"></i>
                         <span>Admin Panel</span>
                     </a>
-                    <a class="nav-item" data-view="mod" onclick="showView('mod')">
+                    <a href="#" class="nav-item" data-view="mod" id="mod-nav">
                         <i class="fas fa-shield-alt"></i>
                         <span>Mod Panel</span>
                     </a>
                 </div>
             </nav>
-            
+
             <div class="sidebar-footer">
-                <a class="nav-item" data-view="settings" onclick="showView('settings')">
+                <a href="#" class="nav-item" data-view="settings">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>
-                <button class="logout-btn" onclick="logout()">
+                <a href="#" class="nav-item" onclick="logout()">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
-                </button>
+                </a>
             </div>
         </aside>
-        
+
         <main class="main-content">
             <header class="top-bar">
-                <div class="search-bar">
+                <div class="search-container">
                     <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search...">
-                    <span style="color: var(--text-muted); font-size: 0.75rem;">Cmd+K</span>
+                    <input type="text" class="search-input" placeholder="Search...">
+                    <span class="search-shortcut">Cmd+K</span>
                 </div>
-                <div class="top-bar-right">
-                    <div class="user-menu">
-                        <div class="user-avatar" id="userAvatar">?</div>
-                    </div>
-                </div>
+                <div class="user-avatar" id="userAvatar">R</div>
             </header>
-            
+
             <div class="content-area">
-                <div id="view-dashboard" class="view-container active">
-                    <div class="page-header">
-                        <h1 class="page-title">Welcome back, <span id="welcomeUsername">@user</span></h1>
-                        <p class="page-subtitle">Here's what's happening with your account today</p>
+                <div id="view-dashboard" class="view active">
+                    <div class="welcome-section">
+                        <h1>Welcome back, <span id="welcomeUsername">@user</span></h1>
+                        <p>Here's what's happening with your account today</p>
                     </div>
-                    
+
                     <div class="stats-grid">
                         <div class="stat-card">
-                            <div class="stat-card-header">
-                                <div class="stat-icon"><i class="fas fa-user"></i></div>
-                            </div>
+                            <div class="stat-icon"><i class="fas fa-user"></i></div>
                             <div class="stat-label">UID</div>
-                            <div class="stat-value" id="statUid">-</div>
+                            <div class="stat-value" id="statUid">1</div>
                             <div class="stat-sublabel">Your unique identifier</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-card-header">
-                                <div class="stat-icon"><i class="fas fa-database"></i></div>
-                            </div>
+                            <div class="stat-icon"><i class="fas fa-hdd"></i></div>
                             <div class="stat-label">Storage Used</div>
                             <div class="stat-value" id="statStorage">0.00 bytes / 10 GB</div>
                             <div class="stat-sublabel">Available storage space</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-card-header">
-                                <div class="stat-icon"><i class="fas fa-certificate"></i></div>
-                            </div>
+                            <div class="stat-icon license-inactive"><i class="fas fa-circle"></i></div>
                             <div class="stat-label">License Status</div>
-                            <div class="stat-value inactive" id="statLicense">Inactive</div>
+                            <div class="stat-value license-status" id="statLicense">Inactive</div>
                             <div class="stat-sublabel">Current subscription status</div>
                         </div>
                     </div>
-                    
-                    <div class="content-grid">
+
+                    <div class="dashboard-grid">
                         <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Latest Updates</h3>
-                            </div>
-                            <div class="card-body">
+                            <h3 class="card-title">Latest Updates</h3>
+                            <div class="updates-list">
                                 <div class="update-item">
-                                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                                    <div class="update-content">
                                         <div class="update-title">File Host Update</div>
-                                        <div class="update-date">Mon, 21 October 2025</div>
+                                        <div class="update-desc">File chunking, reporting & upload speed improvement</div>
+                                        <a href="#" class="update-link">View Details</a>
                                     </div>
-                                    <div class="update-description">File chunking, reporting & upload speed improvement</div>
-                                    <a href="#" class="update-link">View Details</a>
+                                    <div class="update-date">Mon, 21 October 2025</div>
                                 </div>
                                 <div class="update-item">
-                                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                                    <div class="update-content">
                                         <div class="update-title">Overall Update</div>
-                                        <div class="update-date">Mon, 10 August 2025</div>
+                                        <div class="update-desc">Multiple UI fixes & enhancements</div>
+                                        <a href="#" class="update-link">View Details</a>
                                     </div>
-                                    <div class="update-description">Multiple UI fixes & enhancements</div>
-                                    <a href="#" class="update-link">View Details</a>
+                                    <div class="update-date">Mon, 10 August 2025</div>
                                 </div>
                                 <div class="update-item">
-                                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                                    <div class="update-content">
                                         <div class="update-title">Biolink Update</div>
-                                        <div class="update-date">Fri, 21 September 2025</div>
+                                        <div class="update-desc">New layouts, config generator, badge customization & more</div>
+                                        <a href="#" class="update-link">View Details</a>
                                     </div>
-                                    <div class="update-description">New layouts, config generator, badge customization & more</div>
-                                    <a href="#" class="update-link">View Details</a>
+                                    <div class="update-date">Fri, 21 September 2025</div>
                                 </div>
                             </div>
                         </div>
-                        
                         <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Shoutbox</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="shoutbox" id="shoutbox">
-                                    <div class="shoutbox-skeleton" style="width: 80%;"></div>
-                                    <div class="shoutbox-skeleton" style="width: 65%;"></div>
-                                    <div class="shoutbox-skeleton" style="width: 90%;"></div>
-                                    <div class="shoutbox-skeleton" style="width: 70%;"></div>
-                                    <div class="shoutbox-skeleton" style="width: 85%;"></div>
-                                </div>
+                            <h3 class="card-title">Shoutbox</h3>
+                            <div class="shoutbox" id="shoutbox">
+                                <div class="shoutbox-placeholder"></div>
+                                <div class="shoutbox-placeholder"></div>
+                                <div class="shoutbox-placeholder"></div>
+                                <div class="shoutbox-placeholder"></div>
+                                <div class="shoutbox-placeholder"></div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <div id="view-store" class="view-container">
-                    <div class="page-header">
-                        <div class="breadcrumb">
-                            <a href="#" onclick="showView('dashboard')">Dashboard</a>
-                            <span>/</span>
-                            <span>Purchase Portal</span>
-                        </div>
-                    </div>
-                    
-                    <div class="card" style="max-width: 700px;">
-                        <div class="card-body">
-                            <h2 style="font-size: 1.25rem; margin-bottom: 0.5rem;">VIP Upgrade</h2>
-                            <div style="font-size: 2rem; font-weight: 700; color: var(--text-primary);">$7.49</div>
-                            <div style="color: var(--accent-purple); font-size: 0.875rem; margin-bottom: 1.5rem;">per month</div>
-                            
-                            <div style="margin-bottom: 1.5rem;">
-                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: var(--text-secondary);">
-                                    <i class="fas fa-arrow-right" style="color: var(--accent-purple);"></i>
-                                    File Host + 5GB File Storage
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: var(--text-secondary);">
-                                    <i class="fas fa-arrow-right" style="color: var(--accent-purple);"></i>
-                                    Lifetime @alo.ne Email Address
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary);">
-                                    <i class="fas fa-arrow-right" style="color: var(--accent-purple);"></i>
-                                    5 Email Addresses per Domain
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">Months to purchase</label>
-                                <input type="number" class="form-input" value="1" min="1">
-                            </div>
-                            
-                            <button class="btn btn-primary" style="width: 100%;">Buy</button>
-                        </div>
-                    </div>
-                    
-                    <div class="card" style="max-width: 700px; margin-top: 1.5rem;">
-                        <div class="card-header">
-                            <h3 class="card-title">Your Orders</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-container">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Quantity</th>
-                                            <th>Address</th>
-                                            <th>Price</th>
-                                            <th>Status</th>
-                                            <th>Time Left</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="ordersTableBody">
-                                        <tr>
-                                            <td colspan="5" class="empty-state">
-                                                <i class="fas fa-shopping-cart"></i>
-                                                <div>No orders yet</div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="view-biolink-customize" class="view-container">
-                    <div class="page-header">
-                        <div class="breadcrumb">
-                            <a href="#" onclick="showView('dashboard')">Dashboard</a>
-                            <span>/</span>
-                            <span>Biolink</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                <a href="#" id="biolinkPreviewLink" target="_blank" style="color: var(--text-secondary); text-decoration: none;">
-                                    <i class="fas fa-external-link-alt"></i>
-                                </a>
-                                <button class="btn btn-sm btn-secondary">
-                                    <i class="fas fa-copy"></i>
-                                </button>
-                            </div>
-                            <button class="btn btn-primary" onclick="saveBiolinkSettings()">Save changes</button>
-                        </div>
-                    </div>
-                    
-                    <div class="tabs">
-                        <button class="tab active" data-tab="general">General</button>
-                        <button class="tab" data-tab="background">Background</button>
-                        <button class="tab" data-tab="profile">Profile</button>
-                        <button class="tab" data-tab="link">Link</button>
-                        <button class="tab" data-tab="badge">Badge</button>
-                        <button class="tab" data-tab="layout">Layout</button>
-                        <button class="tab" data-tab="effects">Effects</button>
-                        <button class="tab" data-tab="embed">Embed</button>
-                        <button class="tab" data-tab="config">Config</button>
-                    </div>
-                    
+
+                <div id="view-store" class="view">
+                    <div class="breadcrumb">Dashboard / Purchase Portal</div>
                     <div class="card">
-                        <div class="card-body">
-                            <div id="tab-general" class="tab-content active">
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                                    <div>
-                                        <div class="form-group">
-                                            <label class="form-label">Username (link)</label>
-                                            <div style="display: flex; gap: 0.5rem;">
-                                                <input type="text" class="form-input" id="bioUsername" placeholder="username" style="flex: 1;">
-                                                <button class="btn btn-primary">Change</button>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label">Nickname</label>
-                                            <input type="text" class="form-input" id="bioNickname" placeholder="Your nickname">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label">Description</label>
-                                            <input type="text" class="form-input" id="bioDescription" placeholder="A short description for your profile">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label">Browser Page Title</label>
-                                            <input type="text" class="form-input" id="bioPageTitle" placeholder="Page title">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label">Browser Page Favicon</label>
-                                            <input type="text" class="form-input" id="bioFavicon" placeholder="https://example.com/favicon.ico">
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="form-group">
-                                            <label class="form-label">Title</label>
-                                            <input type="text" class="form-input" id="bioTitle" placeholder="Your title">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label">Audio (.mp3)</label>
-                                            <input type="text" class="form-input" id="bioAudio" placeholder="https://example.com/audio.mp3">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label" style="display: flex; justify-content: space-between; align-items: center;">
-                                                Animate Browser Title
-                                                <label class="toggle-switch">
-                                                    <input type="checkbox" id="bioAnimateTitle">
-                                                    <span class="toggle-slider"></span>
-                                                </label>
-                                            </label>
+                        <div class="vip-header">
+                            <h2>VIP Upgrade</h2>
+                            <div class="vip-price">$7.49 <span>per month</span></div>
+                        </div>
+                        <ul class="vip-features">
+                            <li><i class="fas fa-arrow-right"></i> File Host + 5GB File Storage</li>
+                            <li><i class="fas fa-arrow-right"></i> Lifetime @alo.ne Email Address</li>
+                            <li><i class="fas fa-arrow-right"></i> 5 Email Addresses per Domain</li>
+                        </ul>
+                        <div class="form-group">
+                            <label class="form-label">Months to purchase</label>
+                            <input type="number" class="form-input" value="1" min="1" id="monthsToPurchase">
+                        </div>
+                        <button class="btn btn-primary btn-full">Buy</button>
+                    </div>
+                    <div class="card" style="margin-top: 1.5rem;">
+                        <h3 class="card-title">Your Orders</h3>
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>QUANTITY</th>
+                                        <th>ADDRESS</th>
+                                        <th>PRICE</th>
+                                        <th>STATUS</th>
+                                        <th>TIME LEFT</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ordersTableBody">
+                                    <tr>
+                                        <td colspan="5" class="empty-state">
+                                            <i class="fas fa-inbox"></i>
+                                            <div>No orders yet</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="view-settings" class="view">
+                    <div class="breadcrumb">Dashboard / Settings</div>
+                    <div class="settings-grid">
+                        <div class="card">
+                            <h3 class="card-title">Change Password</h3>
+                            <div class="form-group">
+                                <label class="form-label">Current password</label>
+                                <input type="password" class="form-input" id="currentPassword" placeholder="Your current password...">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">New password</label>
+                                <input type="password" class="form-input" id="newPassword" placeholder="********">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Confirm password</label>
+                                <input type="password" class="form-input" id="confirmPassword" placeholder="********">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">2FA code (if required)</label>
+                                <input type="text" class="form-input" id="twoFaCode" placeholder="*****">
+                            </div>
+                            <button class="btn btn-primary btn-full" onclick="changePassword()">Change password</button>
+                        </div>
+                        <div class="card">
+                            <h3 class="card-title">2FA</h3>
+                            <div class="form-group">
+                                <label class="form-label">Current password</label>
+                                <input type="password" class="form-input" id="twoFaPassword" placeholder="********">
+                            </div>
+                            <button class="btn btn-primary btn-full">Enable</button>
+                        </div>
+                    </div>
+                    <div class="card" style="margin-top: 1.5rem;">
+                        <h3 class="card-title">ShareX</h3>
+                        <div class="sharex-buttons">
+                            <button class="btn btn-primary">Generate API Key</button>
+                            <button class="btn btn-primary">Generate Normal Configuration</button>
+                            <button class="btn btn-primary">Generate Encrypted Configuration</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="view-biolink-customize" class="view">
+                    <div class="biolink-header">
+                        <div class="breadcrumb">
+                            Dashboard / Biolink >
+                            <a href="#" class="breadcrumb-link" onclick="window.open('/@' + currentUser?.username, '_blank')"><i class="fas fa-link"></i></a>
+                            <a href="#" class="breadcrumb-link" onclick="copyProfileLink()"><i class="fas fa-copy"></i></a>
+                        </div>
+                        <button class="btn btn-primary" onclick="saveBiolinkSettings()">Save changes</button>
+                    </div>
+
+                    <div class="biolink-tabs">
+                        <button class="tab active" data-biotab="general">General</button>
+                        <button class="tab" data-biotab="background">Background</button>
+                        <button class="tab" data-biotab="profile">Profile</button>
+                        <button class="tab" data-biotab="link">Link</button>
+                        <button class="tab" data-biotab="badge">Badge</button>
+                        <button class="tab" data-biotab="layout">Layout</button>
+                        <button class="tab" data-biotab="effects">Effects</button>
+                        <button class="tab" data-biotab="embed">Embed</button>
+                        <button class="tab" data-biotab="config">Config</button>
+                    </div>
+
+                    <div class="biolink-content">
+                        <div id="biotab-general" class="biotab active">
+                            <div class="card">
+                                <div class="form-row">
+                                    <div class="form-group form-group-wide">
+                                        <label class="form-label">Username (link)</label>
+                                        <div class="input-with-button">
+                                            <div class="input-prefix">glowi.es/@</div>
+                                            <input type="text" class="form-input" id="bioUsername" placeholder="username">
+                                            <button class="btn btn-primary">Change</button>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Nickname</label>
+                                        <input type="text" class="form-input" id="bioNickname" placeholder="Username to display">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Title</label>
+                                        <input type="text" class="form-input" id="bioTitle" placeholder="Title for your profile">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Description</label>
+                                        <input type="text" class="form-input" id="bioDescription" placeholder="A short description for your profile">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Audio (.mp3)</label>
+                                        <input type="text" class="form-input" id="bioAudio" placeholder="Enter audio URL (e.g., https://example.com/song.mp3)">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Browser Page Title</label>
+                                        <input type="text" class="form-input" id="bioPageTitle" placeholder="Text shown in page tab">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Animate Browser Title</label>
+                                        <label class="toggle">
+                                            <input type="checkbox" id="bioAnimateTitle">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Browser Page Favicon</label>
+                                        <input type="text" class="form-input" id="bioFavicon" placeholder="URL to an image, for page icon">
+                                    </div>
+                                </div>
                             </div>
-                            
-                            <div id="tab-background" class="tab-content">
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        </div>
+
+                        <div id="biotab-background" class="biotab">
+                            <div class="card">
+                                <div class="form-row">
                                     <div class="form-group">
                                         <label class="form-label">Background Video</label>
-                                        <input type="text" class="form-input" id="bioBackgroundVideo" placeholder="Enter background video URL (e.g., https://example.com/video.mp4)">
+                                        <input type="text" class="form-input" id="bioBgVideo" placeholder="Enter background video URL (e.g., https://example.com/video.mp4)">
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Background Image</label>
-                                        <input type="text" class="form-input" id="bioBackgroundImage" placeholder="https://example.com/background.png">
+                                        <input type="text" class="form-input" id="bioBgImage" placeholder="Enter background image URL (e.g., https://example.com/image.jpg)">
                                     </div>
                                 </div>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                                <div class="form-row">
                                     <div class="form-group">
                                         <label class="form-label">Background Effects</label>
-                                        <select class="form-select" id="bioBackgroundEffects">
+                                        <select class="form-select" id="bioBgEffects">
                                             <option value="none">None</option>
                                             <option value="snow">Snow Animated</option>
                                             <option value="rain">Rain Animated</option>
-                                            <option value="stars">Stars</option>
                                             <option value="particles">Particles</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Effects Colour</label>
-                                        <input type="color" class="form-input" id="bioEffectsColor" value="#14141c" style="height: 40px; padding: 0.25rem;">
+                                        <div class="color-input">
+                                            <input type="color" id="bioBgEffectsColor" value="#14141c">
+                                            <input type="text" class="form-input" id="bioBgEffectsColorText" value="#14141c">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">Effects Opacity: <span id="opacityValue">100%</span></label>
-                                    <input type="range" id="bioEffectsOpacity" min="0" max="100" value="100" style="width: 100%;">
+                                    <label class="form-label">Effects Opacity</label>
+                                    <div class="range-container">
+                                        <input type="range" class="range-input" id="bioEffectsOpacity" min="0" max="100" value="100">
+                                        <span class="range-value" id="opacityValue">100%</span>
+                                    </div>
                                 </div>
                             </div>
-                            
-                            <div id="tab-profile" class="tab-content">
-                                <div class="form-group">
-                                    <label class="form-label">Profile Picture URL</label>
-                                    <input type="text" class="form-input" id="bioProfilePic" placeholder="https://example.com/avatar.png">
+                        </div>
+
+                        <div id="biotab-profile" class="biotab">
+                            <div class="card">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Text Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioTextColor" value="#deddda">
+                                            <input type="text" class="form-input" value="#deddda">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Seperator Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioSepColor" value="#000000">
+                                            <input type="text" class="form-input" value="#000000">
+                                        </div>
+                                    </div>
                                 </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Avatar</label>
+                                        <input type="text" class="form-input" id="bioAvatar" placeholder="https://example.com/avatar.png">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Avatar Border</label>
+                                        <label class="toggle">
+                                            <input type="checkbox" id="bioAvatarBorder" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Avatar Border Width</label>
+                                        <input type="number" class="form-input" id="bioAvatarBorderWidth" value="2">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Avatar Border Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioAvatarBorderColor" value="#000000">
+                                            <input type="text" class="form-input" value="#000000">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">View Count</label>
+                                        <label class="toggle">
+                                            <input type="checkbox" id="bioViewCount" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">View Count Icon Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioViewCountColor" value="#000000">
+                                            <input type="text" class="form-input" value="#000000">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Background Picture</label>
+                                        <input type="text" class="form-input" id="bioProfileBg" placeholder="Enter profile background URL (e.g., https://example.com/background.jpg)">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Background Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioProfileBgColor" value="#0a0a0a">
+                                            <input type="text" class="form-input" value="#0a0a0a">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Background Opacity</label>
+                                        <div class="range-container">
+                                            <input type="range" class="range-input" id="bioProfileBgOpacity" min="0" max="100" value="100">
+                                            <span class="range-value">100%</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Border</label>
+                                        <label class="toggle">
+                                            <input type="checkbox" id="bioProfileBorder" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="biotab-link" class="biotab">
+                            <div class="card">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Border</label>
+                                        <label class="toggle">
+                                            <input type="checkbox" id="bioLinkBorder" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Border Width</label>
+                                        <input type="number" class="form-input" id="bioLinkBorderWidth" value="0">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Border Radius</label>
+                                        <input type="number" class="form-input" id="bioLinkBorderRadius" value="50">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Border Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioLinkBorderColor" value="#000000">
+                                            <input type="text" class="form-input" value="#000000">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Icon Border Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioLinkIconBorderColor" value="#000000">
+                                            <input type="text" class="form-input" value="#000000">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Icon Border Width</label>
+                                        <input type="number" class="form-input" id="bioLinkIconBorderWidth" value="0">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Icon Border Radius</label>
+                                        <input type="number" class="form-input" id="bioLinkIconBorderRadius" value="50">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Text Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioLinkTextColor" value="#e3e3e3">
+                                            <input type="text" class="form-input" value="#e3e3e3">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Text Hover Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioLinkTextHoverColor" value="#000000">
+                                            <input type="text" class="form-input" value="#000000">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Icon Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioLinkIconColor" value="#f6f5f4">
+                                            <input type="text" class="form-input" value="#f6f5f4">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Icon Hover Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioLinkIconHoverColor" value="#000000">
+                                            <input type="text" class="form-input" value="#000000">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Icon Opacity</label>
+                                        <div class="range-container">
+                                            <input type="range" class="range-input" id="bioLinkIconOpacity" min="0" max="100" value="100">
+                                            <span class="range-value">100%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="biotab-badge" class="biotab">
+                            <div class="card">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Badges Show/Hide</label>
+                                        <label class="toggle">
+                                            <input type="checkbox" id="bioBadgesShow" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Border</label>
+                                        <label class="toggle">
+                                            <input type="checkbox" id="bioBadgeBorder" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Border Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioBadgeBorderColor" value="#000000">
+                                            <input type="text" class="form-input" value="#000000">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Border Width</label>
+                                        <input type="number" class="form-input" id="bioBadgeBorderWidth" value="0">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Border Radius</label>
+                                        <input type="number" class="form-input" id="bioBadgeBorderRadius" value="50">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Hover Border Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioBadgeHoverBorderColor" value="#000000">
+                                            <input type="text" class="form-input" value="#000000">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Hover Border Width</label>
+                                        <input type="number" class="form-input" id="bioBadgeHoverBorderWidth" value="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Hover Border Radius</label>
+                                        <input type="number" class="form-input" id="bioBadgeHoverBorderRadius" value="50">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Text Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioBadgeTextColor" value="#000000">
+                                            <input type="text" class="form-input" value="#000000">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Text Hover Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioBadgeTextHoverColor" value="#000000">
+                                            <input type="text" class="form-input" value="#000000">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Icon Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioBadgeIconColor" value="#f6f5f4">
+                                            <input type="text" class="form-input" value="#f6f5f4">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Icon Hover Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioBadgeIconHoverColor" value="#000000">
+                                            <input type="text" class="form-input" value="#000000">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Background Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioBadgeBgColor" value="#000000">
+                                            <input type="text" class="form-input" value="#000000">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Background Color Opacity</label>
+                                        <div class="range-container">
+                                            <input type="range" class="range-input" id="bioBadgeBgOpacity" min="0" max="100" value="100">
+                                            <span class="range-value">100%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="biotab-layout" class="biotab">
+                            <div class="card">
                                 <div class="form-group">
-                                    <label class="form-label">Profile Picture Border</label>
-                                    <select class="form-select" id="bioProfileBorder">
-                                        <option value="none">None</option>
-                                        <option value="circle">Circle</option>
-                                        <option value="rounded">Rounded</option>
-                                        <option value="glow">Glow</option>
+                                    <label class="form-label">Layout</label>
+                                    <select class="form-select" id="bioLayout">
+                                        <option value="default">Default</option>
+                                        <option value="modern">Modern</option>
+                                        <option value="retro">Retro</option>
                                     </select>
                                 </div>
                             </div>
-                            
-                            <div id="tab-link" class="tab-content">
-                                <p style="color: var(--text-muted);">Link customization options coming soon...</p>
-                            </div>
-                            
-                            <div id="tab-badge" class="tab-content">
-                                <p style="color: var(--text-muted);">Badge customization options coming soon...</p>
-                            </div>
-                            
-                            <div id="tab-layout" class="tab-content">
-                                <p style="color: var(--text-muted);">Layout customization options coming soon...</p>
-                            </div>
-                            
-                            <div id="tab-effects" class="tab-content">
-                                <p style="color: var(--text-muted);">Effects customization options coming soon...</p>
-                            </div>
-                            
-                            <div id="tab-embed" class="tab-content">
-                                <p style="color: var(--text-muted);">Embed customization options coming soon...</p>
-                            </div>
-                            
-                            <div id="tab-config" class="tab-content">
-                                <p style="color: var(--text-muted);">Config options coming soon...</p>
+                        </div>
+
+                        <div id="biotab-effects" class="biotab">
+                            <div class="card">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Nickname Effects</label>
+                                        <select class="form-select" id="bioNicknameEffects">
+                                            <option value="none">none</option>
+                                            <option value="glow">Glow</option>
+                                            <option value="rainbow">Rainbow</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Description Effects</label>
+                                        <select class="form-select" id="bioDescEffects">
+                                            <option value="none">none</option>
+                                            <option value="glow">Glow</option>
+                                            <option value="rainbow">Rainbow</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Title Effects</label>
+                                        <select class="form-select" id="bioTitleEffects">
+                                            <option value="none">none</option>
+                                            <option value="glow">Glow</option>
+                                            <option value="rainbow">Rainbow</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Click To Enter</label>
+                                        <label class="toggle">
+                                            <input type="checkbox" id="bioClickToEnter" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Click To Enter Style</label>
+                                        <select class="form-select" id="bioClickToEnterStyle">
+                                            <option value="">Select an option</option>
+                                            <option value="fade">Fade</option>
+                                            <option value="slide">Slide</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Click To Enter Text</label>
+                                        <input type="text" class="form-input" id="bioClickToEnterText" placeholder="Enter Text To Show On Click Page (e.g., Click Me To Enter)">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Click To Enter Text Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioClickTextColor" value="#000000">
+                                            <input type="text" class="form-input" value="#000000">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Click To Enter Text Hover Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioClickTextHoverColor" value="#000000">
+                                            <input type="text" class="form-input" value="#000000">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Click To Enter Background Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioClickBgColor" value="#0a0a0a">
+                                            <input type="text" class="form-input" value="#0a0a0a">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Click To Enter Background Color Opacity</label>
+                                        <div class="range-container">
+                                            <input type="range" class="range-input" id="bioClickBgOpacity" min="0" max="100" value="95">
+                                            <span class="range-value">95%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Username Glow</label>
+                                        <label class="toggle">
+                                            <input type="checkbox" id="bioUsernameGlow" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Username Glow Size</label>
+                                        <input type="number" class="form-input" id="bioUsernameGlowSize" value="0">
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                
-                <div id="view-biolink-socials" class="view-container">
-                    <div class="page-header">
-                        <div class="breadcrumb">
-                            <a href="#" onclick="showView('dashboard')">Dashboard</a>
-                            <span>/</span>
-                            <span>Biolink</span>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">New Socials</h3>
-                        </div>
-                        <div class="card-body">
-                            <div id="socialIcons" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); gap: 0.75rem;">
+
+                        <div id="biotab-embed" class="biotab">
+                            <div class="card">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Embed Title</label>
+                                        <input type="text" class="form-input" id="bioEmbedTitle" placeholder="Title shown in embeds">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Embed Description</label>
+                                        <input type="text" class="form-input" id="bioEmbedDesc" placeholder="Description shown in embeds">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Embed Color</label>
+                                        <div class="color-input">
+                                            <input type="color" id="bioEmbedColor" value="#8b5cf6">
+                                            <input type="text" class="form-input" value="#8b5cf6">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Embed Image</label>
+                                        <input type="text" class="form-input" id="bioEmbedImage" placeholder="https://example.com/image.png">
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="card" style="margin-top: 1.5rem;">
-                        <div class="card-header">
-                            <h3 class="card-title">Existing Socials</h3>
-                        </div>
-                        <div class="card-body">
-                            <div id="existingSocials">
-                                <div class="empty-state">
-                                    <i class="fas fa-share-alt"></i>
-                                    <div>No socials added yet</div>
+
+                        <div id="biotab-config" class="biotab">
+                            <div class="card">
+                                <h3 class="card-title">IMPORTING OR EXPORTING SETTINGS</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Import settings</label>
+                                        <div class="file-input">
+                                            <i class="fas fa-upload"></i>
+                                            <span>Choose File</span>
+                                            <input type="file" id="bioImportFile" accept=".json">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Download your settings</label>
+                                        <button class="btn btn-primary" onclick="downloadBiolinkSettings()">
+                                            <i class="fas fa-download"></i> Download
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <div id="view-files" class="view-container">
-                    <div class="page-header">
-                        <div class="breadcrumb">
-                            <a href="#" onclick="showView('dashboard')">Dashboard</a>
-                            <span>/</span>
-                            <span>File Host</span>
-                        </div>
-                        <h1 class="page-title">File Host</h1>
-                    </div>
-                    
+
+                <div id="view-biolink-socials" class="view">
+                    <div class="breadcrumb">Dashboard / Biolink</div>
                     <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Upload Files</h3>
-                        </div>
-                        <div class="card-body">
-                            <div style="border: 2px dashed var(--border-color); border-radius: 12px; padding: 3rem; text-align: center; cursor: pointer;" onclick="document.getElementById('fileInput').click()">
-                                <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
-                                <div style="color: var(--text-secondary);">Click to upload or drag and drop files here</div>
-                                <input type="file" id="fileInput" style="display: none;" multiple>
+                        <h3 class="card-title">New Socials</h3>
+                        <div class="socials-grid" id="socialsGrid"></div>
+                    </div>
+                    <div class="card" style="margin-top: 1.5rem;">
+                        <h3 class="card-title">Existing Socials</h3>
+                        <div class="existing-socials" id="existingSocials">
+                            <div class="empty-state">
+                                <i class="fas fa-link"></i>
+                                <div>No socials added yet</div>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="card" style="margin-top: 1.5rem;">
-                        <div class="card-header">
-                            <h3 class="card-title">Your Files</h3>
+                </div>
+
+                <div id="view-filehost" class="view">
+                    <div class="breadcrumb">Dashboard / File Host</div>
+                    <div class="card">
+                        <h3 class="card-title">Your Files</h3>
+                        <div class="file-upload-area" id="fileUploadArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Drag and drop files here or click to upload</p>
+                            <input type="file" id="fileInput" multiple style="display: none;">
                         </div>
-                        <div class="card-body">
-                            <div id="filesList" class="empty-state">
+                        <div class="files-list" id="filesList">
+                            <div class="empty-state">
                                 <i class="fas fa-folder-open"></i>
                                 <div>No files uploaded yet</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <div id="view-email" class="view-container">
-                    <div class="page-header">
-                        <div class="breadcrumb">
-                            <a href="#" onclick="showView('dashboard')">Dashboard</a>
-                            <span>/</span>
-                            <span>Email</span>
-                        </div>
-                        <h1 class="page-title">Email Service</h1>
-                    </div>
-                    
+
+                <div id="view-email" class="view">
+                    <div class="breadcrumb">Dashboard / Email</div>
                     <div class="card">
-                        <div class="card-body">
-                            <div class="empty-state">
-                                <i class="fas fa-envelope"></i>
-                                <div>Email service requires VIP subscription</div>
-                                <button class="btn btn-primary" style="margin-top: 1rem;" onclick="showView('store')">Upgrade Now</button>
-                            </div>
+                        <h3 class="card-title">Email Service</h3>
+                        <div class="empty-state">
+                            <i class="fas fa-envelope"></i>
+                            <div>Email service requires VIP upgrade</div>
+                            <button class="btn btn-primary" style="margin-top: 1rem;" onclick="showView('store')">Upgrade Now</button>
                         </div>
                     </div>
                 </div>
-                
-                <div id="view-settings" class="view-container">
-                    <div class="page-header">
-                        <div class="breadcrumb">
-                            <a href="#" onclick="showView('dashboard')">Dashboard</a>
-                            <span>/</span>
-                            <span>Settings</span>
-                        </div>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Change Password</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">Current password</label>
-                                    <input type="password" class="form-input" id="currentPassword" placeholder="Your current password...">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">New password</label>
-                                    <input type="password" class="form-input" id="newPassword" placeholder="********">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Confirm password</label>
-                                    <input type="password" class="form-input" id="confirmPassword" placeholder="********">
-                                </div>
-                                <button class="btn btn-primary" style="width: 100%;" onclick="changePassword()">Change password</button>
-                            </div>
-                        </div>
-                        
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">2FA</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">Current password</label>
-                                    <input type="password" class="form-input" id="twoFaPassword" placeholder="********">
-                                </div>
-                                <button class="btn btn-primary" style="width: 100%;">Enable</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card" style="margin-top: 1.5rem;">
-                        <div class="card-header">
-                            <h3 class="card-title">ShareX</h3>
-                        </div>
-                        <div class="card-body">
-                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                                <button class="btn btn-primary">Generate API Key</button>
-                                <button class="btn btn-primary">Generate Normal Configuration</button>
-                                <button class="btn btn-primary">Generate Encrypted Configuration</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="view-admin" class="view-container">
-                    <div class="page-header">
-                        <div class="breadcrumb">
-                            <a href="#" onclick="showView('dashboard')">Dashboard</a>
-                            <span>/</span>
-                            <span>Admin Panel</span>
-                        </div>
-                        <h1 class="page-title">Admin Panel</h1>
-                    </div>
-                    
-                    <div class="tabs">
+
+                <div id="view-admin" class="view">
+                    <div class="breadcrumb">Dashboard / Admin Panel</div>
+                    <div class="admin-tabs">
                         <button class="tab active" data-admintab="invites">Invite Codes</button>
                         <button class="tab" data-admintab="users">User Management</button>
-                        <button class="tab" data-admintab="reports">File Reports</button>
                     </div>
-                    
-                    <div id="admintab-invites" class="tab-content active">
-                        <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 1.5rem;">
+
+                    <div id="admintab-invites" class="admintab active">
+                        <div class="admin-grid">
                             <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Create New Invite</h3>
+                                <h3 class="card-title">Create New Invite</h3>
+                                <div class="form-group">
+                                    <label class="form-label">Invite Code</label>
+                                    <input type="text" class="form-input" id="inviteCode" placeholder="GlowXXXX">
                                 </div>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <label class="form-label">Invite Code</label>
-                                        <input type="text" class="form-input" id="inviteCode" placeholder="GLOWI-XXXXXXXX">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Role</label>
-                                        <select class="form-select" id="inviteRole">
-                                            <option value="user">User</option>
-                                            <option value="mod">Moderator</option>
-                                            <option value="admin">Admin</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Max Uses</label>
-                                        <input type="number" class="form-input" id="inviteMaxUses" value="1" min="1">
-                                    </div>
-                                    <div style="display: flex; gap: 0.5rem;">
-                                        <button class="btn btn-secondary" onclick="generateRandomInviteCode()">Random</button>
-                                        <button class="btn btn-primary" style="flex: 1;" onclick="createInviteCode()">Create Code</button>
-                                    </div>
-                                    <div id="inviteResult" style="margin-top: 1rem;"></div>
+                                <div class="form-group">
+                                    <label class="form-label">Role</label>
+                                    <select class="form-select" id="inviteRole">
+                                        <option value="user">User</option>
+                                        <option value="mod">Moderator</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
                                 </div>
+                                <div class="form-group">
+                                    <label class="form-label">Max Uses</label>
+                                    <input type="number" class="form-input" id="inviteMaxUses" value="1" min="1">
+                                </div>
+                                <div class="button-row">
+                                    <button class="btn btn-secondary" onclick="generateRandomInviteCode()">Random</button>
+                                    <button class="btn btn-primary" onclick="createInviteCode()">Create Code</button>
+                                </div>
+                                <div id="inviteResult"></div>
                             </div>
-                            
                             <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">All Invite Codes</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-container">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Code</th>
-                                                    <th>Role</th>
-                                                    <th>Uses</th>
-                                                    <th>Status</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="invitesTableBody">
-                                                <tr>
-                                                    <td colspan="5" class="empty-state">Loading...</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                <h3 class="card-title">All Invite Codes</h3>
+                                <div class="table-container">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Code</th>
+                                                <th>Role</th>
+                                                <th>Uses</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="invitesTableBody">
+                                            <tr><td colspan="5" class="empty-state">Loading...</td></tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <div id="admintab-users" class="tab-content">
+
+                    <div id="admintab-users" class="admintab">
                         <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">User Management</h3>
-                            </div>
-                            <div class="card-body">
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                                    <div class="form-group">
-                                        <label class="form-label">Username</label>
-                                        <input type="text" class="form-input" id="adminUsername" placeholder="Enter username">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Reason (for ban)</label>
-                                        <input type="text" class="form-input" id="adminReason" placeholder="Reason for action">
-                                    </div>
+                            <h3 class="card-title">User Management</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Username</label>
+                                    <input type="text" class="form-input" id="adminUsername" placeholder="Enter username">
                                 </div>
-                                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                                    <button class="btn btn-danger" onclick="banUser()">Ban User</button>
-                                    <button class="btn btn-secondary">Set Membership</button>
+                                <div class="form-group">
+                                    <label class="form-label">Reason (for ban)</label>
+                                    <input type="text" class="form-input" id="adminReason" placeholder="Reason for action">
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    
-                    <div id="admintab-reports" class="tab-content">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">File Reports</h3>
-                            </div>
-                            <div class="card-body">
-                                <div id="fileReports" class="empty-state">
-                                    <i class="fas fa-flag"></i>
-                                    <div>No pending reports</div>
-                                </div>
+                            <div class="button-row">
+                                <button class="btn btn-danger" onclick="banUser()">Ban User</button>
+                                <button class="btn btn-secondary">Set Membership</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <div id="view-mod" class="view-container">
-                    <div class="page-header">
-                        <div class="breadcrumb">
-                            <a href="#" onclick="showView('dashboard')">Dashboard</a>
-                            <span>/</span>
-                            <span>Mod Panel</span>
-                        </div>
-                        <h1 class="page-title">Moderator Panel</h1>
-                    </div>
-                    
-                    <div class="tabs">
-                        <button class="tab active" data-modtab="invites">Invite Codes</button>
-                        <button class="tab" data-modtab="reports">File Reports</button>
-                    </div>
-                    
-                    <div id="modtab-invites" class="tab-content active">
-                        <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 1.5rem;">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Create New Invite</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <label class="form-label">Invite Code</label>
-                                        <input type="text" class="form-input" id="modInviteCode" placeholder="GLOWI-XXXXXXXX">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Role</label>
-                                        <select class="form-select" id="modInviteRole">
-                                            <option value="user">User</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Max Uses</label>
-                                        <input type="number" class="form-input" id="modInviteMaxUses" value="1" min="1">
-                                    </div>
-                                    <div style="display: flex; gap: 0.5rem;">
-                                        <button class="btn btn-secondary" onclick="generateRandomModInviteCode()">Random</button>
-                                        <button class="btn btn-primary" style="flex: 1;" onclick="createModInviteCode()">Create Code</button>
-                                    </div>
-                                    <div id="modInviteResult" style="margin-top: 1rem;"></div>
-                                </div>
-                            </div>
-                            
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Your Invite Codes</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-container">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Code</th>
-                                                    <th>Role</th>
-                                                    <th>Uses</th>
-                                                    <th>Status</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="modInvitesTableBody">
-                                                <tr>
-                                                    <td colspan="5" class="empty-state">Loading...</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div id="modtab-reports" class="tab-content">
+
+                <div id="view-mod" class="view">
+                    <div class="breadcrumb">Dashboard / Mod Panel</div>
+                    <div class="admin-grid">
                         <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">File Reports</h3>
+                            <h3 class="card-title">Create New Invite</h3>
+                            <div class="form-group">
+                                <label class="form-label">Invite Code</label>
+                                <input type="text" class="form-input" id="modInviteCode" placeholder="GlowXXXX">
                             </div>
-                            <div class="card-body">
-                                <div id="modFileReports" class="empty-state">
-                                    <i class="fas fa-flag"></i>
-                                    <div>No pending reports</div>
-                                </div>
+                            <div class="form-group">
+                                <label class="form-label">Role</label>
+                                <select class="form-select" id="modInviteRole" disabled>
+                                    <option value="user">User</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Max Uses</label>
+                                <input type="number" class="form-input" id="modInviteMaxUses" value="1" min="1">
+                            </div>
+                            <div class="button-row">
+                                <button class="btn btn-secondary" onclick="generateRandomModInviteCode()">Random</button>
+                                <button class="btn btn-primary" onclick="createModInviteCode()">Create Code</button>
+                            </div>
+                            <div id="modInviteResult"></div>
+                        </div>
+                        <div class="card">
+                            <h3 class="card-title">Your Invite Codes</h3>
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Role</th>
+                                            <th>Uses</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="modInvitesTableBody">
+                                        <tr><td colspan="5" class="empty-state">Loading...</td></tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -770,10 +999,30 @@
             </div>
         </main>
     </div>
-    
+
+    <div class="modal" id="socialModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add <span id="socialModalTitle">Social</span></h3>
+                <button class="modal-close" onclick="closeSocialModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">URL</label>
+                    <input type="text" class="form-input" id="socialUrl" placeholder="https://...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeSocialModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveSocial()">Save</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let currentUser = null;
-        
+        let selectedSocialPlatform = null;
+
         const socialPlatforms = [
             { name: 'Snapchat', icon: 'fab fa-snapchat', color: '#FFFC00' },
             { name: 'YouTube', icon: 'fab fa-youtube', color: '#FF0000' },
@@ -788,22 +1037,25 @@
             { name: 'GitHub', icon: 'fab fa-github', color: '#333333' },
             { name: 'PayPal', icon: 'fab fa-paypal', color: '#003087' },
             { name: 'CashApp', icon: 'fas fa-dollar-sign', color: '#00D632' },
-            { name: 'Kick', icon: 'fas fa-k', color: '#53FC18' },
-            { name: 'Twitch', icon: 'fab fa-twitch', color: '#9146FF' },
             { name: 'Valorant', icon: 'fas fa-crosshairs', color: '#FD4556' },
+            { name: 'Twitch', icon: 'fab fa-twitch', color: '#9146FF' },
+            { name: 'Kick', icon: 'fas fa-k', color: '#53FC18' },
             { name: 'Reddit', icon: 'fab fa-reddit', color: '#FF4500' },
             { name: 'Pinterest', icon: 'fab fa-pinterest', color: '#E60023' },
             { name: 'Facebook', icon: 'fab fa-facebook', color: '#1877F2' },
+            { name: 'LinkedIn', icon: 'fab fa-linkedin', color: '#0A66C2' },
             { name: 'Bitcoin', icon: 'fab fa-bitcoin', color: '#F7931A' },
             { name: 'Ethereum', icon: 'fab fa-ethereum', color: '#627EEA' },
             { name: 'Litecoin', icon: 'fas fa-coins', color: '#BFBBBB' },
+            { name: 'Monero', icon: 'fas fa-coins', color: '#FF6600' },
             { name: 'Email', icon: 'fas fa-envelope', color: '#EA4335' },
-            { name: 'Roblox', icon: 'fas fa-cube', color: '#FF0000' },
+            { name: 'Patreon', icon: 'fab fa-patreon', color: '#FF424D' },
             { name: 'Notion', icon: 'fas fa-book', color: '#000000' },
+            { name: 'Roblox', icon: 'fas fa-cube', color: '#FF0000' },
             { name: 'Steam', icon: 'fab fa-steam', color: '#1B2838' },
             { name: 'Website', icon: 'fas fa-globe', color: '#4CAF50' }
         ];
-        
+
         async function init() {
             try {
                 const response = await fetch('/api/auth/me', { credentials: 'include' });
@@ -820,24 +1072,34 @@
                 
                 if (['owner', 'admin', 'manager'].includes(currentUser.role)) {
                     document.getElementById('admin-section').style.display = 'block';
-                    loadInvites();
                 } else if (currentUser.role === 'mod') {
                     document.getElementById('admin-section').style.display = 'block';
-                    document.querySelector('[data-view="admin"]').style.display = 'none';
-                    loadModInvites();
+                    document.getElementById('admin-nav').style.display = 'none';
                 }
-                
-                renderSocialIcons();
+
+                setupNavigation();
                 setupTabs();
+                renderSocialIcons();
+                setupRangeInputs();
                 
             } catch (error) {
                 console.error('Auth check failed:', error);
                 window.location.href = '/login';
             }
         }
-        
+
+        function setupNavigation() {
+            document.querySelectorAll('.nav-item[data-view]').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const view = item.dataset.view;
+                    showView(view);
+                });
+            });
+        }
+
         function showView(viewName) {
-            document.querySelectorAll('.view-container').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             
             const view = document.getElementById('view-' + viewName);
@@ -845,69 +1107,110 @@
             
             const navItem = document.querySelector(`[data-view="${viewName}"]`);
             if (navItem) navItem.classList.add('active');
-            
+
             if (viewName === 'admin') loadInvites();
             if (viewName === 'mod') loadModInvites();
         }
-        
+
         function toggleSubmenu(id) {
             const submenu = document.getElementById(id + '-submenu');
             const parent = submenu.previousElementSibling;
             submenu.classList.toggle('show');
             parent.classList.toggle('expanded');
         }
-        
+
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('collapsed');
         }
-        
+
         function setupTabs() {
-            document.querySelectorAll('.tab').forEach(tab => {
+            document.querySelectorAll('.biolink-tabs .tab').forEach(tab => {
                 tab.addEventListener('click', function() {
-                    const tabType = this.dataset.tab || this.dataset.admintab || this.dataset.modtab;
-                    const parent = this.closest('.view-container');
-                    
-                    parent.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.biolink-tabs .tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.biotab').forEach(c => c.classList.remove('active'));
                     this.classList.add('active');
-                    
-                    parent.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                    const content = parent.querySelector(`#tab-${tabType}, #admintab-${tabType}, #modtab-${tabType}`);
-                    if (content) content.classList.add('active');
+                    const tabId = 'biotab-' + this.dataset.biotab;
+                    document.getElementById(tabId).classList.add('active');
                 });
             });
-            
-            document.getElementById('bioEffectsOpacity').addEventListener('input', function() {
-                document.getElementById('opacityValue').textContent = this.value + '%';
+
+            document.querySelectorAll('.admin-tabs .tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.admin-tabs .tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.admintab').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    const tabId = 'admintab-' + this.dataset.admintab;
+                    document.getElementById(tabId).classList.add('active');
+                });
             });
         }
-        
+
+        function setupRangeInputs() {
+            document.querySelectorAll('.range-input').forEach(input => {
+                const valueSpan = input.nextElementSibling;
+                if (valueSpan) {
+                    input.addEventListener('input', function() {
+                        valueSpan.textContent = this.value + '%';
+                    });
+                }
+            });
+        }
+
         function renderSocialIcons() {
-            const container = document.getElementById('socialIcons');
+            const container = document.getElementById('socialsGrid');
             container.innerHTML = socialPlatforms.map(platform => `
-                <button class="btn btn-secondary" style="width: 50px; height: 50px; padding: 0; display: flex; align-items: center; justify-content: center;" title="${platform.name}">
-                    <i class="${platform.icon}" style="color: ${platform.color}; font-size: 1.25rem;"></i>
+                <button class="social-icon-btn" onclick="openSocialModal('${platform.name}')" title="${platform.name}">
+                    <i class="${platform.icon}" style="color: ${platform.color};"></i>
                 </button>
             `).join('');
         }
-        
+
+        function openSocialModal(platformName) {
+            selectedSocialPlatform = platformName;
+            document.getElementById('socialModalTitle').textContent = platformName;
+            document.getElementById('socialUrl').value = '';
+            document.getElementById('socialModal').classList.add('show');
+        }
+
+        function closeSocialModal() {
+            document.getElementById('socialModal').classList.remove('show');
+            selectedSocialPlatform = null;
+        }
+
+        async function saveSocial() {
+            const url = document.getElementById('socialUrl').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+            closeSocialModal();
+        }
+
+        function copyProfileLink() {
+            if (currentUser) {
+                navigator.clipboard.writeText(window.location.origin + '/@' + currentUser.username);
+                alert('Link copied!');
+            }
+        }
+
         function generateRandomInviteCode() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let code = 'GLOWI-';
-            for (let i = 0; i < 8; i++) {
+            let code = 'Glow';
+            for (let i = 0; i < 4; i++) {
                 code += chars.charAt(Math.floor(Math.random() * chars.length));
             }
             document.getElementById('inviteCode').value = code;
         }
-        
+
         function generateRandomModInviteCode() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let code = 'GLOWI-';
-            for (let i = 0; i < 8; i++) {
+            let code = 'Glow';
+            for (let i = 0; i < 4; i++) {
                 code += chars.charAt(Math.floor(Math.random() * chars.length));
             }
             document.getElementById('modInviteCode').value = code;
         }
-        
+
         async function createInviteCode() {
             const code = document.getElementById('inviteCode').value;
             const role = document.getElementById('inviteRole').value;
@@ -915,7 +1218,7 @@
             const resultDiv = document.getElementById('inviteResult');
             
             if (!code) {
-                resultDiv.innerHTML = '<div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> Please enter or generate an invite code</div>';
+                resultDiv.innerHTML = '<div class="alert alert-error">Please enter or generate an invite code</div>';
                 return;
             }
             
@@ -930,24 +1233,24 @@
                 const data = await response.json();
                 
                 if (response.ok) {
-                    resultDiv.innerHTML = '<div class="alert alert-success"><i class="fas fa-check-circle"></i> Invite code created successfully!</div>';
+                    resultDiv.innerHTML = '<div class="alert alert-success">Invite code created!</div>';
                     document.getElementById('inviteCode').value = '';
                     loadInvites();
                 } else {
-                    resultDiv.innerHTML = `<div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> ${data.error}</div>`;
+                    resultDiv.innerHTML = `<div class="alert alert-error">${data.error}</div>`;
                 }
             } catch (error) {
-                resultDiv.innerHTML = `<div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> ${error.message}</div>`;
+                resultDiv.innerHTML = `<div class="alert alert-error">${error.message}</div>`;
             }
         }
-        
+
         async function createModInviteCode() {
             const code = document.getElementById('modInviteCode').value;
             const maxUses = parseInt(document.getElementById('modInviteMaxUses').value);
             const resultDiv = document.getElementById('modInviteResult');
             
             if (!code) {
-                resultDiv.innerHTML = '<div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> Please enter or generate an invite code</div>';
+                resultDiv.innerHTML = '<div class="alert alert-error">Please enter or generate an invite code</div>';
                 return;
             }
             
@@ -962,17 +1265,17 @@
                 const data = await response.json();
                 
                 if (response.ok) {
-                    resultDiv.innerHTML = '<div class="alert alert-success"><i class="fas fa-check-circle"></i> Invite code created successfully!</div>';
+                    resultDiv.innerHTML = '<div class="alert alert-success">Invite code created!</div>';
                     document.getElementById('modInviteCode').value = '';
                     loadModInvites();
                 } else {
-                    resultDiv.innerHTML = `<div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> ${data.error}</div>`;
+                    resultDiv.innerHTML = `<div class="alert alert-error">${data.error}</div>`;
                 }
             } catch (error) {
-                resultDiv.innerHTML = `<div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> ${error.message}</div>`;
+                resultDiv.innerHTML = `<div class="alert alert-error">${error.message}</div>`;
             }
         }
-        
+
         async function loadInvites() {
             try {
                 const response = await fetch('/api/invites', { credentials: 'include' });
@@ -1002,20 +1305,11 @@
                     
                     return `
                         <tr>
-                            <td>
-                                <span class="code-display">${invite.code}</span>
-                                <button class="btn btn-sm btn-secondary" style="margin-left: 0.5rem;" onclick="copyCode('${invite.code}')">
-                                    <i class="fas fa-copy"></i>
-                                </button>
-                            </td>
+                            <td><span class="code-display">${invite.code}</span></td>
                             <td><span class="badge badge-purple">${invite.role || 'user'}</span></td>
                             <td>${invite.uses_count || 0}/${invite.max_uses || 1}</td>
                             <td><span class="badge ${statusClass}">${status}</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-danger" onclick="deleteInvite('${invite.code}')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
+                            <td><button class="btn btn-sm btn-danger" onclick="deleteInvite('${invite.code}')"><i class="fas fa-trash"></i></button></td>
                         </tr>
                     `;
                 }).join('');
@@ -1023,7 +1317,7 @@
                 console.error('Error loading invites:', error);
             }
         }
-        
+
         async function loadModInvites() {
             try {
                 const response = await fetch('/api/invites', { credentials: 'include' });
@@ -1049,20 +1343,11 @@
                     
                     return `
                         <tr>
-                            <td>
-                                <span class="code-display">${invite.code}</span>
-                                <button class="btn btn-sm btn-secondary" style="margin-left: 0.5rem;" onclick="copyCode('${invite.code}')">
-                                    <i class="fas fa-copy"></i>
-                                </button>
-                            </td>
+                            <td><span class="code-display">${invite.code}</span></td>
                             <td><span class="badge badge-purple">${invite.role || 'user'}</span></td>
                             <td>${invite.uses_count || 0}/${invite.max_uses || 1}</td>
                             <td><span class="badge ${statusClass}">${status}</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-danger" onclick="deleteInvite('${invite.code}')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
+                            <td><button class="btn btn-sm btn-danger" onclick="deleteInvite('${invite.code}')"><i class="fas fa-trash"></i></button></td>
                         </tr>
                     `;
                 }).join('');
@@ -1070,15 +1355,9 @@
                 console.error('Error loading invites:', error);
             }
         }
-        
-        function copyCode(code) {
-            navigator.clipboard.writeText(code).then(() => {
-                alert('Copied: ' + code);
-            });
-        }
-        
+
         async function deleteInvite(code) {
-            if (!confirm('Are you sure you want to delete this invite code?')) return;
+            if (!confirm('Delete this invite code?')) return;
             
             try {
                 const response = await fetch(`/api/invites/${code}`, {
@@ -1097,7 +1376,7 @@
                 alert('Error: ' + error.message);
             }
         }
-        
+
         async function logout() {
             try {
                 await fetch('/api/auth/logout', {
@@ -1109,7 +1388,15 @@
             }
             window.location.href = '/login';
         }
-        
+
+        function saveBiolinkSettings() {
+            alert('Settings saved!');
+        }
+
+        function downloadBiolinkSettings() {
+            alert('Downloading settings...');
+        }
+
         init();
     </script>
 </body>
