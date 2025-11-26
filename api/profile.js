@@ -244,4 +244,40 @@ router.get('/stats', authenticateToken, async (req, res) => {
   }
 });
 
+router.put('/password', authenticateToken, async (req, res) => {
+  const bcrypt = await import('bcrypt');
+  
+  try {
+    const userId = req.user.id;
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: 'Current and new password required' });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({ error: 'New password must be at least 8 characters' });
+    }
+
+    const user = await getQuery('users', 'id', userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const valid = await bcrypt.default.compare(currentPassword, user.password_hash);
+    if (!valid) {
+      return res.status(401).json({ error: 'Current password is incorrect' });
+    }
+
+    const newPasswordHash = await bcrypt.default.hash(newPassword, 12);
+
+    await runQuery('users', { password_hash: newPasswordHash }, 'update', { column: 'id', value: userId });
+
+    return res.status(200).json({ message: 'Password changed successfully' });
+  } catch (err) {
+    console.error('Password change error:', err);
+    return res.status(500).json({ error: 'Failed to change password' });
+  }
+});
+
 export default router;

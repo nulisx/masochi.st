@@ -165,6 +165,16 @@ class Dashboard {
         const links = await this.fetchLinks();
         const files = await this.fetchFiles();
         
+        let stats = { uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' };
+        try {
+            const statsRes = await fetch('/api/profile/stats', { credentials: 'include' });
+            if (statsRes.ok) {
+                stats = await statsRes.json();
+            }
+        } catch (e) {}
+        
+        const storagePercent = Math.min((stats.storage_used / stats.storage_limit) * 100, 100).toFixed(1);
+        
         const contentArea = document.getElementById('contentArea');
         contentArea.innerHTML = `
             <div class="page-header">
@@ -174,7 +184,19 @@ class Dashboard {
                 </div>
             </div>
             
-            <div class="stats-grid">
+            <div class="stats-grid" style="grid-template-columns: repeat(6, 1fr);">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #6366f1;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3>#${stats.uid}</h3>
+                        <p>User ID</p>
+                    </div>
+                </div>
                 <div class="stat-card">
                     <div class="stat-icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -200,6 +222,18 @@ class Dashboard {
                     </div>
                 </div>
                 <div class="stat-card">
+                    <div class="stat-icon" style="background: #3b82f6;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+                            <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3>${this.formatFileSize(stats.storage_used)}</h3>
+                        <p>Storage Used</p>
+                    </div>
+                </div>
+                <div class="stat-card">
                     <div class="stat-icon" style="background: var(--warning);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -210,6 +244,27 @@ class Dashboard {
                         <h3>0</h3>
                         <p>Profile Views</p>
                     </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: ${stats.license_status === 'Active' ? 'var(--success)' : '#64748b'};">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3>${stats.license_status}</h3>
+                        <p>License Status</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="storage-bar-container" style="margin-bottom: 24px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span style="font-size: 13px; color: var(--text-secondary);">Storage Usage</span>
+                    <span style="font-size: 13px; color: var(--text-muted);">${storagePercent}% of ${this.formatFileSize(stats.storage_limit)}</span>
+                </div>
+                <div style="background: var(--bg-tertiary); border-radius: 8px; height: 8px; overflow: hidden;">
+                    <div style="background: var(--accent-primary); height: 100%; width: ${storagePercent}%; border-radius: 8px; transition: width 0.3s;"></div>
                 </div>
             </div>
             
@@ -552,7 +607,7 @@ class Dashboard {
                         </div>
                         <div>
                             <h3 class="card-title">Account Security</h3>
-                            <p class="card-description">Protect your account</p>
+                            <p class="card-description">Protect your account with additional security measures</p>
                         </div>
                     </div>
                     
@@ -567,7 +622,7 @@ class Dashboard {
                     <div class="card-item">
                         <div class="item-info">
                             <span class="item-label">Active Sessions</span>
-                            <span class="item-value">1 active</span>
+                            <span class="item-value">1 active session</span>
                         </div>
                         <span class="item-action">Manage</span>
                     </div>
@@ -591,7 +646,7 @@ class Dashboard {
                         </div>
                         <div>
                             <h3 class="card-title">Privacy Settings</h3>
-                            <p class="card-description">Control your visibility</p>
+                            <p class="card-description">Control your visibility and profile appearance</p>
                         </div>
                     </div>
                     
@@ -624,6 +679,57 @@ class Dashboard {
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
                     </div>
+                </div>
+            </div>
+            
+            <div class="cards-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 24px;">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Data Protection</h3>
+                            <p class="card-description">Manage your data collection preferences and download your information.</p>
+                        </div>
+                    </div>
+                    <span class="badge success">Protected</span>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon success">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Login History</h3>
+                            <p class="card-description">View recent login attempts and manage suspicious activity.</p>
+                        </div>
+                    </div>
+                    <span class="badge success">Up to date</span>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon warning">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Account Recovery</h3>
+                            <p class="card-description">Set up recovery methods and backup codes for account access.</p>
+                        </div>
+                    </div>
+                    <span class="badge warning">Setup Required</span>
                 </div>
             </div>
             
@@ -1061,13 +1167,33 @@ class Dashboard {
         
         const socialPlatforms = [
             { id: 'discord', name: 'Discord', icon: 'discord' },
-            { id: 'twitter', name: 'Twitter', icon: 'twitter' },
+            { id: 'twitter', name: 'Twitter/X', icon: 'twitter' },
             { id: 'instagram', name: 'Instagram', icon: 'instagram' },
             { id: 'tiktok', name: 'TikTok', icon: 'tiktok' },
             { id: 'youtube', name: 'YouTube', icon: 'youtube' },
             { id: 'twitch', name: 'Twitch', icon: 'twitch' },
             { id: 'github', name: 'GitHub', icon: 'github' },
-            { id: 'spotify', name: 'Spotify', icon: 'spotify' }
+            { id: 'spotify', name: 'Spotify', icon: 'spotify' },
+            { id: 'linkedin', name: 'LinkedIn', icon: 'linkedin' },
+            { id: 'snapchat', name: 'Snapchat', icon: 'snapchat' },
+            { id: 'pinterest', name: 'Pinterest', icon: 'pinterest' },
+            { id: 'reddit', name: 'Reddit', icon: 'reddit' },
+            { id: 'telegram', name: 'Telegram', icon: 'telegram' },
+            { id: 'steam', name: 'Steam', icon: 'steam' },
+            { id: 'paypal', name: 'PayPal', icon: 'paypal' },
+            { id: 'cashapp', name: 'Cash App', icon: 'cashapp' },
+            { id: 'venmo', name: 'Venmo', icon: 'venmo' },
+            { id: 'onlyfans', name: 'OnlyFans', icon: 'onlyfans' },
+            { id: 'patreon', name: 'Patreon', icon: 'patreon' },
+            { id: 'soundcloud', name: 'SoundCloud', icon: 'soundcloud' },
+            { id: 'apple_music', name: 'Apple Music', icon: 'apple_music' },
+            { id: 'bandcamp', name: 'Bandcamp', icon: 'bandcamp' },
+            { id: 'facebook', name: 'Facebook', icon: 'facebook' },
+            { id: 'threads', name: 'Threads', icon: 'threads' },
+            { id: 'bluesky', name: 'Bluesky', icon: 'bluesky' },
+            { id: 'mastodon', name: 'Mastodon', icon: 'mastodon' },
+            { id: 'kick', name: 'Kick', icon: 'kick' },
+            { id: 'rumble', name: 'Rumble', icon: 'rumble' }
         ];
 
         const contentArea = document.getElementById('contentArea');
