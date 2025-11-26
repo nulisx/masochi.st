@@ -1,5 +1,5 @@
 {
-  "SESSION_SECRET": "SIrxuo8ufTEGiH+VrQ+5ZQMR1cCbhvHg3XPcVqXKHV6x4EA1COggPQTuNrxdum86M+8C7fnagg6u5b0dM8jsCA==",
+  "SESSION_SECRET": "56DziLJ8mXkG0Fa8+TNhUc/Ks9IIZM3fHq60inwIqR8QlA13NpxPuuAN5JYmIM+Mtx8WE9dvFigG4z+ChcY0Xg==",
   "DATABASE_URL": "postgresql://neondb_owner:npg_fPgopRwlv9m2@ep-morning-shadow-adw0byzy-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require",
   "FRONTEND_URL": "https://masochist.vercel.app/",
   "JWT_SECRET": "30828993a2e7957071f6686b9900af1861d8838068d7cbe07b47ab428f9e605ea62c34b7faafaaea285756ee919916937fdc72af9f7de20b4da67e9418cd3fb4"
