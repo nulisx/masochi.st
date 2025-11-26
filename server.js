@@ -398,6 +398,53 @@ app.get('/api/:userId', async (req, res) => {
   }
 });
 
+const adminRoles = ['owner', 'admin', 'manager', 'mod'];
+
+app.get('/api/admin/users', authenticateToken, async (req, res) => {
+  try {
+    const user = await getQuery('users', 'id', req.user.id);
+    if (!user || !adminRoles.includes(user.role)) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    const { customQuery } = await import('./lib/db.js');
+    const users = await customQuery(`
+      SELECT u.id, u.username, u.display_name, u.role, u.created_at, p.avatar_url
+      FROM users u
+      LEFT JOIN profiles p ON u.id = p.user_id
+      ORDER BY u.created_at DESC
+    `);
+
+    res.status(200).json({ users });
+  } catch (err) {
+    console.error('Admin users error:', err);
+    res.status(500).json({ error: 'Failed to fetch users' });
+  }
+});
+
+app.get('/api/admin/files', authenticateToken, async (req, res) => {
+  try {
+    const user = await getQuery('users', 'id', req.user.id);
+    if (!user || !adminRoles.includes(user.role)) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    const { customQuery } = await import('./lib/db.js');
+    const files = await customQuery(`
+      SELECT f.*, u.username
+      FROM files f
+      LEFT JOIN users u ON f.user_id = u.id
+      ORDER BY f.created_at DESC
+      LIMIT 100
+    `);
+
+    res.status(200).json({ files });
+  } catch (err) {
+    console.error('Admin files error:', err);
+    res.status(500).json({ error: 'Failed to fetch files' });
+  }
+});
+
 function generateInviteCode() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let code = 'Glow';

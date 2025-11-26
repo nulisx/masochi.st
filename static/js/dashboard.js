@@ -9,7 +9,32 @@ class Dashboard {
         await this.checkAuth();
         this.setupNavigation();
         this.setupLogout();
+        this.setupKeyboardShortcuts();
+        this.showAdminSection();
         this.loadPage('overview');
+    }
+
+    setupKeyboardShortcuts() {
+        document.addEventListener('keydown', (e) => {
+            if (e.altKey && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                const searchInput = document.querySelector('.search-input');
+                if (searchInput) {
+                    searchInput.focus();
+                }
+            }
+        });
+    }
+
+    showAdminSection() {
+        if (!this.user) return;
+        const adminRoles = ['owner', 'admin', 'manager', 'mod'];
+        if (adminRoles.includes(this.user.role)) {
+            const adminSection = document.getElementById('adminSection');
+            if (adminSection) {
+                adminSection.style.display = 'block';
+            }
+        }
     }
 
     async checkAuth() {
@@ -113,6 +138,18 @@ class Dashboard {
                     break;
                 case 'privacy':
                     await this.renderPrivacy();
+                    break;
+                case 'admin-users':
+                    await this.renderAdminUsers();
+                    break;
+                case 'admin-invites':
+                    await this.renderAdminInvites();
+                    break;
+                case 'admin-files':
+                    await this.renderAdminFiles();
+                    break;
+                case 'admin-analytics':
+                    await this.renderAdminAnalytics();
                     break;
                 default:
                     await this.renderOverview();
@@ -870,7 +907,7 @@ class Dashboard {
                 </button>
                 <div>
                     <h1 class="page-title">Files</h1>
-                    <p class="page-subtitle">Secure file storage with E2E encryption</p>
+                    <p class="page-subtitle">Secure file storage with E2EE encryption</p>
                 </div>
             </div>
             
@@ -1283,6 +1320,350 @@ class Dashboard {
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Admin Pages
+    async renderAdminUsers() {
+        const adminRoles = ['owner', 'admin', 'manager', 'mod'];
+        if (!adminRoles.includes(this.user?.role)) {
+            this.loadPage('overview');
+            return;
+        }
+
+        const contentArea = document.getElementById('contentArea');
+        
+        try {
+            const response = await fetch('/api/admin/users', { credentials: 'include' });
+            let users = [];
+            if (response.ok) {
+                const data = await response.json();
+                users = data.users || [];
+            }
+
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <button class="page-back" onclick="dashboard.loadPage('overview')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    <div>
+                        <h1 class="page-title">User Management</h1>
+                        <p class="page-subtitle">Manage all registered users</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Role</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${users.length === 0 ? '<tr><td colspan="4" style="text-align:center;color:var(--text-muted);">No users found</td></tr>' : 
+                              users.map(u => `
+                                <tr>
+                                    <td>
+                                        <div style="display:flex;align-items:center;gap:12px;">
+                                            <img src="${u.avatar_url || '/static/cdn/avatar.png'}" style="width:32px;height:32px;border-radius:50%;">
+                                            <div>
+                                                <div style="font-weight:500;">${u.display_name || u.username}</div>
+                                                <div style="color:var(--text-muted);font-size:12px;">@${u.username}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge ${u.role === 'owner' ? 'warning' : u.role === 'admin' ? 'danger' : 'success'}">${u.role}</span></td>
+                                    <td style="color:var(--text-muted);">${new Date(u.created_at).toLocaleDateString()}</td>
+                                    <td>
+                                        <button class="btn btn-secondary" style="padding:6px 12px;font-size:12px;">Edit</button>
+                                    </td>
+                                </tr>
+                              `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        } catch (error) {
+            contentArea.innerHTML = `<div class="empty-state"><h3>Error loading users</h3><p>${error.message}</p></div>`;
+        }
+    }
+
+    async renderAdminInvites() {
+        const adminRoles = ['owner', 'admin', 'manager', 'mod'];
+        if (!adminRoles.includes(this.user?.role)) {
+            this.loadPage('overview');
+            return;
+        }
+
+        const contentArea = document.getElementById('contentArea');
+        
+        try {
+            const response = await fetch('/api/invites', { credentials: 'include' });
+            let invites = [];
+            if (response.ok) {
+                const data = await response.json();
+                invites = data.invites || [];
+            }
+
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <button class="page-back" onclick="dashboard.loadPage('overview')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    <div>
+                        <h1 class="page-title">Invite Management</h1>
+                        <p class="page-subtitle">Create and manage invite codes</p>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 24px;">
+                    <button class="btn btn-primary" onclick="dashboard.createInvite()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Create Invite
+                    </button>
+                </div>
+                
+                <div class="card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Uses</th>
+                                <th>Created By</th>
+                                <th>Expires</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${invites.length === 0 ? '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);">No invites found</td></tr>' : 
+                              invites.map(inv => `
+                                <tr>
+                                    <td><code style="color:var(--accent-secondary);">${inv.code}</code></td>
+                                    <td>${inv.uses || 0}/${inv.max_uses || '∞'}</td>
+                                    <td style="color:var(--text-muted);">@${inv.created_by || 'system'}</td>
+                                    <td style="color:var(--text-muted);">${inv.expires_at ? new Date(inv.expires_at).toLocaleDateString() : 'Never'}</td>
+                                    <td>
+                                        <button class="btn btn-secondary" style="padding:6px 12px;font-size:12px;" onclick="navigator.clipboard.writeText('${inv.code}'); dashboard.showToast('Code copied!', 'success');">Copy</button>
+                                    </td>
+                                </tr>
+                              `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        } catch (error) {
+            contentArea.innerHTML = `<div class="empty-state"><h3>Error loading invites</h3><p>${error.message}</p></div>`;
+        }
+    }
+
+    async createInvite() {
+        this.showModal('Create Invite', `
+            <div class="form-group">
+                <label class="form-label">Max Uses (leave empty for unlimited)</label>
+                <input type="number" class="form-input" id="inviteMaxUses" min="1" placeholder="Unlimited">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Expires In (hours, leave empty for never)</label>
+                <input type="number" class="form-input" id="inviteExpires" min="1" placeholder="Never">
+            </div>
+        `, async () => {
+            const maxUses = document.getElementById('inviteMaxUses').value;
+            const expiresIn = document.getElementById('inviteExpires').value;
+
+            try {
+                const response = await fetch('/api/invites', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        max_uses: maxUses ? parseInt(maxUses) : null,
+                        expires_in: expiresIn ? parseInt(expiresIn) : null
+                    })
+                });
+
+                if (response.ok) {
+                    this.showToast('Invite created successfully', 'success');
+                    this.loadPage('admin-invites');
+                } else {
+                    throw new Error('Failed to create invite');
+                }
+            } catch (error) {
+                this.showToast('Failed to create invite', 'error');
+                return false;
+            }
+        });
+    }
+
+    async renderAdminFiles() {
+        const adminRoles = ['owner', 'admin', 'manager', 'mod'];
+        if (!adminRoles.includes(this.user?.role)) {
+            this.loadPage('overview');
+            return;
+        }
+
+        const contentArea = document.getElementById('contentArea');
+        
+        try {
+            const response = await fetch('/api/admin/files', { credentials: 'include' });
+            let files = [];
+            if (response.ok) {
+                const data = await response.json();
+                files = data.files || [];
+            }
+
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <button class="page-back" onclick="dashboard.loadPage('overview')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    <div>
+                        <h1 class="page-title">All Files</h1>
+                        <p class="page-subtitle">View and manage all uploaded files</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>File</th>
+                                <th>Uploader</th>
+                                <th>Size</th>
+                                <th>Downloads</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${files.length === 0 ? '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);">No files found</td></tr>' : 
+                              files.map(f => `
+                                <tr>
+                                    <td>
+                                        <div style="display:flex;align-items:center;gap:12px;">
+                                            <div style="width:32px;height:32px;background:var(--bg-tertiary);border-radius:6px;display:flex;align-items:center;justify-content:center;">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" stroke-width="2">
+                                                    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                                    <polyline points="13 2 13 9 20 9"></polyline>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <div style="font-weight:500;">${f.filename || f.original_filename}</div>
+                                                <div style="color:var(--text-muted);font-size:12px;">/file/${f.code}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="color:var(--text-muted);">@${f.username || 'unknown'}</td>
+                                    <td style="color:var(--text-muted);">${this.formatFileSize(f.size || f.file_size || 0)}</td>
+                                    <td style="color:var(--text-muted);">${f.download_count || 0}</td>
+                                    <td style="color:var(--text-muted);">${new Date(f.created_at).toLocaleDateString()}</td>
+                                </tr>
+                              `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        } catch (error) {
+            contentArea.innerHTML = `<div class="empty-state"><h3>Error loading files</h3><p>${error.message}</p></div>`;
+        }
+    }
+
+    async renderAdminAnalytics() {
+        const adminRoles = ['owner', 'admin', 'manager', 'mod'];
+        if (!adminRoles.includes(this.user?.role)) {
+            this.loadPage('overview');
+            return;
+        }
+
+        const contentArea = document.getElementById('contentArea');
+        contentArea.innerHTML = `
+            <div class="page-header">
+                <button class="page-back" onclick="dashboard.loadPage('overview')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="page-title">Analytics</h1>
+                    <p class="page-subtitle">Platform usage and statistics</p>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3>-</h3>
+                        <p>Total Users</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: var(--success);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                            <polyline points="13 2 13 9 20 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3>-</h3>
+                        <p>Total Files</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: var(--warning);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3>-</h3>
+                        <p>Total Links</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="card-title">Platform Activity</h3>
+                        <p class="card-description">Analytics coming soon</p>
+                    </div>
+                </div>
+                <div class="empty-state" style="padding: 40px;">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Detailed analytics and reporting features will be available here.</p>
                 </div>
             </div>
         `;

@@ -129,6 +129,10 @@ router.post('/upload', authenticateToken, upload.single('file'), async (req, res
       user_id: userId,
       code: fileCode,
       filename: req.file.originalname,
+      original_filename: req.file.originalname,
+      file_path: encryptedPath,
+      file_url: `/file/${fileCode}`,
+      file_size: req.file.size,
       stored_path: encryptedPath,
       size: req.file.size,
       mime_type: req.file.mimetype || 'application/octet-stream',
@@ -137,7 +141,11 @@ router.post('/upload', authenticateToken, upload.single('file'), async (req, res
       auth_tag: authTag.toString('hex'),
       password_hash: passwordHash,
       expires_at: expiresAt,
-      download_count: 0
+      download_count: 0,
+      is_public: true,
+      is_private: false,
+      view_count: 0,
+      bandwidth_used: 0
     });
 
     const fileId = newFile.id || newFile.lastInsertRowid;
