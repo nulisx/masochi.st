@@ -18,6 +18,7 @@ import imagesHandler from './api/images.js';
 import connectionsHandler from './api/connections.js';
 import collectiblesHandler from './api/collectibles.js';
 import tokenHandler from './api/token.js';
+import filesHandler from './api/files.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -328,6 +329,47 @@ app.use('/api/images', imagesHandler);
 app.use('/api/connections', connectionsHandler);
 app.use('/api', collectiblesHandler);
 app.use('/api/token', tokenHandler);
+app.use('/api/files', filesHandler);
+
+app.get('/api/biolink/:username', async (req, res) => {
+  try {
+    const { username } = req.params;
+    const user = await getQuery('users', 'username', username.toLowerCase());
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const profile = await getQuery('profiles', 'user_id', user.id);
+    const links = await allQuery('links', 'user_id', user.id);
+    const connections = await allQuery('connections', 'user_id', user.id);
+
+    res.status(200).json({
+      user: {
+        username: user.username,
+        display_name: user.display_name
+      },
+      profile: {
+        bio: profile?.bio || '',
+        avatar_url: profile?.avatar_url || '/static/cdn/avatar.png',
+        theme: profile?.theme || 'default'
+      },
+      links: links.map(l => ({
+        title: l.title,
+        url: l.url,
+        order: l.order
+      })),
+      connections: connections.map(c => ({
+        platform: c.platform,
+        username: c.username,
+        url: c.url
+      }))
+    });
+  } catch (err) {
+    console.error('Biolink API error:', err);
+    res.status(500).json({ error: 'Failed to fetch biolink data' });
+  }
+});
 
 app.get('/api/:userId', async (req, res) => {
   try {
@@ -416,7 +458,8 @@ app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'login', 'inde
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'register', 'index.html')));
 app.get('/login/reset', (req, res) => res.sendFile(path.join(__dirname, 'login', 'reset', 'index.html')));
 app.get('/login/loading', (req, res) => res.sendFile(path.join(__dirname, 'login', 'loading.html')));
-app.get('/dash', (req, res) => res.sendFile(path.join(__dirname, 'dash', 'app.html')));
+app.get('/dash', (req, res) => res.sendFile(path.join(__dirname, 'dashboard', 'index.html')));
+app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'dashboard', 'index.html')));
 app.get('/ic', (req, res) => res.sendFile(path.join(__dirname, 'ic', 'index.html')));
 
 app.get('/@:username', async (req, res) => {

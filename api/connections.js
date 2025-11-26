@@ -97,7 +97,16 @@ router.put('/:connectionId', authenticateToken, async (req, res) => {
 router.delete('/:connectionId', authenticateToken, async (req, res) => {
   try {
     const { connectionId } = req.params;
-    const connection = await getQuery('connections', 'id', connectionId);
+    
+    const isNumeric = /^\d+$/.test(connectionId);
+    let connection;
+    
+    if (isNumeric) {
+      connection = await getQuery('connections', 'id', parseInt(connectionId));
+    } else {
+      const connections = await allQuery('connections', 'user_id', req.user.id);
+      connection = connections.find(c => c.platform === connectionId);
+    }
 
     if (!connection) {
       return res.status(404).json({ error: 'Connection not found' });
@@ -107,7 +116,7 @@ router.delete('/:connectionId', authenticateToken, async (req, res) => {
       return res.status(403).json({ error: 'Not authorized' });
     }
 
-    await runQuery('connections', {}, 'delete', { column: 'id', value: connectionId });
+    await runQuery('connections', {}, 'delete', { column: 'id', value: connection.id });
     res.status(200).json({ message: 'Connection deleted' });
   } catch (err) {
     console.error('Connection DELETE error:', err);
