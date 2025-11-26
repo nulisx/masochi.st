@@ -151,6 +151,15 @@ class Dashboard {
                 case 'admin-analytics':
                     await this.renderAdminAnalytics();
                     break;
+                case 'litterbox':
+                    await this.renderLitterBox();
+                    break;
+                case 'faq-files':
+                    await this.renderFilesFAQ();
+                    break;
+                case 'faq-litterbox':
+                    await this.renderLitterBoxFAQ();
+                    break;
                 default:
                     await this.renderOverview();
             }
@@ -2103,6 +2112,326 @@ class Dashboard {
                 close();
             }
         });
+    }
+
+    async renderLitterBox() {
+        const contentArea = document.getElementById('contentArea');
+        contentArea.innerHTML = `
+            <div class="page-header">
+                <button class="page-back" onclick="dashboard.loadPage('overview')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="page-title">LitterBox</h1>
+                    <p class="page-subtitle">Temporary encrypted file hosting - Files auto-delete after expiry</p>
+                </div>
+            </div>
+            
+            <div class="card" style="margin-bottom: 24px;">
+                <div class="card-header">
+                    <div class="card-icon" style="background: #f97316;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="card-title">Temporary File Upload</h3>
+                        <p class="card-description">Files up to 1GB with automatic expiration</p>
+                    </div>
+                </div>
+                
+                <form id="litterboxForm" style="padding: 20px;">
+                    <div class="upload-area" id="litterboxUploadArea" style="margin-bottom: 20px;">
+                        <input type="file" id="litterboxFileInput" style="display: none;">
+                        <div class="upload-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                        </div>
+                        <h3 style="margin-bottom: 8px;">Select or drop file</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 16px;">Max 1GB. E2EE encrypted. Auto-deletes.</p>
+                        <button type="button" class="btn btn-primary" onclick="document.getElementById('litterboxFileInput').click()">Choose File</button>
+                    </div>
+                    
+                    <div id="selectedFileInfo" style="display: none; margin-bottom: 20px; padding: 16px; background: var(--bg-tertiary); border-radius: 8px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2">
+                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                <polyline points="13 2 13 9 20 9"></polyline>
+                            </svg>
+                            <div>
+                                <p id="selectedFileName" style="font-weight: 500;"></p>
+                                <p id="selectedFileSize" style="font-size: 13px; color: var(--text-muted);"></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Expiration Time</label>
+                        <select class="form-input" id="litterboxExpiry" style="cursor: pointer;">
+                            <option value="1">1 Hour</option>
+                            <option value="12">12 Hours</option>
+                            <option value="24" selected>1 Day</option>
+                            <option value="72">3 Days</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Password Protection (Optional)</label>
+                        <input type="password" class="form-input" id="litterboxPassword" placeholder="Leave empty for no password">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;" id="litterboxSubmitBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        Upload Temporary File
+                    </button>
+                </form>
+            </div>
+            
+            <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+                <div class="card" style="flex: 1; padding: 20px; text-align: center;">
+                    <div style="font-size: 32px; font-weight: 600; color: var(--accent-primary);">1 GB</div>
+                    <p style="color: var(--text-muted);">Max File Size</p>
+                </div>
+                <div class="card" style="flex: 1; padding: 20px; text-align: center;">
+                    <div style="font-size: 32px; font-weight: 600; color: #f97316;">3 Days</div>
+                    <p style="color: var(--text-muted);">Max Duration</p>
+                </div>
+                <div class="card" style="flex: 1; padding: 20px; text-align: center;">
+                    <div style="font-size: 32px; font-weight: 600; color: #10b981;">E2EE</div>
+                    <p style="color: var(--text-muted);">Encrypted</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="card-title">About LitterBox</h3>
+                            <p class="card-description">Temporary file hosting for sensitive files</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" onclick="dashboard.loadPage('faq-litterbox')">View FAQ</button>
+                </div>
+                <div style="padding: 16px; color: var(--text-muted); line-height: 1.6;">
+                    <p>LitterBox provides temporary, encrypted file hosting. Files are automatically deleted after the chosen expiration time. Perfect for sharing sensitive files that don't need to exist forever.</p>
+                    <p style="margin-top: 12px;"><strong style="color: var(--text-primary);">Forbidden file types:</strong> .exe, .scr, .cpl, .doc*, .jar</p>
+                </div>
+            </div>
+        `;
+
+        this.setupLitterBoxUpload();
+    }
+
+    setupLitterBoxUpload() {
+        const uploadArea = document.getElementById('litterboxUploadArea');
+        const fileInput = document.getElementById('litterboxFileInput');
+        const form = document.getElementById('litterboxForm');
+        const submitBtn = document.getElementById('litterboxSubmitBtn');
+        
+        if (!uploadArea || !fileInput) return;
+
+        let selectedFile = null;
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) {
+                selectedFile = e.dataTransfer.files[0];
+                this.showSelectedFile(selectedFile);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                selectedFile = e.target.files[0];
+                this.showSelectedFile(selectedFile);
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!selectedFile) {
+                this.showToast('Please select a file first', 'error');
+                return;
+            }
+
+            const forbidden = ['.exe', '.scr', '.cpl', '.jar'];
+            const ext = selectedFile.name.substring(selectedFile.name.lastIndexOf('.')).toLowerCase();
+            if (forbidden.includes(ext) || ext.startsWith('.doc')) {
+                this.showToast('This file type is not allowed', 'error');
+                return;
+            }
+
+            if (selectedFile.size > 1024 * 1024 * 1024) {
+                this.showToast('File exceeds 1GB limit', 'error');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner"></span> Uploading...';
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('expires_in', document.getElementById('litterboxExpiry').value);
+            formData.append('password', document.getElementById('litterboxPassword').value);
+
+            try {
+                const response = await fetch('/api/files/litterbox', {
+                    method: 'POST',
+                    credentials: 'include',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const url = `${window.location.origin}/file/${data.file.code}`;
+                    this.showToast('File uploaded! Link copied to clipboard.', 'success');
+                    navigator.clipboard.writeText(url);
+                    this.renderLitterBox();
+                } else {
+                    const error = await response.json();
+                    this.showToast(error.error || 'Upload failed', 'error');
+                }
+            } catch (error) {
+                this.showToast('Upload failed', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    Upload Temporary File
+                `;
+            }
+        });
+    }
+
+    showSelectedFile(file) {
+        const info = document.getElementById('selectedFileInfo');
+        const name = document.getElementById('selectedFileName');
+        const size = document.getElementById('selectedFileSize');
+        
+        if (info && name && size) {
+            info.style.display = 'block';
+            name.textContent = file.name;
+            size.textContent = this.formatFileSize(file.size);
+        }
+    }
+
+    async renderFilesFAQ() {
+        const contentArea = document.getElementById('contentArea');
+        contentArea.innerHTML = `
+            <div class="page-header">
+                <button class="page-back" onclick="dashboard.loadPage('files')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="page-title">Files FAQ</h1>
+                    <p class="page-subtitle">Frequently asked questions about E2EE file hosting</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
+                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">What is E2EE?</h4>
+                    <p style="color: var(--text-muted); line-height: 1.6;">E2EE stands for End-to-End Encryption. Your files are encrypted before they leave your device and can only be decrypted by someone with the correct link or password. We cannot access your files.</p>
+                </div>
+                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
+                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">What is the maximum file size?</h4>
+                    <p style="color: var(--text-muted); line-height: 1.6;">The maximum file size for permanent file hosting is 200 MB. For temporary files (LitterBox), the limit is 1 GB.</p>
+                </div>
+                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
+                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">How do I share my files?</h4>
+                    <p style="color: var(--text-muted); line-height: 1.6;">After uploading, you'll receive a unique 6-character link (e.g., glowi.es/file/abc123). Share this link with anyone who needs access.</p>
+                </div>
+                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
+                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">Can I password-protect files?</h4>
+                    <p style="color: var(--text-muted); line-height: 1.6;">Yes! When uploading, you can set an optional password. Recipients will need to enter the password to download the file.</p>
+                </div>
+                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
+                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">What file types are forbidden?</h4>
+                    <p style="color: var(--text-muted); line-height: 1.6;">For security reasons, the following file types are not allowed: .exe, .scr, .cpl, .doc (and variants), .jar</p>
+                </div>
+                <div class="faq-item" style="padding: 20px;">
+                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">How long are files stored?</h4>
+                    <p style="color: var(--text-muted); line-height: 1.6;">Permanent files are stored indefinitely as long as your account is active. Temporary files (LitterBox) are automatically deleted after the chosen expiration time (1h, 12h, 1d, or 3d).</p>
+                </div>
+            </div>
+        `;
+    }
+
+    async renderLitterBoxFAQ() {
+        const contentArea = document.getElementById('contentArea');
+        contentArea.innerHTML = `
+            <div class="page-header">
+                <button class="page-back" onclick="dashboard.loadPage('litterbox')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="page-title">LitterBox FAQ</h1>
+                    <p class="page-subtitle">Frequently asked questions about temporary file hosting</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
+                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">What is LitterBox?</h4>
+                    <p style="color: var(--text-muted); line-height: 1.6;">LitterBox is our temporary file hosting service. Files uploaded here are automatically deleted after your chosen expiration time, making it perfect for sharing sensitive or time-limited content.</p>
+                </div>
+                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
+                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">What expiration options are available?</h4>
+                    <p style="color: var(--text-muted); line-height: 1.6;">You can choose from: 1 hour, 12 hours, 1 day, or 3 days. After this time, the file is permanently deleted.</p>
+                </div>
+                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
+                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">What's the file size limit?</h4>
+                    <p style="color: var(--text-muted); line-height: 1.6;">LitterBox allows files up to 1 GB, which is larger than our permanent file hosting (200 MB).</p>
+                </div>
+                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
+                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">Are LitterBox files encrypted?</h4>
+                    <p style="color: var(--text-muted); line-height: 1.6;">Yes! All files use the same E2EE (End-to-End Encryption) as permanent files. Your data is secure.</p>
+                </div>
+                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
+                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">Can I recover a deleted file?</h4>
+                    <p style="color: var(--text-muted); line-height: 1.6;">No. Once a file expires, it's permanently deleted and cannot be recovered. Make sure to download important files before they expire.</p>
+                </div>
+                <div class="faq-item" style="padding: 20px;">
+                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">What's the filename format?</h4>
+                    <p style="color: var(--text-muted); line-height: 1.6;">Temporary files get random 16-character filenames for added privacy, while permanent files use 6-character codes.</p>
+                </div>
+            </div>
+        `;
     }
 }
 

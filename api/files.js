@@ -41,12 +41,19 @@ const upload = multer({
   limits: { fileSize: 200 * 1024 * 1024 }
 });
 
+const uploadLitterbox = multer({ 
+  storage,
+  limits: { fileSize: 1024 * 1024 * 1024 }
+});
+
 const router = express.Router();
 
-function generateFileCode() {
+const forbiddenExtensions = ['.exe', '.scr', '.cpl', '.jar', '.doc', '.docx', '.docm'];
+
+function generateFileCode(length = 6) {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
   let code = '';
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < length; i++) {
     code += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return code;
@@ -88,14 +95,22 @@ router.post('/upload', authenticateToken, upload.single('file'), async (req, res
   try {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
     
-    const userId = req.user.id;
-    const { password, expires_in } = req.body;
+    const ext = path.extname(req.file.originalname).toLowerCase();
+    if (forbiddenExtensions.includes(ext)) {
+      fs.unlinkSync(req.file.path);
+      return res.status(400).json({ error: 'This file type is not allowed' });
+    }
     
+    const userId = req.user.id;
+    const { password, expires_in, temporary } = req.body;
+    const isTemporary = temporary === 'true' || temporary === true;
+    
+    const codeLength = isTemporary ? 16 : 6;
     let fileCode;
     let attempts = 0;
     let existing;
     do {
-      fileCode = generateFileCode();
+      fileCode = generateFileCode(codeLength);
       existing = await getQuery('files', 'code', fileCode);
       attempts++;
     } while (existing && attempts < 20);
@@ -170,6 +185,98 @@ router.post('/upload', authenticateToken, upload.single('file'), async (req, res
     });
   } catch (err) {
     console.error('File upload error:', err);
+    res.status(500).json({ error: 'Failed to upload file' });
+  }
+});
+
+router.post('/litterbox', authenticateToken, uploadLitterbox.single('file'), async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+    
+    const ext = path.extname(req.file.originalname).toLowerCase();
+    if (forbiddenExtensions.includes(ext)) {
+      fs.unlinkSync(req.file.path);
+      return res.status(400).json({ error: 'This file type is not allowed' });
+    }
+    
+    const userId = req.user.id;
+    const { password, expires_in } = req.body;
+    
+    let fileCode;
+    let attempts = 0;
+    let existing;
+    do {
+      fileCode = generateFileCode(16);
+      existing = await getQuery('files', 'code', fileCode);
+      attempts++;
+    } while (existing && attempts < 20);
+    
+    if (existing) {
+      return res.status(500).json({ error: 'Failed to generate unique file code' });
+    }
+
+    const encryptionKey = crypto.randomBytes(32);
+    const fileBuffer = fs.readFileSync(req.file.path);
+    const { encrypted, iv, authTag } = encryptFile(fileBuffer, encryptionKey);
+    
+    const encryptedPath = req.file.path + '.enc';
+    fs.writeFileSync(encryptedPath, encrypted);
+    fs.unlinkSync(req.file.path);
+    
+    let passwordHash = null;
+    if (password && password.trim()) {
+      passwordHash = await bcrypt.hash(password, 12);
+    }
+    
+    const hours = parseInt(expires_in) || 24;
+    const expiresAt = new Date(Date.now() + hours * 60 * 60 * 1000).toISOString();
+
+    const newFile = await runQuery('files', {
+      user_id: userId,
+      code: fileCode,
+      filename: req.file.originalname,
+      original_filename: req.file.originalname,
+      file_path: encryptedPath,
+      file_url: `/file/${fileCode}`,
+      file_size: req.file.size,
+      stored_path: encryptedPath,
+      size: req.file.size,
+      mime_type: req.file.mimetype || 'application/octet-stream',
+      encryption_key: encryptionKey.toString('hex'),
+      encryption_iv: iv.toString('hex'),
+      auth_tag: authTag.toString('hex'),
+      password_hash: passwordHash,
+      expires_at: expiresAt,
+      download_count: 0,
+      is_public: true,
+      is_private: false,
+      is_temporary: true,
+      view_count: 0,
+      bandwidth_used: 0
+    });
+
+    const fileId = newFile.id || newFile.lastInsertRowid;
+    const createdFile = await getQuery('files', 'id', fileId);
+    
+    const sanitizedFile = {
+      id: createdFile.id,
+      code: createdFile.code,
+      filename: createdFile.filename,
+      size: createdFile.size,
+      mime_type: createdFile.mime_type,
+      password_protected: !!createdFile.password_hash,
+      expires_at: createdFile.expires_at,
+      download_count: createdFile.download_count,
+      created_at: createdFile.created_at
+    };
+
+    res.status(201).json({ 
+      message: 'Temporary file uploaded successfully',
+      file: sanitizedFile,
+      download_url: `/file/${fileCode}`
+    });
+  } catch (err) {
+    console.error('LitterBox upload error:', err);
     res.status(500).json({ error: 'Failed to upload file' });
   }
 });
