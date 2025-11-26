@@ -16,7 +16,7 @@ class Dashboard {
 
     setupKeyboardShortcuts() {
         document.addEventListener('keydown', (e) => {
-            if (e.altKey && e.key.toLowerCase() === 'k') {
+            if (e.ctrlKey && e.key.toLowerCase() === 'k') {
                 e.preventDefault();
                 const searchInput = document.querySelector('.search-input');
                 if (searchInput) {
@@ -172,8 +172,23 @@ class Dashboard {
                 stats = await statsRes.json();
             }
         } catch (e) {}
+
+        let updates = [];
+        try {
+            const updatesRes = await fetch('/api/updates', { credentials: 'include' });
+            if (updatesRes.ok) {
+                const data = await updatesRes.json();
+                updates = data.updates || [];
+            }
+        } catch (e) {}
         
         const storagePercent = Math.min((stats.storage_used / stats.storage_limit) * 100, 100).toFixed(1);
+
+        const formatUpdateDate = (dateStr) => {
+            const date = new Date(dateStr);
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+        };
         
         const contentArea = document.getElementById('contentArea');
         contentArea.innerHTML = `
@@ -184,87 +199,77 @@ class Dashboard {
                 </div>
             </div>
             
-            <div class="stats-grid" style="grid-template-columns: repeat(6, 1fr);">
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: #6366f1;">
+            <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 24px;">
+                <div class="stat-card" style="display: flex; align-items: center; gap: 16px; padding: 20px;">
+                    <div class="stat-icon" style="background: var(--accent-primary); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>
                         </svg>
                     </div>
                     <div class="stat-info">
-                        <h3>#${stats.uid}</h3>
-                        <p>User ID</p>
+                        <h3 style="font-size: 24px; margin-bottom: 4px;">UID ${stats.uid}</h3>
+                        <p style="color: var(--text-muted); font-size: 13px;">User ID</p>
                     </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                        </svg>
-                    </div>
-                    <div class="stat-info">
-                        <h3>${links.length}</h3>
-                        <p>Active Links</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: var(--success);">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-                            <polyline points="13 2 13 9 20 9"></polyline>
-                        </svg>
-                    </div>
-                    <div class="stat-info">
-                        <h3>${files.length}</h3>
-                        <p>Uploaded Files</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: #3b82f6;">
+                <div class="stat-card" style="display: flex; align-items: center; gap: 16px; padding: 20px;">
+                    <div class="stat-icon" style="background: #3b82f6; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
                             <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
                         </svg>
                     </div>
                     <div class="stat-info">
-                        <h3>${this.formatFileSize(stats.storage_used)}</h3>
-                        <p>Storage Used</p>
+                        <h3 style="font-size: 24px; margin-bottom: 4px;">${stats.storage_used} / ${this.formatFileSize(stats.storage_limit)}</h3>
+                        <p style="color: var(--text-muted); font-size: 13px;">Storage Used</p>
                     </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: var(--warning);">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                    </div>
-                    <div class="stat-info">
-                        <h3>0</h3>
-                        <p>Profile Views</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: ${stats.license_status === 'Active' ? 'var(--success)' : '#64748b'};">
+                <div class="stat-card" style="display: flex; align-items: center; gap: 16px; padding: 20px;">
+                    <div class="stat-icon" style="background: ${stats.license_status === 'Active' ? 'var(--success)' : '#64748b'}; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
                         </svg>
                     </div>
                     <div class="stat-info">
-                        <h3>${stats.license_status}</h3>
-                        <p>License Status</p>
+                        <h3 style="font-size: 24px; margin-bottom: 4px;">${stats.license_status}</h3>
+                        <p style="color: var(--text-muted); font-size: 13px;">License Status</p>
                     </div>
                 </div>
             </div>
             
-            <div class="storage-bar-container" style="margin-bottom: 24px;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                    <span style="font-size: 13px; color: var(--text-secondary);">Storage Usage</span>
-                    <span style="font-size: 13px; color: var(--text-muted);">${storagePercent}% of ${this.formatFileSize(stats.storage_limit)}</span>
-                </div>
-                <div style="background: var(--bg-tertiary); border-radius: 8px; height: 8px; overflow: hidden;">
-                    <div style="background: var(--accent-primary); height: 100%; width: ${storagePercent}%; border-radius: 8px; transition: width 0.3s;"></div>
+            <div class="updates-section" style="margin-bottom: 24px;">
+                <div class="card">
+                    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div class="card-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="card-title">Latest Updates</h3>
+                                <p class="card-description">Recent platform changes and announcements</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="updates-list" style="max-height: 300px; overflow-y: auto;">
+                        ${updates.length > 0 ? updates.map(update => `
+                            <div class="update-item" style="padding: 16px; border-bottom: 1px solid var(--border-color); cursor: pointer;" onclick="dashboard.showUpdateDetails(${update.id}, '${update.title.replace(/'/g, "\\'")}', '${(update.description || '').replace(/'/g, "\\'")}', '${(update.details || '').replace(/'/g, "\\'")}', '${update.created_at}')">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                    <div>
+                                        <h4 style="font-size: 14px; margin-bottom: 4px; color: var(--text-primary);">${update.title}</h4>
+                                        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">${update.description || ''}</p>
+                                    </div>
+                                    <span style="font-size: 12px; color: var(--text-muted); white-space: nowrap; margin-left: 16px;">${formatUpdateDate(update.created_at)}</span>
+                                </div>
+                            </div>
+                        `).join('') : `
+                            <div style="padding: 24px; text-align: center; color: var(--text-muted);">
+                                <p>No updates yet</p>
+                            </div>
+                        `}
+                    </div>
                 </div>
             </div>
             
@@ -1166,34 +1171,35 @@ class Dashboard {
         const connections = await this.fetchConnections();
         
         const socialPlatforms = [
-            { id: 'discord', name: 'Discord', icon: 'discord' },
-            { id: 'twitter', name: 'Twitter/X', icon: 'twitter' },
-            { id: 'instagram', name: 'Instagram', icon: 'instagram' },
-            { id: 'tiktok', name: 'TikTok', icon: 'tiktok' },
-            { id: 'youtube', name: 'YouTube', icon: 'youtube' },
-            { id: 'twitch', name: 'Twitch', icon: 'twitch' },
-            { id: 'github', name: 'GitHub', icon: 'github' },
-            { id: 'spotify', name: 'Spotify', icon: 'spotify' },
-            { id: 'linkedin', name: 'LinkedIn', icon: 'linkedin' },
-            { id: 'snapchat', name: 'Snapchat', icon: 'snapchat' },
-            { id: 'pinterest', name: 'Pinterest', icon: 'pinterest' },
-            { id: 'reddit', name: 'Reddit', icon: 'reddit' },
-            { id: 'telegram', name: 'Telegram', icon: 'telegram' },
-            { id: 'steam', name: 'Steam', icon: 'steam' },
-            { id: 'paypal', name: 'PayPal', icon: 'paypal' },
-            { id: 'cashapp', name: 'Cash App', icon: 'cashapp' },
-            { id: 'venmo', name: 'Venmo', icon: 'venmo' },
-            { id: 'onlyfans', name: 'OnlyFans', icon: 'onlyfans' },
-            { id: 'patreon', name: 'Patreon', icon: 'patreon' },
-            { id: 'soundcloud', name: 'SoundCloud', icon: 'soundcloud' },
-            { id: 'apple_music', name: 'Apple Music', icon: 'apple_music' },
-            { id: 'bandcamp', name: 'Bandcamp', icon: 'bandcamp' },
-            { id: 'facebook', name: 'Facebook', icon: 'facebook' },
-            { id: 'threads', name: 'Threads', icon: 'threads' },
-            { id: 'bluesky', name: 'Bluesky', icon: 'bluesky' },
-            { id: 'mastodon', name: 'Mastodon', icon: 'mastodon' },
-            { id: 'kick', name: 'Kick', icon: 'kick' },
-            { id: 'rumble', name: 'Rumble', icon: 'rumble' }
+            { id: 'discord', name: 'Discord', icon: 'discord', urlTemplate: 'https://discord.com/users/' },
+            { id: 'discord_server', name: 'Discord Server', icon: 'discord', urlTemplate: 'https://discord.gg/' },
+            { id: 'twitter', name: 'Twitter/X', icon: 'twitter', urlTemplate: 'https://x.com/' },
+            { id: 'instagram', name: 'Instagram', icon: 'instagram', urlTemplate: 'https://instagram.com/' },
+            { id: 'tiktok', name: 'TikTok', icon: 'tiktok', urlTemplate: 'https://tiktok.com/@' },
+            { id: 'youtube', name: 'YouTube', icon: 'youtube', urlTemplate: 'https://youtube.com/@' },
+            { id: 'twitch', name: 'Twitch', icon: 'twitch', urlTemplate: 'https://twitch.tv/' },
+            { id: 'github', name: 'GitHub', icon: 'github', urlTemplate: 'https://github.com/' },
+            { id: 'spotify', name: 'Spotify', icon: 'spotify', urlTemplate: 'https://open.spotify.com/user/' },
+            { id: 'linkedin', name: 'LinkedIn', icon: 'linkedin', urlTemplate: 'https://linkedin.com/in/' },
+            { id: 'snapchat', name: 'Snapchat', icon: 'snapchat', urlTemplate: 'https://snapchat.com/add/' },
+            { id: 'pinterest', name: 'Pinterest', icon: 'pinterest', urlTemplate: 'https://pinterest.com/' },
+            { id: 'reddit', name: 'Reddit', icon: 'reddit', urlTemplate: 'https://reddit.com/user/' },
+            { id: 'telegram', name: 'Telegram', icon: 'telegram', urlTemplate: 'https://t.me/' },
+            { id: 'steam', name: 'Steam', icon: 'steam', urlTemplate: 'https://steamcommunity.com/id/' },
+            { id: 'paypal', name: 'PayPal', icon: 'paypal', urlTemplate: 'https://paypal.me/' },
+            { id: 'cashapp', name: 'Cash App', icon: 'cashapp', urlTemplate: 'https://cash.app/$' },
+            { id: 'venmo', name: 'Venmo', icon: 'venmo', urlTemplate: 'https://venmo.com/' },
+            { id: 'onlyfans', name: 'OnlyFans', icon: 'onlyfans', urlTemplate: 'https://onlyfans.com/' },
+            { id: 'patreon', name: 'Patreon', icon: 'patreon', urlTemplate: 'https://patreon.com/' },
+            { id: 'soundcloud', name: 'SoundCloud', icon: 'soundcloud', urlTemplate: 'https://soundcloud.com/' },
+            { id: 'apple_music', name: 'Apple Music', icon: 'apple_music', urlTemplate: 'https://music.apple.com/profile/' },
+            { id: 'bandcamp', name: 'Bandcamp', icon: 'bandcamp', urlTemplate: 'https://bandcamp.com/' },
+            { id: 'facebook', name: 'Facebook', icon: 'facebook', urlTemplate: 'https://facebook.com/' },
+            { id: 'threads', name: 'Threads', icon: 'threads', urlTemplate: 'https://threads.net/@' },
+            { id: 'bluesky', name: 'Bluesky', icon: 'bluesky', urlTemplate: 'https://bsky.app/profile/' },
+            { id: 'mastodon', name: 'Mastodon', icon: 'mastodon', urlTemplate: '' },
+            { id: 'kick', name: 'Kick', icon: 'kick', urlTemplate: 'https://kick.com/' },
+            { id: 'rumble', name: 'Rumble', icon: 'rumble', urlTemplate: 'https://rumble.com/' }
         ];
 
         const contentArea = document.getElementById('contentArea');
@@ -1206,30 +1212,51 @@ class Dashboard {
                 </button>
                 <div>
                     <h1 class="page-title">Connections</h1>
-                    <p class="page-subtitle">Connect your social accounts</p>
+                    <p class="page-subtitle">Connect your social accounts - Click username to copy, click icon to visit</p>
                 </div>
             </div>
             
             <div class="cards-grid">
                 ${socialPlatforms.map(platform => {
                     const conn = connections.find(c => c.platform === platform.id);
+                    const profileUrl = conn?.profile_url || (conn?.username ? platform.urlTemplate + conn.username.replace('@', '') : '');
                     return `
-                        <div class="card" style="padding: 20px;">
+                        <div class="card connection-card" style="padding: 20px;">
                             <div style="display: flex; align-items: center; gap: 16px;">
-                                <div class="card-icon" style="background: var(--bg-tertiary);">
+                                <div class="card-icon" style="background: var(--bg-tertiary); cursor: ${conn && profileUrl ? 'pointer' : 'default'};" 
+                                    ${conn && profileUrl ? `onclick="window.open('${profileUrl}', '_blank')" title="Visit profile"` : ''}>
                                     <img src="/static/cdn/${platform.icon}.png" alt="${platform.name}" style="width: 24px; height: 24px;" onerror="this.style.display='none'">
                                 </div>
-                                <div style="flex: 1;">
+                                <div style="flex: 1; min-width: 0;">
                                     <h4>${platform.name}</h4>
-                                    <p style="font-size: 13px; color: var(--text-muted);">
-                                        ${conn ? (conn.username || 'Connected') : 'Not connected'}
-                                    </p>
+                                    ${conn ? `
+                                        <p style="font-size: 13px; color: var(--accent-secondary); cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                                           onclick="navigator.clipboard.writeText('${conn.username || ''}'); dashboard.showToast('Username copied!', 'success');" 
+                                           title="Click to copy username">
+                                            ${conn.username || 'Connected'}
+                                        </p>
+                                    ` : `
+                                        <p style="font-size: 13px; color: var(--text-muted);">Not connected</p>
+                                    `}
                                 </div>
-                                ${conn ? `
-                                    <button class="btn btn-secondary" style="padding: 8px 16px;" onclick="dashboard.disconnectPlatform('${platform.id}')">Disconnect</button>
-                                ` : `
-                                    <button class="btn btn-primary" style="padding: 8px 16px;" onclick="dashboard.connectPlatform('${platform.id}')">Connect</button>
-                                `}
+                                <div style="display: flex; gap: 8px;">
+                                    ${conn ? `
+                                        <button class="btn btn-secondary" style="padding: 8px 12px;" onclick="dashboard.editConnection('${platform.id}', '${conn.username || ''}', '${conn.profile_url || ''}')" title="Edit">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                            </svg>
+                                        </button>
+                                        <button class="btn btn-danger" style="padding: 8px 12px;" onclick="dashboard.disconnectPlatform('${platform.id}')" title="Disconnect">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                                            </svg>
+                                        </button>
+                                    ` : `
+                                        <button class="btn btn-primary" style="padding: 8px 16px;" onclick="dashboard.connectPlatform('${platform.id}', '${platform.name}')">Connect</button>
+                                    `}
+                                </div>
                             </div>
                         </div>
                     `;
@@ -1238,16 +1265,17 @@ class Dashboard {
         `;
     }
 
-    connectPlatform(platform) {
-        this.showModal(`Connect ${platform.charAt(0).toUpperCase() + platform.slice(1)}`, `
+    connectPlatform(platform, platformName) {
+        const isDiscordServer = platform === 'discord_server';
+        this.showModal(`Connect ${platformName || platform.charAt(0).toUpperCase() + platform.slice(1)}`, `
             <form id="connectionForm">
                 <div class="form-group">
-                    <label class="form-label">Username / Handle</label>
-                    <input type="text" class="form-input" id="connectionUsername" required placeholder="@username">
+                    <label class="form-label">${isDiscordServer ? 'Server Invite Code' : 'Username / Handle'}</label>
+                    <input type="text" class="form-input" id="connectionUsername" required placeholder="${isDiscordServer ? 'abc123 (from discord.gg/abc123)' : '@username'}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Profile URL (optional)</label>
-                    <input type="url" class="form-input" id="connectionUrl" placeholder="https://${platform}.com/...">
+                    <label class="form-label">${isDiscordServer ? 'Server Invite URL' : 'Profile URL'} (optional)</label>
+                    <input type="url" class="form-input" id="connectionUrl" placeholder="${isDiscordServer ? 'https://discord.gg/...' : 'https://...'}">
                 </div>
             </form>
         `, async () => {
@@ -1276,8 +1304,47 @@ class Dashboard {
         });
     }
 
+    editConnection(platform, currentUsername, currentUrl) {
+        const isDiscordServer = platform === 'discord_server';
+        this.showModal(`Edit ${platform.charAt(0).toUpperCase() + platform.slice(1).replace('_', ' ')}`, `
+            <form id="connectionForm">
+                <div class="form-group">
+                    <label class="form-label">${isDiscordServer ? 'Server Invite Code' : 'Username / Handle'}</label>
+                    <input type="text" class="form-input" id="connectionUsername" required value="${currentUsername}" placeholder="${isDiscordServer ? 'abc123' : '@username'}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">${isDiscordServer ? 'Server Invite URL' : 'Profile URL'} (optional)</label>
+                    <input type="url" class="form-input" id="connectionUrl" value="${currentUrl}" placeholder="https://...">
+                </div>
+            </form>
+        `, async () => {
+            const username = document.getElementById('connectionUsername').value;
+            const url = document.getElementById('connectionUrl').value;
+
+            try {
+                const response = await fetch(`/api/connections/${platform}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ username, profile_url: url })
+                });
+
+                if (response.ok) {
+                    this.showToast('Connection updated', 'success');
+                    this.renderConnections();
+                    return true;
+                } else {
+                    throw new Error('Failed to update');
+                }
+            } catch (error) {
+                this.showToast('Failed to update connection', 'error');
+                return false;
+            }
+        });
+    }
+
     async disconnectPlatform(platform) {
-        if (!confirm(`Disconnect ${platform}?`)) return;
+        if (!confirm(`Disconnect ${platform.replace('_', ' ')}?`)) return;
 
         try {
             const response = await fetch(`/api/connections/${platform}`, {
@@ -1885,6 +1952,57 @@ class Dashboard {
             toast.style.animation = 'slideIn 0.3s ease reverse';
             setTimeout(() => toast.remove(), 300);
         }, 3000);
+    }
+
+    showUpdateDetails(id, title, description, details, createdAt) {
+        const formatUpdateDate = (dateStr) => {
+            const date = new Date(dateStr);
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+        };
+
+        const existingModal = document.querySelector('.modal-overlay');
+        if (existingModal) existingModal.remove();
+
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal" style="max-width: 500px;">
+                <div class="modal-header">
+                    <h3 class="modal-title">${title}</h3>
+                    <button class="modal-close">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-content">
+                    <p style="color: var(--text-muted); margin-bottom: 8px; font-size: 12px;">${formatUpdateDate(createdAt)}</p>
+                    <p style="color: var(--text-secondary); margin-bottom: 16px;">${description}</p>
+                    <div style="background: var(--bg-tertiary); border-radius: 8px; padding: 16px;">
+                        <p style="color: var(--text-primary); line-height: 1.6; white-space: pre-line;">${details}</p>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-primary modal-close-btn" style="width: 100%;">Close</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+        requestAnimationFrame(() => modal.classList.add('active'));
+
+        const close = () => {
+            modal.classList.remove('active');
+            setTimeout(() => modal.remove(), 300);
+        };
+
+        modal.querySelector('.modal-close').addEventListener('click', close);
+        modal.querySelector('.modal-close-btn').addEventListener('click', close);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) close();
+        });
     }
 
     showModal(title, content, onConfirm) {

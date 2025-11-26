@@ -19,6 +19,7 @@ import connectionsHandler from './api/connections.js';
 import collectiblesHandler from './api/collectibles.js';
 import tokenHandler from './api/token.js';
 import filesHandler from './api/files.js';
+import updatesHandler from './api/updates.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -330,6 +331,7 @@ app.use('/api/connections', connectionsHandler);
 app.use('/api', collectiblesHandler);
 app.use('/api/token', tokenHandler);
 app.use('/api/files', filesHandler);
+app.use('/api/updates', updatesHandler);
 
 app.get('/api/biolink/:username', async (req, res) => {
   try {
