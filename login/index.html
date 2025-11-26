@@ -90,7 +90,7 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    window.location.href = '/dash/loading.html';
+                    window.location.href = '/login/loading';
                 } else {
                     errorMessage.textContent = data.error || 'Login failed';
                     errorMessage.classList.add('show');

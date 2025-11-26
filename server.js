@@ -357,9 +357,12 @@ app.get('/api/:userId', async (req, res) => {
 });
 
 function generateInviteCode() {
-
-  const buf = crypto.randomBytes(4).toString('hex').toUpperCase();
-  return `INV-${buf}`;
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let code = 'Glow';
+  for (let i = 0; i < 4; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
 }
 
 app.post('/generate_invite', authenticateToken, async (req, res) => {
@@ -412,10 +415,26 @@ app.get('/privacy', (req, res) => res.sendFile(path.join(__dirname, 'privacy', '
 app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'login', 'index.html')));
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'register', 'index.html')));
 app.get('/login/reset', (req, res) => res.sendFile(path.join(__dirname, 'login', 'reset', 'index.html')));
-app.get('/dash/loading.html', (req, res) => res.sendFile(path.join(__dirname, 'dash', 'loading.html')));
-app.get('/dash', (req, res) => res.redirect('/dashboard'));
-app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'dash', 'app.html')));
+app.get('/login/loading', (req, res) => res.sendFile(path.join(__dirname, 'login', 'loading.html')));
+app.get('/dash', (req, res) => res.sendFile(path.join(__dirname, 'dash', 'app.html')));
 app.get('/ic', (req, res) => res.sendFile(path.join(__dirname, 'ic', 'index.html')));
+
+app.get('/@:username', async (req, res) => {
+    try {
+        const { username } = req.params;
+        const user = await getQuery('users', 'username', username);
+        if (!user) {
+            return res.status(404).sendFile(path.join(__dirname, '404.html'));
+        }
+        res.sendFile(path.join(__dirname, 'profile', 'index.html'));
+    } catch (error) {
+        res.status(404).sendFile(path.join(__dirname, '404.html'));
+    }
+});
+
+app.get('/file/:code', async (req, res) => {
+    res.sendFile(path.join(__dirname, 'file', 'index.html'));
+});
 
 app.use((req, res) => res.status(404).sendFile(path.join(__dirname, '404.html')));
 
