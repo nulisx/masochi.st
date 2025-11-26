@@ -60,6 +60,24 @@ The platform features an ultra-minimal, clean design inspired by elyria.cc with 
 
 ## Recent Changes
 
+### November 26, 2025 (Dashboard UI Rebuild)
+1. **Complete Dashboard CSS Rebuild**: Updated `/static/css/dashboard-app.css` with purple theme matching alo.ne design system
+   - CSS variables for consistent theming (--accent-color: #8b5cf6, --accent-hover: #7c3aed)
+   - Glassmorphic effects and modern styling
+   - Responsive grid layouts for stats, cards, and forms
+2. **Dashboard HTML Rebuild** (`/dash/app.html`):
+   - Changed keyboard shortcut from Cmd+K to Alt+K in search bar
+   - Replaced circular user avatar with Bootstrap Icons person icon (bi-person)
+   - All 9 Biolink tabs implemented: General, Background, Profile, Link, Badge, Layout, Effects, Embed, Config
+   - Social modals with platform-specific input prefixes (e.g., discord.com/users/ for Discord)
+   - Update modals for Latest Updates section with detailed changelog content
+3. **Social Modal Implementation**:
+   - Each social platform has: name, icon, color, prefix, placeholder, and optional title
+   - Modal dynamically updates prefix and placeholder based on selected platform
+   - 30 social platforms supported including Discord, Twitter, Instagram, TikTok, etc.
+4. **Color Input Synchronization**: Color picker and text input stay synchronized
+5. **Range Input Styling**: Range inputs update with visual progress tracking
+
 ### November 25, 2025 (Dashboard Rebuild with Local API)
 1. **Complete Dashboard Rebuild**: Created new custom dashboard (`/dash/app.html`) that works with local API endpoints
    - The previous Vue.js dashboard was pre-compiled to use external API (`https://api.alo.ne`) which wasn't connected
