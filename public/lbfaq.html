@@ -21,12 +21,13 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
         }
-        .logo { color: #a855f7; font-weight: bold; font-size: 18px; }
+        .logo { color: #a855f7; font-weight: bold; font-size: 18px; text-decoration: none; }
         .nav-links a {
             color: #ababab;
             text-decoration: none;
-            margin: 0 20px;
+            margin: 0 15px;
             transition: color 0.3s;
+            font-size: 14px;
         }
         .nav-links a:hover { color: #a855f7; }
         .container {
@@ -54,20 +55,27 @@
         .faq-item h3 {
             color: #a855f7;
             margin-bottom: 12px;
-            font-size: 1.2em;
-            cursor: pointer;
+            font-size: 1.1em;
         }
-        .faq-item p {
+        .faq-item p, .faq-item ul {
             color: #ababab;
             line-height: 1.8;
         }
-        .button { background: #a855f7; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; display: inline-block; margin-top: 10px; transition: background 0.3s; }
-        .button:hover { background: #9333ea; }
+        .faq-item ul { margin-left: 20px; margin-top: 8px; }
+        .faq-item li { margin-bottom: 6px; }
+        code {
+            background: rgba(147, 51, 234, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #a855f7;
+        }
+        hr { border: none; border-top: 1px solid rgba(147, 51, 234, 0.2); margin: 20px 0; }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <div class="logo">glowi.es</div>
+        <a href="/" class="logo">glowi.es</a>
         <div class="nav-links">
             <a href="/">Home</a>
             <a href="/faq">Images FAQ</a>
@@ -75,65 +83,100 @@
     </div>
 
     <div class="container">
-        <h1>⏰ LitterBox (Temporary File Hosting) FAQ</h1>
+        <h1>⏰ LitterBox - Temporary File Hosting FAQ</h1>
 
         <div class="faq-item">
-            <h3>What is LitterBox?</h3>
-            <p>LitterBox is Glowi.es' temporary file hosting service inspired by catbox.moe. Upload files that automatically delete after a set time period - perfect for quick file sharing without permanent storage.</p>
+            <h3>What is LitterBox By Glowi.es?</h3>
+            <p>LitterBox By Glowi.es is the temporary-upload version of Glowi.es. Files are uploaded with full <strong>end-to-end encryption</strong> and automatically deleted after their selected expiration time.</p>
         </div>
 
         <div class="faq-item">
-            <h3>How much can I upload?</h3>
-            <p>LitterBox allows files up to 1GB per upload - 5x larger than our permanent Images storage. Perfect for large files, video clips, or bulk uploads that you don't need to keep forever.</p>
+            <h3>How long do temporary files stay online?</h3>
+            <p>Choose from:</p>
+            <ul>
+                <li><strong>1 Hour</strong></li>
+                <li><strong>12 Hours</strong></li>
+                <li><strong>1 Day</strong></li>
+                <li><strong>3 Days</strong></li>
+            </ul>
+            <p>After that, files auto-expire and are permanently deleted from the system.</p>
         </div>
 
         <div class="faq-item">
-            <h3>What are the expiration options?</h3>
-            <p>You can choose from:
-            • 1 Hour - for very temporary shares
-            • 12 Hours - for same-day file sharing
-            • 1 Day - for quick access period
-            • 3 Days - for short-term collaboration</p>
+            <h3>What is the maximum upload size?</h3>
+            <p>LitterBox supports temporary uploads up to <strong>1 GB</strong>.</p>
         </div>
 
         <div class="faq-item">
-            <h3>Are files encrypted?</h3>
-            <p>Yes! Like our permanent Images storage, LitterBox files are also encrypted end-to-end with AES-256-GCM encryption. Your files are secure even during the temporary hosting period.</p>
+            <h3>How does encryption work?</h3>
+            <p>Just like Glowi.es, LitterBox encrypts files <strong>client-side</strong> before upload, meaning we cannot see the file contents at any stage.</p>
         </div>
 
         <div class="faq-item">
-            <h3>Can I password protect LitterBox uploads?</h3>
-            <p>Absolutely! Add a password to any LitterBox file for extra security. Recipients must enter the correct password to download the file.</p>
+            <h3>Can I upload any type of file?</h3>
+            <p>LitterBox follows the same restricted filelist as Glowi.es. These file types are <strong>blocked</strong>:</p>
+            <ul>
+                <li><code>.exe</code></li>
+                <li><code>.scr</code></li>
+                <li><code>.cpl</code></li>
+                <li><code>.doc*</code></li>
+                <li><code>.jar</code></li>
+            </ul>
+            <p>Everything else is generally allowed.</p>
         </div>
 
         <div class="faq-item">
-            <h3>What happens after the file expires?</h3>
-            <p>Once the expiration time passes, the file is automatically and permanently deleted from our servers. Nobody can access it anymore - not even you.</p>
+            <h3>How do I upload files?</h3>
+            <p>You can upload by:</p>
+            <ul>
+                <li>Selecting files</li>
+                <li>Drag-and-dropping files</li>
+                <li>(Optional) Using the upload tool with supported clients</li>
+            </ul>
+            <p>After uploading, you receive a temporary link such as: <code>https://glowi.es/litter/######.fileextension</code> (######  = random 6 or 16 character name based on your selection)</p>
         </div>
 
         <div class="faq-item">
-            <h3>How long is the share code?</h3>
-            <p>LitterBox files get a random 16-character code (e.g., ab1cd2ef3gh4ij5k) compared to the 6-character codes for permanent Images. This ensures uniqueness across millions of temporary uploads.</p>
+            <h3>Can I choose how long the file name is?</h3>
+            <p>Yes. LitterBox lets you pick:</p>
+            <ul>
+                <li><strong>6 characters</strong></li>
+                <li><strong>16 characters</strong></li>
+            </ul>
+            <p>This affects only the URL slug length.</p>
         </div>
 
         <div class="faq-item">
-            <h3>Can I delete files early?</h3>
-            <p>Yes! You can manually delete any LitterBox file before its expiration time. Once deleted, it's immediately removed for everyone.</p>
+            <h3>Can I delete a file early?</h3>
+            <p>Temporary files are automatically deleted at the end of the chosen period. Early deletion may be available from your dashboard if logged in.</p>
         </div>
 
         <div class="faq-item">
-            <h3>Are there file type restrictions?</h3>
-            <p>Same as Images: Executable files (.exe, .scr, .cpl), Word documents (.doc, .docx, .docm), and Java files (.jar) are blocked. All other file types are supported.</p>
+            <h3>Is LitterBox anonymous?</h3>
+            <p>Yes. No accounts are required. Uploads are E2EE and temporary.</p>
         </div>
 
         <div class="faq-item">
-            <h3>Can I use LitterBox for backups?</h3>
-            <p>Not recommended - LitterBox is designed for temporary sharing, not long-term backup. Use our permanent Images storage for files you want to keep indefinitely.</p>
+            <h3>Why did my upload fail?</h3>
+            <p>Common issues:</p>
+            <ul>
+                <li>File larger than 1 GB</li>
+                <li>Forbidden file type</li>
+                <li>Network instability</li>
+                <li>Source URL failing to respond</li>
+                <li>Browser encryptor failing mid-upload</li>
+            </ul>
+            <p>Retry or use a smaller file.</p>
         </div>
 
         <div class="faq-item">
-            <h3>What if I need the file after it expires?</h3>
-            <p>Once a file expires, it cannot be recovered. For permanent storage with no expiration risk, use our Images section instead.</p>
+            <h3>Does LitterBox have a dark mode?</h3>
+            <p>Yes — click <strong>Go Dark?</strong> at the bottom of the page to enable dark mode.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Where can I get help?</h3>
+            <p>Check the FAQ, use the Contact link, or access support via the Glowi.es dashboard.</p>
         </div>
     </div>
 </body>
