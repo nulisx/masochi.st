@@ -7,18 +7,27 @@ class Dashboard {
 
     async init() {
         try {
-            const response = await fetch('/api/auth/me', { credentials: 'include' });
+            const response = await fetch('/api/auth/me', { 
+                credentials: 'include',
+                method: 'GET'
+            });
             if (response.ok) {
                 const data = await response.json();
                 this.user = data.user || data;
                 this.setupUI();
                 this.loadPage('overview');
             } else {
-                window.location.href = '/login';
+                console.error('Auth failed with status:', response.status);
+                // Add small delay before redirect to ensure user data is cleared
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 100);
             }
         } catch (error) {
             console.error('Failed to load user:', error);
-            window.location.href = '/login';
+            setTimeout(() => {
+                window.location.href = '/login';
+            }, 100);
         }
     }
 

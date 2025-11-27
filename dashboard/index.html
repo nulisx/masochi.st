@@ -167,6 +167,13 @@
         </main>
     </div>
     
+    <script>
+        // Initialize dashboard when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            dashboard = new Dashboard();
+            dashboard.init();
+        });
+    </script>
     <script src="/static/js/dashboard.js"></script>
 </body>
 </html>
