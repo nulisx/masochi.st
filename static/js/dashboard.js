@@ -208,7 +208,7 @@ class Dashboard {
                 </div>
             </div>
             
-            <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 24px;">
+            <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 24px;">
                 <div class="stat-card" style="display: flex; align-items: center; gap: 16px; padding: 20px;">
                     <div class="stat-icon" style="background: var(--accent-primary); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -222,6 +222,18 @@ class Dashboard {
                     </div>
                 </div>
                 <div class="stat-card" style="display: flex; align-items: center; gap: 16px; padding: 20px;">
+                    <div class="stat-icon" style="background: #10b981; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 style="font-size: 24px; margin-bottom: 4px;">${stats.profile_views || 0}</h3>
+                        <p style="color: var(--text-muted); font-size: 13px;">Profile Views</p>
+                    </div>
+                </div>
+                <div class="stat-card" style="display: flex; align-items: center; gap: 16px; padding: 20px;">
                     <div class="stat-icon" style="background: #3b82f6; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
@@ -229,7 +241,7 @@ class Dashboard {
                         </svg>
                     </div>
                     <div class="stat-info">
-                        <h3 style="font-size: 24px; margin-bottom: 4px;">${stats.storage_used} / ${this.formatFileSize(stats.storage_limit)}</h3>
+                        <h3 style="font-size: 24px; margin-bottom: 4px;">${this.formatFileSize(stats.storage_used)} / ${this.formatFileSize(stats.storage_limit)}</h3>
                         <p style="color: var(--text-muted); font-size: 13px;">Storage Used</p>
                     </div>
                 </div>

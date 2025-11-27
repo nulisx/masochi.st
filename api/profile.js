@@ -222,6 +222,7 @@ router.get('/stats', authenticateToken, async (req, res) => {
     const userId = req.user.id;
     
     const user = await getQuery('users', 'id', userId);
+    const profile = await getQuery('profiles', 'user_id', userId);
     const files = await allQuery('files', 'user_id', userId);
     
     let totalStorage = 0;
@@ -236,7 +237,8 @@ router.get('/stats', authenticateToken, async (req, res) => {
       storage_used: totalStorage,
       storage_limit: isPremium ? 10 * 1024 * 1024 * 1024 : 1 * 1024 * 1024 * 1024,
       license_status: isPremium ? 'Active' : 'Inactive',
-      files_count: files.length
+      files_count: files.length,
+      profile_views: profile?.view_count || 0
     });
   } catch (err) {
     console.error('Stats error:', err);
