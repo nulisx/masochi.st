@@ -3,178 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 499.8 499.8'%3E%3Cpath fill='%238b5cf6' d='M477.16,292.045c0,0-62.848-4.221-125.061,22.069c11.664-13.634,23.084-28.804,33.416-45.603c51.428-83.723,56.047-174.385,56.047-174.385s-78.774,45.1-130.221,128.822c-7.563,12.3-13.99,24.738-19.668,37.029c3.467-20.557,5.744-42.617,5.744-65.72C297.417,86.977,249.892,0,249.892,0s-47.506,86.977-47.506,194.259c0,23.102,2.279,45.163,5.742,65.713c-5.68-12.293-12.123-24.723-19.67-37.023C137.017,139.227,58.238,94.127,58.238,94.127s4.623,90.662,56.05,174.385c10.329,16.799,21.75,31.969,33.416,45.603C85.472,287.824,22.64,292.045,22.64,292.045s37.99,47.329,100.418,73.905c23.818,10.137,47.734,15.764,68.231,18.881c-9.681,0.716-19.997,2.132-30.503,4.71c-45.443,11.111-77.006,38.909-77.006,38.909s42.105,9.768,87.561-1.351c29.467-7.217,52.928-21.347,65.893-30.448l-10.852,86.821c-0.506,4.125,0.635,8.272,3.157,11.404c2.522,3.125,6.147,4.923,9.974,4.923h20.791c3.826,0,7.451-1.798,9.975-4.923c2.522-3.132,3.66-7.279,3.156-11.404l-10.852-86.814c12.967,9.103,36.426,23.225,65.875,30.441c45.457,11.118,87.561,1.351,87.561,1.351s-31.564-27.798-77.002-38.909c-10.512-2.578-20.828-3.994-30.508-4.71c20.504-3.117,44.42-8.744,68.238-18.881C439.173,339.374,477.16,292.045,477.16,292.045z'/%3E%3C/svg%3E">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/global.css">
+    <link rel="stylesheet" href="/static/css/pages.css">
     <title>Images FAQ - Glowi.es</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: #111111;
-            color: #dedede;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            line-height: 1.6;
-        }
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            background: rgba(17, 17, 17, 0.8);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-        }
-        .logo { color: #a855f7; font-weight: bold; font-size: 18px; text-decoration: none; }
-        .nav-links a {
-            color: #ababab;
-            text-decoration: none;
-            margin: 0 15px;
-            transition: color 0.3s;
-            font-size: 14px;
-        }
-        .nav-links a:hover { color: #a855f7; }
-        .container {
-            max-width: 900px;
-            margin: 60px auto;
-            padding: 0 20px;
-        }
-        h1 {
-            color: #a855f7;
-            margin-bottom: 40px;
-            font-size: 2.5em;
-        }
-        .faq-item {
-            background: rgba(39, 39, 42, 0.5);
-            border: 1px solid rgba(147, 51, 234, 0.2);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 20px;
-            transition: all 0.3s;
-        }
-        .faq-item:hover {
-            background: rgba(147, 51, 234, 0.1);
-            border-color: rgba(147, 51, 234, 0.5);
-        }
-        .faq-item h3 {
-            color: #a855f7;
-            margin-bottom: 12px;
-            font-size: 1.1em;
-        }
-        .faq-item p, .faq-item ul {
-            color: #ababab;
-            line-height: 1.8;
-        }
-        .faq-item ul { margin-left: 20px; margin-top: 8px; }
-        .faq-item li { margin-bottom: 6px; }
-        code {
-            background: rgba(147, 51, 234, 0.2);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-            color: #a855f7;
-        }
-        hr { border: none; border-top: 1px solid rgba(147, 51, 234, 0.2); margin: 20px 0; }
+        .faq-container { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 280px; gap: 40px; }
+        .faq-content { flex: 1; }
+        .faq-section { margin-bottom: 40px; }
+        .faq-section h2 { font-size: 1.4em; margin-bottom: 20px; color: var(--accent-primary); font-weight: 600; border-bottom: 2px solid rgba(147, 51, 234, 0.3); padding-bottom: 10px; }
+        .faq-item { margin-bottom: 24px; }
+        .faq-item strong { color: var(--accent-primary); display: block; margin-bottom: 6px; font-size: 0.95em; }
+        .faq-item p { color: var(--text-muted); line-height: 1.6; margin: 6px 0; }
+        .faq-item ul { margin: 8px 0 8px 20px; color: var(--text-muted); }
+        .faq-item li { margin-bottom: 4px; line-height: 1.5; }
+        .faq-item a { color: var(--accent-primary); text-decoration: none; }
+        .faq-item a:hover { text-decoration: underline; }
+        code { background: rgba(147, 51, 234, 0.15); padding: 1px 4px; border-radius: 3px; font-family: monospace; color: var(--accent-primary); }
+        .faq-sidebar { position: sticky; top: 20px; height: fit-content; }
+        .faq-mascot { text-align: center; }
+        .faq-mascot img { max-width: 100%; border-radius: 8px; }
+        .faq-home-btn { display: inline-block; margin-bottom: 20px; padding: 8px 16px; background: rgba(147, 51, 234, 0.2); color: var(--accent-primary); text-decoration: none; border-radius: 6px; border: 1px solid rgba(147, 51, 234, 0.3); font-size: 0.9em; transition: all 0.3s; }
+        .faq-home-btn:hover { background: rgba(147, 51, 234, 0.3); border-color: var(--accent-primary); }
+        @media (max-width: 768px) { .faq-container { grid-template-columns: 1fr; } .faq-sidebar { position: static; } }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <a href="/" class="logo">glowi.es</a>
-        <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="/lbfaq">LitterBox FAQ</a>
+        <div class="logo">
+            <svg class="logo-icon" viewBox="0 0 499.8 499.8" xmlns="http://www.w3.org/2000/svg">
+                <path d="M477.16,292.045c0,0-62.848-4.221-125.061,22.069c11.664-13.634,23.084-28.804,33.416-45.603c51.428-83.723,56.047-174.385,56.047-174.385s-78.774,45.1-130.221,128.822c-7.563,12.3-13.99,24.738-19.668,37.029c3.467-20.557,5.744-42.617,5.744-65.72C297.417,86.977,249.892,0,249.892,0s-47.506,86.977-47.506,194.259c0,23.102,2.279,45.163,5.742,65.713c-5.68-12.293-12.123-24.723-19.67-37.023C137.017,139.227,58.238,94.127,58.238,94.127s4.623,90.662,56.05,174.385c10.329,16.799,21.75,31.969,33.416,45.603C85.472,287.824,22.64,292.045,22.64,292.045s37.99,47.329,100.418,73.905c23.818,10.137,47.734,15.764,68.231,18.881c-9.681,0.716-19.997,2.132-30.503,4.71c-45.443,11.111-77.006,38.909-77.006,38.909s42.105,9.768,87.561-1.351c29.467-7.217,52.928-21.347,65.893-30.448l-10.852,86.821c-0.506,4.125,0.635,8.272,3.157,11.404c2.522,3.125,6.147,4.923,9.974,4.923h20.791c3.826,0,7.451-1.798,9.975-4.923c2.522-3.132,3.66-7.279,3.156-11.404l-10.852-86.814c12.967,9.103,36.426,23.225,65.875,30.441c45.457,11.118,87.561,1.351,87.561,1.351s-31.564-27.798-77.002-38.909c-10.512-2.578-20.828-3.994-30.508-4.71c20.504-3.117,44.42-8.744,68.238-18.881C439.173,339.374,477.16,292.045,477.16,292.045z"/>
+            </svg>
+            Glowi.es
+        </div>
+        <div class="nav-pills">
+            <a href="/" class="nav-pill">Home</a>
+            <a href="/about" class="nav-pill">About</a>
+            <a href="/#features" class="nav-pill">Features</a>
+            <a href="/faq" class="nav-pill">Images FAQ</a>
+            <a href="/lbfaq" class="nav-pill">LitterBox FAQ</a>
+            <a href="/pricing" class="nav-pill">Pricing</a>
+            <a href="/privacy" class="nav-pill">Privacy</a>
+            <a href="/login" class="nav-pill nav-pill-login">Login</a>
+        </div>
+        <div class="mobile-menu">
+            <button class="mobile-menu-button" onclick="toggleMobileMenu()">☰</button>
+            <div class="mobile-dropdown" id="mobileDropdown">
+                <button class="mobile-button" onclick="window.location.href='/'">Home</button>
+                <button class="mobile-button" onclick="window.location.href='/about'">About</button>
+                <button class="mobile-button" onclick="window.location.href='/#features'">Features</button>
+                <button class="mobile-button" onclick="window.location.href='/faq'">Images FAQ</button>
+                <button class="mobile-button" onclick="window.location.href='/lbfaq'">LitterBox FAQ</button>
+                <button class="mobile-button" onclick="window.location.href='/pricing'">Pricing</button>
+                <button class="mobile-button" onclick="window.location.href='/privacy'">Privacy</button>
+                <button class="mobile-button" onclick="window.location.href='/login'">Login</button>
+            </div>
         </div>
     </div>
 
-    <div class="container">
-        <h1>📸 E2EE File Hosting FAQ</h1>
-
-        <div class="faq-item">
-            <h3>What is Glowi.es?</h3>
-            <p>Glowi.es is a fast, reliable, end-to-end encrypted (E2EE) file hosting service. Files are encrypted <strong>client-side</strong> before upload, stored securely, and delivered through simple randomized URLs. Upload files up to <strong>200 MB</strong> permanently (unless deleted).</p>
+    <div class="page-container">
+        <div class="page-header">
+            <h1>Images FAQ</h1>
+            <p class="page-subtitle">Facts. Answers. Everything you need to know.</p>
         </div>
 
-        <div class="faq-item">
-            <h3>Who created Glowi.es?</h3>
-            <p>Glowi.es is developed and maintained by the Glowi.es team—focused on privacy, performance, and creating the cleanest E2EE hosting experience on the internet.</p>
-        </div>
+        <div class="faq-container">
+            <div class="faq-content">
+                <div class="faq-section">
+                    <h2>General</h2>
+                    
+                    <div class="faq-item">
+                        <strong>What is Glowi.es?</strong>
+                        <p>Glowi.es is a fast, reliable, end-to-end encrypted (E2EE) file hosting service. Files are encrypted <strong>client-side</strong> before upload, stored securely, and delivered through simple randomized URLs. Upload files up to <strong>200 MB</strong> permanently (unless deleted).</p>
+                    </div>
 
-        <div class="faq-item">
-            <h3>What kinds of files are allowed?</h3>
-            <p>Most normal file types are accepted. However, the following file types are <strong>not allowed</strong> for security reasons:</p>
-            <ul>
-                <li><code>.exe</code></li>
-                <li><code>.scr</code></li>
-                <li><code>.cpl</code></li>
-                <li><code>.doc*</code></li>
-                <li><code>.jar</code></li>
-            </ul>
-            <p>These will be rejected automatically.</p>
-        </div>
+                    <div class="faq-item">
+                        <strong>Who created Glowi.es?</strong>
+                        <p>Glowi.es is developed and maintained by the Glowi.es team—focused on privacy, performance, and creating the cleanest E2EE hosting experience on the internet.</p>
+                    </div>
 
-        <div class="faq-item">
-            <h3>How do I upload files?</h3>
-            <p>You may upload files in one of two ways:</p>
-            <ul>
-                <li><strong>File Upload:</strong> Select files or drag-and-drop them into the upload area.</li>
-                <li><strong>URL Upload:</strong> Paste a direct link into the "Upload via URL" field.</li>
-            </ul>
-            <p>After uploading, you will receive a permanent, encrypted link such as: <code>https://glowi.es/files/######.fileextension</code> (######  = random 6-character alphanumeric ID)</p>
-        </div>
+                    <div class="faq-item">
+                        <strong>What file types aren't allowed?</strong>
+                        <p>The following file types are currently not allowed: <code>.exe</code>, <code>.scr</code>, <code>.cpl</code>, <code>.doc*</code>, <code>.jar</code></p>
+                    </div>
 
-        <div class="faq-item">
-            <h3>What is the maximum upload size?</h3>
-            <p>Glowi.es supports uploads up to <strong>200 MB</strong>.</p>
-        </div>
+                    <div class="faq-item">
+                        <strong>Banned Content</strong>
+                        <p><strong>Do not upload:</strong> Child pornography, viruses/malware, entire episodes of anime, or full length episodes of TV shows, heavy gore, or sexualized depictions of real minors. I will purge your account/uploads if anything you upload violates these rules. See our <a href="/privacy">Acceptable Use Policy and Terms of Service</a> for more info.</p>
+                        <p>You <em>cannot</em> use Glowi.es for commercial services without prior approval. Examples include: a CDN (Content Delivery Network); image host for your business/ecommerce site (embedding hotlinks to Glowi.es files on your Wordpress site); or as source for videos that are streamed on sites other than files.glowi.es directly.</p>
+                    </div>
 
-        <div class="faq-item">
-            <h3>How long are files stored?</h3>
-            <p>Glowi.es permanent hosting stores files indefinitely unless you delete them from your account or they violate our Terms of Service.</p>
-        </div>
+                    <div class="faq-item">
+                        <strong>Are files encrypted?</strong>
+                        <p>Yes. All files are encrypted <strong>before they leave your device</strong> using E2EE. Even we cannot view your uploaded files.</p>
+                    </div>
 
-        <div class="faq-item">
-            <h3>Are files encrypted?</h3>
-            <p>Yes. All files are encrypted <strong>before they leave your device</strong> using E2EE. Even we cannot view your uploaded files.</p>
-        </div>
+                    <div class="faq-item">
+                        <strong>How do I upload files?</strong>
+                        <p>You may upload files in one of two ways:</p>
+                        <ul>
+                            <li><strong>File Upload:</strong> Select files or drag-and-drop them into the upload area.</li>
+                            <li><strong>URL Upload:</strong> Paste a direct link into the "Upload via URL" field.</li>
+                        </ul>
+                        <p>After uploading, you will receive a permanent, encrypted link such as: <code>https://glowi.es/file/######</code> (######  = random 6-character alphanumeric ID)</p>
+                    </div>
 
-        <div class="faq-item">
-            <h3>Can files be removed?</h3>
-            <p>Yes. You may delete your files at any time through the dashboard. Files violating the ToS may also be removed by administrators.</p>
-        </div>
+                    <div class="faq-item">
+                        <strong>What is the maximum upload size?</strong>
+                        <p>Glowi.es supports uploads up to <strong>200 MB</strong>.</p>
+                    </div>
 
-        <div class="faq-item">
-            <h3>Can Glowi.es be used via apps or tools?</h3>
-            <p>Yes. You may integrate Glowi.es into scripts, uploaders, or third-party tools using standard POST uploads. (Public API documentation is coming soon.)</p>
-        </div>
+                    <div class="faq-item">
+                        <strong>How long are files stored?</strong>
+                        <p>Glowi.es permanent hosting stores files indefinitely unless you delete them from your account or they violate our Terms of Service. If you don't want your file to stick around forever, <a href="/lbfaq">use LitterBox</a>.</p>
+                    </div>
 
-        <div class="faq-item">
-            <h3>Are files scanned or analyzed?</h3>
-            <p>No. Because of E2EE, Glowi.es cannot view or analyze the contents of uploaded files.</p>
-        </div>
+                    <div class="faq-item">
+                        <strong>Can files be removed?</strong>
+                        <p>Yes. You may delete your files at any time through the dashboard. Files violating the ToS may also be removed by administrators.</p>
+                    </div>
 
-        <div class="faq-item">
-            <h3>Why did my file upload fail?</h3>
-            <p>Common reasons:</p>
-            <ul>
-                <li>File exceeded the 200 MB limit</li>
-                <li>Forbidden file type</li>
-                <li>Upload server timeout</li>
-                <li>Corrupted source file</li>
-                <li>Remote URL didn't return a valid file</li>
-            </ul>
-            <p>Try again or contact support.</p>
-        </div>
+                    <div class="faq-item">
+                        <strong>Are files scanned or analyzed?</strong>
+                        <p>No. Because of E2EE, Glowi.es cannot view or analyze the contents of uploaded files.</p>
+                    </div>
 
-        <div class="faq-item">
-            <h3>How does Glowi.es generate random file names?</h3>
-            <p>Every uploaded file is assigned a randomized <strong>6-character alphanumeric string</strong> to create unique links (e.g., <code>https://glowi.es/files/xA92fB.png</code>).</p>
-        </div>
+                    <div class="faq-item">
+                        <strong>Why did my file upload fail?</strong>
+                        <p>Common reasons:</p>
+                        <ul>
+                            <li>File exceeded the 200 MB limit</li>
+                            <li>Forbidden file type</li>
+                            <li>Upload server timeout</li>
+                            <li>Corrupted source file</li>
+                            <li>Remote URL didn't return a valid file</li>
+                        </ul>
+                        <p>Try again or contact support.</p>
+                    </div>
 
-        <div class="faq-item">
-            <h3>Is there a dark mode?</h3>
-            <p>Yes—toggle <strong>Go Dark?</strong> at the bottom of the page to switch themes.</p>
-        </div>
+                    <div class="faq-item">
+                        <strong>How does Glowi.es generate random file names?</strong>
+                        <p>Every uploaded file is assigned a randomized <strong>6-character alphanumeric string</strong> to create unique links (e.g., <code>https://glowi.es/file/xA92fB</code>).</p>
+                    </div>
 
-        <div class="faq-item">
-            <h3>Where can I get support?</h3>
-            <p>Use the Contact link in the footer or message support directly via the Glowi.es dashboard.</p>
+                    <div class="faq-item">
+                        <strong>Can Glowi.es be used via apps or tools?</strong>
+                        <p>Yes. You may integrate Glowi.es into scripts, uploaders, or third-party tools using standard POST uploads. (Public API documentation is coming soon.)</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <strong>Where can I get support?</strong>
+                        <p>Use the Contact link in the footer or message support directly via the Glowi.es dashboard.</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(147, 51, 234, 0.2); color: var(--text-muted); font-size: 0.9em;">
+                    <p><strong>If you have any other questions, <a href="mailto:support@glowi.es" style="color: var(--accent-primary);">email us</a>.</strong></p>
+                </div>
+            </div>
+
+            <div class="faq-sidebar">
+                <a href="/" class="faq-home-btn">← Home</a>
+                <div class="faq-mascot">
+                    <p style="color: var(--text-muted); margin-bottom: 12px; font-size: 0.85em;">Permanent File Hosting</p>
+                    <img src="https://catbox.moe/pictures/qts/1448856052869.png" alt="cute mascot" style="opacity: 0.8;">
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+        function toggleMobileMenu() {
+            const dropdown = document.getElementById('mobileDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const dropdown = document.getElementById('mobileDropdown');
+            if (mobileMenu && !mobileMenu.contains(event.target) && dropdown && dropdown.classList.contains('show')) {
+                dropdown.classList.toggle('show');
+            }
+        });
+    </script>
 </body>
 </html>
