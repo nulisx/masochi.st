@@ -5,6 +5,25 @@ class Dashboard {
         this.updates = [];
     }
 
+    getAuthHeaders() {
+        const token = localStorage.getItem('authToken');
+        return token ? { 'Authorization': `Bearer ${token}` } : {};
+    }
+
+    async apiFetch(url, options = {}) {
+        const headers = { ...this.getAuthHeaders(), ...options.headers };
+        const response = await fetch(url, { 
+            credentials: 'include',
+            ...options, 
+            headers 
+        });
+        if (response.status === 401) {
+            localStorage.removeItem('authToken');
+            window.location.href = '/login';
+        }
+        return response;
+    }
+
     async init() {
         try {
             const token = localStorage.getItem('authToken');
@@ -1931,7 +1950,7 @@ class Dashboard {
 
     async fetchProfile() {
         try {
-            const response = await fetch('/api/profile', { credentials: 'include' });
+            const response = await this.apiFetch('/api/profile');
             if (response.ok) {
                 const data = await response.json();
                 return data.profile || {};
@@ -1945,7 +1964,7 @@ class Dashboard {
 
     async fetchLinks() {
         try {
-            const response = await fetch('/api/links', { credentials: 'include' });
+            const response = await this.apiFetch('/api/links');
             if (response.ok) {
                 const data = await response.json();
                 return data.links || [];
@@ -1959,7 +1978,7 @@ class Dashboard {
 
     async fetchFiles() {
         try {
-            const response = await fetch('/api/files', { credentials: 'include' });
+            const response = await this.apiFetch('/api/files');
             if (response.ok) {
                 const data = await response.json();
                 return data.files || [];
@@ -1973,7 +1992,7 @@ class Dashboard {
 
     async fetchConnections() {
         try {
-            const response = await fetch('/api/connections', { credentials: 'include' });
+            const response = await this.apiFetch('/api/connections');
             if (response.ok) {
                 const data = await response.json();
                 return data.connections || [];
