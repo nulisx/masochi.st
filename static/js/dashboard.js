@@ -274,6 +274,9 @@ class Dashboard {
                 case 'api':
                     await this.renderAPI();
                     break;
+                case 'mod-reports':
+                    await this.renderModReports();
+                    break;
                 default:
                     await this.renderOverview();
             }
@@ -2538,10 +2541,58 @@ class Dashboard {
                 </div>
             </div>
 
-            <div class="card" style="text-align: center; padding: 60px 24px;">
-                <p style="color: var(--text-muted);">Admin user management panel - coming soon with full implementation</p>
+            <div style="display: grid; gap: 16px; max-width: 1200px;" id="usersContainer">
+                <div style="text-align: center; padding: 40px;">Loading users...</div>
             </div>
         `;
+        await this.loadAdminUsers();
+    }
+
+    async loadAdminUsers() {
+        try {
+            const response = await fetch('/api/admin/users', {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${this.token}` }
+            });
+            const data = await response.json();
+            const users = data.users || data || [];
+            
+            const container = document.getElementById('usersContainer');
+            if (users.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 40px;">No users found</div>';
+                return;
+            }
+
+            container.innerHTML = `
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--border-color);">
+                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Username</th>
+                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Email</th>
+                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Role</th>
+                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Joined</th>
+                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${users.map(user => `
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 12px; color: var(--text-primary);">@${user.username}</td>
+                                <td style="padding: 12px; color: var(--text-secondary);">${user.email}</td>
+                                <td style="padding: 12px;"><span style="background: var(--accent-primary); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">${user.role}</span></td>
+                                <td style="padding: 12px; color: var(--text-muted);">${new Date(user.created_at).toLocaleDateString()}</td>
+                                <td style="padding: 12px;">
+                                    <button onclick="alert('Ban/manage user: ${user.username}')" style="background: var(--danger); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Manage</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        } catch (err) {
+            console.error('Error loading users:', err);
+            document.getElementById('usersContainer').innerHTML = '<div style="color: var(--danger); padding: 20px;">Failed to load users</div>';
+        }
     }
 
     async renderAdminInvites() {
@@ -2557,12 +2608,75 @@ class Dashboard {
                     <h1 class="page-title">Admin Invites</h1>
                     <p class="page-subtitle">Manage invite codes</p>
                 </div>
+                <button onclick="dashboard.showInviteModal()" style="background: var(--accent-primary); color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer;">+ Create Invite</button>
             </div>
 
-            <div class="card" style="text-align: center; padding: 60px 24px;">
-                <p style="color: var(--text-muted);">Admin invite management panel - coming soon with full implementation</p>
+            <div style="display: grid; gap: 16px; max-width: 1200px;" id="invitesContainer">
+                <div style="text-align: center; padding: 40px;">Loading invites...</div>
             </div>
         `;
+        await this.loadAdminInvites();
+    }
+
+    async loadAdminInvites() {
+        try {
+            const response = await fetch('/api/admin/invites', {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${this.token}` }
+            });
+            const data = await response.json();
+            const invites = data.invites || data || [];
+            
+            const container = document.getElementById('invitesContainer');
+            if (invites.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 40px;">No invites found</div>';
+                return;
+            }
+
+            container.innerHTML = `
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--border-color);">
+                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Code</th>
+                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Role</th>
+                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Uses</th>
+                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Expires</th>
+                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${invites.map(invite => `
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 12px; color: var(--text-primary); font-family: monospace;">${invite.code}</td>
+                                <td style="padding: 12px;"><span style="background: var(--accent-primary); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">${invite.role}</span></td>
+                                <td style="padding: 12px; color: var(--text-secondary);">${invite.uses_count}/${invite.max_uses}</td>
+                                <td style="padding: 12px; color: var(--text-muted);">${invite.expires_at ? new Date(invite.expires_at).toLocaleDateString() : 'Never'}</td>
+                                <td style="padding: 12px;">
+                                    <button onclick="dashboard.deleteInvite('${invite.code}')" style="background: var(--danger); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Delete</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        } catch (err) {
+            console.error('Error loading invites:', err);
+            document.getElementById('invitesContainer').innerHTML = '<div style="color: var(--danger); padding: 20px;">Failed to load invites</div>';
+        }
+    }
+
+    showInviteModal() {
+        alert('Create invite feature - prompt for code and role');
+    }
+
+    async deleteInvite(code) {
+        if (!confirm(`Delete invite ${code}?`)) return;
+        try {
+            await fetch(`/api/admin/invites/${code}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${this.token}` } });
+            this.loadAdminInvites();
+        } catch (err) {
+            alert('Failed to delete invite');
+        }
     }
 
     async renderAdminFiles() {
@@ -2575,15 +2689,58 @@ class Dashboard {
                     </svg>
                 </button>
                 <div>
-                    <h1 class="page-title">Admin Files</h1>
-                    <p class="page-subtitle">View all uploaded files</p>
+                    <h1 class="page-title">All Platform Files</h1>
+                    <p class="page-subtitle">View all uploaded files across the platform</p>
                 </div>
             </div>
 
-            <div class="card" style="text-align: center; padding: 60px 24px;">
-                <p style="color: var(--text-muted);">Admin files management panel - coming soon with full implementation</p>
+            <div style="display: grid; gap: 16px; max-width: 1200px;" id="adminFilesContainer">
+                <div style="text-align: center; padding: 40px;">Loading files...</div>
             </div>
         `;
+        await this.loadAdminFiles();
+    }
+
+    async loadAdminFiles() {
+        try {
+            const response = await fetch('/api/files', { method: 'GET', headers: { 'Authorization': `Bearer ${this.token}` } });
+            const data = await response.json();
+            const files = data.files || data || [];
+            
+            const container = document.getElementById('adminFilesContainer');
+            if (files.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 40px;">No files uploaded</div>';
+                return;
+            }
+
+            container.innerHTML = `
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--border-color);">
+                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Filename</th>
+                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Size</th>
+                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Code</th>
+                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Uploaded</th>
+                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${files.map(file => `
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 12px; color: var(--text-primary);">${file.filename}</td>
+                                <td style="padding: 12px; color: var(--text-secondary);">${this.formatFileSize(file.size)}</td>
+                                <td style="padding: 12px; color: var(--accent-secondary); font-family: monospace; font-size: 12px;">${file.code}</td>
+                                <td style="padding: 12px; color: var(--text-muted);">${new Date(file.created_at).toLocaleDateString()}</td>
+                                <td style="padding: 12px;"><span style="background: var(--success); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Active</span></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        } catch (err) {
+            console.error('Error loading admin files:', err);
+            document.getElementById('adminFilesContainer').innerHTML = '<div style="color: var(--danger); padding: 20px;">Failed to load files</div>';
+        }
     }
 
     async renderAdminAnalytics() {
@@ -2596,15 +2753,140 @@ class Dashboard {
                     </svg>
                 </button>
                 <div>
-                    <h1 class="page-title">Admin Analytics</h1>
-                    <p class="page-subtitle">Platform analytics and insights</p>
+                    <h1 class="page-title">Platform Analytics</h1>
+                    <p class="page-subtitle">System-wide analytics and statistics</p>
                 </div>
             </div>
 
-            <div class="card" style="text-align: center; padding: 60px 24px;">
-                <p style="color: var(--text-muted);">Admin analytics panel - coming soon with full implementation</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; max-width: 1200px; margin-bottom: 24px;" id="statsContainer">
+                <div style="text-align: center; padding: 40px;">Loading analytics...</div>
+            </div>
+
+            <div style="display: grid; gap: 16px; max-width: 1200px;">
+                <div class="card" style="padding: 24px;">
+                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">Recent Platform Updates</h3>
+                    <div id="updatesContainer" style="color: var(--text-muted);">Loading...</div>
+                </div>
             </div>
         `;
+        await this.loadAnalytics();
+    }
+
+    async loadAnalytics() {
+        try {
+            const usersRes = await fetch('/api/admin/stats', { method: 'GET', headers: { 'Authorization': `Bearer ${this.token}` } }).catch(() => null);
+            const profilesRes = await fetch('/api/profile', { method: 'GET', headers: { 'Authorization': `Bearer ${this.token}` } });
+            const filesRes = await fetch('/api/files', { method: 'GET', headers: { 'Authorization': `Bearer ${this.token}` } });
+            const updatesRes = await fetch('/api/updates', { method: 'GET', headers: { 'Authorization': `Bearer ${this.token}` } });
+
+            const stats = usersRes && await usersRes.json();
+            const profile = await profilesRes.json();
+            const files = await filesRes.json();
+            const updates = await updatesRes.json();
+
+            const statsContainer = document.getElementById('statsContainer');
+            statsContainer.innerHTML = `
+                <div class="card" style="padding: 20px; border: 1px solid var(--accent-primary); background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, transparent 100%);">
+                    <div style="font-size: 24px; font-weight: 700; color: var(--accent-secondary); margin-bottom: 4px;">${stats?.user_count || '∞'}</div>
+                    <div style="color: var(--text-muted); font-size: 12px;">Total Users</div>
+                </div>
+                <div class="card" style="padding: 20px; border: 1px solid var(--accent-primary); background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, transparent 100%);">
+                    <div style="font-size: 24px; font-weight: 700; color: var(--accent-secondary); margin-bottom: 4px;">${(files.files || []).length}</div>
+                    <div style="color: var(--text-muted); font-size: 12px;">Total Files</div>
+                </div>
+                <div class="card" style="padding: 20px; border: 1px solid var(--accent-primary); background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, transparent 100%);">
+                    <div style="font-size: 24px; font-weight: 700; color: var(--accent-secondary); margin-bottom: 4px;">${profile?.view_count || 0}</div>
+                    <div style="color: var(--text-muted); font-size: 12px;">Profile Views</div>
+                </div>
+            `;
+
+            const updatesContainer = document.getElementById('updatesContainer');
+            const updatesList = updates.updates || [];
+            if (updatesList.length === 0) {
+                updatesContainer.innerHTML = '<div style="color: var(--text-muted); padding: 16px;">No recent updates</div>';
+            } else {
+                updatesContainer.innerHTML = updatesList.slice(0, 5).map(u => `
+                    <div style="padding: 12px 0; border-bottom: 1px solid var(--border-color); color: var(--text-secondary);">
+                        <div style="font-weight: 500; color: var(--text-primary);">${u.title}</div>
+                        <div style="font-size: 12px; margin-top: 4px;">${new Date(u.created_at).toLocaleDateString()}</div>
+                    </div>
+                `).join('');
+            }
+        } catch (err) {
+            console.error('Error loading analytics:', err);
+        }
+    }
+
+    async renderModReports() {
+        const contentArea = document.getElementById('contentArea');
+        contentArea.innerHTML = `
+            <div class="page-header">
+                <button class="page-back" onclick="dashboard.loadPage('overview')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="page-title">File Reports</h1>
+                    <p class="page-subtitle">Review reported files</p>
+                </div>
+            </div>
+
+            <div style="display: grid; gap: 16px; max-width: 1200px;" id="reportsContainer">
+                <div style="text-align: center; padding: 40px;">Loading reports...</div>
+            </div>
+        `;
+        await this.loadFileReports();
+    }
+
+    async loadFileReports() {
+        try {
+            const response = await fetch('/api/admin/file-reports', { method: 'GET', headers: { 'Authorization': `Bearer ${this.token}` } });
+            const data = await response.json();
+            const reports = data.reports || [];
+            
+            const container = document.getElementById('reportsContainer');
+            if (reports.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 40px;">No file reports</div>';
+                return;
+            }
+
+            container.innerHTML = reports.map(report => `
+                <div class="card" style="padding: 20px; border-left: 4px solid var(--warning);">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div>
+                            <h4 style="color: var(--text-primary); margin-bottom: 8px;">Report #${report.id}</h4>
+                            <p style="color: var(--text-muted); margin-bottom: 12px;">Reason: ${report.reason}</p>
+                            <p style="color: var(--text-secondary); font-size: 12px;">Reported: ${new Date(report.created_at).toLocaleDateString()}</p>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button onclick="dashboard.approveReport(${report.id})" style="background: var(--success); color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Approve</button>
+                            <button onclick="dashboard.declineReport(${report.id})" style="background: var(--danger); color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Decline</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        } catch (err) {
+            console.error('Error loading reports:', err);
+        }
+    }
+
+    async approveReport(reportId) {
+        try {
+            await fetch(`/api/admin/file-reports/approve/${reportId}`, { method: 'POST', headers: { 'Authorization': `Bearer ${this.token}` } });
+            this.loadFileReports();
+        } catch (err) {
+            alert('Failed to approve report');
+        }
+    }
+
+    async declineReport(reportId) {
+        try {
+            await fetch(`/api/admin/file-reports/decline/${reportId}`, { method: 'POST', headers: { 'Authorization': `Bearer ${this.token}` } });
+            this.loadFileReports();
+        } catch (err) {
+            alert('Failed to decline report');
+        }
     }
 }
 
