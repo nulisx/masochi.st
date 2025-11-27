@@ -9,7 +9,8 @@ class Dashboard {
         try {
             const response = await fetch('/api/auth/me', { credentials: 'include' });
             if (response.ok) {
-                this.user = await response.json();
+                const data = await response.json();
+                this.user = data.user || data;
                 this.setupUI();
                 this.loadPage('overview');
             } else {
