@@ -1907,40 +1907,60 @@ class Dashboard {
 
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
+        modal.style.cssText = `
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        `;
+        
         modal.innerHTML = `
-            <div class="modal" style="max-width: 500px;">
-                <div class="modal-header">
-                    <h3 class="modal-title">${title}</h3>
-                    <button class="modal-close">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
+            <div class="modal" style="max-width: 600px; background: rgb(17 17 17); border: 2px solid rgb(39 39 42 / 0.5); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); border-radius: 12px; padding: 0;">
+                <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                    <h3 class="modal-title" style="font-size: 18px; color: #dedede;">${title} | ${formatUpdateDate(createdAt)}</h3>
+                    <button class="modal-close" style="background: none; border: none; color: #dedede; cursor: pointer; font-size: 24px;">
+                        ✕
                     </button>
                 </div>
-                <div class="modal-content">
-                    <p style="color: var(--text-muted); margin-bottom: 8px; font-size: 12px;">${formatUpdateDate(createdAt)}</p>
-                    <p style="color: var(--text-secondary); margin-bottom: 16px;">${description}</p>
-                    <div style="background: var(--bg-tertiary); border-radius: 8px; padding: 16px;">
-                        <p style="color: var(--text-primary); line-height: 1.6; white-space: pre-line;">${details}</p>
+                <div class="modal-content" style="padding: 20px; color: #ababab; line-height: 1.6;">
+                    <p style="margin-bottom: 16px;">${description}</p>
+                    <div style="background: rgb(24 24 27); border-radius: 8px; padding: 16px; border: 1px solid rgb(39 39 42);">
+                        <ul style="list-style: disc; padding-left: 20px; color: #ababab;">
+                            ${(details || '').split('\n').map(line => line.trim()).filter(line => line && line.startsWith('-')).map(line => `<li>${line.substring(1).trim()}</li>`).join('')}
+                        </ul>
                     </div>
-                </div>
-                <div class="modal-actions">
-                    <button class="btn btn-primary modal-close-btn" style="width: 100%;">Close</button>
                 </div>
             </div>
         `;
 
         document.body.appendChild(modal);
-        requestAnimationFrame(() => modal.classList.add('active'));
+        
+        // Add fade-in animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+        `;
+        if (!document.querySelector('style[data-modal-animation]')) {
+            style.setAttribute('data-modal-animation', '');
+            document.head.appendChild(style);
+        }
 
         const close = () => {
-            modal.classList.remove('active');
+            modal.style.animation = 'fadeIn 0.3s ease reverse';
             setTimeout(() => modal.remove(), 300);
         };
 
         modal.querySelector('.modal-close').addEventListener('click', close);
-        modal.querySelector('.modal-close-btn').addEventListener('click', close);
         modal.addEventListener('click', (e) => {
             if (e.target === modal) close();
         });

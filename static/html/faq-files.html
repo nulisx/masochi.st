@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Glowi.es E2EE File Host</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0f0f0f;
+            color: #dedede;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            padding: 40px 20px;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .logo { font-size: 32px; margin-bottom: 20px; }
+        .logo span { color: #9333ea; }
+        h1 { font-size: 28px; margin-bottom: 10px; color: #ffffff; }
+        .subtitle { color: #64748b; font-size: 14px; }
+        .faq-item {
+            margin-bottom: 40px;
+            padding: 24px;
+            background: rgba(39, 39, 42, 0.3);
+            border-left: 3px solid #9333ea;
+            border-radius: 6px;
+        }
+        .faq-item h3 {
+            color: #a855f7;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        .faq-item p {
+            color: #ababab;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        .faq-item ul {
+            list-style: disc;
+            margin-left: 20px;
+            color: #ababab;
+            line-height: 1.6;
+        }
+        .faq-item code {
+            background: rgba(24, 24, 27, 0.8);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #9333ea;
+            font-family: 'Courier New', monospace;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(82, 82, 90, 0.3);
+            color: #64748b;
+            font-size: 12px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #9333ea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/uploads" class="back-link">← Back to File Hosting</a>
+        
+        <div class="header">
+            <div class="logo"><span style="color: #9333ea;">★</span> glowi.es</div>
+            <h1>FAQ - E2EE File Host</h1>
+            <p class="subtitle">Frequently Asked Questions</p>
+        </div>
+        
+        <div class="faq-item">
+            <h3>What is Glowi.es?</h3>
+            <p>Glowi.es is a fast, reliable, end-to-end encrypted (E2EE) file hosting service. Files are encrypted <strong>client-side</strong> before upload, stored securely, and delivered through simple randomized URLs. Upload files up to <strong>200 MB</strong> permanently (unless deleted).</p>
+        </div>
+        
+        <div class="faq-item">
+            <h3>Who created Glowi.es?</h3>
+            <p>Glowi.es is developed and maintained by the Glowi.es team—focused on privacy, performance, and creating the cleanest E2EE hosting experience on the internet.</p>
+        </div>
+        
+        <div class="faq-item">
+            <h3>What kinds of files are allowed?</h3>
+            <p>Most normal file types are accepted. However, the following file types are <strong>not allowed</strong> for security reasons:</p>
+            <ul>
+                <li><code>.exe</code></li>
+                <li><code>.scr</code></li>
+                <li><code>.cpl</code></li>
+                <li><code>.doc*</code></li>
+                <li><code>.jar</code></li>
+            </ul>
+            <p>These will be rejected automatically.</p>
+        </div>
+        
+        <div class="faq-item">
+            <h3>How do I upload files?</h3>
+            <p>You may upload files in one of two ways:</p>
+            <ul>
+                <li><strong>File Upload:</strong> Select files or drag-and-drop them into the upload area.</li>
+                <li><strong>URL Upload:</strong> Paste a direct link into the "Upload via URL" field.</li>
+            </ul>
+            <p>After uploading, you will receive a permanent, encrypted link such as:</p>
+            <p><code>https://glowi.es/files/######.fileextension</code></p>
+            <p>(<code>######</code> = random 6-character alphanumeric ID)</p>
+        </div>
+        
+        <div class="faq-item">
+            <h3>What is the maximum upload size?</h3>
+            <p>Glowi.es supports uploads up to <strong>200 MB</strong>.</p>
+        </div>
+        
+        <div class="faq-item">
+            <h3>How long are files stored?</h3>
+            <p>Glowi.es permanent hosting stores files indefinitely unless you delete them from your account or they violate our Terms of Service.</p>
+        </div>
+        
+        <div class="faq-item">
+            <h3>Are files encrypted?</h3>
+            <p>Yes. All files are encrypted <strong>before they leave your device</strong> using E2EE. Even we cannot view your uploaded files.</p>
+        </div>
+        
+        <div class="faq-item">
+            <h3>Can files be removed?</h3>
+            <p>Yes. You may delete your files at any time through the dashboard. Files violating the ToS may also be removed by administrators.</p>
+        </div>
+        
+        <div class="faq-item">
+            <h3>Can Glowi.es be used via apps or tools?</h3>
+            <p>Yes. You may integrate Glowi.es into scripts, uploaders, or third-party tools using standard POST uploads. (Public API documentation is coming soon.)</p>
+        </div>
+        
+        <div class="faq-item">
+            <h3>Are files scanned or analyzed?</h3>
+            <p>No. Because of E2EE, Glowi.es cannot view or analyze the contents of uploaded files.</p>
+        </div>
+        
+        <div class="faq-item">
+            <h3>Why did my file upload fail?</h3>
+            <p>Common reasons:</p>
+            <ul>
+                <li>File exceeded the 200 MB limit</li>
+                <li>Forbidden file type</li>
+                <li>Upload server timeout</li>
+                <li>Corrupted source file</li>
+                <li>Remote URL didn't return a valid file</li>
+            </ul>
+            <p>Try again or contact support.</p>
+        </div>
+        
+        <div class="faq-item">
+            <h3>How does Glowi.es generate random file names?</h3>
+            <p>Every uploaded file is assigned a randomized <strong>6-character alphanumeric string</strong> to create unique links (e.g., <code>https://glowi.es/files/xA92fB.png</code>).</p>
+        </div>
+        
+        <div class="faq-item">
+            <h3>Is there a dark mode?</h3>
+            <p>Yes—this site uses dark mode by default. Toggle preferences in your browser settings for light mode.</p>
+        </div>
+        
+        <div class="faq-item">
+            <h3>Where can I get support?</h3>
+            <p>Use the Contact link in the dashboard or message support directly via the Glowi.es dashboard.</p>
+        </div>
+        
+        <div class="footer">
+            Glowi.es © 2025 | <a href="/uploads" style="color: #9333ea; text-decoration: none;">Back to File Hosting</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glowi.es - E2EE File Hosting</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0f0f0f;
+            color: #dedede;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        .container { max-width: 800px; width: 100%; text-align: center; }
+        .logo { font-size: 48px; margin-bottom: 40px; }
+        .logo span { color: #9333ea; }
+        h1 { font-size: 32px; margin-bottom: 10px; color: #ffffff; }
+        .subtitle { color: #64748b; margin-bottom: 40px; font-size: 14px; }
+        .upload-box {
+            border: 2px dashed #64748b;
+            border-radius: 12px;
+            padding: 60px 40px;
+            background: rgba(148, 51, 234, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 40px;
+        }
+        .upload-box:hover {
+            border-color: #9333ea;
+            background: rgba(148, 51, 234, 0.1);
+        }
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        .upload-text { font-size: 18px; color: #ffffff; margin-bottom: 8px; }
+        .upload-subtext { color: #64748b; font-size: 13px; }
+        .url-section {
+            margin: 40px 0;
+            padding: 20px;
+            background: rgba(39, 39, 42, 0.5);
+            border-radius: 8px;
+        }
+        .url-input-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .url-input-group input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(24, 24, 27, 0.8);
+            border: 1px solid rgba(82, 82, 90, 0.5);
+            border-radius: 6px;
+            color: #dedede;
+            font-size: 14px;
+        }
+        .url-input-group input::placeholder { color: #64748b; }
+        .url-input-group button {
+            padding: 12px 32px;
+            background: #9333ea;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+        .url-input-group button:hover { background: #a855f7; }
+        .url-hint { color: #64748b; font-size: 12px; font-style: italic; }
+        .footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(82, 82, 90, 0.3);
+            color: #64748b;
+            font-size: 12px;
+        }
+        .faq-link {
+            color: #9333ea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .faq-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo"><span style="color: #9333ea;">★</span> glowi.es</div>
+        <h1>E2EE File Hosting</h1>
+        <p class="subtitle">Uploads up to 200 MB are allowed. You should <a href="/faq/files" class="faq-link">read the FAQ</a>.</p>
+        
+        <div class="upload-box" id="uploadBox">
+            <div class="upload-icon">📁</div>
+            <div class="upload-text">Select or drop files</div>
+            <div class="upload-subtext">Encrypted end-to-end. Permanent storage.</div>
+        </div>
+        
+        <div class="url-section">
+            <div class="url-input-group">
+                <input type="text" id="urlInput" placeholder="https://example.com/file.jpg">
+                <button onclick="uploadFromUrl()">Go!</button>
+            </div>
+            <div class="url-hint">Put your link in here, onii-chan~</div>
+        </div>
+        
+        <div class="footer">
+            Secure file hosting by Glowi.es | <a href="/faq/files" class="faq-link">FAQ</a> | <a href="/dashboard" class="faq-link">Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        const uploadBox = document.getElementById('uploadBox');
+        
+        uploadBox.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadBox.style.borderColor = '#9333ea';
+            uploadBox.style.background = 'rgba(148, 51, 234, 0.15)';
+        });
+        
+        uploadBox.addEventListener('dragleave', () => {
+            uploadBox.style.borderColor = '#64748b';
+            uploadBox.style.background = 'rgba(148, 51, 234, 0.05)';
+        });
+        
+        uploadBox.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadBox.style.borderColor = '#64748b';
+            uploadBox.style.background = 'rgba(148, 51, 234, 0.05)';
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileUpload(files[0]);
+            }
+        });
+        
+        uploadBox.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.onchange = (e) => {
+                if (e.target.files.length > 0) {
+                    handleFileUpload(e.target.files[0]);
+                }
+            };
+            input.click();
+        });
+        
+        function handleFileUpload(file) {
+            alert(`File selected: ${file.name}\n\nThis would upload to the dashboard.`);
+        }
+        
+        function uploadFromUrl() {
+            const url = document.getElementById('urlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+            alert(`URL to upload: ${url}\n\nThis would upload to the dashboard.`);
+        }
+    </script>
+</body>
+</html>
