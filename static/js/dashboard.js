@@ -41,13 +41,26 @@ class Dashboard {
     }
 
     setupSidebar() {
-        const sidebarItems = document.querySelectorAll('.sidebar-item');
-        sidebarItems.forEach(item => {
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async () => {
+                await fetch('/api/auth/logout', { 
+                    method: 'POST',
+                    credentials: 'include' 
+                });
+                window.location.href = '/login';
+            });
+        }
+        
+        const navItems = document.querySelectorAll('.nav-item[data-page]');
+        navItems.forEach(item => {
             item.addEventListener('click', (e) => {
+                e.preventDefault();
                 const page = item.dataset.page;
                 if (page) {
-                    e.preventDefault();
                     this.loadPage(page);
+                    document.querySelectorAll('.nav-item[data-page]').forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
                 }
             });
         });
@@ -162,6 +175,7 @@ class Dashboard {
                         await this.renderBiolinks();
                         break;
                     case 'images':
+                    case 'files':
                         await this.renderFiles();
                         break;
                     case 'profile':
