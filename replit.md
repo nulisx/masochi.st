@@ -92,6 +92,10 @@ Dashboard Pages:
 - 16-character random codes for LitterBox vs 6-character for permanent files
 - Admin/Mod panels verified working with role-based access control
 - Session persistence via stateless JWT with HttpOnly/Secure/SameSite cookies
+- Added browser verification system (/verify page) with animated progress bar
+- Added profile views tracking (view_count column in profiles table)
+- Dashboard stats now display: UID, Storage Used, License Status, Profile Views
+- Keyboard shortcut Ctrl+K for quick actions
 
 ### File Hosting Features
 **E2EE File Hosting (Images)**
