@@ -128,23 +128,6 @@ class Dashboard {
         }
     }
 
-    setupUpdatesList() {
-        const updatesList = document.getElementById('updatesList');
-        if (!updatesList) return;
-
-        updatesList.addEventListener('click', (e) => {
-            const updateItem = e.target.closest('.update-clickable');
-            if (!updateItem) return;
-
-            const updateId = updateItem.dataset.updateId;
-            const title = updateItem.dataset.updateTitle || '';
-            const description = updateItem.dataset.updateDescription || '';
-            const details = updateItem.dataset.updateDetails || '';
-            const date = updateItem.dataset.updateDate || '';
-            
-            this.showUpdateDetails(updateId, title, description, details, date);
-        });
-    }
 
     async performSearch(query) {
         const results = [];
@@ -478,12 +461,8 @@ class Dashboard {
                     </div>
                     <div class="updates-list" id="updatesList" style="max-height: 300px; overflow-y: auto;">
                         ${updates.length > 0 ? updates.map(update => `
-                            <div class="update-item update-clickable" style="padding: 16px; border-bottom: 1px solid var(--border-color); cursor: pointer;" 
-                                data-update-id="${update.id}" 
-                                data-update-title="${(update.title || '').replace(/"/g, '&quot;')}"
-                                data-update-description="${(update.description || '').replace(/"/g, '&quot;')}"
-                                data-update-details="${(update.details || '').replace(/"/g, '&quot;')}"
-                                data-update-date="${update.created_at}">
+                            <div class="update-item" style="padding: 16px; border-bottom: 1px solid var(--border-color); cursor: pointer;" 
+                                onclick="dashboard.showUpdateDetails(${update.id}, '${(update.title || '').replace(/'/g, "\\'")}', '${(update.description || '').replace(/'/g, "\\'")}', '${(update.details || '').replace(/'/g, "\\'")}', '${update.created_at}')">
                                 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                                     <div>
                                         <h4 style="font-size: 14px; margin-bottom: 4px; color: var(--text-primary);">${update.title}</h4>
@@ -502,8 +481,6 @@ class Dashboard {
             </div>
         `;
         
-        // Setup updates list event listener
-        setTimeout(() => this.setupUpdatesList(), 100);
     }
 
     async renderProfile() {
