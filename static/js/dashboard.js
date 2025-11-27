@@ -10,8 +10,110 @@ class Dashboard {
         this.setupNavigation();
         this.setupLogout();
         this.setupKeyboardShortcuts();
+        this.setupLogoRotation();
+        this.setupSearch();
         this.showAdminSection();
         this.loadPage('overview');
+    }
+
+    setupLogoRotation() {
+        const logos = ['/static/cdn/125457885.jpeg', '/static/cdn/221500011.jpeg'];
+        let currentIndex = 0;
+        const logoImg = document.getElementById('logoImage');
+        if (!logoImg) return;
+        
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % logos.length;
+            logoImg.src = logos[currentIndex];
+        }, 5000);
+    }
+
+    setupSearch() {
+        const searchInput = document.querySelector('.search-input');
+        if (!searchInput) return;
+
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key !== 'Enter') return;
+            const query = searchInput.value.trim().toLowerCase();
+            if (!query) return;
+
+            this.performSearch(query);
+        });
+    }
+
+    async performSearch(query) {
+        const results = [];
+        
+        const links = await this.fetchLinks();
+        links.forEach(link => {
+            if (link.title.toLowerCase().includes(query) || link.url.toLowerCase().includes(query)) {
+                results.push({ type: 'biolink', title: link.title, url: link.url, id: link.id });
+            }
+        });
+
+        const files = await this.fetchFiles();
+        files.forEach(file => {
+            if (file.filename.toLowerCase().includes(query)) {
+                results.push({ type: 'file', title: file.filename, size: this.formatFileSize(file.size), code: file.code });
+            }
+        });
+
+        const connections = await this.fetchConnections();
+        connections.forEach(conn => {
+            if (conn.platform.toLowerCase().includes(query) || (conn.username && conn.username.toLowerCase().includes(query))) {
+                results.push({ type: 'connection', title: conn.platform, username: conn.username });
+            }
+        });
+
+        this.showSearchResults(results, query);
+    }
+
+    showSearchResults(results, query) {
+        const contentArea = document.getElementById('contentArea');
+        contentArea.innerHTML = `
+            <div class="page-header">
+                <button class="page-back" onclick="dashboard.loadPage('overview')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="page-title">Search Results</h1>
+                    <p class="page-subtitle">${results.length} result${results.length !== 1 ? 's' : ''} for "${query}"</p>
+                </div>
+            </div>
+
+            <div class="search-results" style="max-width: 900px;">
+                ${results.length === 0 ? `
+                    <div class="empty-state">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <h3>No results found</h3>
+                        <p>Try searching for something else</p>
+                    </div>
+                ` : results.map(result => `
+                    <div class="card" style="margin-bottom: 12px; padding: 16px; cursor: pointer;" onclick="dashboard.${
+                        result.type === 'biolink' ? `editLink(${result.id})` :
+                        result.type === 'file' ? `alert('File: ' + '${result.title}')` :
+                        `alert('Connection: ' + '${result.title}')`
+                    }">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="background: var(--bg-tertiary); padding: 8px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--accent-secondary);">
+                                ${result.type.toUpperCase()}
+                            </div>
+                            <div>
+                                <div style="font-weight: 500; margin-bottom: 4px;">${result.title}</div>
+                                <div style="font-size: 12px; color: var(--text-muted);">
+                                    ${result.url ? result.url : result.size ? result.size : result.username || ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
     }
 
     setupKeyboardShortcuts() {
@@ -63,6 +165,12 @@ class Dashboard {
         document.getElementById('userName').textContent = this.user.display_name || this.user.username;
         document.getElementById('userHandle').textContent = '@' + this.user.username;
         document.getElementById('headerUserName').textContent = this.user.display_name || this.user.username;
+        
+        const roleDisplay = document.getElementById('roleDisplay');
+        if (roleDisplay) {
+            const rolePrefix = this.user.role === 'owner' || this.user.role === 'admin' ? 'admin' : 'root';
+            roleDisplay.textContent = `${rolePrefix}@${this.user.username}.glowi.es`;
+        }
     }
 
     setupNavigation() {
@@ -159,6 +267,12 @@ class Dashboard {
                     break;
                 case 'faq-litterbox':
                     await this.renderLitterBoxFAQ();
+                    break;
+                case 'tos':
+                    await this.renderToS();
+                    break;
+                case 'api':
+                    await this.renderAPI();
                     break;
                 default:
                     await this.renderOverview();
@@ -2332,6 +2446,163 @@ class Dashboard {
                     <h4 style="color: var(--text-primary); margin-bottom: 8px;">What's the filename format?</h4>
                     <p style="color: var(--text-muted); line-height: 1.6;">Temporary files get random 16-character filenames for added privacy, while permanent files use 6-character codes.</p>
                 </div>
+            </div>
+        `;
+    }
+
+    async renderToS() {
+        const contentArea = document.getElementById('contentArea');
+        contentArea.innerHTML = `
+            <div class="page-header">
+                <button class="page-back" onclick="dashboard.loadPage('overview')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="page-title">Terms of Service</h1>
+                    <p class="page-subtitle">Please read these terms carefully</p>
+                </div>
+            </div>
+
+            <div class="card" style="max-width: 900px; line-height: 1.8;">
+                <div style="padding: 24px; color: var(--text-secondary);">
+                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">1. Acceptance of Terms</h3>
+                    <p style="margin-bottom: 24px;">By accessing and using Glowi.es, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.</p>
+
+                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">2. Use License</h3>
+                    <p style="margin-bottom: 24px;">Permission is granted to temporarily download one copy of the materials (information or software) on Glowi.es for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not: modify or copy the materials; use the materials for any commercial purpose or for any public display (commercial or non-commercial); attempt to decompile or reverse engineer any software contained on Glowi.es; remove any copyright or other proprietary notations from the materials; transfer the materials to another person or "mirror" the materials on any other server.</p>
+
+                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">3. Disclaimer</h3>
+                    <p style="margin-bottom: 24px;">The materials on Glowi.es are provided on an 'as is' basis. Glowi.es makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
+
+                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">4. Limitations</h3>
+                    <p style="margin-bottom: 24px;">In no event shall Glowi.es or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Glowi.es, even if we or our authorized representative has been notified orally or in writing of the possibility of such damage.</p>
+
+                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">5. Accuracy of Materials</h3>
+                    <p style="margin-bottom: 24px;">The materials appearing on Glowi.es could include technical, typographical, or photographic errors. Glowi.es does not warrant that any of the materials on its website are accurate, complete, or current. Glowi.es may make changes to the materials contained on its website at any time without notice.</p>
+
+                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">6. Links</h3>
+                    <p style="margin-bottom: 24px;">Glowi.es has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by Glowi.es of the site. Use of any such linked website is at the user's own risk.</p>
+
+                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">7. Modifications</h3>
+                    <p style="margin-bottom: 24px;">Glowi.es may revise these terms of service for its website at any time without notice. By using this website, you are agreeing to be bound by the then current version of these terms of service.</p>
+
+                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">8. Governing Law</h3>
+                    <p>These terms and conditions are governed by and construed in accordance with the laws of United States, and you irrevocably submit to the exclusive jurisdiction of the courts located in this location.</p>
+                </div>
+            </div>
+        `;
+    }
+
+    async renderAPI() {
+        const contentArea = document.getElementById('contentArea');
+        contentArea.innerHTML = `
+            <div class="page-header">
+                <button class="page-back" onclick="dashboard.loadPage('overview')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="page-title">API Documentation</h1>
+                    <p class="page-subtitle">Coming soon</p>
+                </div>
+            </div>
+
+            <div class="card" style="max-width: 900px; text-align: center; padding: 60px 24px;">
+                <div style="background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%); border-radius: 12px; padding: 40px; border: 1px solid rgba(147, 51, 234, 0.2);">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-secondary); margin: 0 auto 16px;">
+                        <path d="M12 2v20M2 12h20"></path>
+                    </svg>
+                    <h2 style="color: var(--text-primary); margin-bottom: 12px;">API Coming Soon</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 24px;">Our public API is under development. We're building comprehensive endpoints for all Glowi.es features with full documentation, SDKs, and examples.</p>
+                    <p style="color: var(--accent-secondary); font-weight: 500;">Check back soon for updates</p>
+                </div>
+            </div>
+        `;
+    }
+
+    async renderAdminUsers() {
+        const contentArea = document.getElementById('contentArea');
+        contentArea.innerHTML = `
+            <div class="page-header">
+                <button class="page-back" onclick="dashboard.loadPage('overview')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="page-title">Admin Users</h1>
+                    <p class="page-subtitle">Manage user accounts and roles</p>
+                </div>
+            </div>
+
+            <div class="card" style="text-align: center; padding: 60px 24px;">
+                <p style="color: var(--text-muted);">Admin user management panel - coming soon with full implementation</p>
+            </div>
+        `;
+    }
+
+    async renderAdminInvites() {
+        const contentArea = document.getElementById('contentArea');
+        contentArea.innerHTML = `
+            <div class="page-header">
+                <button class="page-back" onclick="dashboard.loadPage('overview')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="page-title">Admin Invites</h1>
+                    <p class="page-subtitle">Manage invite codes</p>
+                </div>
+            </div>
+
+            <div class="card" style="text-align: center; padding: 60px 24px;">
+                <p style="color: var(--text-muted);">Admin invite management panel - coming soon with full implementation</p>
+            </div>
+        `;
+    }
+
+    async renderAdminFiles() {
+        const contentArea = document.getElementById('contentArea');
+        contentArea.innerHTML = `
+            <div class="page-header">
+                <button class="page-back" onclick="dashboard.loadPage('overview')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="page-title">Admin Files</h1>
+                    <p class="page-subtitle">View all uploaded files</p>
+                </div>
+            </div>
+
+            <div class="card" style="text-align: center; padding: 60px 24px;">
+                <p style="color: var(--text-muted);">Admin files management panel - coming soon with full implementation</p>
+            </div>
+        `;
+    }
+
+    async renderAdminAnalytics() {
+        const contentArea = document.getElementById('contentArea');
+        contentArea.innerHTML = `
+            <div class="page-header">
+                <button class="page-back" onclick="dashboard.loadPage('overview')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="page-title">Admin Analytics</h1>
+                    <p class="page-subtitle">Platform analytics and insights</p>
+                </div>
+            </div>
+
+            <div class="card" style="text-align: center; padding: 60px 24px;">
+                <p style="color: var(--text-muted);">Admin analytics panel - coming soon with full implementation</p>
             </div>
         `;
     }
