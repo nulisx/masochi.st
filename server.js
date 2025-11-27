@@ -558,6 +558,8 @@ app.get('/dash', (req, res) => res.sendFile(path.join(__dirname, 'dashboard', 'i
 app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'dashboard', 'index.html')));
 app.get('/ic', (req, res) => res.sendFile(path.join(__dirname, 'ic', 'index.html')));
 app.get('/uploads', (req, res) => res.sendFile(path.join(__dirname, 'static', 'html', 'files-hosting.html')));
+app.get('/faq', (req, res) => res.sendFile(path.join(__dirname, 'public', 'faq.html')));
+app.get('/lbfaq', (req, res) => res.sendFile(path.join(__dirname, 'public', 'lbfaq.html')));
 app.get('/faq/files', (req, res) => res.sendFile(path.join(__dirname, 'static', 'html', 'faq-files.html')));
 app.get('/faq/litterbox', (req, res) => res.sendFile(path.join(__dirname, 'static', 'html', 'faq-litterbox.html')));
 
@@ -581,9 +583,6 @@ app.get('/file/:code', async (req, res) => {
 app.use((req, res) => res.status(404).sendFile(path.join(__dirname, '404.html')));
 
 if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
-// FAQ routes
-app.get("/faq", (req, res) => res.sendFile(path.join(__dirname, "public/faq.html")));
-app.get("/lbfaq", (req, res) => res.sendFile(path.join(__dirname, "public/lbfaq.html")));
   app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Server running on http://0.0.0.0:${PORT}`));
 }
 
