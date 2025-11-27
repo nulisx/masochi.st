@@ -162,7 +162,13 @@ class Dashboard {
         
         const roleDisplay = document.getElementById('roleDisplay');
         if (roleDisplay) {
-            const rolePrefix = this.user.role === 'owner' || this.user.role === 'admin' ? 'admin' : 'root';
+            const roleMap = {
+                'owner': 'owner',
+                'manager': 'manager',
+                'admin': 'admin',
+                'mod': 'mod'
+            };
+            const rolePrefix = roleMap[this.user.role] || 'user';
             roleDisplay.textContent = `${rolePrefix}@${this.user.username}.glowi.es`;
         }
     }
