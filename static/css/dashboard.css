@@ -1061,3 +1061,87 @@ textarea.form-input {
     padding: 8px;
     font-size: 13px;
 }
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: rgb(17, 17, 17);
+    border: 2px solid rgb(39, 39, 42);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #dedede;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: #dedede;
+    cursor: pointer;
+    font-size: 24px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+    color: #ffffff;
+}
+
+.modal-content {
+    padding: 20px;
+    color: #ababab;
+    line-height: 1.6;
+}
+
+.modal-content p {
+    margin-bottom: 16px;
+}
+
+.modal-content ul {
+    list-style: disc;
+    padding-left: 20px;
+    color: #ababab;
+}
+
+.modal-content li {
+    margin-bottom: 8px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

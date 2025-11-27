@@ -371,8 +371,13 @@ class Dashboard {
                         </div>
                     </div>
                     <div class="updates-list" style="max-height: 300px; overflow-y: auto;">
-                        ${updates.length > 0 ? updates.map(update => `
-                            <div class="update-item" style="padding: 16px; border-bottom: 1px solid var(--border-color); cursor: pointer;" onclick="dashboard.showUpdateDetails(${update.id}, '${update.title.replace(/'/g, "\\'")}', '${(update.description || '').replace(/'/g, "\\'")}', '${(update.details || '').replace(/'/g, "\\'")}', '${update.created_at}')">
+                        ${updates.length > 0 ? updates.map(update => {
+                            const titleEsc = (update.title || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+                            const descEsc = (update.description || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+                            const detailsEsc = (update.details || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+                            const dateEsc = (update.created_at || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+                            return `
+                            <div class="update-item" style="padding: 16px; border-bottom: 1px solid var(--border-color); cursor: pointer;" onclick="dashboard.showUpdateDetails(${update.id}, '${titleEsc}', '${descEsc}', '${detailsEsc}', '${dateEsc}')">
                                 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                                     <div>
                                         <h4 style="font-size: 14px; margin-bottom: 4px; color: var(--text-primary);">${update.title}</h4>
@@ -381,7 +386,8 @@ class Dashboard {
                                     <span style="font-size: 12px; color: var(--text-muted); white-space: nowrap; margin-left: 16px;">${formatUpdateDate(update.created_at)}</span>
                                 </div>
                             </div>
-                        `).join('') : `
+                        `;
+                        }).join('') : `
                             <div style="padding: 24px; text-align: center; color: var(--text-muted);">
                                 <p>No updates yet</p>
                             </div>
