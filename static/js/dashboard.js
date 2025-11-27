@@ -130,12 +130,97 @@ class Dashboard {
 
     showAdminSection() {
         if (!this.user) return;
-        const adminRoles = ['owner', 'admin', 'manager', 'mod'];
-        if (adminRoles.includes(this.user.role)) {
-            const adminSection = document.getElementById('adminSection');
-            if (adminSection) {
-                adminSection.style.display = 'block';
+        const isAdmin = this.user.role === 'owner' || this.user.role === 'admin';
+        const adminSection = document.getElementById('adminSection');
+        if (adminSection) {
+            adminSection.style.display = isAdmin ? 'block' : 'none';
+        }
+
+        const isMod = this.user.role === 'owner' || this.user.role === 'admin' || this.user.role === 'mod';
+        const modSection = document.getElementById('modSection');
+        if (modSection) {
+            modSection.style.display = isMod ? 'block' : 'none';
+        }
+    }
+
+    showModal(type, reportID = null) {
+        this.modalState = { visible: true, type, reportID };
+        this.renderModal();
+    }
+
+    hideModal() {
+        this.modalState = { visible: false, type: '', reportID: null };
+        this.renderModal();
+    }
+
+    renderModal() {
+        let modalHTML = '';
+        if (this.modalState.visible) {
+            if (this.modalState.type === 'confirm') {
+                modalHTML = `
+                    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999;">
+                        <div class="card" style="max-width: 400px; padding: 24px;">
+                            <h3 style="color: var(--text-primary); margin-bottom: 12px;">Confirm Report</h3>
+                            <p style="color: var(--text-muted); margin-bottom: 24px;">Are you sure you want to confirm this report and pass it to admin review?</p>
+                            <div style="display: flex; gap: 12px;">
+                                <button onclick="dashboard.modalConfirm()" style="background: var(--accent-primary); color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; flex: 1;">Confirm</button>
+                                <button onclick="dashboard.hideModal()" style="background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 6px; cursor: pointer; flex: 1;">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (this.modalState.type === 'allow') {
+                modalHTML = `
+                    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999;">
+                        <div class="card" style="max-width: 400px; padding: 24px;">
+                            <h3 style="color: var(--text-primary); margin-bottom: 12px;">Allow File</h3>
+                            <p style="color: var(--text-muted); margin-bottom: 24px;">Are you sure you want to allow this file?</p>
+                            <div style="display: flex; gap: 12px;">
+                                <button onclick="dashboard.modalAllow()" style="background: var(--success); color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; flex: 1;">Allow</button>
+                                <button onclick="dashboard.hideModal()" style="background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 6px; cursor: pointer; flex: 1;">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
             }
+        }
+        const existingModal = document.getElementById('modalContainer');
+        if (existingModal) {
+            existingModal.remove();
+        }
+        if (modalHTML) {
+            const div = document.createElement('div');
+            div.id = 'modalContainer';
+            div.innerHTML = modalHTML;
+            document.body.appendChild(div);
+        }
+    }
+
+    async modalConfirm() {
+        if (!this.modalState.reportID) return;
+        try {
+            await fetch(`/api/admin/file-reports/confirm/${this.modalState.reportID}`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${this.token}` }
+            });
+            this.hideModal();
+            this.loadAdminFileReports();
+        } catch (err) {
+            alert('Failed to confirm report');
+        }
+    }
+
+    async modalAllow() {
+        if (!this.modalState.reportID) return;
+        try {
+            await fetch(`/api/admin/file-reports/approve/${this.modalState.reportID}`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${this.token}` }
+            });
+            this.hideModal();
+            this.loadModFileReports();
+        } catch (err) {
+            alert('Failed to allow file');
         }
     }
 
