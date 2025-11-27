@@ -149,15 +149,18 @@ app.post('/api/auth/login', async (req, res) => {
 
     const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
 
-    res.cookie('token', token, {
-      httpOnly: false,
-      secure: false,
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
-    
-    res.status(200).json({ message: 'Login successful', token, user: { id: user.id, username: user.username, role: user.role } });
+    const isProduction = process.env.NODE_ENV === 'production';
+    const cookieOptions = [
+      `token=${token}`,
+      'HttpOnly',
+      isProduction ? 'Secure' : '',
+      'Path=/',
+      `Max-Age=${7 * 24 * 60 * 60}`,
+      'SameSite=Lax'
+    ].filter(Boolean).join('; ');
+
+    res.setHeader('Set-Cookie', cookieOptions);
+    res.status(200).json({ message: 'Login successful', user: { id: user.id, username: user.username, role: user.role } });
   } catch (err) {
     console.error('Login error:', err);
     if (err.message && err.message.includes('Access denied')) {
@@ -172,15 +175,12 @@ app.get('/api/auth/me', authenticateToken, async (req, res) => {
     const user = await getQuery('users', 'id', req.user.id);
     if (!user) return res.status(404).json({ error: 'User not found' });
     
-    const profile = await getQuery('profiles', 'user_id', req.user.id);
-    
     res.status(200).json({ 
       user: { 
         id: user.id, 
         username: user.username, 
         display_name: user.display_name,
-        role: user.role,
-        avatar_url: profile?.avatar_url || '/static/cdn/avatar.png'
+        role: user.role 
       } 
     });
   } catch (err) {

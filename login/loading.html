@@ -78,20 +78,7 @@
     <script>
         (async function() {
             try {
-                const token = localStorage.getItem('authToken');
-                if (!token) {
-                    window.location.replace('/login');
-                    return;
-                }
-                
-                const response = await fetch('/api/auth/me', { 
-                    credentials: 'include',
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+                const response = await fetch('/api/auth/me', { credentials: 'include' });
                 if (response.ok) {
                     const data = await response.json();
                     document.getElementById('username').textContent = '@' + data.user.username;
@@ -100,8 +87,6 @@
                         window.location.replace('/dash');
                     }, 1500);
                 } else {
-                    console.error('Auth failed:', response.status);
-                    localStorage.removeItem('authToken');
                     window.location.replace('/login');
                 }
             } catch (error) {

@@ -5,46 +5,15 @@ class Dashboard {
         this.updates = [];
     }
 
-    getAuthHeaders() {
-        const token = localStorage.getItem('authToken');
-        return token ? { 'Authorization': `Bearer ${token}` } : {};
-    }
-
-    async apiFetch(url, options = {}) {
-        const headers = { ...this.getAuthHeaders(), ...options.headers };
-        const response = await fetch(url, { 
-            credentials: 'include',
-            ...options, 
-            headers 
-        });
-        if (response.status === 401) {
-            localStorage.removeItem('authToken');
-            window.location.href = '/login';
-        }
-        return response;
-    }
-
     async init() {
         try {
-            const token = localStorage.getItem('authToken');
-            const headers = { 'Content-Type': 'application/json' };
-            if (token) {
-                headers['Authorization'] = `Bearer ${token}`;
-            }
-            
-            const response = await fetch('/api/auth/me', { 
-                credentials: 'include',
-                method: 'GET',
-                headers: headers
-            });
+            const response = await fetch('/api/auth/me', { credentials: 'include' });
             if (response.ok) {
                 const data = await response.json();
                 this.user = data.user || data;
                 this.setupUI();
                 this.loadPage('overview');
             } else {
-                console.error('Auth failed with status:', response.status);
-                localStorage.removeItem('authToken');
                 window.location.href = '/login';
             }
         } catch (error) {
@@ -76,13 +45,10 @@ class Dashboard {
         const logoutBtn = document.getElementById('logoutBtn');
         if (logoutBtn) {
             logoutBtn.addEventListener('click', async () => {
-                const token = localStorage.getItem('authToken');
                 await fetch('/api/auth/logout', { 
                     method: 'POST',
-                    credentials: 'include',
-                    headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+                    credentials: 'include' 
                 });
-                localStorage.removeItem('authToken');
                 window.location.href = '/login';
             });
         }
@@ -1950,7 +1916,7 @@ class Dashboard {
 
     async fetchProfile() {
         try {
-            const response = await this.apiFetch('/api/profile');
+            const response = await fetch('/api/profile', { credentials: 'include' });
             if (response.ok) {
                 const data = await response.json();
                 return data.profile || {};
@@ -1964,7 +1930,7 @@ class Dashboard {
 
     async fetchLinks() {
         try {
-            const response = await this.apiFetch('/api/links');
+            const response = await fetch('/api/links', { credentials: 'include' });
             if (response.ok) {
                 const data = await response.json();
                 return data.links || [];
@@ -1978,7 +1944,7 @@ class Dashboard {
 
     async fetchFiles() {
         try {
-            const response = await this.apiFetch('/api/files');
+            const response = await fetch('/api/files', { credentials: 'include' });
             if (response.ok) {
                 const data = await response.json();
                 return data.files || [];
@@ -1992,7 +1958,7 @@ class Dashboard {
 
     async fetchConnections() {
         try {
-            const response = await this.apiFetch('/api/connections');
+            const response = await fetch('/api/connections', { credentials: 'include' });
             if (response.ok) {
                 const data = await response.json();
                 return data.connections || [];
