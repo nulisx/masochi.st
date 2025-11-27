@@ -78,14 +78,18 @@
     <script>
         (async function() {
             try {
-                // Add a small delay to ensure cookie is set
-                await new Promise(resolve => setTimeout(resolve, 100));
+                const token = localStorage.getItem('authToken');
+                if (!token) {
+                    window.location.replace('/login');
+                    return;
+                }
                 
                 const response = await fetch('/api/auth/me', { 
                     credentials: 'include',
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
                     }
                 });
                 if (response.ok) {
@@ -97,6 +101,7 @@
                     }, 1500);
                 } else {
                     console.error('Auth failed:', response.status);
+                    localStorage.removeItem('authToken');
                     window.location.replace('/login');
                 }
             } catch (error) {

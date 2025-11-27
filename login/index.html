@@ -94,6 +94,9 @@
                 const data = await response.json();
 
                 if (response.ok) {
+                    if (data.token) {
+                        localStorage.setItem('authToken', data.token);
+                    }
                     window.location.href = '/login/loading';
                 } else {
                     errorMessage.textContent = data.error || 'Login failed';

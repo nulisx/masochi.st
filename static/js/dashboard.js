@@ -7,9 +7,16 @@ class Dashboard {
 
     async init() {
         try {
+            const token = localStorage.getItem('authToken');
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            
             const response = await fetch('/api/auth/me', { 
                 credentials: 'include',
-                method: 'GET'
+                method: 'GET',
+                headers: headers
             });
             if (response.ok) {
                 const data = await response.json();
@@ -18,16 +25,12 @@ class Dashboard {
                 this.loadPage('overview');
             } else {
                 console.error('Auth failed with status:', response.status);
-                // Add small delay before redirect to ensure user data is cleared
-                setTimeout(() => {
-                    window.location.href = '/login';
-                }, 100);
+                localStorage.removeItem('authToken');
+                window.location.href = '/login';
             }
         } catch (error) {
             console.error('Failed to load user:', error);
-            setTimeout(() => {
-                window.location.href = '/login';
-            }, 100);
+            window.location.href = '/login';
         }
     }
 

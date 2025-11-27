@@ -150,14 +150,14 @@ app.post('/api/auth/login', async (req, res) => {
     const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
 
     res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      httpOnly: false,
+      secure: false,
       sameSite: 'lax',
       path: '/',
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
     
-    res.status(200).json({ message: 'Login successful', user: { id: user.id, username: user.username, role: user.role } });
+    res.status(200).json({ message: 'Login successful', token, user: { id: user.id, username: user.username, role: user.role } });
   } catch (err) {
     console.error('Login error:', err);
     if (err.message && err.message.includes('Access denied')) {
