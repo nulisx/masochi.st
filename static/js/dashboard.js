@@ -427,10 +427,9 @@ class Dashboard {
                     </div>
                 </div>
                 <div class="stat-card" style="display: flex; align-items: center; gap: 16px; padding: 20px;">
-                    <div class="stat-icon" style="background: #3b82f6; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <div class="stat-icon" style="background: var(--accent-primary); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
-                            <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+                            <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2M3 6h18M5 12h14M9 2h6v2H9z"></path>
                         </svg>
                     </div>
                     <div class="stat-info">
@@ -1858,10 +1857,9 @@ class Dashboard {
             
             <div class="card" style="margin-bottom: 24px;">
                 <div class="card-header">
-                    <div class="card-icon" style="background: #f97316;">
+                    <div class="card-icon">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5m-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11m3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5"></path>
                         </svg>
                     </div>
                     <div>
@@ -1899,7 +1897,13 @@ class Dashboard {
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">Expiration Time</label>
+                        <label class="form-label">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            Expiration Time
+                        </label>
                         <select class="form-input" id="litterboxExpiry" style="cursor: pointer;">
                             <option value="1">1 Hour</option>
                             <option value="12">12 Hours</option>
@@ -1909,7 +1913,13 @@ class Dashboard {
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">Password Protection (Optional)</label>
+                        <label class="form-label">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            Password Protection (Optional)
+                        </label>
                         <input type="password" class="form-input" id="litterboxPassword" placeholder="Leave empty for no password">
                     </div>
                     
@@ -1930,7 +1940,7 @@ class Dashboard {
                     <p style="color: var(--text-muted);">Max File Size</p>
                 </div>
                 <div class="card" style="flex: 1; padding: 20px; text-align: center;">
-                    <div style="font-size: 32px; font-weight: 600; color: #f97316;">3 Days</div>
+                    <div style="font-size: 32px; font-weight: 600; color: var(--accent-secondary);">3 Days</div>
                     <p style="color: var(--text-muted);">Max Duration</p>
                 </div>
                 <div class="card" style="flex: 1; padding: 20px; text-align: center;">
