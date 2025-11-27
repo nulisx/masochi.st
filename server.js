@@ -10,6 +10,7 @@ import { authenticateToken, JWT_SECRET } from './lib/middleware.js';
 import { hashEmail, generateRecoveryCode } from './lib/crypto-utils.js';
 import { rateLimit } from './lib/rate-limit.js';
 import crypto from 'crypto';
+import fs from 'fs';
 
 import linksHandler from './api/links.js';
 import profileHandler from './api/profile.js';
@@ -36,6 +37,18 @@ app.use('/assets/fonts', express.static(path.join(__dirname, 'fonts')));
 app.use('/assets', express.static(path.join(__dirname, 'static', 'css', 'dash', 'assets')));
 app.use('/dash/app', express.static(path.join(__dirname, 'dash-app'), { index: 'index.html' }));
 app.get('/dash/app', (req, res) => res.sendFile(path.join(__dirname, 'dash-app', 'index.html')));
+
+app.get('/api/cdn/images', (req, res) => {
+  try {
+    const cdnPath = path.join(__dirname, 'static', 'cdn');
+    const files = fs.readdirSync(cdnPath).filter(f => /\.(jpeg|jpg|png|gif|webp)$/.test(f));
+    const images = files.map(f => `/static/cdn/${f}`);
+    res.json({ images });
+  } catch (err) {
+    console.error('Error reading cdn images:', err);
+    res.status(500).json({ error: 'Failed to read images' });
+  }
+});
 
 app.post(
   '/api/auth/register',

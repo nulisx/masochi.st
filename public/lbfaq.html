@@ -186,23 +186,32 @@
     </div>
 
     <script>
-        const mascotImages = [
-            '/static/cdn/125457885.jpeg',
-            '/static/cdn/221500011.jpeg'
-        ];
+        let mascotImages = [];
+
+        async function loadMascotImages() {
+            try {
+                const response = await fetch('/api/cdn/images');
+                const data = await response.json();
+                mascotImages = data.images || [];
+                if (mascotImages.length > 0) {
+                    randomizeMascot();
+                    setInterval(randomizeMascot, 5000);
+                }
+            } catch (err) {
+                console.error('Error loading mascot images:', err);
+            }
+        }
 
         function randomizeMascot() {
+            if (mascotImages.length === 0) return;
             const mascotImg = document.getElementById('mascotImage');
             if (mascotImg) {
                 mascotImg.src = mascotImages[Math.floor(Math.random() * mascotImages.length)];
             }
         }
 
-        // Randomize on load
-        randomizeMascot();
-        
-        // Cycle every 5 seconds
-        setInterval(randomizeMascot, 5000);
+        // Load and randomize on page load
+        loadMascotImages();
 
         function toggleMobileMenu() {
             const dropdown = document.getElementById('mobileDropdown');
