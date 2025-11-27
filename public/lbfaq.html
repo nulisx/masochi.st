@@ -179,13 +179,31 @@
                 <a href="/" class="faq-home-btn">← Home</a>
                 <div class="faq-mascot">
                     <p style="color: var(--text-muted); margin-bottom: 12px; font-size: 0.85em;">Temporary File Hosting</p>
-                    <img src="https://litterbox.catbox.moe/resources/qts/1416301704148.png" alt="cute mascot" style="opacity: 0.8;">
+                    <img id="mascotImage" src="https://litterbox.catbox.moe/resources/qts/1416301704148.png" alt="cute mascot" style="opacity: 0.8;">
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        const mascotImages = [
+            'https://litterbox.catbox.moe/resources/qts/1416301704148.png',
+            'https://litterbox.catbox.moe/resources/qts/1480486527028.png'
+        ];
+
+        function randomizeMascot() {
+            const mascotImg = document.getElementById('mascotImage');
+            if (mascotImg) {
+                mascotImg.src = mascotImages[Math.floor(Math.random() * mascotImages.length)];
+            }
+        }
+
+        // Randomize on load
+        randomizeMascot();
+        
+        // Cycle every 5 seconds
+        setInterval(randomizeMascot, 5000);
+
         function toggleMobileMenu() {
             const dropdown = document.getElementById('mobileDropdown');
             dropdown.classList.toggle('show');
