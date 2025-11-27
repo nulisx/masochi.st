@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Images FAQ - Glowi.es</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #111111;
+            color: #dedede;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(17, 17, 17, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .logo { color: #a855f7; font-weight: bold; font-size: 18px; }
+        .nav-links a {
+            color: #ababab;
+            text-decoration: none;
+            margin: 0 20px;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: #a855f7; }
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+        h1 {
+            color: #a855f7;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+        .faq-item {
+            background: rgba(39, 39, 42, 0.5);
+            border: 1px solid rgba(147, 51, 234, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        .faq-item:hover {
+            background: rgba(147, 51, 234, 0.1);
+            border-color: rgba(147, 51, 234, 0.5);
+        }
+        .faq-item h3 {
+            color: #a855f7;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+        .faq-item p {
+            color: #ababab;
+            line-height: 1.8;
+        }
+        .button { background: #a855f7; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; display: inline-block; margin-top: 10px; transition: background 0.3s; }
+        .button:hover { background: #9333ea; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">glowi.es</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/lbfaq">LitterBox FAQ</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>📸 Images (E2EE File Hosting) FAQ</h1>
+
+        <div class="faq-item">
+            <h3>What is E2EE File Hosting?</h3>
+            <p>End-to-End Encryption (E2EE) means your files are encrypted on your device before being sent to our servers. Only you and anyone you share the link with can decrypt and view the files. Even our servers cannot see the contents of your files.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>How much storage do I get?</h3>
+            <p>You can upload files up to 200MB each. The total storage capacity depends on your account tier. Each file gets a unique 6-character code for sharing.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Can I password protect my files?</h3>
+            <p>Yes! When uploading, you can set an optional password that recipients must enter to download the file. This adds an extra layer of security beyond the encryption.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Can files expire?</h3>
+            <p>Yes! You can set an expiration date when uploading. After the specified date, the file will no longer be accessible to anyone, not even you.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>What file types are blocked?</h3>
+            <p>Executable files (.exe, .scr, .cpl), Word documents (.doc, .docx, .docm), and Java files (.jar) are blocked for security reasons. All other file types are allowed.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>How do I share a file?</h3>
+            <p>After uploading, you'll receive a unique link (e.g., glowi.es/file/abc123). Share this link with anyone. If you password-protected it, they'll need to enter the password to download.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Is my encryption key stored?</h3>
+            <p>Your encryption key is generated client-side and sent with the download link. We never store or see your encryption keys, ensuring maximum privacy.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Can I delete my files?</h3>
+            <p>Yes! You can delete any file from your "Images" section anytime. Once deleted, the file is permanently removed and no longer accessible.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>What about the file download count?</h3>
+            <p>We track how many times each file has been downloaded so you can see how popular your shared content is.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Is there a size limit?</h3>
+            <p>Individual files can be up to 200MB. For larger files or bulk uploads, consider using our LitterBox temporary storage feature.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -24,7 +24,7 @@ Dashboard Pages:
 - Files (E2EE file hosting with upload, password protection, expiration)
 - LitterBox (Temporary 1GB file hosting with 1h/12h/1d/3d expiry)
 - Connections (Social account integrations with in-place editing)
-- Files FAQ (Help page for E2EE file hosting)
+- Images FAQ (Help page for E2EE file hosting)
 - LitterBox FAQ (Help page for temporary file hosting)
 - Settings (General preferences)
 - Privacy (Data control settings)
@@ -91,7 +91,7 @@ Dashboard Pages:
 - **Dashboard Redesign**: Removed clutter, streamlined overview with stats grid + Latest Updates modal
 - **Blurred Updates Modal**: Implemented backdrop-filter blur effect for glass-morphism design
 - **FAQ Pages**: Created comprehensive E2EE File Host and LitterBox FAQ pages with full documentation
-- **Dashboard FAQ Links**: Added sidebar navigation links to both FAQ pages (Files FAQ, LitterBox FAQ)
+- **Dashboard FAQ Links**: Added sidebar navigation links to both FAQ pages (Images FAQ, LitterBox FAQ)
 - **Server Routes**: Added /uploads, /faq/files, /faq/litterbox routes for new pages
 - **Connection Editing**: In-place connection edit/update functionality (users can modify social connections)
 - **File Preview**: MIME type detection for inline image display in files list

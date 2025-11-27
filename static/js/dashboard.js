@@ -244,12 +244,6 @@ class Dashboard {
                 case 'litterbox':
                     await this.renderLitterBox();
                     break;
-                case 'faq-files':
-                    await this.renderFilesFAQ();
-                    break;
-                case 'faq-litterbox':
-                    await this.renderLitterBoxFAQ();
-                    break;
                 case 'tos':
                     await this.renderToS();
                     break;
@@ -1952,93 +1946,7 @@ class Dashboard {
         }
     }
 
-    async renderFilesFAQ() {
-        const contentArea = document.getElementById('contentArea');
-        contentArea.innerHTML = `
-            <div class="page-header">
-                <button class="page-back" onclick="dashboard.loadPage('files')">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M19 12H5M12 19l-7-7 7-7"/>
-                    </svg>
-                </button>
-                <div>
-                    <h1 class="page-title">Files FAQ</h1>
-                    <p class="page-subtitle">Frequently asked questions about E2EE file hosting</p>
-                </div>
-            </div>
-            
-            <div class="card">
-                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
-                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">What is E2EE?</h4>
-                    <p style="color: var(--text-muted); line-height: 1.6;">E2EE stands for End-to-End Encryption. Your files are encrypted before they leave your device and can only be decrypted by someone with the correct link or password. We cannot access your files.</p>
-                </div>
-                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
-                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">What is the maximum file size?</h4>
-                    <p style="color: var(--text-muted); line-height: 1.6;">The maximum file size for permanent file hosting is 200 MB. For temporary files (LitterBox), the limit is 1 GB.</p>
-                </div>
-                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
-                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">How do I share my files?</h4>
-                    <p style="color: var(--text-muted); line-height: 1.6;">After uploading, you'll receive a unique 6-character link (e.g., glowi.es/file/abc123). Share this link with anyone who needs access.</p>
-                </div>
-                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
-                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">Can I password-protect files?</h4>
-                    <p style="color: var(--text-muted); line-height: 1.6;">Yes! When uploading, you can set an optional password. Recipients will need to enter the password to download the file.</p>
-                </div>
-                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
-                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">What file types are forbidden?</h4>
-                    <p style="color: var(--text-muted); line-height: 1.6;">For security reasons, the following file types are not allowed: .exe, .scr, .cpl, .doc (and variants), .jar</p>
-                </div>
-                <div class="faq-item" style="padding: 20px;">
-                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">How long are files stored?</h4>
-                    <p style="color: var(--text-muted); line-height: 1.6;">Permanent files are stored indefinitely as long as your account is active. Temporary files (LitterBox) are automatically deleted after the chosen expiration time (1h, 12h, 1d, or 3d).</p>
-                </div>
-            </div>
-        `;
-    }
 
-    async renderLitterBoxFAQ() {
-        const contentArea = document.getElementById('contentArea');
-        contentArea.innerHTML = `
-            <div class="page-header">
-                <button class="page-back" onclick="dashboard.loadPage('litterbox')">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M19 12H5M12 19l-7-7 7-7"/>
-                    </svg>
-                </button>
-                <div>
-                    <h1 class="page-title">LitterBox FAQ</h1>
-                    <p class="page-subtitle">Frequently asked questions about temporary file hosting</p>
-                </div>
-            </div>
-            
-            <div class="card">
-                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
-                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">What is LitterBox?</h4>
-                    <p style="color: var(--text-muted); line-height: 1.6;">LitterBox is our temporary file hosting service. Files uploaded here are automatically deleted after your chosen expiration time, making it perfect for sharing sensitive or time-limited content.</p>
-                </div>
-                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
-                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">What expiration options are available?</h4>
-                    <p style="color: var(--text-muted); line-height: 1.6;">You can choose from: 1 hour, 12 hours, 1 day, or 3 days. After this time, the file is permanently deleted.</p>
-                </div>
-                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
-                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">What's the file size limit?</h4>
-                    <p style="color: var(--text-muted); line-height: 1.6;">LitterBox allows files up to 1 GB, which is larger than our permanent file hosting (200 MB).</p>
-                </div>
-                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
-                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">Are LitterBox files encrypted?</h4>
-                    <p style="color: var(--text-muted); line-height: 1.6;">Yes! All files use the same E2EE (End-to-End Encryption) as permanent files. Your data is secure.</p>
-                </div>
-                <div class="faq-item" style="padding: 20px; border-bottom: 1px solid var(--border-color);">
-                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">Can I recover a deleted file?</h4>
-                    <p style="color: var(--text-muted); line-height: 1.6;">No. Once a file expires, it's permanently deleted and cannot be recovered. Make sure to download important files before they expire.</p>
-                </div>
-                <div class="faq-item" style="padding: 20px;">
-                    <h4 style="color: var(--text-primary); margin-bottom: 8px;">What's the filename format?</h4>
-                    <p style="color: var(--text-muted); line-height: 1.6;">Temporary files get random 16-character filenames for added privacy, while permanent files use 6-character codes.</p>
-                </div>
-            </div>
-        `;
-    }
 
     async renderToS() {
         const contentArea = document.getElementById('contentArea');
