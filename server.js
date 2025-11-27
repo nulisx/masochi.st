@@ -150,16 +150,13 @@ app.post('/api/auth/login', async (req, res) => {
     const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
 
     const isProduction = process.env.NODE_ENV === 'production';
-    const cookieOptions = [
-      `token=${token}`,
-      'HttpOnly',
-      isProduction ? 'Secure' : '',
-      'Path=/',
-      `Max-Age=${7 * 24 * 60 * 60}`,
-      'SameSite=Lax'
-    ].filter(Boolean).join('; ');
-
-    res.setHeader('Set-Cookie', cookieOptions);
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
     res.status(200).json({ message: 'Login successful', user: { id: user.id, username: user.username, role: user.role } });
   } catch (err) {
     console.error('Login error:', err);
