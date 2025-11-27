@@ -557,6 +557,9 @@ app.get('/login/loading', (req, res) => res.sendFile(path.join(__dirname, 'login
 app.get('/dash', (req, res) => res.sendFile(path.join(__dirname, 'dashboard', 'index.html')));
 app.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'dashboard', 'index.html')));
 app.get('/ic', (req, res) => res.sendFile(path.join(__dirname, 'ic', 'index.html')));
+app.get('/uploads', (req, res) => res.sendFile(path.join(__dirname, 'static', 'html', 'files-hosting.html')));
+app.get('/faq/files', (req, res) => res.sendFile(path.join(__dirname, 'static', 'html', 'faq-files.html')));
+app.get('/faq/litterbox', (req, res) => res.sendFile(path.join(__dirname, 'static', 'html', 'faq-litterbox.html')));
 
 app.get('/@:username', async (req, res) => {
     try {
