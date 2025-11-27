@@ -40,12 +40,12 @@ app.get('/dash/app', (req, res) => res.sendFile(path.join(__dirname, 'dash-app',
 
 app.get('/api/cdn/images', (req, res) => {
   try {
-    const cdnPath = path.join(__dirname, 'static', 'cdn');
-    const files = fs.readdirSync(cdnPath).filter(f => /\.(jpeg|jpg|png|gif|webp)$/.test(f));
-    const images = files.map(f => `/static/cdn/${f}`);
+    const catboxPath = path.join(__dirname, 'static', 'catbox');
+    const files = fs.readdirSync(catboxPath).filter(f => /\.(jpeg|jpg|png|gif|webp)$/.test(f));
+    const images = files.map(f => `/static/catbox/${f}`);
     res.json({ images });
   } catch (err) {
-    console.error('Error reading cdn images:', err);
+    console.error('Error reading catbox images:', err);
     res.status(500).json({ error: 'Failed to read images' });
   }
 });
