@@ -187,17 +187,11 @@ app.get('/api/auth/me', authenticateToken, async (req, res) => {
 });
 
 app.post('/api/auth/logout', authenticateToken, async (req, res) => {
-  const isProduction = process.env.NODE_ENV === 'production';
-  const cookieOptions = [
-    'token=',
-    'HttpOnly',
-    isProduction ? 'Secure' : '',
-    'Path=/',
-    'Max-Age=0',
-    'SameSite=Lax'
-  ].filter(Boolean).join('; ');
-  
-  res.setHeader('Set-Cookie', cookieOptions);
+  res.clearCookie('token', {
+    httpOnly: true,
+    path: '/',
+    sameSite: 'lax'
+  });
   res.status(200).json({ message: 'Logged out successfully' });
 });
 
