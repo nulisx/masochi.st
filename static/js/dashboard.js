@@ -30,20 +30,25 @@ class Dashboard {
     setupSearch() {
         const searchInput = document.querySelector('.search-input');
         if (!searchInput) return;
+        
+        this.searchCache = { links: [], files: [], connections: [] };
+        this.searchTimeout = null;
 
-        // Show dropdown on input
+        // Show dropdown on input with debouncing
         searchInput.addEventListener('input', (e) => {
+            clearTimeout(this.searchTimeout);
             const query = e.target.value.trim().toLowerCase();
             if (!query) {
                 this.hideSearchDropdown();
                 return;
             }
-            this.showSearchDropdown(query);
+            this.searchTimeout = setTimeout(() => this.showSearchDropdown(query), 300);
         });
 
         // Search on Enter
         searchInput.addEventListener('keypress', (e) => {
             if (e.key !== 'Enter') return;
+            clearTimeout(this.searchTimeout);
             const query = searchInput.value.trim().toLowerCase();
             if (!query) return;
             this.performSearch(query);
@@ -56,27 +61,29 @@ class Dashboard {
     }
 
     async showSearchDropdown(query) {
+        // Use cache if available
+        if (this.searchCache.links.length === 0) {
+            this.searchCache.links = await this.fetchLinks();
+            this.searchCache.files = await this.fetchFiles();
+            this.searchCache.connections = await this.fetchConnections();
+        }
+
         let results = [];
         
-        // Fetch data
-        const links = await this.fetchLinks();
-        const files = await this.fetchFiles();
-        const connections = await this.fetchConnections();
-
-        // Build results
-        links.forEach(link => {
+        // Search in cached data
+        this.searchCache.links.forEach(link => {
             if (link.title.toLowerCase().includes(query)) {
                 results.push({ type: 'biolink', title: link.title, desc: 'Edit the profile of your biolink', id: link.id });
             }
         });
 
-        files.forEach(file => {
+        this.searchCache.files.forEach(file => {
             if (file.filename.toLowerCase().includes(query)) {
                 results.push({ type: 'file', title: file.filename, desc: 'View your encrypted file', code: file.code });
             }
         });
 
-        connections.forEach(conn => {
+        this.searchCache.connections.forEach(conn => {
             if (conn.platform.toLowerCase().includes(query)) {
                 results.push({ type: 'connection', title: conn.platform, desc: `Connect your ${conn.platform}`, username: conn.username });
             }
@@ -96,10 +103,9 @@ class Dashboard {
             return;
         }
 
-        dropdown.innerHTML = results.slice(0, 5).map((result, idx) => `
+        dropdown.innerHTML = results.slice(0, 3).map((result, idx) => `
             <div class="search-dropdown-item" onclick="dashboard.selectSearchResult('${result.type}', '${result.id || result.code}')">
-                <div class="search-result-type">${result.type === 'biolink' ? '🔗' : result.type === 'file' ? '📄' : '🔌'}</div>
-                <div class="search-result-content">
+                <div style="flex: 1; min-width: 0;">
                     <div class="search-result-title">${result.title}</div>
                     <div class="search-result-desc">${result.desc}</div>
                 </div>
@@ -119,10 +125,6 @@ class Dashboard {
         document.querySelector('.search-input').value = '';
         if (type === 'biolink') {
             this.editLink(id);
-        } else if (type === 'file') {
-            // Show file details
-        } else if (type === 'connection') {
-            // Show connection details
         }
     }
 
@@ -135,11 +137,12 @@ class Dashboard {
             if (!updateItem) return;
 
             const updateId = updateItem.dataset.updateId;
-            const title = updateItem.querySelector('h4')?.textContent || '';
-            const description = updateItem.querySelector('p')?.textContent || '';
-            const dateSpan = updateItem.querySelector('span')?.textContent || '';
+            const title = updateItem.dataset.updateTitle || '';
+            const description = updateItem.dataset.updateDescription || '';
+            const details = updateItem.dataset.updateDetails || '';
+            const date = updateItem.dataset.updateDate || '';
             
-            this.showUpdateDetails(updateId, title, description, '', dateSpan);
+            this.showUpdateDetails(updateId, title, description, details, date);
         });
     }
 
@@ -475,7 +478,12 @@ class Dashboard {
                     </div>
                     <div class="updates-list" id="updatesList" style="max-height: 300px; overflow-y: auto;">
                         ${updates.length > 0 ? updates.map(update => `
-                            <div class="update-item update-clickable" style="padding: 16px; border-bottom: 1px solid var(--border-color); cursor: pointer;" data-update-id="${update.id}">
+                            <div class="update-item update-clickable" style="padding: 16px; border-bottom: 1px solid var(--border-color); cursor: pointer;" 
+                                data-update-id="${update.id}" 
+                                data-update-title="${(update.title || '').replace(/"/g, '&quot;')}"
+                                data-update-description="${(update.description || '').replace(/"/g, '&quot;')}"
+                                data-update-details="${(update.details || '').replace(/"/g, '&quot;')}"
+                                data-update-date="${update.created_at}">
                                 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                                     <div>
                                         <h4 style="font-size: 14px; margin-bottom: 4px; color: var(--text-primary);">${update.title}</h4>
