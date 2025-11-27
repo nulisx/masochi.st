@@ -2537,61 +2537,159 @@ class Dashboard {
                 </button>
                 <div>
                     <h1 class="page-title">Admin Users</h1>
-                    <p class="page-subtitle">Manage user accounts and roles</p>
+                    <p class="page-subtitle">Manage users, memberships, and bans</p>
                 </div>
             </div>
 
-            <div style="display: grid; gap: 16px; max-width: 1200px;" id="usersContainer">
-                <div style="text-align: center; padding: 40px;">Loading users...</div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin-bottom: 32px;">
+                <div class="card" style="padding: 20px; border-left: 4px solid var(--accent-primary);">
+                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">Set User Membership</h3>
+                    <div style="display: grid; gap: 12px;">
+                        <input type="text" id="membershipUsername" placeholder="Username" style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-primary); padding: 10px 12px; border-radius: 6px; font-size: 14px;">
+                        <input type="date" id="membershipDate" style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-primary); padding: 10px 12px; border-radius: 6px; font-size: 14px;">
+                        <button onclick="dashboard.setMembership()" style="background: var(--accent-primary); color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: 500;">Set Membership</button>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 20px; border-left: 4px solid var(--danger);">
+                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">Ban User</h3>
+                    <div style="display: grid; gap: 12px;">
+                        <input type="text" id="banUsername" placeholder="Username" style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-primary); padding: 10px 12px; border-radius: 6px; font-size: 14px;">
+                        <textarea id="banReason" placeholder="Ban reason..." style="background: var(--bg-tertiary); border: 1px solid var(--border-color); color: var(--text-primary); padding: 10px 12px; border-radius: 6px; font-size: 14px; min-height: 80px; resize: none;"></textarea>
+                        <button onclick="dashboard.banUser()" style="background: var(--danger); color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: 500;">Ban User</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="padding: 20px;">
+                <h3 style="color: var(--text-primary); margin-bottom: 20px;">Awaiting File Reports</h3>
+                <div id="fileReportsContainer" style="color: var(--text-muted); text-align: center; padding: 40px;">Loading reports...</div>
             </div>
         `;
-        await this.loadAdminUsers();
+        await this.loadAdminFileReports();
     }
 
-    async loadAdminUsers() {
+    async loadAdminFileReports() {
         try {
-            const response = await fetch('/api/admin/users', {
+            const response = await fetch('/api/admin/file-reports/awaiting', {
                 method: 'GET',
                 headers: { 'Authorization': `Bearer ${this.token}` }
             });
             const data = await response.json();
-            const users = data.users || data || [];
+            const reports = data.reports || [];
             
-            const container = document.getElementById('usersContainer');
-            if (users.length === 0) {
-                container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 40px;">No users found</div>';
+            const container = document.getElementById('fileReportsContainer');
+            if (reports.length === 0) {
+                container.innerHTML = '<div style="color: var(--text-muted); padding: 40px;">No awaiting file reports</div>';
                 return;
             }
 
-            container.innerHTML = `
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr style="border-bottom: 2px solid var(--border-color);">
-                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Username</th>
-                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Email</th>
-                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Role</th>
-                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Joined</th>
-                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${users.map(user => `
-                            <tr style="border-bottom: 1px solid var(--border-color);">
-                                <td style="padding: 12px; color: var(--text-primary);">@${user.username}</td>
-                                <td style="padding: 12px; color: var(--text-secondary);">${user.email}</td>
-                                <td style="padding: 12px;"><span style="background: var(--accent-primary); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">${user.role}</span></td>
-                                <td style="padding: 12px; color: var(--text-muted);">${new Date(user.created_at).toLocaleDateString()}</td>
-                                <td style="padding: 12px;">
-                                    <button onclick="alert('Ban/manage user: ${user.username}')" style="background: var(--danger); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Manage</button>
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
+            container.innerHTML = reports.map(report => `
+                <div style="background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: start;">
+                    <div style="text-align: left;">
+                        <div style="color: var(--text-primary); font-weight: 500; margin-bottom: 4px;">Report #${report.id}</div>
+                        <div style="color: var(--text-muted); font-size: 13px;">File: ${report.file_id}</div>
+                        <div style="color: var(--text-secondary); margin-top: 8px;">${report.reason}</div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button onclick="dashboard.confirmReport(${report.id})" style="background: var(--accent-primary); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">Confirm</button>
+                        <button onclick="dashboard.declineReport(${report.id})" style="background: var(--danger); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">Decline</button>
+                    </div>
+                </div>
+            `).join('');
         } catch (err) {
-            console.error('Error loading users:', err);
-            document.getElementById('usersContainer').innerHTML = '<div style="color: var(--danger); padding: 20px;">Failed to load users</div>';
+            console.error('Error loading admin file reports:', err);
+            document.getElementById('fileReportsContainer').innerHTML = '<div style="color: var(--danger);">Failed to load reports</div>';
+        }
+    }
+
+    async setMembership() {
+        const username = document.getElementById('membershipUsername').value.trim();
+        const date = document.getElementById('membershipDate').value;
+        
+        if (!username || !date) {
+            alert('Please enter username and date');
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/admin/membership', {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${this.token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, expiry: new Date(date).toISOString() })
+            });
+            const data = await response.json();
+            if (data.error) {
+                alert('Error: ' + data.error);
+            } else {
+                alert('Membership updated successfully');
+                document.getElementById('membershipUsername').value = '';
+                document.getElementById('membershipDate').value = '';
+            }
+        } catch (err) {
+            alert('Failed to set membership: ' + err.message);
+        }
+    }
+
+    async banUser() {
+        const username = document.getElementById('banUsername').value.trim();
+        const reason = document.getElementById('banReason').value.trim();
+        
+        if (!username || !reason) {
+            alert('Please enter username and reason');
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/admin/ban/${username}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${this.token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, reason })
+            });
+            const data = await response.json();
+            if (data.error) {
+                alert('Error: ' + data.error);
+            } else {
+                alert('User banned successfully');
+                document.getElementById('banUsername').value = '';
+                document.getElementById('banReason').value = '';
+            }
+        } catch (err) {
+            alert('Failed to ban user: ' + err.message);
+        }
+    }
+
+    async confirmReport(reportId) {
+        try {
+            const response = await fetch(`/api/admin/file-reports/confirm/${reportId}`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${this.token}` }
+            });
+            const data = await response.json();
+            alert(data.message || 'Report confirmed');
+            this.loadAdminFileReports();
+        } catch (err) {
+            alert('Failed to confirm report');
+        }
+    }
+
+    async declineReport(reportId) {
+        try {
+            const response = await fetch(`/api/admin/file-reports/decline/${reportId}`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${this.token}` }
+            });
+            const data = await response.json();
+            alert(data.message || 'Report declined');
+            this.loadAdminFileReports();
+        } catch (err) {
+            alert('Failed to decline report');
         }
     }
 
@@ -2608,11 +2706,12 @@ class Dashboard {
                     <h1 class="page-title">Admin Invites</h1>
                     <p class="page-subtitle">Manage invite codes</p>
                 </div>
-                <button onclick="dashboard.showInviteModal()" style="background: var(--accent-primary); color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer;">+ Create Invite</button>
+                <button onclick="dashboard.showClearInvitesModal()" style="background: var(--danger); color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: 500;">Clear All Invites</button>
             </div>
 
-            <div style="display: grid; gap: 16px; max-width: 1200px;" id="invitesContainer">
-                <div style="text-align: center; padding: 40px;">Loading invites...</div>
+            <div class="card" style="padding: 20px;">
+                <h3 style="color: var(--text-primary); margin-bottom: 20px;">Active Invites</h3>
+                <div id="invitesContainer" style="color: var(--text-muted); text-align: center; padding: 40px;">Loading invites...</div>
             </div>
         `;
         await this.loadAdminInvites();
@@ -2620,7 +2719,7 @@ class Dashboard {
 
     async loadAdminInvites() {
         try {
-            const response = await fetch('/api/admin/invites', {
+            const response = await fetch('/api/invites', {
                 method: 'GET',
                 headers: { 'Authorization': `Bearer ${this.token}` }
             });
@@ -2633,46 +2732,47 @@ class Dashboard {
                 return;
             }
 
-            container.innerHTML = `
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr style="border-bottom: 2px solid var(--border-color);">
-                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Code</th>
-                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Role</th>
-                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Uses</th>
-                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Expires</th>
-                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${invites.map(invite => `
-                            <tr style="border-bottom: 1px solid var(--border-color);">
-                                <td style="padding: 12px; color: var(--text-primary); font-family: monospace;">${invite.code}</td>
-                                <td style="padding: 12px;"><span style="background: var(--accent-primary); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">${invite.role}</span></td>
-                                <td style="padding: 12px; color: var(--text-secondary);">${invite.uses_count}/${invite.max_uses}</td>
-                                <td style="padding: 12px; color: var(--text-muted);">${invite.expires_at ? new Date(invite.expires_at).toLocaleDateString() : 'Never'}</td>
-                                <td style="padding: 12px;">
-                                    <button onclick="dashboard.deleteInvite('${invite.code}')" style="background: var(--danger); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Delete</button>
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
+            container.innerHTML = invites.map(invite => `
+                <div style="background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="text-align: left;">
+                        <div style="color: var(--text-primary); font-weight: 500; margin-bottom: 4px; font-family: monospace;">${invite.code}</div>
+                        <div style="color: var(--text-muted); font-size: 13px;">Role: <span style="color: var(--text-secondary);">${invite.role}</span> • Uses: ${invite.uses_count}/${invite.max_uses}</div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button onclick="dashboard.deleteInvite('${invite.code}')" style="background: var(--danger); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">Delete</button>
+                    </div>
+                </div>
+            `).join('');
         } catch (err) {
             console.error('Error loading invites:', err);
-            document.getElementById('invitesContainer').innerHTML = '<div style="color: var(--danger); padding: 20px;">Failed to load invites</div>';
+            document.getElementById('invitesContainer').innerHTML = '<div style="color: var(--danger);">Failed to load invites</div>';
         }
     }
 
-    showInviteModal() {
-        alert('Create invite feature - prompt for code and role');
+    async showClearInvitesModal() {
+        if (confirm('Are you sure you want to clear ALL invites? This cannot be undone.')) {
+            await this.clearAllInvites();
+        }
+    }
+
+    async clearAllInvites() {
+        try {
+            const response = await fetch('/api/admin/invites', {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${this.token}` }
+            });
+            const data = await response.json();
+            alert(data.message || 'All invites cleared');
+            this.loadAdminInvites();
+        } catch (err) {
+            alert('Failed to clear invites');
+        }
     }
 
     async deleteInvite(code) {
         if (!confirm(`Delete invite ${code}?`)) return;
         try {
-            await fetch(`/api/admin/invites/${code}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${this.token}` } });
+            await fetch(`/api/invites/${code}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${this.token}` } });
             this.loadAdminInvites();
         } catch (err) {
             alert('Failed to delete invite');
@@ -2828,62 +2928,92 @@ class Dashboard {
                 </button>
                 <div>
                     <h1 class="page-title">File Reports</h1>
-                    <p class="page-subtitle">Review reported files</p>
+                    <p class="page-subtitle">Review and moderate reported files</p>
                 </div>
             </div>
 
-            <div style="display: grid; gap: 16px; max-width: 1200px;" id="reportsContainer">
-                <div style="text-align: center; padding: 40px;">Loading reports...</div>
+            <div class="card" style="padding: 20px;">
+                <h3 style="color: var(--text-primary); margin-bottom: 20px;">Reported Files</h3>
+                <div id="modReportsContainer" style="color: var(--text-muted); text-align: center; padding: 40px;">Loading reports...</div>
             </div>
         `;
-        await this.loadFileReports();
+        await this.loadModFileReports();
     }
 
-    async loadFileReports() {
+    async loadModFileReports() {
         try {
-            const response = await fetch('/api/admin/file-reports', { method: 'GET', headers: { 'Authorization': `Bearer ${this.token}` } });
+            const response = await fetch('/api/admin/file-reports', {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${this.token}` }
+            });
             const data = await response.json();
             const reports = data.reports || [];
             
-            const container = document.getElementById('reportsContainer');
+            const container = document.getElementById('modReportsContainer');
             if (reports.length === 0) {
                 container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 40px;">No file reports</div>';
                 return;
             }
 
-            container.innerHTML = reports.map(report => `
-                <div class="card" style="padding: 20px; border-left: 4px solid var(--warning);">
+            const reportsWithKeys = await Promise.all(reports.map(async (report) => {
+                try {
+                    const fileRes = await fetch(`/api/files/info/${report.file_id}`, {
+                        headers: { 'Authorization': `Bearer ${this.token}` }
+                    });
+                    const fileData = await fileRes.json();
+                    report.hasEncryptionKey = !!(fileData && fileData.key);
+                } catch (err) {
+                    report.hasEncryptionKey = false;
+                }
+                return report;
+            }));
+
+            container.innerHTML = reportsWithKeys.map(report => `
+                <div style="background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; margin-bottom: 12px; border-left: 4px solid var(--warning);">
                     <div style="display: flex; justify-content: space-between; align-items: start;">
                         <div>
-                            <h4 style="color: var(--text-primary); margin-bottom: 8px;">Report #${report.id}</h4>
-                            <p style="color: var(--text-muted); margin-bottom: 12px;">Reason: ${report.reason}</p>
-                            <p style="color: var(--text-secondary); font-size: 12px;">Reported: ${new Date(report.created_at).toLocaleDateString()}</p>
+                            <div style="color: var(--text-primary); font-weight: 500; margin-bottom: 8px;">Report #${report.id}</div>
+                            <div style="color: var(--text-muted); font-size: 13px; margin-bottom: 4px;">File ID: <span style="font-family: monospace; color: var(--text-secondary);">${report.file_id}</span></div>
+                            <div style="color: var(--text-secondary); margin-bottom: 12px;">Reason: ${report.reason}</div>
+                            <div style="color: var(--text-muted); font-size: 12px;">Reported: ${new Date(report.created_at).toLocaleDateString()}</div>
+                            ${report.hasEncryptionKey ? `<div style="color: var(--success); font-size: 12px; margin-top: 4px;">✓ Has Encryption Key</div>` : ''}
                         </div>
-                        <div style="display: flex; gap: 8px;">
-                            <button onclick="dashboard.approveReport(${report.id})" style="background: var(--success); color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Approve</button>
-                            <button onclick="dashboard.declineReport(${report.id})" style="background: var(--danger); color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Decline</button>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button onclick="dashboard.modApproveReport(${report.id})" style="background: var(--success); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; white-space: nowrap;">Approve</button>
+                            <button onclick="dashboard.modDeclineReport(${report.id})" style="background: var(--danger); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; white-space: nowrap;">Decline</button>
                         </div>
                     </div>
                 </div>
             `).join('');
         } catch (err) {
-            console.error('Error loading reports:', err);
+            console.error('Error loading mod reports:', err);
+            document.getElementById('modReportsContainer').innerHTML = '<div style="color: var(--danger);">Failed to load reports</div>';
         }
     }
 
-    async approveReport(reportId) {
+    async modApproveReport(reportId) {
         try {
-            await fetch(`/api/admin/file-reports/approve/${reportId}`, { method: 'POST', headers: { 'Authorization': `Bearer ${this.token}` } });
-            this.loadFileReports();
+            const response = await fetch(`/api/admin/file-reports/approve/${reportId}`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${this.token}` }
+            });
+            const data = await response.json();
+            alert(data.message || 'Report approved');
+            this.loadModFileReports();
         } catch (err) {
             alert('Failed to approve report');
         }
     }
 
-    async declineReport(reportId) {
+    async modDeclineReport(reportId) {
         try {
-            await fetch(`/api/admin/file-reports/decline/${reportId}`, { method: 'POST', headers: { 'Authorization': `Bearer ${this.token}` } });
-            this.loadFileReports();
+            const response = await fetch(`/api/admin/file-reports/decline/${reportId}`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${this.token}` }
+            });
+            const data = await response.json();
+            alert(data.message || 'Report declined');
+            this.loadModFileReports();
         } catch (err) {
             alert('Failed to decline report');
         }
