@@ -172,12 +172,15 @@ app.get('/api/auth/me', authenticateToken, async (req, res) => {
     const user = await getQuery('users', 'id', req.user.id);
     if (!user) return res.status(404).json({ error: 'User not found' });
     
+    const profile = await getQuery('profiles', 'user_id', req.user.id);
+    
     res.status(200).json({ 
       user: { 
         id: user.id, 
         username: user.username, 
         display_name: user.display_name,
-        role: user.role 
+        role: user.role,
+        avatar_url: profile?.avatar_url || '/static/cdn/avatar.png'
       } 
     });
   } catch (err) {
