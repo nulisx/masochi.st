@@ -1,360 +1,199 @@
 class Dashboard {
     constructor() {
-        this.currentPage = 'overview';
         this.user = null;
+        this.currentPage = 'overview';
         this.updates = [];
-        this.init();
     }
 
     async init() {
-        await this.checkAuth();
-        this.setupNavigation();
-        this.setupLogout();
-        this.setupKeyboardShortcuts();
-        this.setupLogoRotation();
-        this.setupSearch();
-        this.loadPage('overview');
-    }
-
-    setupLogoRotation() {
-        const logos = ['/static/cdn/125457885.jpeg', '/static/cdn/221500011.jpeg'];
-        let currentIndex = 0;
-        const logoImg = document.getElementById('logoImage');
-        if (!logoImg) return;
-        
-        setInterval(() => {
-            currentIndex = (currentIndex + 1) % logos.length;
-            logoImg.src = logos[currentIndex];
-        }, 5000);
-    }
-
-    setupSearch() {
-        const searchInput = document.querySelector('.search-input');
-        if (!searchInput) return;
-        
-        this.searchCache = { links: [], files: [], connections: [] };
-        this.searchTimeout = null;
-
-        // Show dropdown on input with debouncing
-        searchInput.addEventListener('input', (e) => {
-            clearTimeout(this.searchTimeout);
-            const query = e.target.value.trim().toLowerCase();
-            if (!query) {
-                this.hideSearchDropdown();
-                return;
-            }
-            this.searchTimeout = setTimeout(() => this.showSearchDropdown(query), 300);
-        });
-
-        // Search on Enter
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key !== 'Enter') return;
-            clearTimeout(this.searchTimeout);
-            const query = searchInput.value.trim().toLowerCase();
-            if (!query) return;
-            this.performSearch(query);
-        });
-
-        // Close dropdown on blur
-        searchInput.addEventListener('blur', () => {
-            setTimeout(() => this.hideSearchDropdown(), 200);
-        });
-    }
-
-    async showSearchDropdown(query) {
-        // Use cache if available
-        if (this.searchCache.links.length === 0) {
-            this.searchCache.links = await this.fetchLinks();
-            this.searchCache.files = await this.fetchFiles();
-            this.searchCache.connections = await this.fetchConnections();
-        }
-
-        let results = [];
-        
-        // Search in cached data
-        this.searchCache.links.forEach(link => {
-            if (link.title.toLowerCase().includes(query)) {
-                results.push({ type: 'biolink', title: link.title, desc: 'Edit the profile of your biolink', id: link.id });
-            }
-        });
-
-        this.searchCache.files.forEach(file => {
-            if (file.filename.toLowerCase().includes(query)) {
-                results.push({ type: 'file', title: file.filename, desc: 'View your encrypted file', code: file.code });
-            }
-        });
-
-        this.searchCache.connections.forEach(conn => {
-            if (conn.platform.toLowerCase().includes(query)) {
-                results.push({ type: 'connection', title: conn.platform, desc: `Connect your ${conn.platform}`, username: conn.username });
-            }
-        });
-
-        // Show dropdown
-        let dropdown = document.querySelector('.search-dropdown');
-        if (!dropdown) {
-            dropdown = document.createElement('div');
-            dropdown.className = 'search-dropdown';
-            document.querySelector('.search-container').appendChild(dropdown);
-        }
-
-        if (results.length === 0) {
-            dropdown.innerHTML = `<div class="search-dropdown-item" style="text-align: center; color: var(--text-muted); padding: 16px;">No results found</div>`;
-            dropdown.style.display = 'block';
-            return;
-        }
-
-        dropdown.innerHTML = results.slice(0, 3).map((result, idx) => `
-            <div class="search-dropdown-item" onclick="dashboard.selectSearchResult('${result.type}', '${result.id || result.code}')">
-                <div style="flex: 1; min-width: 0;">
-                    <div class="search-result-title">${result.title}</div>
-                    <div class="search-result-desc">${result.desc}</div>
-                </div>
-            </div>
-        `).join('');
-
-        dropdown.style.display = 'block';
-    }
-
-    hideSearchDropdown() {
-        const dropdown = document.querySelector('.search-dropdown');
-        if (dropdown) dropdown.style.display = 'none';
-    }
-
-    selectSearchResult(type, id) {
-        this.hideSearchDropdown();
-        document.querySelector('.search-input').value = '';
-        if (type === 'biolink') {
-            this.editLink(id);
-        }
-    }
-
-    openUpdateModal(index) {
-        const update = this.updates[index];
-        if (!update) return;
-        this.showUpdateDetails(update.id, update.title, update.description, update.details, update.created_at);
-    }
-
-
-    async performSearch(query) {
-        const results = [];
-        
-        const links = await this.fetchLinks();
-        links.forEach(link => {
-            if (link.title.toLowerCase().includes(query) || link.url.toLowerCase().includes(query)) {
-                results.push({ type: 'biolink', title: link.title, url: link.url, id: link.id });
-            }
-        });
-
-        const files = await this.fetchFiles();
-        files.forEach(file => {
-            if (file.filename.toLowerCase().includes(query)) {
-                results.push({ type: 'file', title: file.filename, size: this.formatFileSize(file.size), code: file.code });
-            }
-        });
-
-        const connections = await this.fetchConnections();
-        connections.forEach(conn => {
-            if (conn.platform.toLowerCase().includes(query) || (conn.username && conn.username.toLowerCase().includes(query))) {
-                results.push({ type: 'connection', title: conn.platform, username: conn.username });
-            }
-        });
-
-        this.showSearchResults(results, query);
-    }
-
-    showSearchResults(results, query) {
-        const contentArea = document.getElementById('contentArea');
-        contentArea.innerHTML = `
-            <div class="page-header">
-                <button class="page-back" onclick="dashboard.loadPage('overview')">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M19 12H5M12 19l-7-7 7-7"/>
-                    </svg>
-                </button>
-                <div>
-                    <h1 class="page-title">Search Results</h1>
-                    <p class="page-subtitle">${results.length} result${results.length !== 1 ? 's' : ''} for "${query}"</p>
-                </div>
-            </div>
-
-            <div class="search-results" style="max-width: 900px;">
-                ${results.length === 0 ? `
-                    <div class="empty-state">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.35-4.35"></path>
-                        </svg>
-                        <h3>No results found</h3>
-                        <p>Try searching for something else</p>
-                    </div>
-                ` : results.map(result => `
-                    <div class="card" style="margin-bottom: 12px; padding: 16px; cursor: pointer;" onclick="dashboard.${
-                        result.type === 'biolink' ? `editLink(${result.id})` :
-                        result.type === 'file' ? `alert('File: ' + '${result.title}')` :
-                        `alert('Connection: ' + '${result.title}')`
-                    }">
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="background: var(--bg-tertiary); padding: 8px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--accent-secondary);">
-                                ${result.type.toUpperCase()}
-                            </div>
-                            <div>
-                                <div style="font-weight: 500; margin-bottom: 4px;">${result.title}</div>
-                                <div style="font-size: 12px; color: var(--text-muted);">
-                                    ${result.url ? result.url : result.size ? result.size : result.username || ''}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        `;
-    }
-
-    setupKeyboardShortcuts() {
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key.toLowerCase() === 'k') {
-                e.preventDefault();
-                const searchInput = document.querySelector('.search-input');
-                if (searchInput) {
-                    searchInput.focus();
-                }
-            }
-        });
-    }
-
-
-
-
-
-
-
-    async checkAuth() {
         try {
-            const response = await fetch('/api/auth/me', {
-                credentials: 'include'
-            });
-            
-            if (!response.ok) {
+            const response = await fetch('/api/auth/me', { credentials: 'include' });
+            if (response.ok) {
+                this.user = await response.json();
+                this.setupUI();
+                this.loadPage('overview');
+            } else {
                 window.location.href = '/login';
-                return;
             }
-            
-            const data = await response.json();
-            this.user = data.user;
-            this.updateUserDisplay();
         } catch (error) {
-            console.error('Auth check failed:', error);
+            console.error('Failed to load user:', error);
             window.location.href = '/login';
         }
     }
 
-    updateUserDisplay() {
-        if (!this.user) return;
-        
-        document.getElementById('userName').textContent = this.user.display_name || this.user.username;
-        document.getElementById('userHandle').textContent = '@' + this.user.username;
-        document.getElementById('headerUserName').textContent = this.user.display_name || this.user.username;
-        
-        const roleDisplay = document.getElementById('roleDisplay');
-        if (roleDisplay) {
-            const roleMap = {
-                'owner': 'owner',
-                'manager': 'manager',
-                'admin': 'admin',
-                'mod': 'mod'
-            };
-            const rolePrefix = roleMap[this.user.role] || 'root';
-            roleDisplay.textContent = `${rolePrefix}@${this.user.username}.glowi.es`;
+    setupUI() {
+        const userDisplay = document.getElementById('userDisplay');
+        if (userDisplay) {
+            userDisplay.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <img id="headerAvatar" src="${this.user?.avatar_url || '/static/cdn/avatar.png'}" alt="Avatar" style="width: 32px; height: 32px; border-radius: 8px;">
+                    <div>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 2px;">${this.user?.role || 'member'}@${this.user?.username}.glowi.es</p>
+                        <h3 style="font-size: 16px; margin: 0; color: var(--text-primary);">${this.user?.display_name || this.user?.username}</h3>
+                    </div>
+                </div>
+            `;
         }
+
+        this.setupSidebar();
+        this.setupSearchBar();
+        this.setupModalStyles();
     }
 
-    setupNavigation() {
-        document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+    setupSidebar() {
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        sidebarItems.forEach(item => {
             item.addEventListener('click', (e) => {
-                e.preventDefault();
                 const page = item.dataset.page;
-                this.loadPage(page);
+                if (page) {
+                    e.preventDefault();
+                    this.loadPage(page);
+                }
             });
         });
+    }
 
-        window.addEventListener('hashchange', () => {
-            const page = window.location.hash.slice(1) || 'overview';
-            if (page !== this.currentPage) {
-                this.loadPage(page);
+    setupSearchBar() {
+        const searchInput = document.getElementById('searchInput');
+        if (!searchInput) return;
+
+        let searchTimeout;
+        let cachedResults = {};
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            const resultsContainer = document.getElementById('searchResults');
+
+            if (!resultsContainer) return;
+
+            clearTimeout(searchTimeout);
+
+            if (query.length === 0) {
+                resultsContainer.style.display = 'none';
+                return;
             }
+
+            if (cachedResults[query]) {
+                this.displaySearchResults(cachedResults[query], resultsContainer);
+                return;
+            }
+
+            searchTimeout = setTimeout(async () => {
+                try {
+                    const [linksRes, filesRes, connectionsRes] = await Promise.all([
+                        fetch('/api/links', { credentials: 'include' }),
+                        fetch('/api/files', { credentials: 'include' }),
+                        fetch('/api/connections', { credentials: 'include' })
+                    ]);
+
+                    let results = [];
+
+                    if (linksRes.ok) {
+                        const data = await linksRes.json();
+                        results.push(...(data.links || []).filter(l => 
+                            l.title?.toLowerCase().includes(query) || 
+                            l.url?.toLowerCase().includes(query)
+                        ).map(l => ({ type: 'link', item: l })));
+                    }
+
+                    if (filesRes.ok) {
+                        const data = await filesRes.json();
+                        results.push(...(data.files || []).filter(f => 
+                            f.filename?.toLowerCase().includes(query)
+                        ).map(f => ({ type: 'file', item: f })));
+                    }
+
+                    if (connectionsRes.ok) {
+                        const data = await connectionsRes.json();
+                        results.push(...(data.connections || []).filter(c => 
+                            c.platform?.toLowerCase().includes(query)
+                        ).map(c => ({ type: 'connection', item: c })));
+                    }
+
+                    cachedResults[query] = results;
+                    this.displaySearchResults(results, resultsContainer);
+                } catch (error) {
+                    console.error('Search failed:', error);
+                }
+            }, 300);
         });
     }
 
-    setupLogout() {
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            try {
-                await fetch('/api/auth/logout', {
-                    method: 'POST',
-                    credentials: 'include'
-                });
-                window.location.href = '/login';
-            } catch (error) {
-                console.error('Logout failed:', error);
+    displaySearchResults(results, container) {
+        if (results.length === 0) {
+            container.innerHTML = '<div style="padding: 16px; text-align: center; color: var(--text-muted);">No results found</div>';
+            container.style.display = 'block';
+            return;
+        }
+
+        const html = results.slice(0, 5).map(r => {
+            if (r.type === 'link') {
+                return `<div class="search-result-item" onclick="dashboard.loadPage('biolinks')"><strong>${r.item.title}</strong><p>${r.item.url}</p></div>`;
+            } else if (r.type === 'file') {
+                return `<div class="search-result-item"><strong>${r.item.filename}</strong><p>${dashboard.formatFileSize(r.item.size)}</p></div>`;
+            } else {
+                return `<div class="search-result-item"><strong>${r.item.platform}</strong><p>Connected account</p></div>`;
             }
-        });
+        }).join('');
+
+        container.innerHTML = html;
+        container.style.display = 'block';
     }
 
-    setActivePage(page) {
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.classList.remove('active');
-            if (item.dataset.page === page) {
-                item.classList.add('active');
-            }
-        });
+    updateUserDisplay() {
+        this.setupUI();
     }
 
     async loadPage(page) {
         this.currentPage = page;
-        this.setActivePage(page);
-        window.location.hash = page;
-        
         const contentArea = document.getElementById('contentArea');
-        contentArea.innerHTML = '<div class="loading-container"><div class="spinner"></div><p>Loading...</p></div>';
+        if (!contentArea) return;
 
         try {
-            switch (page) {
-                case 'overview':
-                    await this.renderOverview();
-                    break;
-                case 'profile':
-                    await this.renderProfile();
-                    break;
-                case 'security':
-                    await this.renderSecurity();
-                    break;
-                case 'biolinks':
-                    await this.renderBiolinks();
-                    break;
-                case 'files':
-                    await this.renderFiles();
-                    break;
-                case 'connections':
-                    await this.renderConnections();
-                    break;
-                case 'settings':
-                    await this.renderSettings();
-                    break;
-                case 'privacy':
-                    await this.renderPrivacy();
-                    break;
-                case 'litterbox':
-                    await this.renderLitterBox();
-                    break;
-                case 'tos':
-                    await this.renderToS();
-                    break;
-                case 'api':
-                    await this.renderAPI();
-                    break;
-                default:
-                    await this.renderOverview();
-            }
+            contentArea.style.opacity = '0';
+            contentArea.style.transition = 'opacity 0.3s ease';
+            
+            setTimeout(async () => {
+                switch(page) {
+                    case 'overview':
+                        await this.renderOverview();
+                        break;
+                    case 'biolinks':
+                        await this.renderBiolinks();
+                        break;
+                    case 'images':
+                        await this.renderFiles();
+                        break;
+                    case 'profile':
+                        await this.renderProfile();
+                        break;
+                    case 'security':
+                        await this.renderSecurity();
+                        break;
+                    case 'connections':
+                        await this.renderConnections();
+                        break;
+                    case 'settings':
+                        await this.renderSettings();
+                        break;
+                    case 'privacy':
+                        await this.renderPrivacy();
+                        break;
+                    case 'litterbox':
+                        await this.renderLitterBox();
+                        break;
+                    case 'tos':
+                        await this.renderToS();
+                        break;
+                    case 'api':
+                        await this.renderAPI();
+                        break;
+                    default:
+                        await this.renderOverview();
+                }
+                
+                contentArea.style.opacity = '1';
+            }, 150);
         } catch (error) {
             console.error('Error loading page:', error);
             contentArea.innerHTML = `<div class="empty-state"><h3>Error loading page</h3><p>${error.message}</p></div>`;
@@ -403,7 +242,7 @@ class Dashboard {
             
             <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 24px;">
                 <div class="stat-card" style="display: flex; align-items: center; gap: 16px; padding: 20px;">
-                    <div class="stat-icon" style="background: var(--accent-primary); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <div class="stat-icon" style="width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--bg-tertiary);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>
@@ -415,9 +254,9 @@ class Dashboard {
                     </div>
                 </div>
                 <div class="stat-card" style="display: flex; align-items: center; gap: 16px; padding: 20px;">
-                    <div class="stat-icon" style="background: #10b981; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <div class="stat-icon" style="width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--bg-tertiary);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path>
                             <circle cx="12" cy="12" r="3"></circle>
                         </svg>
                     </div>
@@ -427,9 +266,9 @@ class Dashboard {
                     </div>
                 </div>
                 <div class="stat-card" style="display: flex; align-items: center; gap: 16px; padding: 20px;">
-                    <div class="stat-icon" style="background: var(--accent-primary); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <div class="stat-icon" style="width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--bg-tertiary);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2M3 6h18M5 12h14M9 2h6v2H9z"></path>
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 9.5c0 .83-.67 1.5-1.5 1.5S11 13.33 11 12.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5z"></path>
                         </svg>
                     </div>
                     <div class="stat-info">
@@ -438,9 +277,9 @@ class Dashboard {
                     </div>
                 </div>
                 <div class="stat-card" style="display: flex; align-items: center; gap: 16px; padding: 20px;">
-                    <div class="stat-icon" style="background: ${stats.license_status === 'Active' ? 'var(--success)' : '#64748b'}; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <div class="stat-icon" style="width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--bg-tertiary);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                         </svg>
                     </div>
                     <div class="stat-info">
@@ -542,12 +381,24 @@ class Dashboard {
                     
                     <form id="profileForm">
                         <div class="form-group">
-                            <label class="form-label">Display Name</label>
+                            <label class="form-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                Display Name
+                            </label>
                             <input type="text" class="form-input" id="displayName" value="${this.user?.display_name || ''}" placeholder="Your display name">
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">Username</label>
+                            <label class="form-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                </svg>
+                                Username
+                            </label>
                             <div style="display: flex; gap: 12px; align-items: center;">
                                 <input type="text" class="form-input" id="usernameInput" value="${this.user?.username || ''}" placeholder="your_username" style="flex: 1;">
                                 <button type="button" class="btn btn-secondary" id="changeUsernameBtn" style="white-space: nowrap;">Change Username</button>
@@ -556,7 +407,12 @@ class Dashboard {
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">Bio</label>
+                            <label class="form-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                                Bio
+                            </label>
                             <textarea class="form-input" id="profileBio" placeholder="Tell visitors about yourself">${profile?.bio || ''}</textarea>
                         </div>
                         
@@ -566,10 +422,9 @@ class Dashboard {
                 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon success">
+                        <div class="card-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                                <path d="M13.2 3.2a5.5 5.5 0 0 1 7.8 7.8m0 0a5.5 5.5 0 0 1-7.8 7.8m0 0L6.5 20.5M3.5 3.5l6.7 6.7"></path>
                             </svg>
                         </div>
                         <div>
@@ -592,7 +447,7 @@ class Dashboard {
                     </div>
                     
                     <a href="/@${this.user?.username}" target="_blank" class="btn btn-secondary" style="width: 100%;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
                             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                             <polyline points="15 3 21 3 21 9"></polyline>
                             <line x1="10" y1="14" x2="21" y2="3"></line>
@@ -753,7 +608,12 @@ class Dashboard {
                     
                     <div class="card-item">
                         <div class="item-info">
-                            <span class="item-label">Two-Factor Authentication</span>
+                            <span class="item-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                    <path d="M12 1v6m0 6v6M1 12h6m6 0h6"></path>
+                                </svg>
+                                Two-Factor Authentication
+                            </span>
                             <span class="item-value">Disabled</span>
                         </div>
                         <span class="item-action">Enable</span>
@@ -761,7 +621,13 @@ class Dashboard {
                     
                     <div class="card-item">
                         <div class="item-info">
-                            <span class="item-label">Active Sessions</span>
+                            <span class="item-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                    <circle cx="12" cy="12" r="1"></circle>
+                                    <path d="M12 1C5.925 1 1 5.925 1 12s4.925 11 11 11 11-4.925 11-11S18.075 1 12 1m0 2c5.039 0 9 3.961 9 9s-3.961 9-9 9-9-3.961-9-9 3.961-9 9-9"></path>
+                                </svg>
+                                Active Sessions
+                            </span>
                             <span class="item-value">1 active session</span>
                         </div>
                         <span class="item-action">Manage</span>
@@ -769,7 +635,13 @@ class Dashboard {
                     
                     <div class="card-item">
                         <div class="item-info">
-                            <span class="item-label">Password</span>
+                            <span class="item-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                                Password
+                            </span>
                             <span class="item-value">Last changed recently</span>
                         </div>
                         <span class="item-action" id="changePasswordBtn">Change</span>
@@ -778,7 +650,7 @@ class Dashboard {
                 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon success">
+                        <div class="card-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <circle cx="12" cy="12" r="3"></circle>
@@ -792,7 +664,13 @@ class Dashboard {
                     
                     <div class="card-item">
                         <div class="item-info">
-                            <span class="item-label">Profile Visibility</span>
+                            <span class="item-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                Profile Visibility
+                            </span>
                             <span class="item-value">Public</span>
                         </div>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2">
@@ -802,7 +680,14 @@ class Dashboard {
                     
                     <div class="card-item">
                         <div class="item-info">
-                            <span class="item-label">Profile Themes</span>
+                            <span class="item-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                    <circle cx="12" cy="12" r="1"></circle>
+                                    <circle cx="19" cy="12" r="1"></circle>
+                                    <circle cx="5" cy="12" r="1"></circle>
+                                </svg>
+                                Profile Themes
+                            </span>
                             <span class="item-value">Customize appearance</span>
                         </div>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2">
@@ -812,7 +697,14 @@ class Dashboard {
                     
                     <div class="card-item">
                         <div class="item-info">
-                            <span class="item-label">Avatar & Banner</span>
+                            <span class="item-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <polyline points="21 15 16 10 5 21"></polyline>
+                                </svg>
+                                Avatar & Banner
+                            </span>
                             <span class="item-value">Manage images</span>
                         </div>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2">
@@ -827,13 +719,13 @@ class Dashboard {
                     <div class="card-header">
                         <div class="card-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                <path d="M10 14l2 2 4-4"></path>
                             </svg>
                         </div>
                         <div>
                             <h3 class="card-title">Data Protection</h3>
-                            <p class="card-description">Manage your data collection preferences and download your information.</p>
+                            <p class="card-description">Manage your data collection preferences</p>
                         </div>
                     </div>
                     <span class="badge success">Protected</span>
@@ -841,17 +733,16 @@ class Dashboard {
                 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon success">
+                        <div class="card-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                <line x1="16" y1="2" x2="16" y2="6"></line>
-                                <line x1="8" y1="2" x2="8" y2="6"></line>
-                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                <polyline points="7 3 7 8 15 8"></polyline>
                             </svg>
                         </div>
                         <div>
                             <h3 class="card-title">Login History</h3>
-                            <p class="card-description">View recent login attempts and manage suspicious activity.</p>
+                            <p class="card-description">View recent login attempts</p>
                         </div>
                     </div>
                     <span class="badge success">Up to date</span>
@@ -859,14 +750,15 @@ class Dashboard {
                 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon warning">
+                        <div class="card-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                <path d="M23 7l-7 5 7 5V7z"></path>
+                                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
                             </svg>
                         </div>
                         <div>
                             <h3 class="card-title">Account Recovery</h3>
-                            <p class="card-description">Set up recovery methods and backup codes for account access.</p>
+                            <p class="card-description">Set up recovery methods</p>
                         </div>
                     </div>
                     <span class="badge warning">Setup Required</span>
@@ -875,7 +767,7 @@ class Dashboard {
             
             <div class="card" style="margin-top: 24px;">
                 <div class="card-header">
-                    <div class="card-icon danger">
+                    <div class="card-icon">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M3 6h18"></path>
                             <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
@@ -890,7 +782,12 @@ class Dashboard {
                 
                 <div class="card-item">
                     <div class="item-info">
-                        <span class="item-label">Delete Account</span>
+                        <span class="item-label">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                <path d="M3 6h18M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2M5 6l1 14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-14"></path>
+                            </svg>
+                            Delete Account
+                        </span>
                         <span class="item-value">Permanently delete your account and all data</span>
                     </div>
                     <button class="btn btn-danger" style="padding: 8px 16px;">Delete Account</button>
@@ -922,21 +819,21 @@ class Dashboard {
                     </div>
                 </form>
             `, async () => {
-                const currentPassword = document.getElementById('currentPassword').value;
-                const newPassword = document.getElementById('newPassword').value;
-                const confirmPassword = document.getElementById('confirmPassword').value;
+                const current = document.getElementById('currentPassword').value;
+                const newPass = document.getElementById('newPassword').value;
+                const confirm = document.getElementById('confirmPassword').value;
 
-                if (newPassword !== confirmPassword) {
+                if (newPass !== confirm) {
                     this.showToast('Passwords do not match', 'error');
                     return false;
                 }
 
                 try {
-                    const response = await fetch('/api/profile/password', {
-                        method: 'PUT',
+                    const response = await fetch('/api/auth/change-password', {
+                        method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         credentials: 'include',
-                        body: JSON.stringify({ currentPassword, newPassword })
+                        body: JSON.stringify({ current_password: current, new_password: newPass })
                     });
 
                     if (response.ok) {
@@ -955,9 +852,7 @@ class Dashboard {
         });
     }
 
-    async renderBiolinks() {
-        const links = await this.fetchLinks();
-        
+    async renderSettings() {
         const contentArea = document.getElementById('contentArea');
         contentArea.innerHTML = `
             <div class="page-header">
@@ -967,115 +862,307 @@ class Dashboard {
                     </svg>
                 </button>
                 <div>
-                    <h1 class="page-title">Biolinks</h1>
-                    <p class="page-subtitle">Manage your bio links</p>
+                    <h1 class="page-title">Settings</h1>
+                    <p class="page-subtitle">General account settings</p>
                 </div>
-                <button class="btn btn-primary" style="margin-left: auto;" id="addLinkBtn">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                    Add Link
-                </button>
             </div>
             
-            <div class="links-list" id="linksList">
-                ${links.length === 0 ? `
-                    <div class="empty-state">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m-8.48 3.28l4.24 4.24m3.28 8.48l4.24-4.24M20.78 4.22l-4.24 4.24M20 12c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="card-title">Preferences</h3>
+                        <p class="card-description">Customize your experience</p>
+                    </div>
+                </div>
+                
+                <div class="card-item">
+                    <div class="item-info">
+                        <span class="item-label">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path>
+                            </svg>
+                            Dark Mode
+                        </span>
+                        <span class="item-value">Currently active</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked disabled>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="card-item">
+                    <div class="item-info">
+                        <span class="item-label">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                            </svg>
+                            Email Notifications
+                        </span>
+                        <span class="item-value">Receive updates about your account</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="card-item">
+                    <div class="item-info">
+                        <span class="item-label">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                <path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0"></path>
+                                <path d="M12 6v6l4 2"></path>
+                            </svg>
+                            Analytics
+                        </span>
+                        <span class="item-value">Track profile visits</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+        `;
+    }
+
+    async renderPrivacy() {
+        const contentArea = document.getElementById('contentArea');
+        contentArea.innerHTML = `
+            <div class="page-header">
+                <button class="page-back" onclick="dashboard.loadPage('overview')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="page-title">Privacy</h1>
+                    <p class="page-subtitle">Control your data and privacy settings</p>
+                </div>
+            </div>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Profile Visibility</h3>
+                            <p class="card-description">Control who can see your profile</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-item">
+                        <div class="item-info">
+                            <span class="item-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                Public Profile
+                            </span>
+                            <span class="item-value">Anyone can view your profile</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="card-item">
+                        <div class="item-info">
+                            <span class="item-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                    <path d="M9 11l3 3L22 4"></path>
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                                Show in Search
+                            </span>
+                            <span class="item-value">Allow search engines to index</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Data & Privacy</h3>
+                            <p class="card-description">Manage your data</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card-item">
+                        <div class="item-info">
+                            <span class="item-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                    <polyline points="7 3 7 8 15 8"></polyline>
+                                </svg>
+                                Download Data
+                            </span>
+                            <span class="item-value">Get a copy of your data</span>
+                        </div>
+                        <button class="btn btn-secondary" style="padding: 8px 16px;">Download</button>
+                    </div>
+                    
+                    <div class="card-item">
+                        <div class="item-info">
+                            <span class="item-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                    <path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0"></path>
+                                    <path d="M12 6v6l4 2"></path>
+                                </svg>
+                                Usage Analytics
+                            </span>
+                            <span class="item-value">Help improve our service</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    async renderBiolinks() {
+        const links = await this.fetchLinks();
+        const contentArea = document.getElementById('contentArea');
+        
+        contentArea.innerHTML = `
+            <div class="page-header">
+                <button class="page-back" onclick="dashboard.loadPage('overview')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div>
+                    <h1 class="page-title">Bio Links</h1>
+                    <p class="page-subtitle">Manage your bio link collection</p>
+                </div>
+            </div>
+            
+            <div class="card" style="margin-bottom: 24px;">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
                             <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
                         </svg>
-                        <h3>No links yet</h3>
-                        <p>Add your first link to get started</p>
-                        <button class="btn btn-primary" onclick="document.getElementById('addLinkBtn').click()">Add Your First Link</button>
                     </div>
-                ` : links.map(link => `
-                    <div class="link-item" data-id="${link.id}">
-                        <div class="link-drag">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="8" y1="6" x2="21" y2="6"></line>
-                                <line x1="8" y1="12" x2="21" y2="12"></line>
-                                <line x1="8" y1="18" x2="21" y2="18"></line>
-                                <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                                <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                    <div>
+                        <h3 class="card-title">Add New Link</h3>
+                        <p class="card-description">Create a new bio link</p>
+                    </div>
+                </div>
+                
+                <form id="addLinkForm" style="padding: 20px;">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
                             </svg>
-                        </div>
-                        <div class="link-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            Title
+                        </label>
+                        <input type="text" class="form-input" id="linkTitle" placeholder="Link title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 6px;">
                                 <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
                                 <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
                             </svg>
-                        </div>
-                        <div class="link-info">
-                            <div class="link-title">${link.title}</div>
-                            <div class="link-url">${link.url}</div>
-                        </div>
-                        <div class="link-actions">
-                            <button class="link-action-btn" onclick="dashboard.editLink(${link.id})" title="Edit">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                </svg>
-                            </button>
-                            <button class="link-action-btn" onclick="dashboard.deleteLink(${link.id})" title="Delete">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M3 6h18"></path>
-                                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                                </svg>
-                            </button>
-                        </div>
+                            URL
+                        </label>
+                        <input type="url" class="form-input" id="linkUrl" placeholder="https://..." required>
                     </div>
-                `).join('')}
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Add Link</button>
+                </form>
+            </div>
+            
+            <div style="margin-top: 24px;">
+                <h3 style="margin-bottom: 16px;">Your Links</h3>
+                <div class="cards-grid" id="linksGrid" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));">
+                    ${links.length === 0 ? `
+                        <div class="empty-state" style="grid-column: 1 / -1;">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                            </svg>
+                            <h3>No links added yet</h3>
+                            <p>Create your first bio link above</p>
+                        </div>
+                    ` : links.map(link => `
+                        <div class="card">
+                            <div style="padding: 16px; border-bottom: 1px solid var(--border-color);">
+                                <h4 style="margin-bottom: 4px; color: var(--text-primary);">${link.title}</h4>
+                                <p style="font-size: 12px; color: var(--text-muted); word-break: break-all;">${link.url}</p>
+                            </div>
+                            <div style="padding: 12px; display: flex; gap: 8px;">
+                                <button class="btn btn-secondary" style="flex: 1; padding: 8px; font-size: 12px;" onclick="dashboard.editLink(${link.id})">Edit</button>
+                                <button class="btn btn-danger" style="flex: 1; padding: 8px; font-size: 12px;" onclick="dashboard.deleteLink(${link.id})">Delete</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
             </div>
         `;
 
-        this.setupAddLink();
+        const form = document.getElementById('addLinkForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.addLink(
+                document.getElementById('linkTitle').value,
+                document.getElementById('linkUrl').value
+            );
+        });
     }
 
-    setupAddLink() {
-        const btn = document.getElementById('addLinkBtn');
-        if (!btn) return;
-
-        btn.addEventListener('click', () => {
-            this.showModal('Add Link', `
-                <form id="linkForm">
-                    <div class="form-group">
-                        <label class="form-label">Title</label>
-                        <input type="text" class="form-input" id="linkTitle" required placeholder="My Website">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">URL</label>
-                        <input type="url" class="form-input" id="linkUrl" required placeholder="https://example.com">
-                    </div>
-                </form>
-            `, async () => {
-                const title = document.getElementById('linkTitle').value;
-                const url = document.getElementById('linkUrl').value;
-
-                try {
-                    const response = await fetch('/api/links', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        credentials: 'include',
-                        body: JSON.stringify({ title, url })
-                    });
-
-                    if (response.ok) {
-                        this.showToast('Link added successfully', 'success');
-                        this.renderBiolinks();
-                        return true;
-                    } else {
-                        throw new Error('Failed to add link');
-                    }
-                } catch (error) {
-                    this.showToast('Failed to add link', 'error');
-                    return false;
-                }
+    async addLink(title, url) {
+        try {
+            const response = await fetch('/api/links', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ title, url })
             });
-        });
+
+            if (response.ok) {
+                this.showToast('Link added successfully', 'success');
+                this.renderBiolinks();
+            } else {
+                throw new Error('Failed to add link');
+            }
+        } catch (error) {
+            this.showToast('Failed to add link', 'error');
+        }
     }
 
     async editLink(id) {
@@ -1083,41 +1170,29 @@ class Dashboard {
         const link = links.find(l => l.id === id);
         if (!link) return;
 
-        this.showModal('Edit Link', `
-            <form id="linkForm">
-                <div class="form-group">
-                    <label class="form-label">Title</label>
-                    <input type="text" class="form-input" id="linkTitle" required value="${link.title}">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">URL</label>
-                    <input type="url" class="form-input" id="linkUrl" required value="${link.url}">
-                </div>
-            </form>
-        `, async () => {
-            const title = document.getElementById('linkTitle').value;
-            const url = document.getElementById('linkUrl').value;
+        const title = prompt('Link title:', link.title);
+        if (!title) return;
 
-            try {
-                const response = await fetch(`/api/links/${id}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ title, url })
-                });
+        const url = prompt('Link URL:', link.url);
+        if (!url) return;
 
-                if (response.ok) {
-                    this.showToast('Link updated', 'success');
-                    this.renderBiolinks();
-                    return true;
-                } else {
-                    throw new Error('Failed to update');
-                }
-            } catch (error) {
-                this.showToast('Failed to update link', 'error');
-                return false;
+        try {
+            const response = await fetch(`/api/links/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ title, url })
+            });
+
+            if (response.ok) {
+                this.showToast('Link updated', 'success');
+                this.renderBiolinks();
+            } else {
+                throw new Error('Failed to update');
             }
-        });
+        } catch (error) {
+            this.showToast('Failed to update link', 'error');
+        }
     }
 
     async deleteLink(id) {
@@ -1152,8 +1227,8 @@ class Dashboard {
                     </svg>
                 </button>
                 <div>
-                    <h1 class="page-title">Files</h1>
-                    <p class="page-subtitle">Secure file storage with E2EE encryption></p>
+                    <h1 class="page-title">Images</h1>
+                    <p class="page-subtitle">Secure file storage with E2EE encryption</p>
                 </div>
             </div>
             
@@ -1176,8 +1251,8 @@ class Dashboard {
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div class="card-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                                <circle cx="12" cy="13" r="4"></circle>
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                <path d="M10 14l2 2 4-4"></path>
                             </svg>
                         </div>
                         <div>
@@ -1234,7 +1309,7 @@ class Dashboard {
                                 </button>
                                 <button class="btn btn-danger" onclick="dashboard.deleteFile('${file.code}')">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                                        <path d="M3 6h18M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2l-1-14"></path>
                                     </svg>
                                 </button>
                             </div>
@@ -1327,38 +1402,6 @@ class Dashboard {
     async renderConnections() {
         const connections = await this.fetchConnections();
         
-        const socialPlatforms = [
-            { id: 'discord', name: 'Discord', icon: 'discord', urlTemplate: 'https://discord.com/users/' },
-            { id: 'discord_server', name: 'Discord Server', icon: 'discord', urlTemplate: 'https://discord.gg/' },
-            { id: 'twitter', name: 'Twitter/X', icon: 'twitter', urlTemplate: 'https://x.com/' },
-            { id: 'instagram', name: 'Instagram', icon: 'instagram', urlTemplate: 'https://instagram.com/' },
-            { id: 'tiktok', name: 'TikTok', icon: 'tiktok', urlTemplate: 'https://tiktok.com/@' },
-            { id: 'youtube', name: 'YouTube', icon: 'youtube', urlTemplate: 'https://youtube.com/@' },
-            { id: 'twitch', name: 'Twitch', icon: 'twitch', urlTemplate: 'https://twitch.tv/' },
-            { id: 'github', name: 'GitHub', icon: 'github', urlTemplate: 'https://github.com/' },
-            { id: 'spotify', name: 'Spotify', icon: 'spotify', urlTemplate: 'https://open.spotify.com/user/' },
-            { id: 'linkedin', name: 'LinkedIn', icon: 'linkedin', urlTemplate: 'https://linkedin.com/in/' },
-            { id: 'snapchat', name: 'Snapchat', icon: 'snapchat', urlTemplate: 'https://snapchat.com/add/' },
-            { id: 'pinterest', name: 'Pinterest', icon: 'pinterest', urlTemplate: 'https://pinterest.com/' },
-            { id: 'reddit', name: 'Reddit', icon: 'reddit', urlTemplate: 'https://reddit.com/user/' },
-            { id: 'telegram', name: 'Telegram', icon: 'telegram', urlTemplate: 'https://t.me/' },
-            { id: 'steam', name: 'Steam', icon: 'steam', urlTemplate: 'https://steamcommunity.com/id/' },
-            { id: 'paypal', name: 'PayPal', icon: 'paypal', urlTemplate: 'https://paypal.me/' },
-            { id: 'cashapp', name: 'Cash App', icon: 'cashapp', urlTemplate: 'https://cash.app/$' },
-            { id: 'venmo', name: 'Venmo', icon: 'venmo', urlTemplate: 'https://venmo.com/' },
-            { id: 'onlyfans', name: 'OnlyFans', icon: 'onlyfans', urlTemplate: 'https://onlyfans.com/' },
-            { id: 'patreon', name: 'Patreon', icon: 'patreon', urlTemplate: 'https://patreon.com/' },
-            { id: 'soundcloud', name: 'SoundCloud', icon: 'soundcloud', urlTemplate: 'https://soundcloud.com/' },
-            { id: 'apple_music', name: 'Apple Music', icon: 'apple_music', urlTemplate: 'https://music.apple.com/profile/' },
-            { id: 'bandcamp', name: 'Bandcamp', icon: 'bandcamp', urlTemplate: 'https://bandcamp.com/' },
-            { id: 'facebook', name: 'Facebook', icon: 'facebook', urlTemplate: 'https://facebook.com/' },
-            { id: 'threads', name: 'Threads', icon: 'threads', urlTemplate: 'https://threads.net/@' },
-            { id: 'bluesky', name: 'Bluesky', icon: 'bluesky', urlTemplate: 'https://bsky.app/profile/' },
-            { id: 'mastodon', name: 'Mastodon', icon: 'mastodon', urlTemplate: '' },
-            { id: 'kick', name: 'Kick', icon: 'kick', urlTemplate: 'https://kick.com/' },
-            { id: 'rumble', name: 'Rumble', icon: 'rumble', urlTemplate: 'https://rumble.com/' }
-        ];
-
         const contentArea = document.getElementById('contentArea');
         contentArea.innerHTML = `
             <div class="page-header">
@@ -1369,52 +1412,46 @@ class Dashboard {
                 </button>
                 <div>
                     <h1 class="page-title">Connections</h1>
-                    <p class="page-subtitle">Connect your social accounts - Click username to copy, click icon to visit</p>
+                    <p class="page-subtitle">Connect your social media accounts</p>
                 </div>
             </div>
             
             <div class="cards-grid">
-                ${socialPlatforms.map(platform => {
-                    const conn = connections.find(c => c.platform === platform.id);
-                    const profileUrl = conn?.profile_url || (conn?.username ? platform.urlTemplate + conn.username.replace('@', '') : '');
+                ${[
+                    { platform: 'twitter', label: 'Twitter', icon: '<path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 7-7 7-7"></path>' },
+                    { platform: 'github', label: 'GitHub', icon: '<path d="M16 22v-5.5c0-.833.023-1.5-.75-2.75.75-.75 2.1-2.128 2.1-5.25 0-1.5-.75-2.25-1.5-3 .15-.75.7-2.325-.15-3 0 0-1.289-.15-4.25 1.3-1.848-.45-3.604-.45-5.452 0-2.961-1.45-4.25-1.3-4.25-1.3-.85.675-.3 2.25-.15 3-.75.75-1.5 1.5-1.5 3 0 3.122 1.35 4.5 2.1 5.25-.773 1.25-.75 1.917-.75 2.75V22"></path>' },
+                    { platform: 'instagram', label: 'Instagram', icon: '<rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path><circle cx="17.5" cy="6.5" r="1.5"></circle>' },
+                    { platform: 'discord', label: 'Discord', icon: '<path d="M20.317 4.492c-1.53-.742-3.17-1.297-4.885-1.6a.058.058 0 00-.064.028c-.211.375-.444.864-.607 1.25-1.645-.246-3.281-.246-4.897 0-.163-.386-.397-.875-.61-1.25a.059.059 0 00-.064-.027c-1.723.303-3.341.858-4.887 1.6a.058.058 0 00-.033.052c-.331 4.942.278 9.789 1.238 14.565a.06.06 0 00.052.035c1.646.477 3.24.91 4.817 1.22a.059.059 0 00.066-.03c.23-.383.452-.829.626-1.275a.06.06 0 00-.033-.088c-.749-.227-1.456-.481-2.14-.76a.06.06 0 00-.028-.11c.142-.11.285-.228.422-.35a.059.059 0 00.064-.008c4.489 2.139 9.36 2.139 13.815 0a.059.059 0 00.064.008c.137.122.28.24.422.35a.06.06 0 00-.028.11c-.684.279-1.39.533-2.142.76a.06.06 0 00-.033.089c.175.446.397.892.627 1.275a.059.059 0 00.066.03c1.578-.31 3.172-.743 4.819-1.22a.06.06 0 00.052-.035c1.02-4.963 1.629-9.776 1.17-14.565a.059.059 0 00-.032-.052z"></path>' }
+                ].map(plat => {
+                    const conn = connections.find(c => c.platform === plat.platform);
                     return `
-                        <div class="card connection-card" style="padding: 20px;">
-                            <div style="display: flex; align-items: center; gap: 16px;">
-                                <div class="card-icon" style="background: var(--bg-tertiary); cursor: ${conn && profileUrl ? 'pointer' : 'default'};" 
-                                    ${conn && profileUrl ? `onclick="window.open('${profileUrl}', '_blank')" title="Visit profile"` : ''}>
-                                    <img src="/static/cdn/${platform.icon}.png" alt="${platform.name}" style="width: 24px; height: 24px;" onerror="this.style.display='none'">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        ${plat.icon}
+                                    </svg>
                                 </div>
-                                <div style="flex: 1; min-width: 0;">
-                                    <h4>${platform.name}</h4>
-                                    ${conn ? `
-                                        <p style="font-size: 13px; color: var(--accent-secondary); cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
-                                           onclick="navigator.clipboard.writeText('${conn.username || ''}'); dashboard.showToast('Username copied!', 'success');" 
-                                           title="Click to copy username">
-                                            ${conn.username || 'Connected'}
-                                        </p>
-                                    ` : `
-                                        <p style="font-size: 13px; color: var(--text-muted);">Not connected</p>
-                                    `}
-                                </div>
-                                <div style="display: flex; gap: 8px;">
-                                    ${conn ? `
-                                        <button class="btn btn-secondary" style="padding: 8px 12px;" onclick="dashboard.editConnection('${platform.id}', '${conn.username || ''}', '${conn.profile_url || ''}')" title="Edit">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                            </svg>
-                                        </button>
-                                        <button class="btn btn-danger" style="padding: 8px 12px;" onclick="dashboard.disconnectPlatform('${platform.id}')" title="Disconnect">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                                            </svg>
-                                        </button>
-                                    ` : `
-                                        <button class="btn btn-primary" style="padding: 8px 16px;" onclick="dashboard.connectPlatform('${platform.id}', '${platform.name}')">Connect</button>
-                                    `}
+                                <div>
+                                    <h3 class="card-title">${plat.label}</h3>
+                                    <p class="card-description">${conn ? 'Connected' : 'Not connected'}</p>
                                 </div>
                             </div>
+                            
+                            ${conn ? `
+                                <div style="padding: 16px;">
+                                    <div style="background: var(--bg-tertiary); border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                                        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 6px;">Username</p>
+                                        <input type="text" id="${plat.platform}_username" class="form-input" value="${conn.username}" style="margin-bottom: 8px;">
+                                        <button onclick="dashboard.updateConnection('${plat.platform}', '${conn.id}')" class="btn btn-primary" style="width: 100%; padding: 8px; font-size: 12px; margin-bottom: 8px;">Save Changes</button>
+                                        <button onclick="dashboard.disconnectPlatform('${plat.platform}')" class="btn btn-danger" style="width: 100%; padding: 8px; font-size: 12px;">Disconnect</button>
+                                    </div>
+                                </div>
+                            ` : `
+                                <div style="padding: 16px;">
+                                    <button class="btn btn-primary" style="width: 100%;" onclick="alert('Connect ${plat.label}')">Connect Account</button>
+                                </div>
+                            `}
                         </div>
                     `;
                 }).join('')}
@@ -1422,82 +1459,32 @@ class Dashboard {
         `;
     }
 
-    connectPlatform(platform, platformName) {
-        const isDiscordServer = platform === 'discord_server';
-        this.showModal(`Connect ${platformName || platform.charAt(0).toUpperCase() + platform.slice(1)}`, `
-            <form id="connectionForm">
-                <div class="form-group">
-                    <label class="form-label">${isDiscordServer ? 'Server Invite Code' : 'Username / Handle'}</label>
-                    <input type="text" class="form-input" id="connectionUsername" required placeholder="${isDiscordServer ? 'abc123 (from discord.gg/abc123)' : '@username'}">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">${isDiscordServer ? 'Server Invite URL' : 'Profile URL'} (optional)</label>
-                    <input type="url" class="form-input" id="connectionUrl" placeholder="${isDiscordServer ? 'https://discord.gg/...' : 'https://...'}">
-                </div>
-            </form>
-        `, async () => {
-            const username = document.getElementById('connectionUsername').value;
-            const url = document.getElementById('connectionUrl').value;
+    async updateConnection(platform, id) {
+        const username = document.getElementById(`${platform}_username`).value.trim();
+        
+        if (!username) {
+            this.showToast('Please enter a username', 'error');
+            return false;
+        }
 
-            try {
-                const response = await fetch('/api/connections', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ platform, username, profile_url: url })
-                });
+        try {
+            const response = await fetch(`/api/connections/${platform}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ username })
+            });
 
-                if (response.ok) {
-                    this.showToast('Connection added', 'success');
-                    this.renderConnections();
-                    return true;
-                } else {
-                    throw new Error('Failed to connect');
-                }
-            } catch (error) {
-                this.showToast('Failed to add connection', 'error');
-                return false;
+            if (response.ok) {
+                this.showToast('Connection updated', 'success');
+                this.renderConnections();
+            } else {
+                throw new Error('Failed to update');
             }
-        });
-    }
-
-    editConnection(platform, currentUsername, currentUrl) {
-        const isDiscordServer = platform === 'discord_server';
-        this.showModal(`Edit ${platform.charAt(0).toUpperCase() + platform.slice(1).replace('_', ' ')}`, `
-            <form id="connectionForm">
-                <div class="form-group">
-                    <label class="form-label">${isDiscordServer ? 'Server Invite Code' : 'Username / Handle'}</label>
-                    <input type="text" class="form-input" id="connectionUsername" required value="${currentUsername}" placeholder="${isDiscordServer ? 'abc123' : '@username'}">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">${isDiscordServer ? 'Server Invite URL' : 'Profile URL'} (optional)</label>
-                    <input type="url" class="form-input" id="connectionUrl" value="${currentUrl}" placeholder="https://...">
-                </div>
-            </form>
-        `, async () => {
-            const username = document.getElementById('connectionUsername').value;
-            const url = document.getElementById('connectionUrl').value;
-
-            try {
-                const response = await fetch(`/api/connections/${platform}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({ username, profile_url: url })
-                });
-
-                if (response.ok) {
-                    this.showToast('Connection updated', 'success');
-                    this.renderConnections();
-                    return true;
-                } else {
-                    throw new Error('Failed to update');
-                }
-            } catch (error) {
-                this.showToast('Failed to update connection', 'error');
-                return false;
-            }
-        });
+        } catch (error) {
+            this.showToast('Failed to update connection', 'error');
+            return false;
+        }
     }
 
     async disconnectPlatform(platform) {
@@ -1519,326 +1506,6 @@ class Dashboard {
             this.showToast('Failed to disconnect', 'error');
         }
     }
-
-    async renderSettings() {
-        const contentArea = document.getElementById('contentArea');
-        contentArea.innerHTML = `
-            <div class="page-header">
-                <button class="page-back" onclick="dashboard.loadPage('overview')">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M19 12H5M12 19l-7-7 7-7"/>
-                    </svg>
-                </button>
-                <div>
-                    <h1 class="page-title">Settings</h1>
-                    <p class="page-subtitle">General account settings</p>
-                </div>
-            </div>
-            
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="3"></circle>
-                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="card-title">Preferences</h3>
-                        <p class="card-description">Customize your experience</p>
-                    </div>
-                </div>
-                
-                <div class="card-item">
-                    <div class="item-info">
-                        <span class="item-label">Dark Mode</span>
-                        <span class="item-value">Currently active</span>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" checked disabled>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="card-item">
-                    <div class="item-info">
-                        <span class="item-label">Email Notifications</span>
-                        <span class="item-value">Receive updates about your account</span>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="card-item">
-                    <div class="item-info">
-                        <span class="item-label">Analytics</span>
-                        <span class="item-value">Track profile visits</span>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
-        `;
-    }
-
-    async renderPrivacy() {
-        const contentArea = document.getElementById('contentArea');
-        contentArea.innerHTML = `
-            <div class="page-header">
-                <button class="page-back" onclick="dashboard.loadPage('overview')">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M19 12H5M12 19l-7-7 7-7"/>
-                    </svg>
-                </button>
-                <div>
-                    <h1 class="page-title">Privacy</h1>
-                    <p class="page-subtitle">Control your data and privacy settings</p>
-                </div>
-            </div>
-            
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                <circle cx="12" cy="12" r="3"></circle>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="card-title">Profile Visibility</h3>
-                            <p class="card-description">Control who can see your profile</p>
-                        </div>
-                    </div>
-                    
-                    <div class="card-item">
-                        <div class="item-info">
-                            <span class="item-label">Public Profile</span>
-                            <span class="item-value">Anyone can view your profile</span>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    
-                    <div class="card-item">
-                        <div class="item-info">
-                            <span class="item-label">Show in Search</span>
-                            <span class="item-value">Allow search engines to index</span>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon success">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="card-title">Data & Privacy</h3>
-                            <p class="card-description">Manage your data</p>
-                        </div>
-                    </div>
-                    
-                    <div class="card-item">
-                        <div class="item-info">
-                            <span class="item-label">Download Data</span>
-                            <span class="item-value">Get a copy of your data</span>
-                        </div>
-                        <button class="btn btn-secondary" style="padding: 8px 16px;">Download</button>
-                    </div>
-                    
-                    <div class="card-item">
-                        <div class="item-info">
-                            <span class="item-label">Usage Analytics</span>
-                            <span class="item-value">Help improve our service</span>
-                        </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-
-
-    // API Methods
-    async fetchProfile() {
-        try {
-            const response = await fetch('/api/profile', { credentials: 'include' });
-            if (response.ok) {
-                const data = await response.json();
-                return data.profile || {};
-            }
-            return {};
-        } catch (error) {
-            console.error('Failed to fetch profile:', error);
-            return {};
-        }
-    }
-
-    async fetchLinks() {
-        try {
-            const response = await fetch('/api/links', { credentials: 'include' });
-            if (response.ok) {
-                const data = await response.json();
-                return data.links || [];
-            }
-            return [];
-        } catch (error) {
-            console.error('Failed to fetch links:', error);
-            return [];
-        }
-    }
-
-    async fetchFiles() {
-        try {
-            const response = await fetch('/api/files', { credentials: 'include' });
-            if (response.ok) {
-                const data = await response.json();
-                return data.files || [];
-            }
-            return [];
-        } catch (error) {
-            console.error('Failed to fetch files:', error);
-            return [];
-        }
-    }
-
-    async fetchConnections() {
-        try {
-            const response = await fetch('/api/connections', { credentials: 'include' });
-            if (response.ok) {
-                const data = await response.json();
-                return data.connections || [];
-            }
-            return [];
-        } catch (error) {
-            console.error('Failed to fetch connections:', error);
-            return [];
-        }
-    }
-
-    // Utility Methods
-    formatFileSize(bytes) {
-        if (bytes === 0) return '0 B';
-        const k = 1024;
-        const sizes = ['B', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    }
-
-    showToast(message, type = 'success') {
-        let container = document.querySelector('.toast-container');
-        if (!container) {
-            container = document.createElement('div');
-            container.className = 'toast-container';
-            document.body.appendChild(container);
-        }
-
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.innerHTML = `
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                ${type === 'success' ? '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>' : 
-                  type === 'error' ? '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>' :
-                  '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>'}
-            </svg>
-            <span>${message}</span>
-        `;
-        container.appendChild(toast);
-
-        setTimeout(() => {
-            toast.style.animation = 'slideIn 0.3s ease reverse';
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
-    }
-
-    showUpdateDetails(id, title, description, details, createdAt) {
-        const formatUpdateDate = (dateStr) => {
-            const date = new Date(dateStr);
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-        };
-
-        const existingModal = document.querySelector('.modal-overlay');
-        if (existingModal) existingModal.remove();
-
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.style.cssText = `
-            position: fixed;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 1000;
-            animation: fadeIn 0.3s ease;
-        `;
-        
-        modal.innerHTML = `
-            <div class="modal" style="max-width: 600px; background: rgb(17 17 17); border: 2px solid rgb(39 39 42 / 0.5); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); border-radius: 12px; padding: 0;">
-                <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                    <h3 class="modal-title" style="font-size: 18px; color: #dedede;">${title} | ${formatUpdateDate(createdAt)}</h3>
-                    <button class="modal-close" style="background: none; border: none; color: #dedede; cursor: pointer; font-size: 24px;">
-                        ✕
-                    </button>
-                </div>
-                <div class="modal-content" style="padding: 20px; color: #ababab; line-height: 1.6;">
-                    <p style="margin-bottom: 16px;">${description}</p>
-                    <div style="background: rgb(24 24 27); border-radius: 8px; padding: 16px; border: 1px solid rgb(39 39 42);">
-                        <ul style="list-style: disc; padding-left: 20px; color: #ababab;">
-                            ${(details || '').split('\n').map(line => line.trim()).filter(line => line && line.startsWith('-')).map(line => `<li>${line.substring(1).trim()}</li>`).join('')}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        document.body.appendChild(modal);
-        
-        // Add fade-in animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeIn {
-                from { opacity: 0; }
-                to { opacity: 1; }
-            }
-        `;
-        if (!document.querySelector('style[data-modal-animation]')) {
-            style.setAttribute('data-modal-animation', '');
-            document.head.appendChild(style);
-        }
-
-        const close = () => {
-            modal.style.animation = 'fadeIn 0.3s ease reverse';
-            setTimeout(() => modal.remove(), 300);
-        };
-
-        modal.querySelector('.modal-close').addEventListener('click', close);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) close();
-        });
-    }
-
 
     async renderLitterBox() {
         const contentArea = document.getElementById('contentArea');
@@ -1944,7 +1611,7 @@ class Dashboard {
                     <p style="color: var(--text-muted);">Max Duration</p>
                 </div>
                 <div class="card" style="flex: 1; padding: 20px; text-align: center;">
-                    <div style="font-size: 32px; font-weight: 600; color: #10b981;">E2EE</div>
+                    <div style="font-size: 32px; font-weight: 600; color: var(--accent-primary);">E2EE</div>
                     <p style="color: var(--text-muted);">Encrypted</p>
                 </div>
             </div>
@@ -2026,20 +1693,20 @@ class Dashboard {
             }
 
             if (selectedFile.size > 1024 * 1024 * 1024) {
-                this.showToast('File exceeds 1GB limit', 'error');
+                this.showToast('File size exceeds 1GB limit', 'error');
                 return;
             }
 
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="spinner"></span> Uploading...';
-
             const formData = new FormData();
             formData.append('file', selectedFile);
-            formData.append('expires_in', document.getElementById('litterboxExpiry').value);
-            formData.append('password', document.getElementById('litterboxPassword').value);
+            formData.append('expiry_hours', document.getElementById('litterboxExpiry').value);
+            const password = document.getElementById('litterboxPassword').value;
+            if (password) formData.append('password', password);
 
             try {
-                const response = await fetch('/api/files/litterbox', {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Uploading...';
+                const response = await fetch('/api/files/upload-litterbox', {
                     method: 'POST',
                     credentials: 'include',
                     body: formData
@@ -2047,43 +1714,28 @@ class Dashboard {
 
                 if (response.ok) {
                     const data = await response.json();
-                    const url = `${window.location.origin}/file/${data.file.code}`;
-                    this.showToast('File uploaded! Link copied to clipboard.', 'success');
-                    navigator.clipboard.writeText(url);
-                    this.renderLitterBox();
+                    this.showToast('File uploaded! Link: ' + window.location.origin + '/file/' + data.code, 'success');
+                    form.reset();
+                    selectedFile = null;
+                    document.getElementById('selectedFileInfo').style.display = 'none';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Upload Temporary File';
                 } else {
-                    const error = await response.json();
-                    this.showToast(error.error || 'Upload failed', 'error');
+                    throw new Error('Upload failed');
                 }
             } catch (error) {
-                this.showToast('Upload failed', 'error');
-            } finally {
+                this.showToast('Failed to upload file', 'error');
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = `
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="17 8 12 3 7 8"></polyline>
-                        <line x1="12" y1="3" x2="12" y2="15"></line>
-                    </svg>
-                    Upload Temporary File
-                `;
+                submitBtn.textContent = 'Upload Temporary File';
             }
         });
     }
 
     showSelectedFile(file) {
-        const info = document.getElementById('selectedFileInfo');
-        const name = document.getElementById('selectedFileName');
-        const size = document.getElementById('selectedFileSize');
-        
-        if (info && name && size) {
-            info.style.display = 'block';
-            name.textContent = file.name;
-            size.textContent = this.formatFileSize(file.size);
-        }
+        document.getElementById('selectedFileName').textContent = file.name;
+        document.getElementById('selectedFileSize').textContent = this.formatFileSize(file.size);
+        document.getElementById('selectedFileInfo').style.display = 'block';
     }
-
-
 
     async renderToS() {
         const contentArea = document.getElementById('contentArea');
@@ -2099,32 +1751,20 @@ class Dashboard {
                     <p class="page-subtitle">Please read these terms carefully</p>
                 </div>
             </div>
-
-            <div class="card" style="max-width: 900px; line-height: 1.8;">
-                <div style="padding: 24px; color: var(--text-secondary);">
-                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">1. Acceptance of Terms</h3>
-                    <p style="margin-bottom: 24px;">By accessing and using Glowi.es, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.</p>
-
-                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">2. Use License</h3>
-                    <p style="margin-bottom: 24px;">Permission is granted to temporarily download one copy of the materials (information or software) on Glowi.es for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not: modify or copy the materials; use the materials for any commercial purpose or for any public display (commercial or non-commercial); attempt to decompile or reverse engineer any software contained on Glowi.es; remove any copyright or other proprietary notations from the materials; transfer the materials to another person or "mirror" the materials on any other server.</p>
-
-                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">3. Disclaimer</h3>
-                    <p style="margin-bottom: 24px;">The materials on Glowi.es are provided on an 'as is' basis. Glowi.es makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
-
-                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">4. Limitations</h3>
-                    <p style="margin-bottom: 24px;">In no event shall Glowi.es or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Glowi.es, even if we or our authorized representative has been notified orally or in writing of the possibility of such damage.</p>
-
-                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">5. Accuracy of Materials</h3>
-                    <p style="margin-bottom: 24px;">The materials appearing on Glowi.es could include technical, typographical, or photographic errors. Glowi.es does not warrant that any of the materials on its website are accurate, complete, or current. Glowi.es may make changes to the materials contained on its website at any time without notice.</p>
-
-                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">6. Links</h3>
-                    <p style="margin-bottom: 24px;">Glowi.es has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by Glowi.es of the site. Use of any such linked website is at the user's own risk.</p>
-
-                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">7. Modifications</h3>
-                    <p style="margin-bottom: 24px;">Glowi.es may revise these terms of service for its website at any time without notice. By using this website, you are agreeing to be bound by the then current version of these terms of service.</p>
-
-                    <h3 style="color: var(--text-primary); margin-bottom: 16px;">8. Governing Law</h3>
-                    <p>These terms and conditions are governed by and construed in accordance with the laws of United States, and you irrevocably submit to the exclusive jurisdiction of the courts located in this location.</p>
+            
+            <div class="card">
+                <div style="padding: 20px;">
+                    <p style="color: var(--text-muted); margin-bottom: 16px;"><em>Last updated: November 27, 2025</em></p>
+                    <h3 style="margin-bottom: 12px;">1. Use License</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 16px;">Unless otherwise stated, we own the intellectual property rights for all material on glowi.es. All intellectual property rights are reserved. You may access this website for personal use subject to restrictions set in these terms and conditions.</p>
+                    <h3 style="margin-bottom: 12px;">2. User Responsibilities</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 16px;">You must not modify any portion of the website. You must not reproduce, duplicate, copy, sell, resell or exploit any portion of the service without express written permission by us.</p>
+                    <h3 style="margin-bottom: 12px;">3. File Hosting</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 16px;">All files stored on our platform are encrypted end-to-end. We are not responsible for content uploaded by users. Users agree not to upload any content that violates copyright, trademark, or other intellectual property rights.</p>
+                    <h3 style="margin-bottom: 12px;">4. Disclaimer</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 16px;">The information on this website is provided "as is" without any representations or warranties, express or implied. We make no representations or warranties in relation to this website or the information and materials provided.</p>
+                    <h3 style="margin-bottom: 12px;">5. Limitations of Liability</h3>
+                    <p style="color: var(--text-muted);">In no event shall glowi.es or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on this website.</p>
                 </div>
             </div>
         `;
@@ -2141,184 +1781,180 @@ class Dashboard {
                 </button>
                 <div>
                     <h1 class="page-title">API Documentation</h1>
-                    <p class="page-subtitle">Coming soon</p>
+                    <p class="page-subtitle">Integrate with glowi.es</p>
                 </div>
             </div>
-
-            <div class="card" style="max-width: 900px; text-align: center; padding: 60px 24px;">
-                <div style="background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%); border-radius: 12px; padding: 40px; border: 1px solid rgba(147, 51, 234, 0.2);">
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-secondary); margin: 0 auto 16px;">
-                        <path d="M12 2v20M2 12h20"></path>
-                    </svg>
-                    <h2 style="color: var(--text-primary); margin-bottom: 12px;">API Coming Soon</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 24px;">Our public API is under development. We're building comprehensive endpoints for all Glowi.es features with full documentation, SDKs, and examples.</p>
-                    <p style="color: var(--accent-secondary); font-weight: 500;">Check back soon for updates</p>
+            
+            <div class="card">
+                <div style="padding: 20px;">
+                    <h3 style="margin-bottom: 12px;">API Endpoints</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 16px;">Coming soon. API documentation and integration guides will be available here.</p>
                 </div>
             </div>
         `;
     }
 
+    openUpdateModal(index) {
+        if (!this.updates || !this.updates[index]) return;
+        
+        const update = this.updates[index];
+        this.showModal(update.title, `
+            <div>
+                <p style="color: var(--text-muted); margin-bottom: 12px;">${update.description || ''}</p>
+                <p style="color: var(--text-muted); line-height: 1.6;">${update.details || ''}</p>
+            </div>
+        `);
+    }
 
+    showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 12px 20px;
+            background: ${type === 'error' ? '#ef4444' : type === 'success' ? '#10b981' : 'var(--bg-secondary)'};
+            color: white;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+        `;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.animation = 'slideOut 0.3s ease forwards';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
 
-
-
-
-
-
-    async loadAdminInvites() {
-        try {
-            const response = await fetch('/api/invites', {
-                method: 'GET',
-                headers: { 'Authorization': `Bearer ${this.token}` }
-            });
-            const data = await response.json();
-            const invites = data.invites || data || [];
-            
-            const container = document.getElementById('invitesContainer');
-            if (invites.length === 0) {
-                container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 40px;">No invites found</div>';
-                return;
-            }
-
-            container.innerHTML = invites.map(invite => `
-                <div style="background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
-                    <div style="text-align: left;">
-                        <div style="color: var(--text-primary); font-weight: 500; margin-bottom: 4px; font-family: monospace;">${invite.code}</div>
-                        <div style="color: var(--text-muted); font-size: 13px;">Role: <span style="color: var(--text-secondary);">${invite.role}</span> • Uses: ${invite.uses_count}/${invite.max_uses}</div>
+    showModal(title, content, callback) {
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            backdrop-filter: blur(4px);
+            animation: fadeIn 0.3s ease;
+        `;
+        
+        modal.innerHTML = `
+            <div style="background: var(--bg-secondary); border-radius: 12px; padding: 24px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h2 style="margin: 0; font-size: 20px;">${title}</h2>
+                    <button class="modal-close" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-muted);">&times;</button>
+                </div>
+                <div style="margin-bottom: 24px;">${content}</div>
+                ${callback ? `
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn btn-secondary" style="flex: 1;" onclick="this.closest('[style*=fixed]').remove()">Cancel</button>
+                        <button class="btn btn-primary" style="flex: 1;" onclick="if(${callback.toString()}()) { this.closest('[style*=fixed]').remove(); }">Confirm</button>
                     </div>
-                    <div style="display: flex; gap: 8px;">
-                        <button onclick="dashboard.deleteInvite('${invite.code}')" style="background: var(--danger); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">Delete</button>
-                    </div>
-                </div>
-            `).join('');
-        } catch (err) {
-            console.error('Error loading invites:', err);
-            document.getElementById('invitesContainer').innerHTML = '<div style="color: var(--danger);">Failed to load invites</div>';
-        }
-    }
-
-    async showClearInvitesModal() {
-        if (confirm('Are you sure you want to clear ALL invites? This cannot be undone.')) {
-            await this.clearAllInvites();
-        }
-    }
-
-    async clearAllInvites() {
-        try {
-            const response = await fetch('/api/admin/invites', {
-                method: 'DELETE',
-                headers: { 'Authorization': `Bearer ${this.token}` }
-            });
-            const data = await response.json();
-            alert(data.message || 'All invites cleared');
-            this.loadAdminInvites();
-        } catch (err) {
-            alert('Failed to clear invites');
-        }
-    }
-
-    async deleteInvite(code) {
-        if (!confirm(`Delete invite ${code}?`)) return;
-        try {
-            await fetch(`/api/invites/${code}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${this.token}` } });
-            this.loadAdminInvites();
-        } catch (err) {
-            alert('Failed to delete invite');
-        }
-    }
-
-
-    async loadAdminFiles() {
-        try {
-            const response = await fetch('/api/files', { method: 'GET', headers: { 'Authorization': `Bearer ${this.token}` } });
-            const data = await response.json();
-            const files = data.files || data || [];
-            
-            const container = document.getElementById('adminFilesContainer');
-            if (files.length === 0) {
-                container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 40px;">No files uploaded</div>';
-                return;
+                ` : ''}
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
             }
-
-            container.innerHTML = `
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr style="border-bottom: 2px solid var(--border-color);">
-                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Filename</th>
-                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Size</th>
-                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Code</th>
-                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Uploaded</th>
-                            <th style="padding: 12px; text-align: left; color: var(--text-secondary); font-weight: 600;">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${files.map(file => `
-                            <tr style="border-bottom: 1px solid var(--border-color);">
-                                <td style="padding: 12px; color: var(--text-primary);">${file.filename}</td>
-                                <td style="padding: 12px; color: var(--text-secondary);">${this.formatFileSize(file.size)}</td>
-                                <td style="padding: 12px; color: var(--accent-secondary); font-family: monospace; font-size: 12px;">${file.code}</td>
-                                <td style="padding: 12px; color: var(--text-muted);">${new Date(file.created_at).toLocaleDateString()}</td>
-                                <td style="padding: 12px;"><span style="background: var(--success); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px;">Active</span></td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
-        } catch (err) {
-            console.error('Error loading admin files:', err);
-            document.getElementById('adminFilesContainer').innerHTML = '<div style="color: var(--danger); padding: 20px;">Failed to load files</div>';
-        }
-    }
-
-
-    async loadAnalytics() {
-        try {
-            const usersRes = await fetch('/api/admin/stats', { method: 'GET', headers: { 'Authorization': `Bearer ${this.token}` } }).catch(() => null);
-            const profilesRes = await fetch('/api/profile', { method: 'GET', headers: { 'Authorization': `Bearer ${this.token}` } });
-            const filesRes = await fetch('/api/files', { method: 'GET', headers: { 'Authorization': `Bearer ${this.token}` } });
-            const updatesRes = await fetch('/api/updates', { method: 'GET', headers: { 'Authorization': `Bearer ${this.token}` } });
-
-            const stats = usersRes && await usersRes.json();
-            const profile = await profilesRes.json();
-            const files = await filesRes.json();
-            const updates = await updatesRes.json();
-
-            const statsContainer = document.getElementById('statsContainer');
-            statsContainer.innerHTML = `
-                <div class="card" style="padding: 20px; border: 1px solid var(--accent-primary); background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, transparent 100%);">
-                    <div style="font-size: 24px; font-weight: 700; color: var(--accent-secondary); margin-bottom: 4px;">${stats?.user_count || '∞'}</div>
-                    <div style="color: var(--text-muted); font-size: 12px;">Total Users</div>
-                </div>
-                <div class="card" style="padding: 20px; border: 1px solid var(--accent-primary); background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, transparent 100%);">
-                    <div style="font-size: 24px; font-weight: 700; color: var(--accent-secondary); margin-bottom: 4px;">${(files.files || []).length}</div>
-                    <div style="color: var(--text-muted); font-size: 12px;">Total Files</div>
-                </div>
-                <div class="card" style="padding: 20px; border: 1px solid var(--accent-primary); background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, transparent 100%);">
-                    <div style="font-size: 24px; font-weight: 700; color: var(--accent-secondary); margin-bottom: 4px;">${profile?.view_count || 0}</div>
-                    <div style="color: var(--text-muted); font-size: 12px;">Profile Views</div>
-                </div>
-            `;
-
-            const updatesContainer = document.getElementById('updatesContainer');
-            const updatesList = updates.updates || [];
-            if (updatesList.length === 0) {
-                updatesContainer.innerHTML = '<div style="color: var(--text-muted); padding: 16px;">No recent updates</div>';
-            } else {
-                updatesContainer.innerHTML = updatesList.slice(0, 5).map(u => `
-                    <div style="padding: 12px 0; border-bottom: 1px solid var(--border-color); color: var(--text-secondary);">
-                        <div style="font-weight: 500; color: var(--text-primary);">${u.title}</div>
-                        <div style="font-size: 12px; margin-top: 4px;">${new Date(u.created_at).toLocaleDateString()}</div>
-                    </div>
-                `).join('');
+            @keyframes slideIn {
+                from { transform: translateX(400px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
             }
-        } catch (err) {
-            console.error('Error loading analytics:', err);
+            @keyframes slideOut {
+                to { transform: translateX(400px); opacity: 0; }
+            }
+        `;
+        if (!document.querySelector('style[data-modal-animation]')) {
+            style.setAttribute('data-modal-animation', '');
+            document.head.appendChild(style);
+        }
+
+        const close = () => {
+            modal.style.animation = 'fadeIn 0.3s ease reverse';
+            setTimeout(() => modal.remove(), 300);
+        };
+
+        modal.querySelector('.modal-close').addEventListener('click', close);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) close();
+        });
+    }
+
+    formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+    }
+
+    async fetchProfile() {
+        try {
+            const response = await fetch('/api/profile', { credentials: 'include' });
+            if (response.ok) {
+                const data = await response.json();
+                return data.profile || {};
+            }
+            return {};
+        } catch (error) {
+            console.error('Failed to fetch profile:', error);
+            return {};
         }
     }
 
+    async fetchLinks() {
+        try {
+            const response = await fetch('/api/links', { credentials: 'include' });
+            if (response.ok) {
+                const data = await response.json();
+                return data.links || [];
+            }
+            return [];
+        } catch (error) {
+            console.error('Failed to fetch links:', error);
+            return [];
+        }
+    }
 
+    async fetchFiles() {
+        try {
+            const response = await fetch('/api/files', { credentials: 'include' });
+            if (response.ok) {
+                const data = await response.json();
+                return data.files || [];
+            }
+            return [];
+        } catch (error) {
+            console.error('Failed to fetch files:', error);
+            return [];
+        }
+    }
 
-
+    async fetchConnections() {
+        try {
+            const response = await fetch('/api/connections', { credentials: 'include' });
+            if (response.ok) {
+                const data = await response.json();
+                return data.connections || [];
+            }
+            return [];
+        } catch (error) {
+            console.error('Failed to fetch connections:', error);
+            return [];
+        }
+    }
 }
 
 const dashboard = new Dashboard();
+dashboard.init();
