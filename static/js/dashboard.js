@@ -168,7 +168,7 @@ class Dashboard {
                 'admin': 'admin',
                 'mod': 'mod'
             };
-            const rolePrefix = roleMap[this.user.role] || 'user';
+            const rolePrefix = roleMap[this.user.role] || 'root';
             roleDisplay.textContent = `${rolePrefix}@${this.user.username}.glowi.es`;
         }
     }
