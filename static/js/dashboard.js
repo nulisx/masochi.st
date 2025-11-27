@@ -31,13 +31,99 @@ class Dashboard {
         const searchInput = document.querySelector('.search-input');
         if (!searchInput) return;
 
+        // Show dropdown on input
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim().toLowerCase();
+            if (!query) {
+                this.hideSearchDropdown();
+                return;
+            }
+            this.showSearchDropdown(query);
+        });
+
+        // Search on Enter
         searchInput.addEventListener('keypress', (e) => {
             if (e.key !== 'Enter') return;
             const query = searchInput.value.trim().toLowerCase();
             if (!query) return;
-
             this.performSearch(query);
         });
+
+        // Close dropdown on blur
+        searchInput.addEventListener('blur', () => {
+            setTimeout(() => this.hideSearchDropdown(), 200);
+        });
+    }
+
+    async showSearchDropdown(query) {
+        let results = [];
+        
+        // Fetch data
+        const links = await this.fetchLinks();
+        const files = await this.fetchFiles();
+        const connections = await this.fetchConnections();
+
+        // Build results
+        links.forEach(link => {
+            if (link.title.toLowerCase().includes(query)) {
+                results.push({ type: 'biolink', title: link.title, desc: 'Edit the profile of your biolink', id: link.id });
+            }
+        });
+
+        files.forEach(file => {
+            if (file.filename.toLowerCase().includes(query)) {
+                results.push({ type: 'file', title: file.filename, desc: 'View your encrypted file', code: file.code });
+            }
+        });
+
+        connections.forEach(conn => {
+            if (conn.platform.toLowerCase().includes(query)) {
+                results.push({ type: 'connection', title: conn.platform, desc: `Connect your ${conn.platform}`, username: conn.username });
+            }
+        });
+
+        // Show dropdown
+        let dropdown = document.querySelector('.search-dropdown');
+        if (!dropdown) {
+            dropdown = document.createElement('div');
+            dropdown.className = 'search-dropdown';
+            document.querySelector('.search-container').appendChild(dropdown);
+        }
+
+        if (results.length === 0) {
+            dropdown.innerHTML = `<div class="search-dropdown-item" style="text-align: center; color: var(--text-muted); padding: 16px;">No results found</div>`;
+            dropdown.style.display = 'block';
+            return;
+        }
+
+        dropdown.innerHTML = results.slice(0, 5).map((result, idx) => `
+            <div class="search-dropdown-item" onclick="dashboard.selectSearchResult('${result.type}', '${result.id || result.code}')">
+                <div class="search-result-type">${result.type === 'biolink' ? '🔗' : result.type === 'file' ? '📄' : '🔌'}</div>
+                <div class="search-result-content">
+                    <div class="search-result-title">${result.title}</div>
+                    <div class="search-result-desc">${result.desc}</div>
+                </div>
+            </div>
+        `).join('');
+
+        dropdown.style.display = 'block';
+    }
+
+    hideSearchDropdown() {
+        const dropdown = document.querySelector('.search-dropdown');
+        if (dropdown) dropdown.style.display = 'none';
+    }
+
+    selectSearchResult(type, id) {
+        this.hideSearchDropdown();
+        document.querySelector('.search-input').value = '';
+        if (type === 'biolink') {
+            this.editLink(id);
+        } else if (type === 'file') {
+            // Show file details
+        } else if (type === 'connection') {
+            // Show connection details
+        }
     }
 
     setupUpdatesList() {
@@ -317,7 +403,7 @@ class Dashboard {
             <div class="page-header">
                 <div>
                     <h1 class="page-title">Dashboard</h1>
-                    <p class="page-subtitle">Welcome back, ${this.user?.display_name || this.user?.username}</p>
+                    <p class="page-subtitle">Welcome back, @${this.user?.display_name || this.user?.username}</p>
                 </div>
             </div>
             

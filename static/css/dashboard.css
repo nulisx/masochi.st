@@ -217,6 +217,7 @@ body {
     border-radius: 10px;
     padding: 10px 16px;
     width: 300px;
+    position: relative;
 }
 
 .search-container svg {
@@ -234,6 +235,60 @@ body {
 
 .search-input::placeholder {
     color: var(--text-muted);
+}
+
+.search-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 200;
+    display: none;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.search-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.search-dropdown-item:hover {
+    background: var(--bg-hover);
+}
+
+.search-result-type {
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+}
+
+.search-result-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.search-result-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.search-result-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
 }
 
 .search-shortcut {
