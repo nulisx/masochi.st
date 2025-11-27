@@ -1049,7 +1049,7 @@ class Dashboard {
                 </button>
                 <div>
                     <h1 class="page-title">Files</h1>
-                    <p class="page-subtitle">Secure file storage with E2EE encryption</p>
+                    <p class="page-subtitle">Secure file storage with E2EE encryption></p>
                 </div>
             </div>
             
@@ -1065,6 +1065,28 @@ class Dashboard {
                 <h3 style="margin-bottom: 8px;">Select or drop files</h3>
                 <p style="color: var(--text-muted); margin-bottom: 16px;">Files up to 200 MB. Encrypted end-to-end.</p>
                 <button class="btn btn-primary">Choose Files</button>
+            </div>
+            
+            <div class="card" style="margin-top: 32px; margin-bottom: 32px;">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                <circle cx="12" cy="13" r="4"></circle>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="card-title">About Images</h3>
+                            <p class="card-description">Secure permanent file storage with E2EE encryption</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" onclick="window.location.href='./faq'">View FAQ</button>
+                </div>
+                <div style="padding: 16px; color: var(--text-muted); line-height: 1.6;">
+                    <p>Upload and store files permanently with full end-to-end encryption. Your files are encrypted before they leave your device, and we cannot access them. Perfect for long-term secure storage.</p>
+                    <p style="margin-top: 12px;"><strong style="color: var(--text-primary);">Forbidden file types:</strong> .exe, .scr, .cpl, .doc*, .jar</p>
+                </div>
             </div>
             
             <div style="margin-top: 32px;">
@@ -1827,7 +1849,7 @@ class Dashboard {
                             <p class="card-description">Temporary file hosting for sensitive files</p>
                         </div>
                     </div>
-                    <button class="btn btn-secondary" onclick="dashboard.loadPage('faq-litterbox')">View FAQ</button>
+                    <button class="btn btn-secondary" onclick="window.location.href='./lbfaq'">View FAQ</button>
                 </div>
                 <div style="padding: 16px; color: var(--text-muted); line-height: 1.6;">
                     <p>LitterBox provides temporary, encrypted file hosting. Files are automatically deleted after the chosen expiration time. Perfect for sharing sensitive files that don't need to exist forever.</p>
