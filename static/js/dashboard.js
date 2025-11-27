@@ -57,10 +57,13 @@ class Dashboard {
         const logoutBtn = document.getElementById('logoutBtn');
         if (logoutBtn) {
             logoutBtn.addEventListener('click', async () => {
+                const token = localStorage.getItem('authToken');
                 await fetch('/api/auth/logout', { 
                     method: 'POST',
-                    credentials: 'include' 
+                    credentials: 'include',
+                    headers: token ? { 'Authorization': `Bearer ${token}` } : {}
                 });
+                localStorage.removeItem('authToken');
                 window.location.href = '/login';
             });
         }
