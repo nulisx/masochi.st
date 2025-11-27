@@ -499,6 +499,53 @@ app.post('/generate_invite', authenticateToken, async (req, res) => {
   }
 });
 
+app.post('/api/verify/browser', async (req, res) => {
+  try {
+    const fingerprint = req.body;
+    res.status(200).json({ verified: true });
+  } catch (err) {
+    res.status(200).json({ verified: true });
+  }
+});
+
+app.get('/verify', (req, res) => res.sendFile(path.join(__dirname, 'verify', 'index.html')));
+
+app.post('/api/profile/view/:username', async (req, res) => {
+  try {
+    const { username } = req.params;
+    const user = await getQuery('users', 'username', username.toLowerCase());
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const profile = await getQuery('profiles', 'user_id', user.id);
+    if (profile) {
+      const currentViews = profile.view_count || 0;
+      await runQuery(
+        'profiles',
+        { user_id: user.id, view_count: currentViews + 1 },
+        'update',
+        { column: 'user_id', value: user.id }
+      );
+    }
+
+    res.status(200).json({ success: true });
+  } catch (err) {
+    console.error('Profile view error:', err);
+    res.status(500).json({ error: 'Failed to record view' });
+  }
+});
+
+app.get('/api/profile/views', authenticateToken, async (req, res) => {
+  try {
+    const profile = await getQuery('profiles', 'user_id', req.user.id);
+    res.status(200).json({ views: profile?.view_count || 0 });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to get view count' });
+  }
+});
+
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.get('/about', (req, res) => res.sendFile(path.join(__dirname, 'about', 'index.html')));
 app.get('/pricing', (req, res) => res.sendFile(path.join(__dirname, 'pricing', 'index.html')));
