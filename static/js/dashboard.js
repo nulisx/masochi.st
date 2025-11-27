@@ -2,6 +2,7 @@ class Dashboard {
     constructor() {
         this.currentPage = 'overview';
         this.user = null;
+        this.updates = [];
         this.init();
     }
 
@@ -126,6 +127,12 @@ class Dashboard {
         if (type === 'biolink') {
             this.editLink(id);
         }
+    }
+
+    openUpdateModal(index) {
+        const update = this.updates[index];
+        if (!update) return;
+        this.showUpdateDetails(update.id, update.title, update.description, update.details, update.created_at);
     }
 
 
@@ -373,6 +380,7 @@ class Dashboard {
             if (updatesRes.ok) {
                 const data = await updatesRes.json();
                 updates = data.updates || [];
+                this.updates = updates;
             }
         } catch (e) {}
         
@@ -460,9 +468,9 @@ class Dashboard {
                         </div>
                     </div>
                     <div class="updates-list" id="updatesList" style="max-height: 300px; overflow-y: auto;">
-                        ${updates.length > 0 ? updates.map(update => `
+                        ${updates.length > 0 ? updates.map((update, idx) => `
                             <div class="update-item" style="padding: 16px; border-bottom: 1px solid var(--border-color); cursor: pointer;" 
-                                onclick="dashboard.showUpdateDetails(${update.id}, '${(update.title || '').replace(/'/g, "\\'")}', '${(update.description || '').replace(/'/g, "\\'")}', '${(update.details || '').replace(/'/g, "\\'")}', '${update.created_at}')">
+                                onclick="dashboard.openUpdateModal(${idx})">
                                 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                                     <div>
                                         <h4 style="font-size: 14px; margin-bottom: 4px; color: var(--text-primary);">${update.title}</h4>
