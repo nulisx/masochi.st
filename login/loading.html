@@ -78,7 +78,16 @@
     <script>
         (async function() {
             try {
-                const response = await fetch('/api/auth/me', { credentials: 'include' });
+                // Add a small delay to ensure cookie is set
+                await new Promise(resolve => setTimeout(resolve, 100));
+                
+                const response = await fetch('/api/auth/me', { 
+                    credentials: 'include',
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
                 if (response.ok) {
                     const data = await response.json();
                     document.getElementById('username').textContent = '@' + data.user.username;
@@ -87,6 +96,7 @@
                         window.location.replace('/dash');
                     }, 1500);
                 } else {
+                    console.error('Auth failed:', response.status);
                     window.location.replace('/login');
                 }
             } catch (error) {
