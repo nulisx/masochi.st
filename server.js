@@ -573,34 +573,10 @@ app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'register',
 app.get('/login/reset', (req, res) => res.sendFile(path.join(__dirname, 'login', 'reset', 'index.html')));
 app.get('/login/loading', (req, res) => res.sendFile(path.join(__dirname, 'login', 'loading.html')));
 app.get('/dash', (req, res) => {
-  let token = req.cookies.token;
-  if (!token && req.headers.authorization) {
-    const parts = req.headers.authorization.split(' ');
-    if (parts.length === 2 && parts[0] === 'Bearer') {
-      token = parts[1];
-    }
-  }
-  
-  if (!token) {
-    return res.redirect('/login');
-  }
-  
   res.sendFile(path.join(__dirname, 'dashboard', 'index.html'));
 });
 
 app.get('/dashboard', (req, res) => {
-  let token = req.cookies.token;
-  if (!token && req.headers.authorization) {
-    const parts = req.headers.authorization.split(' ');
-    if (parts.length === 2 && parts[0] === 'Bearer') {
-      token = parts[1];
-    }
-  }
-  
-  if (!token) {
-    return res.redirect('/login');
-  }
-  
   res.sendFile(path.join(__dirname, 'dashboard', 'index.html'));
 });
 app.get('/ic', (req, res) => res.sendFile(path.join(__dirname, 'ic', 'index.html')));
