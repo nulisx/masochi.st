@@ -53,7 +53,7 @@ app.get('/api/cdn/images', (req, res) => {
 app.post(
   '/api/auth/register',
   [
-    body('username').isLength({ min: 1, max: 20 }).matches(/^[a-zA-Z0-9_]+$/),
+    body('username').isLength({ min: 1, max: 20 }).matches(/^[a-zA-Z0-9!@$%&*]+$/),
     body('email').optional({ checkFalsy: true }).isEmail(),
     body('password').isLength({ min: 8 }),
     body('inviteCode').notEmpty(),

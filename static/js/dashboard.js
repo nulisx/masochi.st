@@ -489,7 +489,7 @@ class Dashboard {
                                 <input type="text" class="form-input" id="usernameInput" value="${this.user?.username || ''}" placeholder="your_username" style="flex: 1;">
                                 <button type="button" class="btn btn-secondary" id="changeUsernameBtn" style="white-space: nowrap;">Change Username</button>
                             </div>
-                            <p style="color: var(--text-muted); font-size: 12px; margin-top: 6px;">Letters, numbers, and underscores only. 1-20 characters.</p>
+                            <p style="color: var(--text-muted); font-size: 12px; margin-top: 6px;">Letters and numbers only. 1-20 characters. Special characters allowed: !, @, $, %, &, *</p>
                         </div>
                         
                         <div class="form-group">
@@ -567,8 +567,8 @@ class Dashboard {
                 return;
             }
 
-            if (!/^[a-zA-Z0-9_]+$/.test(newUsername)) {
-                this.showToast('Username can only contain letters, numbers, and underscores', 'error');
+            if (!/^[a-zA-Z0-9!@$%&*]+$/.test(newUsername)) {
+                this.showToast('Username can only contain letters, numbers, and special characters: !, @, $, %, &, *', 'error');
                 return;
             }
 
