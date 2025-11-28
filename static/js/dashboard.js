@@ -859,8 +859,8 @@ class Dashboard {
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M12 1l10 6v6c0 6-10 8-10 8s-10-2-10-8V7l10-6z" fill="rgba(168, 85, 247, 0.25)"></path>
-                                <rect x="14" y="13" width="4" height="5" rx="1" fill="none" stroke="#a855f7" stroke-width="1"></rect>
-                                <circle cx="16" cy="17" r="1" fill="#a855f7"></circle>
+                                <rect x="13" y="12" width="6" height="6" rx="1" fill="none" stroke="#a855f7" stroke-width="1.2"></rect>
+                                <path d="M16 12V9a1 1 0 0 0-2 0" stroke="#a855f7" stroke-width="1.2"></path>
                             </svg>
                         </div>
                         <div>
