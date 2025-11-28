@@ -9,9 +9,15 @@ class Dashboard {
         try {
             console.log('📊 Dashboard initializing...');
             
-            // Prevent redirect loop - only redirect if we've already tried
+            // Prevent multiple init calls
+            if (window.__dashboardInitialized) {
+                console.log('⏭️  Dashboard already initialized, skipping');
+                return;
+            }
+            
+            // Prevent redirect loop - check if already tried
             if (window.__dashboardInitAttempted) {
-                console.error('❌ Dashboard init failed twice - not retrying');
+                console.error('❌ Dashboard init failed - giving up to prevent loop');
                 return;
             }
             window.__dashboardInitAttempted = true;
@@ -33,6 +39,7 @@ class Dashboard {
                     console.log('✅ User authenticated:', this.user.username);
                     sessionStorage.setItem('user', JSON.stringify(this.user));
                     localStorage.setItem('user', JSON.stringify(this.user));
+                    window.__dashboardInitialized = true;
                     this.setupUI();
                     this.loadPage('overview');
                     return;
@@ -45,15 +52,23 @@ class Dashboard {
             }
             
             // If we get here, user is not authenticated
-            console.error('❌ Redirecting to /login');
-            window.location.href = '/login';
+            console.error('❌ NOT authenticated - redirecting to /login');
+            // Use replace to prevent back button from going to /dash
+            window.location.replace('/login');
         } catch (error) {
             console.error('❌ Dashboard init caught exception:', error);
-            window.location.href = '/login';
+            window.location.replace('/login');
         }
     }
 
     setupUI() {
+        // Prevent multiple UI setups
+        if (window.__uiSetup) {
+            console.log('⏭️  UI already setup, skipping');
+            return;
+        }
+        window.__uiSetup = true;
+        
         const userDisplay = document.getElementById('userDisplay');
         if (userDisplay) {
             userDisplay.innerHTML = `
@@ -70,17 +85,25 @@ class Dashboard {
         this.setupSidebar();
         this.setupSearchBar();
         this.setupModalStyles();
+        console.log('✅ UI setup complete');
     }
 
     setupSidebar() {
         const logoutBtn = document.getElementById('logoutBtn');
         if (logoutBtn) {
-            logoutBtn.addEventListener('click', async () => {
-                await fetch('/api/auth/logout', { 
-                    method: 'POST',
-                    credentials: 'include' 
-                });
-                window.location.href = '/login';
+            logoutBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('🚪 Logout button clicked');
+                try {
+                    await fetch('/api/auth/logout', { 
+                        method: 'POST',
+                        credentials: 'include' 
+                    });
+                } catch (err) {
+                    console.error('Logout request failed:', err);
+                }
+                window.location.replace('/login');
             });
         }
         

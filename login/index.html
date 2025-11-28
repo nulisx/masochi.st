@@ -75,14 +75,28 @@
     </div>
 
     <script>
+        // Prevent multiple form submissions
+        let isSubmitting = false;
+        
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            // Prevent double submission
+            if (isSubmitting) {
+                console.log('Form submission already in progress');
+                return;
+            }
+            
+            isSubmitting = true;
             const username = document.getElementById('identifier').value;
             const password = document.getElementById('password').value;
             const errorMessage = document.getElementById('errorMessage');
+            const submitBtn = document.querySelector('.auth-button');
             
             try {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Logging in...';
+                
                 const response = await fetch('/api/auth/login', {
                     method: 'POST',
                     headers: {
@@ -95,14 +109,21 @@
                 const data = await response.json();
 
                 if (response.ok) {
+                    console.log('Login successful, redirecting...');
                     window.location.href = '/login/loading';
                 } else {
                     errorMessage.textContent = data.error || 'Login failed';
                     errorMessage.classList.add('show');
+                    isSubmitting = false;
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Login';
                 }
             } catch (error) {
                 errorMessage.textContent = 'An error occurred. Please try again.';
                 errorMessage.classList.add('show');
+                isSubmitting = false;
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Login';
             }
         });
 
