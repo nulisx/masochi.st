@@ -756,8 +756,9 @@ class Dashboard {
                 <div class="card">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(168, 85, 247, 0.3)" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 2L2 8v6c0 6 10 8 10 8s10-2 10-8V8l-10-6z"></path>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 1c7 4 11 6 11 11v6c0 1-4 2-11 2s-11-1-11-2v-6c0-5 4-7 11-11z" fill="rgba(168, 85, 247, 0.3)"></path>
+                                <path d="M10 12l2 2 4-4" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
                             </svg>
                         </div>
                         <div>
@@ -841,10 +842,10 @@ class Dashboard {
                 <div class="card">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(168, 85, 247, 0.2)" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 2L2 8v6c0 6 10 8 10 8s10-2 10-8V8l-10-6z"></path>
-                                <line x1="12" y1="12" x2="12" y2="16"></line>
-                                <circle cx="12" cy="12" r="1.5"></circle>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 1l10 6v6c0 6-10 8-10 8s-10-2-10-8V7l10-6z" fill="rgba(168, 85, 247, 0.2)" stroke="#a855f7"></path>
+                                <rect x="13" y="13" width="5" height="6" rx="1" fill="rgba(168, 85, 247, 0.3)" stroke="#a855f7" stroke-width="1"></rect>
+                                <circle cx="15.5" cy="17" r="1" fill="#a855f7"></circle>
                             </svg>
                         </div>
                         <div>
@@ -859,8 +860,9 @@ class Dashboard {
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="9"></circle>
-                                <polyline points="12 7 12 12 16 14"></polyline>
+                                <circle cx="12" cy="12" r="9" fill="rgba(168, 85, 247, 0.1)"></circle>
+                                <path d="M12 6v6l4 2" stroke="#a855f7" fill="none"></path>
+                                <circle cx="12" cy="12" r="1" fill="#a855f7"></circle>
                             </svg>
                         </div>
                         <div>
@@ -875,10 +877,9 @@ class Dashboard {
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 2l-9.4 9.4"></path>
-                                <path d="M11 2H2v9"></path>
-                                <circle cx="16" cy="9" r="6"></circle>
-                                <path d="M13 15l3 3"></path>
+                                <path d="M21 9a3 3 0 0 0-3-3h-2c-1.1 0-2 .9-2 2v2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" fill="rgba(168, 85, 247, 0.1)"></path>
+                                <path d="M21 9a3 3 0 0 0-3-3h-2c-1.1 0-2 .9-2 2v2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" fill="none"></path>
+                                <circle cx="14" cy="15" r="1.5" fill="#a855f7"></circle>
                             </svg>
                         </div>
                         <div>
