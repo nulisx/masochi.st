@@ -7,30 +7,23 @@ class Dashboard {
 
     async init() {
         try {
-            let retries = 3;
-            let response;
-            
-            while (retries > 0) {
-                response = await fetch('/api/auth/me', { credentials: 'include' });
-                if (response.ok) break;
-                retries--;
-                if (retries > 0) await new Promise(r => setTimeout(r, 500));
-            }
+            const response = await fetch('/api/auth/me', { credentials: 'include' });
             
             if (response.ok) {
                 const data = await response.json();
                 this.user = data.user || data;
+                
                 if (!this.user || !this.user.id) {
                     console.error('Invalid user data:', data);
                     window.location.href = '/login';
                     return;
                 }
+                
+                console.log('✅ User authenticated:', this.user.username);
                 this.setupUI();
                 this.loadPage('overview');
             } else {
                 console.error('Auth failed with status:', response.status);
-                const errorData = await response.json().catch(() => ({}));
-                console.error('Auth error:', errorData);
                 window.location.href = '/login';
             }
         } catch (error) {
