@@ -6,21 +6,15 @@ class Dashboard {
     }
 
     async init() {
+        // Prevent multiple init calls
+        if (window.__dashboardInitialized || window.__dashboardInitStarted) {
+            console.log('Dashboard already initializing/initialized');
+            return;
+        }
+        window.__dashboardInitStarted = true;
+        
         try {
-            console.log('📊 Dashboard initializing...');
-            
-            // Prevent multiple init calls
-            if (window.__dashboardInitialized) {
-                console.log('⏭️  Dashboard already initialized, skipping');
-                return;
-            }
-            
-            // Prevent redirect loop - check if already tried
-            if (window.__dashboardInitAttempted) {
-                console.error('❌ Dashboard init failed - giving up to prevent loop');
-                return;
-            }
-            window.__dashboardInitAttempted = true;
+            console.log('📊 Dashboard init starting...');
             
             // Try to fetch from API - if this fails, user is not authenticated
             const response = await fetch('/api/auth/me', { 
@@ -29,35 +23,45 @@ class Dashboard {
                 headers: { 'Content-Type': 'application/json' }
             });
             
-            console.log('📡 /api/auth/me returned status:', response.status);
+            console.log('📡 /api/auth/me status:', response.status);
             
-            if (response.ok) {
-                const data = await response.json();
-                this.user = data.user || data;
-                
-                if (this.user && this.user.id) {
-                    console.log('✅ User authenticated:', this.user.username);
-                    sessionStorage.setItem('user', JSON.stringify(this.user));
-                    localStorage.setItem('user', JSON.stringify(this.user));
-                    window.__dashboardInitialized = true;
-                    this.setupUI();
-                    this.loadPage('overview');
-                    return;
-                } else {
-                    console.error('❌ Invalid user data from /api/auth/me');
-                }
-            } else {
-                const errorData = await response.json().catch(() => ({}));
-                console.error('❌ /api/auth/me failed with status', response.status, ':', errorData.error || errorData);
+            if (!response.ok) {
+                console.error('❌ Not authenticated, redirecting to /login');
+                window.location.replace('/login');
+                return;
             }
             
-            // If we get here, user is not authenticated
-            console.error('❌ NOT authenticated - redirecting to /login');
-            // Use replace to prevent back button from going to /dash
-            window.location.replace('/login');
+            const data = await response.json();
+            this.user = data.user || data;
+            
+            if (!this.user || !this.user.id) {
+                console.error('❌ Invalid user data');
+                window.location.replace('/login');
+                return;
+            }
+            
+            console.log('✅ User authenticated:', this.user.username);
+            sessionStorage.setItem('user', JSON.stringify(this.user));
+            localStorage.setItem('user', JSON.stringify(this.user));
+            
+            // Mark as initialized BEFORE calling setupUI to prevent re-entry
+            window.__dashboardInitialized = true;
+            
+            try {
+                this.setupUI();
+                this.loadPage('overview');
+                console.log('✅ Dashboard fully loaded');
+            } catch (uiError) {
+                console.error('❌ UI setup error:', uiError);
+                // Don't redirect on UI errors, just log them
+            }
+            
         } catch (error) {
-            console.error('❌ Dashboard init caught exception:', error);
-            window.location.replace('/login');
+            console.error('❌ Dashboard init error:', error);
+            // Only redirect if not already initialized
+            if (!window.__dashboardInitialized) {
+                window.location.replace('/login');
+            }
         }
     }
 
