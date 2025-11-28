@@ -1,0 +1,228 @@
+:root {
+  --bg-primary: #070708;
+  --bg-secondary: #0f0f11;
+  --bg-tertiary: #121217;
+  --bg-card: #0f1113;
+  --border-color: rgba(255,255,255,0.04);
+  --text-primary: rgba(255,255,255,0.95);
+  --text-secondary: rgba(160,160,192,0.9);
+  --text-muted: rgba(160,160,176,0.65);
+  --accent-primary: #9333ea;
+  --accent-secondary: #a855f7;
+  --accent-glow: rgba(147,51,234,0.18);
+}
+
+.verification-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(7, 7, 8, 0.95);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+  opacity: 0;
+  animation: fadeInOverlay 0.4s ease-out forwards;
+  pointer-events: auto;
+}
+
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(12px);
+  }
+}
+
+.verification-modal {
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 64px 48px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 
+    0 20px 60px rgba(0,0,0,0.8),
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    0 0 40px rgba(147,51,234,0.1);
+  animation: slideUp 0.5s ease-out;
+  backdrop-filter: blur(6px);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.verification-logo {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
+}
+
+.verification-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.verification-subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+
+.verification-progress-container {
+  margin: 32px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.verification-progress-bar {
+  width: 100%;
+  height: 3px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.verification-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #9333ea, #a855f7);
+  width: 0%;
+  animation: progressFill 3s ease-in-out forwards;
+  box-shadow: 0 0 20px rgba(147,51,234,0.6), 0 0 40px rgba(168,85,247,0.3);
+}
+
+@keyframes progressFill {
+  0% {
+    width: 0%;
+  }
+  50% {
+    width: 70%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.verification-status {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+  animation: fadeInDown 0.6s ease-out 0.3s both;
+}
+
+.verification-message {
+  background: linear-gradient(135deg, rgba(147,51,234,0.08) 0%, rgba(168,85,247,0.04) 100%);
+  border: 1px solid rgba(147,51,234,0.15);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-top: 24px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  opacity: 0;
+  animation: fadeInDown 0.6s ease-out 0.6s both;
+  backdrop-filter: blur(4px);
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.verification-checkmark {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 24px;
+  background: linear-gradient(135deg, rgba(147,51,234,0.15) 0%, rgba(168,85,247,0.08) 100%);
+  border: 2px solid var(--accent-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: scaleInCheckmark 0.5s ease-out 2.8s both;
+}
+
+@keyframes scaleInCheckmark {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.verification-checkmark svg {
+  width: 32px;
+  height: 32px;
+  color: var(--accent-secondary);
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: checkmarkStroke 0.6s ease-out 2.8s forwards;
+}
+
+@keyframes checkmarkStroke {
+  from {
+    stroke-dashoffset: 50;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.verification-complete {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 600;
+  opacity: 0;
+  animation: fadeInDown 0.4s ease-out 3.5s both;
+}
+
+@media (max-width: 600px) {
+  .verification-modal {
+    padding: 48px 32px;
+    border-radius: 16px;
+  }
+  
+  .verification-title {
+    font-size: 24px;
+  }
+  
+  .verification-subtitle {
+    font-size: 13px;
+  }
+}

@@ -33,6 +33,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(verificationMiddleware);
+
+// Inject verification modal into HTML responses
+app.use((req, res, next) => {
+  const originalSend = res.send;
+  res.send = function(data) {
+    if (typeof data === 'string' && data.includes('</body>')) {
+      const verificationScript = `<link rel="stylesheet" href="/static/css/verification-modal.css"><script src="/static/js/verification-modal.js"><\/script>`;
+      data = data.replace('</body>', `${verificationScript}</body>`);
+    }
+    return originalSend.call(this, data);
+  };
+  next();
+});
+
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use('/fonts', express.static(path.join(__dirname, 'fonts')));
 app.use('/assets/fonts', express.static(path.join(__dirname, 'fonts')));
