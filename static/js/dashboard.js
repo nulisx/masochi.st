@@ -749,7 +749,7 @@ class Dashboard {
                             <span class="item-label">Two-Factor Authentication</span>
                             <span class="item-value">Disabled</span>
                         </div>
-                        <a href="#" id="enable2FABtn" style="color: #3b82f6; text-decoration: none; font-size: 12px; cursor: pointer;">Enable</a>
+                        <button class="btn btn-secondary" id="enable2FABtn" style="padding: 6px 14px; font-size: 12px; color: #a855f7; border: none; background: transparent; cursor: pointer;">Enable</button>
                     </div>
                     
                     <div class="card-item">
@@ -757,7 +757,7 @@ class Dashboard {
                             <span class="item-label">Active Sessions</span>
                             <span class="item-value">0 active</span>
                         </div>
-                        <a href="#" style="color: #3b82f6; text-decoration: none; font-size: 12px; cursor: pointer;">Manage</a>
+                        <button class="btn btn-secondary" style="padding: 6px 14px; font-size: 12px; color: #a855f7; border: none; background: transparent; cursor: pointer;">Manage</button>
                     </div>
                     
                     <div class="card-item">
@@ -765,7 +765,7 @@ class Dashboard {
                             <span class="item-label">Password</span>
                             <span class="item-value">Last changed ${passwordLastChanged}</span>
                         </div>
-                        <a href="#" id="changePasswordBtn" style="color: #3b82f6; text-decoration: none; font-size: 12px; cursor: pointer;">Change</a>
+                        <button class="btn btn-secondary" id="changePasswordBtn" style="padding: 6px 14px; font-size: 12px; color: #a855f7; border: none; background: transparent; cursor: pointer;">Change</button>
                     </div>
                 </div>
                 
