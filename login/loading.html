@@ -83,10 +83,12 @@
                     const data = await response.json();
                     document.getElementById('username').textContent = '@' + data.user.username;
                     sessionStorage.setItem('user', JSON.stringify(data.user));
+                    // Redirect immediately, don't wait
                     setTimeout(() => {
                         window.location.replace('/dash');
-                    }, 1500);
+                    }, 800);
                 } else {
+                    console.error('Auth failed:', response.status);
                     window.location.replace('/login');
                 }
             } catch (error) {

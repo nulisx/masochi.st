@@ -7,25 +7,38 @@ class Dashboard {
 
     async init() {
         try {
+            // Check if user data is in sessionStorage (set by loading page)
+            const storedUser = sessionStorage.getItem('user');
+            
+            if (storedUser) {
+                this.user = JSON.parse(storedUser);
+                if (this.user && this.user.id) {
+                    console.log('✅ User loaded from session:', this.user.username);
+                    this.setupUI();
+                    this.loadPage('overview');
+                    return;
+                }
+            }
+            
+            // Fallback: Try to fetch from API if session storage is empty
             const response = await fetch('/api/auth/me', { credentials: 'include' });
             
             if (response.ok) {
                 const data = await response.json();
                 this.user = data.user || data;
                 
-                if (!this.user || !this.user.id) {
-                    console.error('Invalid user data:', data);
-                    window.location.href = '/login';
+                if (this.user && this.user.id) {
+                    sessionStorage.setItem('user', JSON.stringify(this.user));
+                    console.log('✅ User authenticated:', this.user.username);
+                    this.setupUI();
+                    this.loadPage('overview');
                     return;
                 }
-                
-                console.log('✅ User authenticated:', this.user.username);
-                this.setupUI();
-                this.loadPage('overview');
-            } else {
-                console.error('Auth failed with status:', response.status);
-                window.location.href = '/login';
             }
+            
+            // If we get here, user is not authenticated
+            console.error('User not authenticated');
+            window.location.href = '/login';
         } catch (error) {
             console.error('Failed to load user:', error);
             window.location.href = '/login';
