@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import { body, validationResult } from 'express-validator';
 import { runQuery, getQuery, allQuery } from './lib/db.js';
 import { authenticateToken, JWT_SECRET } from './lib/middleware.js';
+import { verificationMiddleware } from './lib/verify-middleware.js';
 import { hashEmail, generateRecoveryCode } from './lib/crypto-utils.js';
 import { rateLimit } from './lib/rate-limit.js';
 import crypto from 'crypto';
@@ -31,6 +32,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(verificationMiddleware);
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use('/fonts', express.static(path.join(__dirname, 'fonts')));
 app.use('/assets/fonts', express.static(path.join(__dirname, 'fonts')));
@@ -345,6 +347,23 @@ app.post(
   }
 );
 
+// Verification API endpoint
+app.post('/api/verify/browser', async (req, res) => {
+  try {
+    const fingerprint = req.body;
+    res.cookie('browser_verified', 'true', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+      maxAge: 86400000 // 24 hours
+    });
+    res.json({ success: true, message: 'Browser verified' });
+  } catch (err) {
+    console.error('Verification error:', err);
+    res.status(500).json({ error: 'Verification failed' });
+  }
+});
+
 app.use('/api/links', linksHandler);
 app.use('/api/profile', profileHandler);
 app.use('/api/invites', invitesHandler);
@@ -368,6 +387,19 @@ app.get('/api/biolink/:username', async (req, res) => {
     const links = await allQuery('links', 'user_id', user.id);
     const connections = await allQuery('connections', 'user_id', user.id);
 
+    // Increment profile view count
+    try {
+      const currentViews = profile?.view_count || 0;
+      await runQuery(
+        'profiles',
+        { user_id: user.id, view_count: currentViews + 1 },
+        'update',
+        { column: 'user_id', value: user.id }
+      );
+    } catch (viewErr) {
+      console.warn('⚠️ Failed to update view count:', viewErr.message);
+    }
+
     res.status(200).json({
       user: {
         username: user.username,
@@ -376,7 +408,8 @@ app.get('/api/biolink/:username', async (req, res) => {
       profile: {
         bio: profile?.bio || '',
         avatar_url: profile?.avatar_url || '/static/cdn/avatar.png',
-        theme: profile?.theme || 'default'
+        theme: profile?.theme || 'default',
+        view_count: (profile?.view_count || 0) + 1
       },
       links: links.map(l => ({
         title: l.title,
@@ -595,15 +628,31 @@ app.get('/faq/litterbox', (req, res) => res.sendFile(path.join(__dirname, 'stati
 app.get('/@:username', async (req, res) => {
     try {
         const { username } = req.params;
-        const user = await getQuery('users', 'username', username);
+        const user = await getQuery('users', 'username', username.toLowerCase());
         if (!user) {
             return res.status(404).sendFile(path.join(__dirname, '404.html'));
         }
+        
+        // Increment profile view count
+        try {
+            const profile = await getQuery('profiles', 'user_id', user.id);
+            const currentViews = profile?.view_count || 0;
+            await runQuery(
+                'profiles',
+                { user_id: user.id, view_count: currentViews + 1 },
+                'update',
+                { column: 'user_id', value: user.id }
+            );
+        } catch (viewErr) {
+            console.warn('⚠️ Failed to update profile view count:', viewErr.message);
+        }
+        
         res.sendFile(path.join(__dirname, 'profile', 'index.html'));
     } catch (error) {
         res.status(404).sendFile(path.join(__dirname, '404.html'));
     }
 });
+
 
 app.get('/file/:code', async (req, res) => {
     res.sendFile(path.join(__dirname, 'file', 'index.html'));
