@@ -683,141 +683,102 @@ class Dashboard {
                 </div>
             </div>
             
-            <div class="cards-grid">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="11" width="18" height="11" rx="2"></rect>
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                <circle cx="12" cy="16" r="1"></circle>
+                        <div class="card-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                             </svg>
                         </div>
                         <div>
                             <h3 class="card-title">Account Security</h3>
-                            <p class="card-description">Protect your account with additional security measures</p>
+                            <p class="card-description">Protect your account</p>
                         </div>
                     </div>
                     
                     <div class="card-item">
                         <div class="item-info">
-                            <span class="item-label">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display: inline; vertical-align: middle; margin-right: 6px;">
-                                    <rect x="3" y="11" width="18" height="11" rx="2"></rect>
-                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                </svg>
-                                Two-Factor Authentication
-                            </span>
+                            <span class="item-label">Two-Factor Authentication</span>
                             <span class="item-value">Disabled</span>
                         </div>
-                        <span class="item-action">Enable</span>
+                        <button class="btn btn-primary" style="padding: 6px 14px; font-size: 12px;">Enable</button>
                     </div>
                     
                     <div class="card-item">
                         <div class="item-info">
-                            <span class="item-label">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display: inline; vertical-align: middle; margin-right: 6px;">
-                                    <rect x="2" y="3" width="20" height="14" rx="2"></rect>
-                                    <path d="M8 21h8"></path>
-                                    <path d="M12 17v4"></path>
-                                </svg>
-                                Active Sessions
-                            </span>
-                            <span class="item-value">1 active session</span>
+                            <span class="item-label">Active Sessions</span>
+                            <span class="item-value">0 active</span>
                         </div>
-                        <span class="item-action">Manage</span>
+                        <button class="btn btn-secondary" style="padding: 6px 14px; font-size: 12px;">Manage</button>
                     </div>
                     
                     <div class="card-item">
                         <div class="item-info">
-                            <span class="item-label">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display: inline; vertical-align: middle; margin-right: 6px;">
-                                    <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
-                                </svg>
-                                Password
-                            </span>
+                            <span class="item-label">Password</span>
                             <span class="item-value">Last changed recently</span>
                         </div>
-                        <span class="item-action" id="changePasswordBtn">Change</span>
+                        <button class="btn btn-secondary" id="changePasswordBtn" style="padding: 6px 14px; font-size: 12px;">Change</button>
                     </div>
                 </div>
                 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <div class="card-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                             </svg>
                         </div>
                         <div>
                             <h3 class="card-title">Privacy Settings</h3>
-                            <p class="card-description">Control your visibility and profile appearance</p>
+                            <p class="card-description">Control your visibility</p>
                         </div>
                     </div>
                     
                     <div class="card-item">
                         <div class="item-info">
-                            <span class="item-label">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display: inline; vertical-align: middle; margin-right: 6px;">
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                    <circle cx="12" cy="12" r="3"></circle>
-                                </svg>
-                                Profile Visibility
-                            </span>
+                            <span class="item-label">Profile Visibility</span>
                             <span class="item-value">Public</span>
                         </div>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
                     </div>
                     
                     <div class="card-item">
                         <div class="item-info">
-                            <span class="item-label">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display: inline; vertical-align: middle; margin-right: 6px;">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <path d="M12 6v6l4 2"></path>
-                                </svg>
-                                Profile Themes
-                            </span>
+                            <span class="item-label">Profile Themes</span>
                             <span class="item-value">Customize appearance</span>
                         </div>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
                     </div>
                     
                     <div class="card-item">
                         <div class="item-info">
-                            <span class="item-label">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display: inline; vertical-align: middle; margin-right: 6px;">
-                                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                                    <path d="M21 15l-5-5L5 21"></path>
-                                </svg>
-                                Avatar & Banner
-                            </span>
+                            <span class="item-label">Avatar & Banner</span>
                             <span class="item-value">Manage images</span>
                         </div>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
                     </div>
                 </div>
             </div>
             
-            <div class="cards-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 24px;">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <div class="card-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                                 <path d="M9 12l2 2 4-4"></path>
                             </svg>
                         </div>
                         <div>
                             <h3 class="card-title">Data Protection</h3>
-                            <p class="card-description">Manage your data collection preferences</p>
+                            <p class="card-description">Manage data preferences</p>
                         </div>
                     </div>
                     <span class="badge success">Protected</span>
@@ -825,15 +786,15 @@ class Dashboard {
                 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 8v4l3 3"></path>
+                        <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 8v4l3 3"></path>
                             </svg>
                         </div>
                         <div>
                             <h3 class="card-title">Login History</h3>
-                            <p class="card-description">View recent login attempts</p>
+                            <p class="card-description">View recent logins</p>
                         </div>
                     </div>
                     <span class="badge success">Up to date</span>
@@ -841,48 +802,18 @@ class Dashboard {
                 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                <polyline points="22,6 12,13 2,6"></polyline>
+                        <div class="card-icon" style="background: rgba(249, 115, 22, 0.15); color: #f97316;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 6v6l4 2"></path>
                             </svg>
                         </div>
                         <div>
                             <h3 class="card-title">Account Recovery</h3>
-                            <p class="card-description">Set up recovery methods</p>
+                            <p class="card-description">Set recovery methods</p>
                         </div>
                     </div>
                     <span class="badge warning">Setup Required</span>
-                </div>
-            </div>
-            
-            <div class="card" style="margin-top: 24px;">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                            <line x1="12" y1="9" x2="12" y2="13"></line>
-                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="card-title">Danger Zone</h3>
-                        <p class="card-description">Irreversible account actions</p>
-                    </div>
-                </div>
-                
-                <div class="card-item">
-                    <div class="item-info">
-                        <span class="item-label">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display: inline; vertical-align: middle; margin-right: 6px;">
-                                <polyline points="3 6 5 6 21 6"></polyline>
-                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                            </svg>
-                            Delete Account
-                        </span>
-                        <span class="item-value">Permanently delete your account and all data</span>
-                    </div>
-                    <button class="btn btn-danger" style="padding: 8px 16px;">Delete Account</button>
                 </div>
             </div>
         `;
