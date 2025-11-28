@@ -27,7 +27,6 @@
     <div class="verification-overlay" id="verificationOverlay">
       <div class="verification-modal">
         <div class="verification-logo">Glowi.es</div>
-        <h1 class="verification-title">MailHaven</h1>
         <p class="verification-subtitle">Verifying your browser security...</p>
         
         <div class="verification-progress-container">
