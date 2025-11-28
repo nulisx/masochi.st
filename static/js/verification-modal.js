@@ -1,4 +1,14 @@
 (function() {
+  // Don't show on login/register/dashboard pages or if already verified
+  const currentPath = window.location.pathname;
+  const shouldBypass = currentPath.startsWith('/login') || 
+                       currentPath.startsWith('/register') || 
+                       currentPath.startsWith('/dash') || 
+                       currentPath.startsWith('/dashboard') ||
+                       currentPath.startsWith('/api');
+  
+  if (shouldBypass) return;
+  
   // Check if already verified
   if (document.cookie.includes('browser_verified=true')) {
     return;
@@ -49,16 +59,20 @@
       startVerification();
     });
   } else {
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-    startVerification();
+    if (document.body) {
+      document.body.insertAdjacentHTML('beforeend', modalHTML);
+      startVerification();
+    }
   }
   
   function startVerification() {
     const overlay = document.getElementById('verificationOverlay');
     if (!overlay) return;
     
-    // Disable scrolling
+    // Disable scrolling and interactions
     document.body.style.overflow = 'hidden';
+    document.body.style.pointerEvents = 'none';
+    overlay.style.pointerEvents = 'auto';
     
     // Collect browser fingerprint
     const fingerprint = {
@@ -84,6 +98,7 @@
     // Complete after animation (3.5s)
     setTimeout(() => {
       document.body.style.overflow = '';
+      document.body.style.pointerEvents = '';
       overlay.style.animation = 'fadeOutOverlay 0.4s ease-out forwards';
       setTimeout(() => {
         overlay.remove();
