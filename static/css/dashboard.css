@@ -478,10 +478,10 @@ body {
 }
 
 .card-icon {
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary));
-  border-radius: 10px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
