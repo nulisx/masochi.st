@@ -749,7 +749,7 @@ class Dashboard {
                             <span class="item-label">Two-Factor Authentication</span>
                             <span class="item-value">Disabled</span>
                         </div>
-                        <button id="enable2FABtn" style="background: none; border: none; color: #a855f7; font-size: 12px; cursor: pointer; font-weight: 500;">Enable</button>
+                        <button id="enable2FABtn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 12px; cursor: pointer; font-weight: 500; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease;">Enable</button>
                     </div>
                     
                     <div class="card-item">
@@ -757,7 +757,7 @@ class Dashboard {
                             <span class="item-label">Active Sessions</span>
                             <span class="item-value">0 active</span>
                         </div>
-                        <button style="background: none; border: none; color: #a855f7; font-size: 12px; cursor: pointer; font-weight: 500;">Manage</button>
+                        <button style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 12px; cursor: pointer; font-weight: 500; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease;">Manage</button>
                     </div>
                     
                     <div class="card-item">
@@ -765,7 +765,7 @@ class Dashboard {
                             <span class="item-label">Password</span>
                             <span class="item-value">Last changed ${passwordLastChanged}</span>
                         </div>
-                        <button id="changePasswordBtn" style="background: none; border: none; color: #a855f7; font-size: 12px; cursor: pointer; font-weight: 500;">Change</button>
+                        <button id="changePasswordBtn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 12px; cursor: pointer; font-weight: 500; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease;">Change</button>
                     </div>
                 </div>
                 
