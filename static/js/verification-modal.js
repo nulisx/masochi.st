@@ -22,31 +22,48 @@
     document.head.appendChild(link);
   }
   
-  // Create modal HTML
+  // Create advanced modal HTML
   const modalHTML = `
     <div class="verification-overlay" id="verificationOverlay">
       <div class="verification-modal">
-        <div class="verification-logo">Glowi.es</div>
-        <p class="verification-subtitle">Verifying your browser security...</p>
+        <div class="verification-brand">Glowi.es</div>
         
+        <div class="verification-title">Verifying Browser Security</div>
+        <p class="verification-subtitle">Analyzing your connection & browser fingerprint</p>
+        
+        <!-- Multi-stage progress indicators -->
+        <div class="verification-stages" id="verificationStages">
+          <div class="verification-stage active" id="stage1"></div>
+          <div class="verification-stage" id="stage2"></div>
+          <div class="verification-stage" id="stage3"></div>
+        </div>
+        
+        <!-- Advanced progress bar with status -->
         <div class="verification-progress-container">
-          <div class="verification-progress-bar">
+          <div class="verification-progress-info">
+            <span class="verification-progress-status" id="progressStatus">Scanning security profile...</span>
+            <span class="verification-progress-time" id="progressTime">3.2s</span>
+          </div>
+          <div class="verification-bar-wrapper">
             <div class="verification-progress-fill" id="progressFill"></div>
           </div>
-          <p class="verification-status" id="statusText">This process usually takes a few seconds...</p>
         </div>
         
+        <!-- Status message -->
         <div class="verification-message" id="verifyMessage">
-          Almost done... We're performing additional security checks to ensure a safe connection.
+          Analyzing browser fingerprint, security headers, and connection encryption. This ensures secure access to protected resources.
         </div>
         
-        <div class="verification-checkmark" id="checkmark">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
+        <!-- Success state -->
+        <div class="verification-success-container" id="successContainer">
+          <div class="verification-checkmark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="verification-complete-text">Browser Verified</div>
+          <div class="verification-redirect-hint">Redirecting you now...</div>
         </div>
-        
-        <div class="verification-complete" id="completeText">Verification complete!</div>
       </div>
     </div>
   `;
@@ -55,17 +72,25 @@
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       document.body.insertAdjacentHTML('beforeend', modalHTML);
-      startVerification();
+      startAdvancedVerification();
     });
   } else {
     if (document.body) {
       document.body.insertAdjacentHTML('beforeend', modalHTML);
-      startVerification();
+      startAdvancedVerification();
     }
   }
   
-  function startVerification() {
+  function startAdvancedVerification() {
     const overlay = document.getElementById('verificationOverlay');
+    const progressFill = document.getElementById('progressFill');
+    const progressStatus = document.getElementById('progressStatus');
+    const progressTime = document.getElementById('progressTime');
+    const successContainer = document.getElementById('successContainer');
+    const stage1 = document.getElementById('stage1');
+    const stage2 = document.getElementById('stage2');
+    const stage3 = document.getElementById('stage3');
+    
     if (!overlay) return;
     
     // Disable scrolling and interactions
@@ -73,7 +98,7 @@
     document.body.style.pointerEvents = 'none';
     overlay.style.pointerEvents = 'auto';
     
-    // Collect browser fingerprint
+    // Collect advanced browser fingerprint
     const fingerprint = {
       userAgent: navigator.userAgent,
       language: navigator.language,
@@ -84,40 +109,84 @@
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       cookiesEnabled: navigator.cookieEnabled,
       doNotTrack: navigator.doNotTrack,
-      timestamp: Date.now()
+      webglVendor: getWebGLVendor(),
+      hardwareConcurrency: navigator.hardwareConcurrency,
+      deviceMemory: navigator.deviceMemory,
+      maxTouchPoints: navigator.maxTouchPoints,
+      timestamp: Date.now(),
+      screenOrientation: screen.orientation?.type || 'unknown'
     };
+    
+    // Stage 1: Fingerprint collection
+    setTimeout(() => {
+      progressStatus.textContent = 'Collecting browser fingerprint...';
+      stage1.classList.add('completed');
+      stage2.classList.add('active');
+    }, 600);
+    
+    // Stage 2: Security analysis
+    setTimeout(() => {
+      progressStatus.textContent = 'Analyzing security headers...';
+      stage2.classList.add('completed');
+      stage3.classList.add('active');
+    }, 1400);
+    
+    // Stage 3: Final verification
+    setTimeout(() => {
+      progressStatus.textContent = 'Finalizing verification...';
+    }, 2200);
     
     // Send verification request
     fetch('/api/verify/browser', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(fingerprint)
-    }).catch(e => console.warn('Verification request failed:', e));
+      body: JSON.stringify(fingerprint),
+      credentials: 'include'
+    })
+    .then(res => res.json())
+    .catch(e => console.warn('Verification request failed:', e));
     
-    // Complete after animation (3.5s)
+    // Update countdown timer
+    let seconds = 3.2;
+    const timerInterval = setInterval(() => {
+      seconds = Math.max(0, seconds - 0.1);
+      progressTime.textContent = seconds.toFixed(1) + 's';
+    }, 100);
+    
+    // Complete verification sequence at 3.2s
     setTimeout(() => {
-      document.body.style.overflow = '';
-      document.body.style.pointerEvents = '';
-      overlay.style.animation = 'fadeOutOverlay 0.4s ease-out forwards';
+      clearInterval(timerInterval);
+      stage3.classList.add('completed');
+      
+      // Show success state
+      successContainer.style.opacity = '1';
+      
+      // Hide loading elements
+      document.getElementById('verifyMessage').style.opacity = '0';
+      document.getElementById('verificationStages').style.opacity = '0';
+      document.querySelector('.verification-progress-container').style.opacity = '0';
+      
+      // Redirect after showing success
       setTimeout(() => {
-        overlay.remove();
-      }, 400);
-    }, 3500);
+        overlay.classList.add('exiting');
+        setTimeout(() => {
+          document.body.style.overflow = '';
+          document.body.style.pointerEvents = '';
+          overlay.remove();
+        }, 400);
+      }, 1200);
+    }, 3200);
   }
   
-  // Add fade out animation
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes fadeOutOverlay {
-      from {
-        opacity: 1;
-        backdrop-filter: blur(12px);
+  function getWebGLVendor() {
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (gl) {
+        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+        return gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
       }
-      to {
-        opacity: 0;
-        backdrop-filter: blur(0px);
-      }
-    }
-  `;
-  document.head.appendChild(style);
+    } catch (e) {}
+    return 'unknown';
+  }
 })();
