@@ -734,7 +734,7 @@ class Dashboard {
                 <div class="card">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1">
                                 <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path>
                             </svg>
                         </div>
@@ -749,15 +749,15 @@ class Dashboard {
                             <span class="item-label">Two-Factor Authentication</span>
                             <span class="item-value">Disabled</span>
                         </div>
-                        <button class="btn btn-primary" id="enable2FABtn" style="padding: 6px 14px; font-size: 12px; color: #a855f7;">Enable</button>
+                        <a href="#" id="enable2FABtn" style="color: #3b82f6; text-decoration: none; font-size: 12px; cursor: pointer;">Enable</a>
                     </div>
                     
                     <div class="card-item">
                         <div class="item-info">
                             <span class="item-label">Active Sessions</span>
-                            <span class="item-value">1 active</span>
+                            <span class="item-value">0 active</span>
                         </div>
-                        <button class="btn btn-secondary" style="padding: 6px 14px; font-size: 12px;">Manage</button>
+                        <a href="#" style="color: #3b82f6; text-decoration: none; font-size: 12px; cursor: pointer;">Manage</a>
                     </div>
                     
                     <div class="card-item">
@@ -765,7 +765,7 @@ class Dashboard {
                             <span class="item-label">Password</span>
                             <span class="item-value">Last changed ${passwordLastChanged}</span>
                         </div>
-                        <button class="btn btn-secondary" id="changePasswordBtn" style="padding: 6px 14px; font-size: 12px; color: #a855f7;">Change</button>
+                        <a href="#" id="changePasswordBtn" style="color: #3b82f6; text-decoration: none; font-size: 12px; cursor: pointer;">Change</a>
                     </div>
                 </div>
                 
@@ -819,14 +819,14 @@ class Dashboard {
                 <div class="card">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1">
                                 <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path>
                                 <path d="M10 17l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" fill="white"></path>
                             </svg>
                         </div>
                         <div>
                             <h3 class="card-title">Data Protection</h3>
-                            <p class="card-description">Manage data preferences</p>
+                            <p class="card-description">Manage your data collection preferences and download your information</p>
                         </div>
                     </div>
                     <span class="badge success">Protected</span>
@@ -842,7 +842,7 @@ class Dashboard {
                         </div>
                         <div>
                             <h3 class="card-title">Login History</h3>
-                            <p class="card-description">View recent logins</p>
+                            <p class="card-description">View recent login attempts and manage suspicious activity</p>
                         </div>
                     </div>
                     <span class="badge success">Up to date</span>
@@ -852,12 +852,13 @@ class Dashboard {
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(249, 115, 22, 0.15); color: #f97316;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 2l-9 20-9-20h18z M14 7l-2 8h4l-2-8z"></path>
+                                <path d="M21 2l-2 4m-5-4l2 4m-2 4l2 4m-2 4l2 4M3 2h18v4H3zm0 8h18v8H3z"></path>
+                                <path d="M7 6v12M17 6v12"></path>
                             </svg>
                         </div>
                         <div>
                             <h3 class="card-title">Account Recovery</h3>
-                            <p class="card-description">Set recovery methods</p>
+                            <p class="card-description">Set up recovery methods and backup codes for account access</p>
                         </div>
                     </div>
                     <span class="badge warning">Setup Required</span>
