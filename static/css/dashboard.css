@@ -400,6 +400,9 @@ body {
   flex: 1;
   padding: 18px;
   overflow: auto;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .page-header {
