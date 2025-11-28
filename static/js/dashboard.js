@@ -891,8 +891,8 @@ class Dashboard {
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="7" cy="12" r="3"></circle>
-                                <path d="M10 12h9M19 9v6M19 9h2M19 15h2"></path>
+                                <circle cx="8" cy="12" r="3"></circle>
+                                <path d="M11 12h8M19 10v4M19 10h2M19 14h2"></path>
                             </svg>
                         </div>
                         <div>
