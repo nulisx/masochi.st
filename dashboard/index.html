@@ -13,13 +13,16 @@
             <div class="sidebar-header">
                 <div class="logo" id="logoContainer">
                     <img id="logoImage" src="/static/cdn/125457885.jpeg" alt="glowi" style="width: 24px; height: 24px; border-radius: 4px; object-fit: cover;">
-                    <span style="color: #a855f7; font-size: 14px;">glowi.es</span>
+                    <span style="color: #a855f7; font-size: 16px; font-weight: 600;">glowi<span style="color: #64748b;">.es</span></span>
                 </div>
             </div>
             
             <nav class="sidebar-nav">
                 <div class="nav-section">
-                    <span class="nav-label">NAVIGATION</span>
+                    <div class="nav-label-container">
+                        <span class="nav-label" data-section="navigation">NAVIGATION</span>
+                        <span class="nav-dot" data-section="navigation"></span>
+                    </div>
                     <a href="#overview" class="nav-item active" data-page="overview">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="3" y="3" width="7" height="7" rx="1"></rect>
@@ -32,7 +35,10 @@
                 </div>
                 
                 <div class="nav-section">
-                    <span class="nav-label">ACCOUNT</span>
+                    <div class="nav-label-container">
+                        <span class="nav-label" data-section="account">ACCOUNT</span>
+                        <span class="nav-dot" data-section="account"></span>
+                    </div>
                     <a href="#profile" class="nav-item" data-page="profile">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="8" r="4"></circle>
@@ -62,7 +68,10 @@
                 </div>
                 
                 <div class="nav-section">
-                    <span class="nav-label">ASSETS</span>
+                    <div class="nav-label-container">
+                        <span class="nav-label" data-section="assets">ASSETS</span>
+                        <span class="nav-dot" data-section="assets"></span>
+                    </div>
                     <a href="#biolinks" class="nav-item" data-page="biolinks">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M15 7h3a5 5 0 0 1 0 10h-3"></path>
@@ -105,16 +114,16 @@
                     <span>Privacy</span>
                 </a>
                 <a href="#tos" class="nav-item" data-page="tos">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <line x1="10" y1="9" x2="8" y2="9"></line>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 6a2 2 0 012-2h12a2 2 0 012 2v2H4V6z"></path>
+                        <path d="M4 8h16v10a2 2 0 01-2 2H6a2 2 0 01-2-2V8z"></path>
+                        <path d="M8 12h.01"></path>
+                        <path d="M12 12h.01"></path>
+                        <path d="M16 12h.01"></path>
                     </svg>
                     <span>Terms of Service</span>
                 </a>
-                <a href="#api" class="nav-item" data-page="api" style="opacity: 0.6; pointer-events: none;">
+                <a href="#api" class="nav-item api-nav-item" data-page="api" style="opacity: 0.6; pointer-events: none; border: 1px dashed rgba(168, 85, 247, 0.4);">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="16 18 22 12 16 6"></polyline>
                         <polyline points="8 6 2 12 8 18"></polyline>
@@ -127,13 +136,14 @@
                         <span class="user-name" id="userName">Loading...</span>
                         <span class="user-handle" id="userHandle">@...</span>
                     </div>
-                    <button class="logout-btn" id="logoutBtn" title="Logout">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                            <polyline points="16 17 21 12 16 7"></polyline>
-                            <line x1="21" y1="12" x2="9" y2="12"></line>
-                        </svg>
+                    <button class="user-dropdown-btn" id="userDropdownBtn" title="Menu">
+                        <span id="dropdownToggle">˅</span>
                     </button>
+                    <div class="user-dropdown-menu" id="userDropdownMenu">
+                        <a href="#profile" class="dropdown-item" data-page="profile">Profile</a>
+                        <a href="#settings" class="dropdown-item" data-page="settings">Settings</a>
+                        <a href="#logout" class="dropdown-item" id="dropdownLogout">Logout</a>
+                    </div>
                 </div>
             </div>
         </aside>

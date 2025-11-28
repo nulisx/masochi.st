@@ -112,23 +112,68 @@ class Dashboard {
     }
 
     setupSidebar() {
-        const logoutBtn = document.getElementById('logoutBtn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', async (e) => {
-                e.preventDefault();
+        const dropdownBtn = document.getElementById('userDropdownBtn');
+        const dropdownMenu = document.getElementById('userDropdownMenu');
+        const dropdownToggle = document.getElementById('dropdownToggle');
+        
+        if (dropdownBtn && dropdownMenu) {
+            dropdownBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                console.log('🚪 Logout button clicked');
+                dropdownMenu.classList.toggle('open');
+                dropdownToggle.textContent = dropdownMenu.classList.contains('open') ? '^' : '˅';
+            });
+            
+            document.addEventListener('click', () => {
+                dropdownMenu.classList.remove('open');
+                dropdownToggle.textContent = '˅';
+            });
+        }
+        
+        const dropdownLogout = document.getElementById('dropdownLogout');
+        if (dropdownLogout) {
+            dropdownLogout.addEventListener('click', async (e) => {
+                e.preventDefault();
                 try {
-                    await fetch('/api/auth/logout', { 
-                        method: 'POST',
-                        credentials: 'include' 
-                    });
+                    await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
                 } catch (err) {
-                    console.error('Logout request failed:', err);
+                    console.error('Logout failed:', err);
                 }
                 window.location.replace('/login');
             });
         }
+        
+        const dropdownItems = document.querySelectorAll('.dropdown-item[data-page]');
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = item.dataset.page;
+                if (page) {
+                    this.loadPage(page);
+                    document.querySelectorAll('.nav-item[data-page]').forEach(i => i.classList.remove('active'));
+                    dropdownMenu.classList.remove('open');
+                    dropdownToggle.textContent = '˅';
+                }
+            });
+        });
+        
+        const navLabels = document.querySelectorAll('.nav-label');
+        navLabels.forEach(label => {
+            label.parentElement.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const section = label.dataset.section;
+                const dot = label.parentElement.querySelector('.nav-dot');
+                const navSection = label.closest('.nav-section');
+                const items = navSection.querySelectorAll('.nav-item');
+                
+                items.forEach(item => {
+                    item.style.display = item.style.display === 'none' ? 'flex' : 'none';
+                });
+                
+                if (dot) {
+                    dot.classList.toggle('collapsed');
+                }
+            });
+        });
         
         const navItems = document.querySelectorAll('.nav-item[data-page]');
         navItems.forEach(item => {
@@ -670,6 +715,8 @@ class Dashboard {
 
     async renderSecurity() {
         const contentArea = document.getElementById('contentArea');
+        const passwordLastChanged = this.user?.password_changed_at ? new Date(this.user.password_changed_at).toLocaleDateString() : 'Recently';
+        
         contentArea.innerHTML = `
             <div class="page-header">
                 <button class="page-back" onclick="dashboard.loadPage('overview')">
@@ -687,8 +734,8 @@ class Dashboard {
                 <div class="card">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path>
                             </svg>
                         </div>
                         <div>
@@ -702,13 +749,13 @@ class Dashboard {
                             <span class="item-label">Two-Factor Authentication</span>
                             <span class="item-value">Disabled</span>
                         </div>
-                        <button class="btn btn-primary" style="padding: 6px 14px; font-size: 12px;">Enable</button>
+                        <button class="btn btn-primary" id="enable2FABtn" style="padding: 6px 14px; font-size: 12px; color: #3b82f6;">Enable</button>
                     </div>
                     
                     <div class="card-item">
                         <div class="item-info">
                             <span class="item-label">Active Sessions</span>
-                            <span class="item-value">0 active</span>
+                            <span class="item-value">1 active</span>
                         </div>
                         <button class="btn btn-secondary" style="padding: 6px 14px; font-size: 12px;">Manage</button>
                     </div>
@@ -716,17 +763,18 @@ class Dashboard {
                     <div class="card-item">
                         <div class="item-info">
                             <span class="item-label">Password</span>
-                            <span class="item-value">Last changed recently</span>
+                            <span class="item-value">Last changed ${passwordLastChanged}</span>
                         </div>
-                        <button class="btn btn-secondary" id="changePasswordBtn" style="padding: 6px 14px; font-size: 12px;">Change</button>
+                        <button class="btn btn-secondary" id="changePasswordBtn" style="padding: 6px 14px; font-size: 12px; color: #3b82f6;">Change</button>
                     </div>
                 </div>
                 
                 <div class="card">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
                             </svg>
                         </div>
                         <div>
@@ -740,7 +788,7 @@ class Dashboard {
                             <span class="item-label">Profile Visibility</span>
                             <span class="item-value">Public</span>
                         </div>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2">
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
                     </div>
@@ -750,7 +798,7 @@ class Dashboard {
                             <span class="item-label">Profile Themes</span>
                             <span class="item-value">Customize appearance</span>
                         </div>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2">
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
                     </div>
@@ -760,7 +808,7 @@ class Dashboard {
                             <span class="item-label">Avatar & Banner</span>
                             <span class="item-value">Manage images</span>
                         </div>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2">
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
                     </div>
@@ -771,9 +819,9 @@ class Dashboard {
                 <div class="card">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                                <path d="M9 12l2 2 4-4"></path>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path>
+                                <path d="M10 17l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" fill="white"></path>
                             </svg>
                         </div>
                         <div>
@@ -787,9 +835,9 @@ class Dashboard {
                 <div class="card">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="10"></circle>
-                                <path d="M12 8v4l3 3"></path>
+                                <polyline points="12 6 12 12 16 14"></polyline>
                             </svg>
                         </div>
                         <div>
@@ -803,9 +851,8 @@ class Dashboard {
                 <div class="card">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(249, 115, 22, 0.15); color: #f97316;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <path d="M12 6v6l4 2"></path>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 2l-9 20-9-20h18z M14 7l-2 8h4l-2-8z"></path>
                             </svg>
                         </div>
                         <div>
@@ -818,7 +865,23 @@ class Dashboard {
             </div>
         `;
 
-        this.setupPasswordChange();
+        this.setupSecurityHandlers();
+    }
+    
+    setupSecurityHandlers() {
+        const enable2FABtn = document.getElementById('enable2FABtn');
+        if (enable2FABtn) {
+            enable2FABtn.addEventListener('click', () => {
+                this.loadPage('settings');
+            });
+        }
+        
+        const changePasswordBtn = document.getElementById('changePasswordBtn');
+        if (changePasswordBtn) {
+            changePasswordBtn.addEventListener('click', () => {
+                this.loadPage('settings');
+            });
+        }
     }
 
     setupPasswordChange() {
