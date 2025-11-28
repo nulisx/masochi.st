@@ -755,9 +755,9 @@ class Dashboard {
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1">
-                                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path>
+                        <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(168, 85, 247, 0.3)" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2L2 8v6c0 6 10 8 10 8s10-2 10-8V8l-10-6z"></path>
                             </svg>
                         </div>
                         <div>
@@ -771,7 +771,7 @@ class Dashboard {
                             <span class="item-label">Two-Factor Authentication</span>
                             <span class="item-value">Disabled</span>
                         </div>
-                        <button id="enable2FABtn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 13px; cursor: pointer; font-weight: 500; padding: 8px 16px; border-radius: 8px; transition: all 0.2s ease;">Enable</button>
+                        <button id="enable2FABtn" class="security-btn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 13px; cursor: pointer; font-weight: 500; padding: 8px 16px; border-radius: 8px; transition: all 0.2s ease;">Enable</button>
                     </div>
                     
                     <div class="card-item">
@@ -779,22 +779,22 @@ class Dashboard {
                             <span class="item-label">Active Sessions</span>
                             <span class="item-value">0 active</span>
                         </div>
-                        <button style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 13px; cursor: pointer; font-weight: 500; padding: 8px 16px; border-radius: 8px; transition: all 0.2s ease;">Manage</button>
+                        <button class="security-btn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 13px; cursor: pointer; font-weight: 500; padding: 8px 16px; border-radius: 8px; transition: all 0.2s ease;">Manage</button>
                     </div>
                     
                     <div class="card-item">
                         <div class="item-info">
                             <span class="item-label">Password</span>
-                            <span class="item-value">Last changed ${passwordLastChanged}</span>
+                            <span class="item-value">${passwordLastChanged}</span>
                         </div>
-                        <button id="changePasswordBtn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 13px; cursor: pointer; font-weight: 500; padding: 8px 16px; border-radius: 8px; transition: all 0.2s ease;">Change</button>
+                        <button id="changePasswordBtn" class="security-btn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 13px; cursor: pointer; font-weight: 500; padding: 8px 16px; border-radius: 8px; transition: all 0.2s ease;">Change</button>
                     </div>
                 </div>
                 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <circle cx="12" cy="12" r="3"></circle>
                             </svg>
@@ -840,10 +840,11 @@ class Dashboard {
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1">
-                                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path>
-                                <path d="M10 17l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" fill="white"></path>
+                        <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(168, 85, 247, 0.2)" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2L2 8v6c0 6 10 8 10 8s10-2 10-8V8l-10-6z"></path>
+                                <line x1="12" y1="12" x2="12" y2="16"></line>
+                                <circle cx="12" cy="12" r="1.5"></circle>
                             </svg>
                         </div>
                         <div>
@@ -851,15 +852,15 @@ class Dashboard {
                             <p class="card-description">Manage your data collection preferences and download your information</p>
                         </div>
                     </div>
-                    <span class="badge success">Protected</span>
+                    <span class="badge success">● Protected</span>
                 </div>
                 
                 <div class="card">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <polyline points="12 7 12 12 16 14"></polyline>
                             </svg>
                         </div>
                         <div>
@@ -867,15 +868,16 @@ class Dashboard {
                             <p class="card-description">View recent login attempts and manage suspicious activity</p>
                         </div>
                     </div>
-                    <span class="badge success">Up to date</span>
+                    <span class="badge success">● Up to date</span>
                 </div>
                 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon" style="background: rgba(249, 115, 22, 0.15); color: #f97316;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 2l-2 4m-5-4l2 4m-2 4l2 4m-2 4l2 4M3 2h18v4H3zm0 8h18v8H3z"></path>
-                                <path d="M7 6v12M17 6v12"></path>
+                        <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                <circle cx="12" cy="16" r="1"></circle>
                             </svg>
                         </div>
                         <div>
@@ -883,7 +885,7 @@ class Dashboard {
                             <p class="card-description">Set up recovery methods and backup codes for account access</p>
                         </div>
                     </div>
-                    <span class="badge warning">Setup Required</span>
+                    <span class="badge warning">● Setup Required</span>
                 </div>
             </div>
         `;
@@ -905,6 +907,18 @@ class Dashboard {
                 this.loadPage('settings');
             });
         }
+        
+        const manageBtn = document.querySelectorAll('.security-btn');
+        manageBtn.forEach(btn => {
+            btn.addEventListener('mouseover', () => {
+                btn.style.background = 'rgba(168, 85, 247, 0.15)';
+                btn.style.borderColor = 'rgba(168, 85, 247, 0.4)';
+            });
+            btn.addEventListener('mouseout', () => {
+                btn.style.background = 'rgba(168, 85, 247, 0.1)';
+                btn.style.borderColor = 'rgba(168, 85, 247, 0.2)';
+            });
+        });
     }
 
     setupPasswordChange() {
@@ -2050,11 +2064,18 @@ class Dashboard {
                 </div>
             </div>
             
-            <div class="card">
-                <div style="padding: 20px;">
-                    <h3 style="margin-bottom: 12px;">API Endpoints</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 16px;">Coming soon. API documentation and integration guides will be available here.</p>
+            <div class="card" style="border: 1px dashed rgba(160, 160, 176, 0.4); padding: 20px;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                    <div style="width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <polyline points="16 18 22 12 16 6"></polyline>
+                            <polyline points="8 6 2 12 8 18"></polyline>
+                        </svg>
+                    </div>
+                    <h3 style="margin-bottom: 0;">API Endpoints</h3>
+                    <span style="margin-left: auto; font-size: 12px; background: rgba(168, 85, 247, 0.15); color: #a855f7; padding: 4px 8px; border-radius: 4px;">SOON</span>
                 </div>
+                <p style="color: var(--text-muted); margin-bottom: 0;">Coming soon. API documentation and integration guides will be available here.</p>
             </div>
         `;
     }
