@@ -955,74 +955,223 @@ class Dashboard {
                 </button>
                 <div>
                     <h1 class="page-title">Settings</h1>
-                    <p class="page-subtitle">General account settings</p>
+                    <p class="page-subtitle">Account security and configuration</p>
                 </div>
             </div>
             
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+                <!-- Change Password Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                <circle cx="12" cy="16" r="1"></circle>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Change Password</h3>
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 20px;">
+                        <form id="changePasswordForm">
+                            <div class="form-group">
+                                <label class="form-label">Current password</label>
+                                <input type="password" class="form-input" id="currentPassword" placeholder="Your current password..." required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">New password</label>
+                                <input type="password" class="form-input" id="newPassword" placeholder="Your new password..." required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Confirm password</label>
+                                <input type="password" class="form-input" id="confirmPassword" placeholder="Confirm your password..." required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">2FA code (if required)</label>
+                                <input type="text" class="form-input" id="twoFACode" placeholder="••••••" maxlength="6">
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Change password</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 2FA Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                <circle cx="12" cy="16" r="1"></circle>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="card-title">2FA</h3>
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">Current password</label>
+                            <input type="password" class="form-input" id="twoFAPassword" placeholder="••••••••">
+                        </div>
+                        <button class="btn btn-primary" id="enable2FABtn" style="width: 100%;">Enable</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ShareX Section -->
             <div class="card">
                 <div class="card-header">
                     <div class="card-icon">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
                         </svg>
                     </div>
                     <div>
-                        <h3 class="card-title">Preferences</h3>
-                        <p class="card-description">Customize your experience</p>
+                        <h3 class="card-title">ShareX</h3>
+                        <p class="card-description">Configure ShareX for easy file uploads</p>
                     </div>
                 </div>
                 
-                <div class="card-item">
-                    <div class="item-info">
-                        <span class="item-label">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display: inline; vertical-align: middle; margin-right: 6px;">
-                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                            </svg>
-                            Dark Mode
-                        </span>
-                        <span class="item-value">Currently active</span>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" checked disabled>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="card-item">
-                    <div class="item-info">
-                        <span class="item-label">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display: inline; vertical-align: middle; margin-right: 6px;">
-                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                            </svg>
-                            Email Notifications
-                        </span>
-                        <span class="item-value">Receive updates about your account</span>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="card-item">
-                    <div class="item-info">
-                        <span class="item-label">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display: inline; vertical-align: middle; margin-right: 6px;">
-                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-                            </svg>
-                            Analytics
-                        </span>
-                        <span class="item-value">Track profile visits</span>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
+                <div style="padding: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
+                    <button id="generateAPIKeyBtn" class="btn btn-primary">Generate API Key</button>
+                    <button id="generateNormalConfigBtn" class="btn btn-primary">Generate Normal Configuration</button>
+                    <button id="generateEncryptedConfigBtn" class="btn btn-primary">Generate Encrypted Configuration</button>
                 </div>
             </div>
         `;
+
+        this.setupSettingsHandlers();
+    }
+
+    setupSettingsHandlers() {
+        // Change Password Form
+        const passwordForm = document.getElementById('changePasswordForm');
+        if (passwordForm) {
+            passwordForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const current = document.getElementById('currentPassword').value;
+                const newPass = document.getElementById('newPassword').value;
+                const confirm = document.getElementById('confirmPassword').value;
+                const twoFA = document.getElementById('twoFACode').value;
+
+                if (newPass !== confirm) {
+                    this.showToast('Passwords do not match', 'error');
+                    return;
+                }
+
+                if (newPass.length < 8) {
+                    this.showToast('Password must be at least 8 characters', 'error');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/api/auth/change-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({ current_password: current, new_password: newPass, twofa_code: twoFA })
+                    });
+
+                    if (response.ok) {
+                        this.showToast('Password changed successfully', 'success');
+                        passwordForm.reset();
+                    } else {
+                        const data = await response.json();
+                        this.showToast(data.error || 'Failed to change password', 'error');
+                    }
+                } catch (error) {
+                    this.showToast('Failed to change password', 'error');
+                }
+            });
+        }
+
+        // 2FA Enable Button
+        const enable2FABtn = document.getElementById('enable2FABtn');
+        if (enable2FABtn) {
+            enable2FABtn.addEventListener('click', async () => {
+                const password = document.getElementById('twoFAPassword').value;
+                if (!password) {
+                    this.showToast('Please enter your password', 'error');
+                    return;
+                }
+                this.showToast('2FA setup coming soon', 'info');
+            });
+        }
+
+        // ShareX Buttons
+        const generateAPIKeyBtn = document.getElementById('generateAPIKeyBtn');
+        if (generateAPIKeyBtn) {
+            generateAPIKeyBtn.addEventListener('click', async () => {
+                try {
+                    const response = await fetch('/api/token', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: 'ShareX API Key' })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        const apiKey = data.token;
+                        this.showToast('API Key generated', 'success');
+                        this.copyToClipboard(apiKey);
+                    } else {
+                        this.showToast('Failed to generate API key', 'error');
+                    }
+                } catch (error) {
+                    this.showToast('Failed to generate API key', 'error');
+                }
+            });
+        }
+
+        const generateNormalConfigBtn = document.getElementById('generateNormalConfigBtn');
+        if (generateNormalConfigBtn) {
+            generateNormalConfigBtn.addEventListener('click', () => {
+                const config = {
+                    Version: "18.0.1",
+                    Name: "Glowi.es",
+                    DestinationType: "ImageUploader, FileUploader",
+                    RequestMethod: "POST",
+                    RequestURL: "${DOMAIN}/api/upload",
+                    FileFormName: "file",
+                    Arguments: `{
+                        "token": "${this.user?.id}"
+                    }`
+                };
+                this.downloadConfig(JSON.stringify(config, null, 2), 'glowi-config.json');
+                this.showToast('Configuration generated', 'success');
+            });
+        }
+
+        const generateEncryptedConfigBtn = document.getElementById('generateEncryptedConfigBtn');
+        if (generateEncryptedConfigBtn) {
+            generateEncryptedConfigBtn.addEventListener('click', () => {
+                this.showToast('Encrypted configuration coming soon', 'info');
+            });
+        }
+    }
+
+    copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            this.showToast('Copied to clipboard', 'success');
+        });
+    }
+
+    downloadConfig(content, filename) {
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+        element.setAttribute('download', filename);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
     }
 
     async renderPrivacy() {
