@@ -305,57 +305,78 @@ class Dashboard {
     async loadPage(page) {
         this.currentPage = page;
         const contentArea = document.getElementById('contentArea');
-        if (!contentArea) return;
+        if (!contentArea) {
+            console.error('❌ Content area not found');
+            return;
+        }
 
         try {
             contentArea.style.opacity = '0';
             contentArea.style.transition = 'opacity 0.3s ease';
             
             setTimeout(async () => {
-                switch(page) {
-                    case 'overview':
-                        await this.renderOverview();
-                        break;
-                    case 'biolinks':
-                        await this.renderBiolinks();
-                        break;
-                    case 'images':
-                    case 'files':
-                        await this.renderFiles();
-                        break;
-                    case 'profile':
-                        await this.renderProfile();
-                        break;
-                    case 'security':
-                        await this.renderSecurity();
-                        break;
-                    case 'connections':
-                        await this.renderConnections();
-                        break;
-                    case 'settings':
-                        await this.renderSettings();
-                        break;
-                    case 'privacy':
-                        await this.renderPrivacy();
-                        break;
-                    case 'litterbox':
-                        await this.renderLitterBox();
-                        break;
-                    case 'tos':
-                        await this.renderToS();
-                        break;
-                    case 'api':
-                        await this.renderAPI();
-                        break;
-                    default:
-                        await this.renderOverview();
+                try {
+                    switch(page) {
+                        case 'overview':
+                            await this.renderOverview();
+                            break;
+                        case 'biolinks':
+                            await this.renderBiolinks();
+                            break;
+                        case 'images':
+                        case 'files':
+                            await this.renderFiles();
+                            break;
+                        case 'profile':
+                            await this.renderProfile();
+                            break;
+                        case 'security':
+                            await this.renderSecurity();
+                            break;
+                        case 'connections':
+                            await this.renderConnections();
+                            break;
+                        case 'settings':
+                            await this.renderSettings();
+                            break;
+                        case 'privacy':
+                            await this.renderPrivacy();
+                            break;
+                        case 'litterbox':
+                            await this.renderLitterBox();
+                            break;
+                        case 'tos':
+                            await this.renderToS();
+                            break;
+                        case 'api':
+                            await this.renderAPI();
+                            break;
+                        default:
+                            await this.renderOverview();
+                    }
+                    
+                    // Ensure contentArea still exists and has content
+                    const area = document.getElementById('contentArea');
+                    if (area && area.innerHTML.trim()) {
+                        area.style.opacity = '1';
+                    } else {
+                        console.error('❌ Content not rendered properly');
+                    }
+                } catch (renderError) {
+                    console.error('❌ Render error:', renderError);
+                    const area = document.getElementById('contentArea');
+                    if (area) {
+                        area.innerHTML = `<div class="empty-state"><h3>Error loading page</h3><p>${renderError.message}</p></div>`;
+                        area.style.opacity = '1';
+                    }
                 }
-                
-                contentArea.style.opacity = '1';
             }, 150);
         } catch (error) {
-            console.error('Error loading page:', error);
-            contentArea.innerHTML = `<div class="empty-state"><h3>Error loading page</h3><p>${error.message}</p></div>`;
+            console.error('❌ Error loading page:', error);
+            if (contentArea) {
+                contentArea.innerHTML = `<div class="empty-state"><h3>Error loading page</h3><p>${error.message}</p></div>`;
+                contentArea.style.opacity = '1';
+            }
         }
     }
 
