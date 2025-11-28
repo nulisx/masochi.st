@@ -7,20 +7,9 @@ class Dashboard {
 
     async init() {
         try {
-            // Check if user data is in sessionStorage (set by loading page)
-            const storedUser = sessionStorage.getItem('user');
+            console.log('📊 Dashboard initializing...');
             
-            if (storedUser) {
-                this.user = JSON.parse(storedUser);
-                if (this.user && this.user.id) {
-                    console.log('✅ User loaded from session:', this.user.username);
-                    this.setupUI();
-                    this.loadPage('overview');
-                    return;
-                }
-            }
-            
-            // Fallback: Try to fetch from API if session storage is empty
+            // Try to fetch from API - if this fails, user is not authenticated
             const response = await fetch('/api/auth/me', { credentials: 'include' });
             
             if (response.ok) {
@@ -28,8 +17,9 @@ class Dashboard {
                 this.user = data.user || data;
                 
                 if (this.user && this.user.id) {
+                    console.log('✅ User loaded from /api/auth/me:', this.user.username);
                     sessionStorage.setItem('user', JSON.stringify(this.user));
-                    console.log('✅ User authenticated:', this.user.username);
+                    localStorage.setItem('user', JSON.stringify(this.user));
                     this.setupUI();
                     this.loadPage('overview');
                     return;
@@ -37,10 +27,10 @@ class Dashboard {
             }
             
             // If we get here, user is not authenticated
-            console.error('User not authenticated');
+            console.error('❌ User not authenticated - redirecting to /login');
             window.location.href = '/login';
         } catch (error) {
-            console.error('Failed to load user:', error);
+            console.error('❌ Dashboard init failed:', error);
             window.location.href = '/login';
         }
     }

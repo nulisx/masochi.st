@@ -130,10 +130,14 @@ app.post(
 
 app.post('/api/auth/login', async (req, res) => {
   const { username, identifier, password } = req.body;
+  console.log('🔐 Login attempt for:', username || identifier);
   try {
     const input = (username || identifier || '').toLowerCase().trim();
 
-    if (!input || !password) return res.status(400).json({ error: 'Missing credentials' });
+    if (!input || !password) {
+      console.log('❌ Missing credentials');
+      return res.status(400).json({ error: 'Missing credentials' });
+    }
 
     let user = await getQuery('users', 'username', input);
 
@@ -142,12 +146,19 @@ app.post('/api/auth/login', async (req, res) => {
       user = await getQuery('users', 'email', emailHash);
     }
 
-    if (!user) return res.status(401).json({ error: 'Invalid credentials' });
+    if (!user) {
+      console.log('❌ User not found:', input);
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
 
     const valid = await bcrypt.compare(password, user.password_hash);
-    if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
+    if (!valid) {
+      console.log('❌ Password mismatch for:', input);
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
 
     const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
+    console.log('✅ Login successful for:', user.username, '| Token:', token.substring(0, 20) + '...');
 
     res.cookie('token', token, {
       httpOnly: true,
@@ -156,9 +167,10 @@ app.post('/api/auth/login', async (req, res) => {
       path: '/',
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
+    console.log('✅ Cookie set for:', user.username);
     res.status(200).json({ message: 'Login successful', user: { id: user.id, username: user.username, role: user.role } });
   } catch (err) {
-    console.error('Login error:', err);
+    console.error('❌ Login error:', err);
     if (err.message && err.message.includes('Access denied')) {
       return res.status(500).json({ error: 'Database access denied. Check DB credentials and allowed hosts.' });
     }
@@ -167,11 +179,17 @@ app.post('/api/auth/login', async (req, res) => {
 });
 
 app.get('/api/auth/me', authenticateToken, async (req, res) => {
+  console.log('🔍 /api/auth/me called | User ID:', req.user?.id, '| Username:', req.user?.username);
   try {
     const user = await getQuery('users', 'id', req.user.id);
-    if (!user) return res.status(404).json({ error: 'User not found' });
+    if (!user) {
+      console.log('❌ User not found in DB for ID:', req.user.id);
+      return res.status(404).json({ error: 'User not found' });
+    }
     
+    console.log('✅ User found:', user.username);
     const profile = await getQuery('profiles', 'user_id', req.user.id);
+    console.log('✅ Profile data retrieved');
     
     res.status(200).json({ 
       user: { 
@@ -187,7 +205,7 @@ app.get('/api/auth/me', authenticateToken, async (req, res) => {
       } 
     });
   } catch (err) {
-    console.error('Get user error:', err);
+    console.error('❌ Get user error:', err);
     res.status(500).json({ error: 'Failed to retrieve user information' });
   }
 });
@@ -579,7 +597,8 @@ app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'login', 'inde
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'register', 'index.html')));
 app.get('/login/reset', (req, res) => res.sendFile(path.join(__dirname, 'login', 'reset', 'index.html')));
 app.get('/login/loading', (req, res) => res.sendFile(path.join(__dirname, 'login', 'loading.html')));
-app.get('/dash', (req, res) => {
+app.get('/dash', authenticateToken, (req, res) => {
+  console.log('✅ /dash accessed by authenticated user:', req.user.username);
   res.sendFile(path.join(__dirname, 'dashboard', 'index.html'));
 });
 

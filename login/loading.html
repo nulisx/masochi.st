@@ -78,21 +78,35 @@
     <script>
         (async function() {
             try {
-                const response = await fetch('/api/auth/me', { credentials: 'include' });
+                console.log('🔄 Loading page: Checking authentication...');
+                const response = await fetch('/api/auth/me', { 
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                console.log('📡 /api/auth/me response status:', response.status);
+                
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('✅ Auth successful! User:', data.user.username);
                     document.getElementById('username').textContent = '@' + data.user.username;
                     sessionStorage.setItem('user', JSON.stringify(data.user));
-                    // Redirect immediately, don't wait
+                    console.log('✅ User stored in sessionStorage');
+                    
                     setTimeout(() => {
+                        console.log('🔄 Redirecting to /dash');
                         window.location.replace('/dash');
                     }, 800);
                 } else {
-                    console.error('Auth failed:', response.status);
+                    const errorData = await response.json().catch(() => ({}));
+                    console.error('❌ Auth failed with status:', response.status, 'Error:', errorData.error);
                     window.location.replace('/login');
                 }
             } catch (error) {
-                console.error('Auth check failed:', error);
+                console.error('❌ Auth check failed:', error);
                 window.location.replace('/login');
             }
         })();
