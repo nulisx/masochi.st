@@ -749,7 +749,7 @@ class Dashboard {
                             <span class="item-label">Two-Factor Authentication</span>
                             <span class="item-value">Disabled</span>
                         </div>
-                        <button class="btn btn-secondary" id="enable2FABtn" style="padding: 6px 14px; font-size: 12px; color: #a855f7; border: none; background: transparent; cursor: pointer;">Enable</button>
+                        <button id="enable2FABtn" style="background: none; border: none; color: #a855f7; font-size: 12px; cursor: pointer; font-weight: 500;">Enable</button>
                     </div>
                     
                     <div class="card-item">
@@ -757,7 +757,7 @@ class Dashboard {
                             <span class="item-label">Active Sessions</span>
                             <span class="item-value">0 active</span>
                         </div>
-                        <button class="btn btn-secondary" style="padding: 6px 14px; font-size: 12px; color: #a855f7; border: none; background: transparent; cursor: pointer;">Manage</button>
+                        <button style="background: none; border: none; color: #a855f7; font-size: 12px; cursor: pointer; font-weight: 500;">Manage</button>
                     </div>
                     
                     <div class="card-item">
@@ -765,7 +765,7 @@ class Dashboard {
                             <span class="item-label">Password</span>
                             <span class="item-value">Last changed ${passwordLastChanged}</span>
                         </div>
-                        <button class="btn btn-secondary" id="changePasswordBtn" style="padding: 6px 14px; font-size: 12px; color: #a855f7; border: none; background: transparent; cursor: pointer;">Change</button>
+                        <button id="changePasswordBtn" style="background: none; border: none; color: #a855f7; font-size: 12px; cursor: pointer; font-weight: 500;">Change</button>
                     </div>
                 </div>
                 
