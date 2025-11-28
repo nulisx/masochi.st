@@ -106,9 +106,31 @@ class Dashboard {
         }
 
         this.setupSidebar();
+        this.setupHeaderDropdown();
         this.setupSearchBar();
         this.setupModalStyles();
         console.log('✅ UI setup complete');
+    }
+
+    setupHeaderDropdown() {
+        const headerDropdownBtn = document.getElementById('headerDropdownBtn');
+        const headerDropdownMenu = document.getElementById('headerDropdownMenu');
+        
+        if (headerDropdownBtn && headerDropdownMenu) {
+            headerDropdownBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isOpen = headerDropdownMenu.style.display === 'block';
+                headerDropdownMenu.style.display = isOpen ? 'none' : 'block';
+                headerDropdownBtn.textContent = isOpen ? '˅' : '^';
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.header-user')) {
+                    headerDropdownMenu.style.display = 'none';
+                    headerDropdownBtn.textContent = '˅';
+                }
+            });
+        }
     }
 
     setupSidebar() {

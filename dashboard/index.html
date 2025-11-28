@@ -171,12 +171,18 @@
                             <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                         </svg>
                     </button>
-                    <div class="header-user" style="display: flex; align-items: center; gap: 12px;">
+                    <div class="header-user" style="display: flex; align-items: center; gap: 12px; position: relative;">
                         <div style="text-align: right;">
                             <div class="header-username" id="headerUserName" style="font-size: 13px; color: var(--accent-secondary);">Loading...</div>
                             <div id="roleDisplay" style="font-size: 11px; color: var(--text-muted); font-family: monospace;">root@user.glowi.es</div>
                         </div>
                         <img src="/static/cdn/avatar.png" alt="User" class="header-avatar" id="headerAvatar">
+                        <button id="headerDropdownBtn" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 14px; padding: 4px 6px; transition: color 0.2s;">˅</button>
+                        <div id="headerDropdownMenu" style="position: absolute; bottom: -120px; right: 0; width: 140px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 4px 0; display: none; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
+                            <a href="#" onclick="dashboard.loadPage('profile'); document.getElementById('headerDropdownMenu').style.display='none'; document.getElementById('headerDropdownBtn').textContent='˅';" style="display: block; width: 100%; padding: 10px 12px; color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: all 0.2s ease; border: none; background: transparent; cursor: pointer;">Profile</a>
+                            <a href="#" onclick="dashboard.loadPage('settings'); document.getElementById('headerDropdownMenu').style.display='none'; document.getElementById('headerDropdownBtn').textContent='˅';" style="display: block; width: 100%; padding: 10px 12px; color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: all 0.2s ease; border: none; background: transparent; cursor: pointer;">Settings</a>
+                            <a href="#" onclick="fetch('/api/auth/logout', {method:'POST', credentials:'include'}).then(() => window.location.replace('/login'));" style="display: block; width: 100%; padding: 10px 12px; color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: all 0.2s ease; border: none; background: transparent; cursor: pointer;">Logout</a>
+                        </div>
                     </div>
                 </div>
             </header>
