@@ -149,11 +149,10 @@ app.post('/api/auth/login', async (req, res) => {
 
     const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
 
-    const isProduction = process.env.NODE_ENV === 'production';
     res.cookie('token', token, {
       httpOnly: true,
-      secure: isProduction,
-      sameSite: 'lax',
+      secure: false,
+      sameSite: 'Lax',
       path: '/',
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
@@ -190,7 +189,8 @@ app.post('/api/auth/logout', authenticateToken, async (req, res) => {
   res.clearCookie('token', {
     httpOnly: true,
     path: '/',
-    sameSite: 'lax'
+    sameSite: 'Lax',
+    secure: false
   });
   res.status(200).json({ message: 'Logged out successfully' });
 });
