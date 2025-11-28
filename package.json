@@ -10,7 +10,6 @@
     "build:css": "sass static/scss/dash/main.scss static/css/dash/main.css --style=expanded",
     "watch:css": "sass --watch static/scss/dash/main.scss:static/css/dash/main.css",
     "seed-owner": "node lib/seed-owner.js",
-    "backfill:profiles": "node scripts/backfill-profiles.js",
     "test": "jest --runInBand --detectOpenHandles"
   },
   "keywords": [
