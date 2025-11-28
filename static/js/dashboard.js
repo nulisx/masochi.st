@@ -73,17 +73,36 @@ class Dashboard {
         }
         window.__uiSetup = true;
         
-        const userDisplay = document.getElementById('userDisplay');
-        if (userDisplay) {
-            userDisplay.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <img id="headerAvatar" src="${this.user?.avatar_url || '/static/cdn/avatar.png'}" alt="Avatar" style="width: 32px; height: 32px; border-radius: 8px;">
-                    <div>
-                        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 2px;">${this.user?.role || 'member'}@${this.user?.username}.glowi.es</p>
-                        <h3 style="font-size: 16px; margin: 0; color: var(--text-primary);">${this.user?.display_name || this.user?.username}</h3>
-                    </div>
-                </div>
-            `;
+        // Update header elements
+        const headerUserName = document.getElementById('headerUserName');
+        if (headerUserName) {
+            headerUserName.textContent = this.user?.display_name || this.user?.username || 'User';
+        }
+        
+        const roleDisplay = document.getElementById('roleDisplay');
+        if (roleDisplay) {
+            roleDisplay.textContent = `${this.user?.role || 'user'}@${this.user?.username}.glowi.es`;
+        }
+        
+        const headerAvatar = document.getElementById('headerAvatar');
+        if (headerAvatar) {
+            headerAvatar.src = this.user?.avatar_url || '/static/cdn/avatar.png';
+        }
+        
+        // Update sidebar user profile
+        const userName = document.getElementById('userName');
+        if (userName) {
+            userName.textContent = this.user?.display_name || this.user?.username || 'User';
+        }
+        
+        const userHandle = document.getElementById('userHandle');
+        if (userHandle) {
+            userHandle.textContent = `@${this.user?.username}`;
+        }
+        
+        const userAvatar = document.getElementById('userAvatar');
+        if (userAvatar) {
+            userAvatar.src = this.user?.avatar_url || '/static/cdn/avatar.png';
         }
 
         this.setupSidebar();
