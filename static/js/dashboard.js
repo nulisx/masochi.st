@@ -274,27 +274,17 @@ class Dashboard {
     }
 
     async renderOverview() {
-        const profile = await this.fetchProfile();
-        const links = await this.fetchLinks();
-        const files = await this.fetchFiles();
+        // Fetch all data in parallel
+        const [profile, links, files, statsRes, updatesRes] = await Promise.all([
+            this.fetchProfile(),
+            this.fetchLinks(),
+            this.fetchFiles(),
+            fetch('/api/profile/stats', { credentials: 'include' }).then(r => r.ok ? r.json() : { uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' }).catch(() => ({ uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' })),
+            fetch('/api/updates', { credentials: 'include' }).then(r => r.ok ? r.json() : { updates: [] }).catch(() => ({ updates: [] }))
+        ]);
         
-        let stats = { uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' };
-        try {
-            const statsRes = await fetch('/api/profile/stats', { credentials: 'include' });
-            if (statsRes.ok) {
-                stats = await statsRes.json();
-            }
-        } catch (e) {}
-
-        let updates = [];
-        try {
-            const updatesRes = await fetch('/api/updates', { credentials: 'include' });
-            if (updatesRes.ok) {
-                const data = await updatesRes.json();
-                updates = data.updates || [];
-                this.updates = updates;
-            }
-        } catch (e) {}
+        let stats = statsRes || { uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' };
+        let updates = updatesRes?.updates || [];
         
         const storagePercent = Math.min((stats.storage_used / stats.storage_limit) * 100, 100).toFixed(1);
 

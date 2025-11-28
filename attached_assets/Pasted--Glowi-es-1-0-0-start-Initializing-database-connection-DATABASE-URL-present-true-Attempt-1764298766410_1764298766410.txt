@@ -1,0 +1,146 @@
+
+> Glowi.es@1.0.0 start
+🔍 Initializing database connection...
+DATABASE_URL present: true
+ℹ️ Attempting PostgreSQL connection to ep-morning-shadow-adw0byzy-pooler.c-2.us-east-1.aws.neon.tech
+✅ PostgreSQL connection pool initialized successfully
+✅ JWT secret loaded from environment variable
+🚀 Server running on http://0.0.0.0:5000
+🔐 Login attempt for: r
+✅ Login successful for: r | Token: eyJhbGciOiJIUzI1NiIs...
+✅ Cookie set for: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔍 /api/auth/me called | User ID: 1 | Username: r
+✅ User found: r
+✅ Profile data retrieved
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+✅ /dash accessed by authenticated user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔍 /api/auth/me called | User ID: 1 | Username: r
+✅ User found: r
+✅ Profile data retrieved
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+✅ /dash accessed by authenticated user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔍 /api/auth/me called | User ID: 1 | Username: r
+✅ User found: r
+✅ Profile data retrieved
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+✅ /dash accessed by authenticated user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔍 /api/auth/me called | User ID: 1 | Username: r
+✅ User found: r
+✅ Profile data retrieved
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
+🔐 authenticateToken middleware | Cookies: [ 'token' ] | Token present: true
+✅ Token verified for user: r
