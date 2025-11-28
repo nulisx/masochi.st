@@ -9,28 +9,46 @@ class Dashboard {
         try {
             console.log('📊 Dashboard initializing...');
             
+            // Prevent redirect loop - only redirect if we've already tried
+            if (window.__dashboardInitAttempted) {
+                console.error('❌ Dashboard init failed twice - not retrying');
+                return;
+            }
+            window.__dashboardInitAttempted = true;
+            
             // Try to fetch from API - if this fails, user is not authenticated
-            const response = await fetch('/api/auth/me', { credentials: 'include' });
+            const response = await fetch('/api/auth/me', { 
+                method: 'GET',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            
+            console.log('📡 /api/auth/me returned status:', response.status);
             
             if (response.ok) {
                 const data = await response.json();
                 this.user = data.user || data;
                 
                 if (this.user && this.user.id) {
-                    console.log('✅ User loaded from /api/auth/me:', this.user.username);
+                    console.log('✅ User authenticated:', this.user.username);
                     sessionStorage.setItem('user', JSON.stringify(this.user));
                     localStorage.setItem('user', JSON.stringify(this.user));
                     this.setupUI();
                     this.loadPage('overview');
                     return;
+                } else {
+                    console.error('❌ Invalid user data from /api/auth/me');
                 }
+            } else {
+                const errorData = await response.json().catch(() => ({}));
+                console.error('❌ /api/auth/me failed with status', response.status, ':', errorData.error || errorData);
             }
             
             // If we get here, user is not authenticated
-            console.error('❌ User not authenticated - redirecting to /login');
+            console.error('❌ Redirecting to /login');
             window.location.href = '/login';
         } catch (error) {
-            console.error('❌ Dashboard init failed:', error);
+            console.error('❌ Dashboard init caught exception:', error);
             window.location.href = '/login';
         }
     }

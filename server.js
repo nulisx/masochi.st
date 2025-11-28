@@ -602,7 +602,8 @@ app.get('/dash', authenticateToken, (req, res) => {
   res.sendFile(path.join(__dirname, 'dashboard', 'index.html'));
 });
 
-app.get('/dashboard', (req, res) => {
+app.get('/dashboard', authenticateToken, (req, res) => {
+  console.log('✅ /dashboard accessed by authenticated user:', req.user.username);
   res.sendFile(path.join(__dirname, 'dashboard', 'index.html'));
 });
 app.get('/ic', (req, res) => res.sendFile(path.join(__dirname, 'ic', 'index.html')));
