@@ -749,7 +749,7 @@ class Dashboard {
                             <span class="item-label">Two-Factor Authentication</span>
                             <span class="item-value">Disabled</span>
                         </div>
-                        <button class="btn btn-primary" id="enable2FABtn" style="padding: 6px 14px; font-size: 12px; color: #3b82f6;">Enable</button>
+                        <button class="btn btn-primary" id="enable2FABtn" style="padding: 6px 14px; font-size: 12px; color: #a855f7;">Enable</button>
                     </div>
                     
                     <div class="card-item">
@@ -765,7 +765,7 @@ class Dashboard {
                             <span class="item-label">Password</span>
                             <span class="item-value">Last changed ${passwordLastChanged}</span>
                         </div>
-                        <button class="btn btn-secondary" id="changePasswordBtn" style="padding: 6px 14px; font-size: 12px; color: #3b82f6;">Change</button>
+                        <button class="btn btn-secondary" id="changePasswordBtn" style="padding: 6px 14px; font-size: 12px; color: #a855f7;">Change</button>
                     </div>
                 </div>
                 
@@ -1862,9 +1862,10 @@ class Dashboard {
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div class="card-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                <line x1="10" y1="11" x2="10" y2="17"></line>
+                                <line x1="14" y1="11" x2="14" y2="17"></line>
                             </svg>
                         </div>
                         <div>
