@@ -737,7 +737,22 @@ class Dashboard {
 
     async renderSecurity() {
         const contentArea = document.getElementById('contentArea');
-        const passwordLastChanged = this.user?.password_changed_at ? new Date(this.user.password_changed_at).toLocaleDateString() : 'Recently';
+        
+        // Format password last changed time
+        let passwordText = 'Last changed recently';
+        if (this.user?.password_changed_at) {
+            const now = new Date();
+            const changed = new Date(this.user.password_changed_at);
+            const diffMs = now - changed;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 60) passwordText = `Last changed ${diffMins}m ago`;
+            else if (diffHours < 24) passwordText = `Last changed ${diffHours}h ago`;
+            else if (diffDays < 7) passwordText = `Last changed ${diffDays}d ago`;
+            else passwordText = `Last changed ${changed.toLocaleDateString()}`;
+        }
         
         contentArea.innerHTML = `
             <div class="page-header">
@@ -757,7 +772,7 @@ class Dashboard {
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 1c7 4 11 6 11 11v6c0 1-4 2-11 2s-11-1-11-2v-6c0-5 4-7 11-11z" fill="rgba(168, 85, 247, 0.3)"></path>
+                                <path d="M12 1l10 6v6c0 6-10 8-10 8s-10-2-10-8V7l10-6z" fill="rgba(168, 85, 247, 0.25)"></path>
                                 <path d="M10 12l2 2 4-4" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
                             </svg>
                         </div>
@@ -772,7 +787,7 @@ class Dashboard {
                             <span class="item-label">Two-Factor Authentication</span>
                             <span class="item-value">Disabled</span>
                         </div>
-                        <button id="enable2FABtn" class="security-btn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 13px; cursor: pointer; font-weight: 500; padding: 8px 16px; border-radius: 8px; transition: all 0.2s ease;">Enable</button>
+                        <button id="enable2FABtn" class="security-btn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 12px; cursor: pointer; font-weight: 500; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease;">Enable</button>
                     </div>
                     
                     <div class="card-item">
@@ -780,15 +795,15 @@ class Dashboard {
                             <span class="item-label">Active Sessions</span>
                             <span class="item-value">0 active</span>
                         </div>
-                        <button class="security-btn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 13px; cursor: pointer; font-weight: 500; padding: 8px 16px; border-radius: 8px; transition: all 0.2s ease;">Manage</button>
+                        <button class="security-btn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 12px; cursor: pointer; font-weight: 500; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease;">Manage</button>
                     </div>
                     
                     <div class="card-item">
                         <div class="item-info">
                             <span class="item-label">Password</span>
-                            <span class="item-value">${passwordLastChanged}</span>
+                            <span class="item-value">${passwordText}</span>
                         </div>
-                        <button id="changePasswordBtn" class="security-btn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 13px; cursor: pointer; font-weight: 500; padding: 8px 16px; border-radius: 8px; transition: all 0.2s ease;">Change</button>
+                        <button id="changePasswordBtn" class="security-btn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 12px; cursor: pointer; font-weight: 500; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease;">Change</button>
                     </div>
                 </div>
                 
@@ -843,9 +858,9 @@ class Dashboard {
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 1l10 6v6c0 6-10 8-10 8s-10-2-10-8V7l10-6z" fill="rgba(168, 85, 247, 0.2)" stroke="#a855f7"></path>
-                                <rect x="13" y="13" width="5" height="6" rx="1" fill="rgba(168, 85, 247, 0.3)" stroke="#a855f7" stroke-width="1"></rect>
-                                <circle cx="15.5" cy="17" r="1" fill="#a855f7"></circle>
+                                <path d="M12 1l10 6v6c0 6-10 8-10 8s-10-2-10-8V7l10-6z" fill="rgba(168, 85, 247, 0.25)"></path>
+                                <rect x="14" y="13" width="4" height="5" rx="1" fill="none" stroke="#a855f7" stroke-width="1"></rect>
+                                <circle cx="16" cy="17" r="1" fill="#a855f7"></circle>
                             </svg>
                         </div>
                         <div>
@@ -861,8 +876,7 @@ class Dashboard {
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="9" fill="rgba(168, 85, 247, 0.1)"></circle>
-                                <path d="M12 6v6l4 2" stroke="#a855f7" fill="none"></path>
-                                <circle cx="12" cy="12" r="1" fill="#a855f7"></circle>
+                                <polyline points="12 6 12 12 15 15"></polyline>
                             </svg>
                         </div>
                         <div>
@@ -877,8 +891,8 @@ class Dashboard {
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 9a3 3 0 0 0-3-3h-2c-1.1 0-2 .9-2 2v2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" fill="rgba(168, 85, 247, 0.1)"></path>
-                                <path d="M21 9a3 3 0 0 0-3-3h-2c-1.1 0-2 .9-2 2v2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" fill="none"></path>
+                                <path d="M21 8a3 3 0 0 0-3-3h-2c-1.1 0-2 .9-2 2v2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" fill="rgba(168, 85, 247, 0.1)"></path>
+                                <path d="M21 8a3 3 0 0 0-3-3h-2c-1.1 0-2 .9-2 2v2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" stroke="#a855f7"></path>
                                 <circle cx="14" cy="15" r="1.5" fill="#a855f7"></circle>
                             </svg>
                         </div>
