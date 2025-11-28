@@ -1,5 +1,3 @@
-Good work so far, but this still isn’t exactly what I wanted — the site does not match the image I uploaded (izZ9i.png). I want the interface to match that image **exactly**, except in purple instead of blue, but the rest still needs to be fixed.
-
 If you discover the default owner account isn't working, here are the credentials to verify and restore access with immediately:
 
 * **Username:** `r` (username/email lookups are case-insensitive/doesnt matter for capitalism which means only password matters for capitalism)
