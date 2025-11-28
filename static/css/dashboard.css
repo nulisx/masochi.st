@@ -478,14 +478,15 @@ body {
 }
 
 .card-icon {
-  width: 44px;
-  height: 44px;
+  width: 52px;
+  height: 52px;
   background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary));
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
+  flex-shrink: 0;
 }
 
 .card-icon.success {
