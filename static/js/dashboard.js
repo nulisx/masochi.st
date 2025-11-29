@@ -829,8 +829,11 @@ class Dashboard {
                     </div>
                     
                     <div style="position: absolute; bottom: -30px; right: -30px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center;">
-                        <svg width="120" height="120" viewBox="0 0 24 24" style="opacity: 0.08; fill: #a855f7; transform: rotate(-25deg) scaleX(-1);" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L4 7V12C4 18 12 22 12 22S20 18 20 12V7L12 2Z" fill="#a855f7"/>
+                        <svg width="120" height="120" viewBox="0 0 24 24" style="opacity: 0.08; fill: #a855f7; transform: rotate(25deg);" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L4 7V12C4 18 12 22 12 22S20 18 20 12V7L12 2Z" fill="#a855f7"/>
+                                <line x1="12" y1="7" x2="12" y2="20" stroke="#0f0f11" stroke-width="1.2" stroke-linecap="round"/>
+                                <line x1="6" y1="13" x2="18" y2="13" stroke="#0f0f11" stroke-width="1.2" stroke-linecap="round"/>
+                            </svg>
                         </svg>
                     </div>
                 </div>
@@ -880,7 +883,7 @@ class Dashboard {
                     </div>
                     
                     <div style="position: absolute; bottom: -30px; right: -30px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center;">
-                        <svg width="120" height="120" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7; transform: rotate(-25deg) scaleX(-1);" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.5">
+                        <svg width="120" height="120" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7; transform: rotate(25deg);" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.5">
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                             <circle cx="12" cy="12" r="3"></circle>
                         </svg>
@@ -893,7 +896,7 @@ class Dashboard {
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 1l10 6v6c0 6-10 8-10 8s-10-2-10-8V7l10-6z" fill="rgba(168, 85, 247, 0.25)"></path>
+                                <path d="M10 21L7.18762 18.9912C4.55966 17.1141 3 14.0834 3 10.8538L3 5.75432C3 5.30784 3.29598 4.91546 3.72528 4.7928L9.72528 3.07852C9.90483 3.02721 10.0952 3.02721 10.2747 3.07852L16.2747 4.7928C16.704 4.91546 17 5.30784 17 5.75432V7.50002M19 15V13C19 11.8955 18.1046 11 17 11C15.8954 11 15 11.8955 15 13V15M19 15H15M19 15C20.1046 15 21 15.8955 21 17V19C21 20.1046 20.1046 21 19 21H15C13.8954 21 13 20.1046 13 19V17C13 15.8955 13.8954 15 15 15" stroke="rgba(168, 85, 247, 0.25)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 <rect x="13" y="12" width="6" height="6" rx="1" fill="none" stroke="#a855f7" stroke-width="1.2"></rect>
                                 <path d="M16 12V9a1 1 0 0 0-2 0" stroke="#a855f7" stroke-width="1.2"></path>
                             </svg>
@@ -905,8 +908,8 @@ class Dashboard {
                     </div>
                     <span class="badge success">● Protected</span>
                     <div style="position: absolute; bottom: -30px; right: -30px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center;">
-                        <svg width="120" height="120" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7; transform: rotate(-25deg) scaleX(-1);" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.5">
-                            <path d="M12 1l10 6v6c0 6-10 8-10 8s-10-2-10-8V7l10-6z"></path>
+                        <svg width="120" height="120" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7; transform: rotate(25deg);" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.5">
+                            <path d="M10 21L7.18762 18.9912C4.55966 17.1141 3 14.0834 3 10.8538L3 5.75432C3 5.30784 3.29598 4.91546 3.72528 4.7928L9.72528 3.07852C9.90483 3.02721 10.0952 3.02721 10.2747 3.07852L16.2747 4.7928C16.704 4.91546 17 5.30784 17 5.75432V7.50002M19 15V13C19 11.8955 18.1046 11 17 11C15.8954 11 15 11.8955 15 13V15M19 15H15M19 15C20.1046 15 21 15.8955 21 17V19C21 20.1046 20.1046 21 19 21H15C13.8954 21 13 20.1046 13 19V17C13 15.8955 13.8954 15 15 15" stroke="rgba(168, 85, 247, 0.25)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <rect x="13" y="12" width="6" height="6" rx="1"></rect>
                             <path d="M16 12V9a1 1 0 0 0-2 0"></path>
                         </svg>
@@ -916,9 +919,13 @@ class Dashboard {
                 <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative; overflow: hidden;">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="9" fill="rgba(168, 85, 247, 0.1)"></circle>
-                                <polyline points="12 6 12 12 15 15"></polyline>
+                            <svg width="20" height="20" viewBox="0 0 15 15" fill="none" stroke="#a855f7" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                                d="M13.15 7.49998C13.15 4.66458 10.9402 1.84998 7.50002 1.84998C4.72167 1.84998 3.34849 3.9064 2.76335 5H4.5C4.77614 5 5 5.22386 5 5.5C5 5.77614 4.77614 6 4.5 6H1.5C1.22386 6 1 5.77614 1 5.5V2.5C1 2.22386 1.22386 2 1.5 2C1.77614 2 2 2.22386 2 2.5V4.31318C2.70453 3.07126 4.33406 0.849976 7.50002 0.849976C11.5628 0.849976 14.15 4.18537 14.15 7.49998C14.15 10.8146 11.5628 14.15 7.50002 14.15C5.55618 14.15 3.93778 13.3808 2.78548 12.2084C2.16852 11.5806 1.68668 10.839 1.35816 10.0407C1.25306 9.78536 1.37488 9.49315 1.63024 9.38806C1.8856 9.28296 2.17781 9.40478 2.2829 9.66014C2.56374 10.3425 2.97495 10.9745 3.4987 11.5074C4.47052 12.4963 5.83496 13.15 7.50002 13.15C10.9402 13.15 13.15 10.3354 13.15 7.49998ZM7.5 4.00001C7.77614 4.00001 8 4.22387 8 4.50001V7.29291L9.85355 9.14646C10.0488 9.34172 10.0488 9.65831 9.85355 9.85357C9.65829 10.0488 9.34171 10.0488 9.14645 9.85357L7.14645 7.85357C7.05268 7.7598 7 7.63262 7 7.50001V4.50001C7 4.22387 7.22386 4.00001 7.5 4.00001Z"
+                                fill="#a855f7"
+                                />
                             </svg>
                         </div>
                         <div>
@@ -938,9 +945,8 @@ class Dashboard {
                 <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative; overflow: hidden;">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="10" cy="13" r="3"></circle>
-                                <path d="M13 11l6-6m-6 6l-3-3m3 3v2c0 1 .5 2 2 2h6"></path>
+                            <svg width="20" height="20" viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg" fill="#a855f7">
+                                <path d="M328.261,271.758C146.977,271.758,0,418.697,0,599.981c0,181.283,146.977,328.261,328.261,328.261c161.72,0,296.083-116.959,323.206-270.903c0.306,0.017,0.605,0.064,0.912,0.076h126.386v182.46h139.538v-182.46h65.796v264.068h139.538V657.414H1200V517.878H647.095c-0.322,0.026-0.63,0.048-0.95,0.076C609.721,376.371,481.219,271.758,328.261,271.758L328.261,271.758z M328.261,423.611c97.415,0,176.37,78.955,176.37,176.37c0,97.414-78.955,176.407-176.37,176.407s-176.408-78.993-176.408-176.407C151.853,502.566,230.847,423.611,328.261,423.611L328.261,423.611z"/>
                             </svg>
                         </div>
                         <div>
@@ -950,9 +956,8 @@ class Dashboard {
                     </div>
                     <span class="badge warning">● Setup Required</span>
                     <div style="position: absolute; bottom: -30px; right: -30px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center;">
-                        <svg width="120" height="120" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7; transform: rotate(-25deg) scaleX(-1);" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.5">
-                            <circle cx="10" cy="13" r="4"></circle>
-                            <path d="M14 10l7-7m-7 7l-3.5-3.5m3.5 3.5v2.5c0 1.2.5 2.5 2 2.5h7"></path>
+                        <svg width="120" height="120" viewBox="0 0 1200 1200" style="opacity: 0.08; transform: rotate(-25deg) scaleX(-1);" xmlns="http://www.w3.org/2000/svg" fill="#a855f7">
+                            <path d="M328.261,271.758C146.977,271.758,0,418.697,0,599.981c0,181.283,146.977,328.261,328.261,328.261c161.72,0,296.083-116.959,323.206-270.903c0.306,0.017,0.605,0.064,0.912,0.076h126.386v182.46h139.538v-182.46h65.796v264.068h139.538V657.414H1200V517.878H647.095c-0.322,0.026-0.63,0.048-0.95,0.076C609.721,376.371,481.219,271.758,328.261,271.758L328.261,271.758z M328.261,423.611c97.415,0,176.37,78.955,176.37,176.37c0,97.414-78.955,176.407-176.37,176.407s-176.408-78.993-176.408-176.407C151.853,502.566,230.847,423.611,328.261,423.611L328.261,423.611z"/>
                         </svg>
                     </div>
                 </div>
