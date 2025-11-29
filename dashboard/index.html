@@ -136,7 +136,14 @@
                         <span class="user-name" id="userName">Loading...</span>
                         <span class="user-handle" id="userHandle">@...</span>
                     </div>
-                    <button class="sign-out-btn" onclick="fetch('/api/auth/logout', {method:'POST', credentials:'include'}).then(() => window.location.replace('/login'));" title="Sign Out">Sign Out</button>
+                    <button class="sign-out-btn" onclick="fetch('/api/auth/logout', {method:'POST', credentials:'include'}).then(() => window.location.replace('/login'));" title="Sign Out">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        Sign Out
+                    </button>
                 </div>
             </div>
         </aside>

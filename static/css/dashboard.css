@@ -200,10 +200,23 @@ body {
   padding: 0;
   transition: color 0.2s ease;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sign-out-btn svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 .sign-out-btn:hover {
   color: #a855f7;
+}
+
+.sign-out-btn:hover svg {
+  stroke: #a855f7;
 }
 
 .user-avatar {
