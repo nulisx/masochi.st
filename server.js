@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(verificationMiddleware);
 
-// Inject verification modal into HTML responses
+
 app.use((req, res, next) => {
   const originalSend = res.send;
   res.send = function(data) {
@@ -361,7 +361,7 @@ app.post(
   }
 );
 
-// Verification API endpoint
+
 app.post('/api/verify/browser', async (req, res) => {
   try {
     const fingerprint = req.body;
@@ -369,7 +369,7 @@ app.post('/api/verify/browser', async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'Strict',
-      maxAge: 86400000 // 24 hours
+      maxAge: 86400000 
     });
     res.json({ success: true, message: 'Browser verified' });
   } catch (err) {
@@ -401,7 +401,7 @@ app.get('/api/biolink/:username', async (req, res) => {
     const links = await allQuery('links', 'user_id', user.id);
     const connections = await allQuery('connections', 'user_id', user.id);
 
-    // Increment profile view count
+    
     try {
       const currentViews = profile?.view_count || 0;
       await runQuery(
@@ -647,7 +647,7 @@ app.get('/@:username', async (req, res) => {
             return res.status(404).sendFile(path.join(__dirname, '404.html'));
         }
         
-        // Increment profile view count
+        
         try {
             const profile = await getQuery('profiles', 'user_id', user.id);
             const currentViews = profile?.view_count || 0;
@@ -675,7 +675,7 @@ app.get('/file/:code', async (req, res) => {
 app.use((req, res) => res.status(404).sendFile(path.join(__dirname, '404.html')));
 
 if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
-  app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Server running on http://0.0.0.0:${PORT}`));
+  app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Server running on http:
 }
 
 export default app;

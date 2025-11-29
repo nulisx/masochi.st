@@ -142,7 +142,7 @@ router.post('/presign', authenticateToken, async (req, res) => {
       const endpoint = process.env.S3_ENDPOINT.replace(/\/$/, '');
       publicUrl = `${endpoint}/${bucket}/${key}`;
     } else {
-      publicUrl = `https://${bucket}.s3.${s3Region}.amazonaws.com/${key}`;
+      publicUrl = `https:
     }
 
     res.status(200).json({ signedUrl, method: 'PUT', publicUrl, key });

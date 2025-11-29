@@ -1,5 +1,5 @@
 (function() {
-  // Don't show on login/register/dashboard pages or if already verified
+  
   const currentPath = window.location.pathname;
   const shouldBypass = currentPath.startsWith('/login') || 
                        currentPath.startsWith('/register') || 
@@ -9,12 +9,12 @@
   
   if (shouldBypass) return;
   
-  // Check if already verified
+  
   if (document.cookie.includes('browser_verified=true')) {
     return;
   }
   
-  // Inject CSS if not already present
+  
   if (!document.querySelector('link[href="/static/css/verification-modal.css"]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -22,7 +22,7 @@
     document.head.appendChild(link);
   }
   
-  // Create advanced modal HTML
+  
   const modalHTML = `
     <div class="verification-overlay" id="verificationOverlay">
       <div class="verification-modal">
@@ -68,7 +68,7 @@
     </div>
   `;
   
-  // Wait for DOM to be ready
+  
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       document.body.insertAdjacentHTML('beforeend', modalHTML);
@@ -93,12 +93,12 @@
     
     if (!overlay) return;
     
-    // Disable scrolling and interactions
+    
     document.body.style.overflow = 'hidden';
     document.body.style.pointerEvents = 'none';
     overlay.style.pointerEvents = 'auto';
     
-    // Collect advanced browser fingerprint
+    
     const fingerprint = {
       userAgent: navigator.userAgent,
       language: navigator.language,
@@ -117,26 +117,26 @@
       screenOrientation: screen.orientation?.type || 'unknown'
     };
     
-    // Stage 1: Fingerprint collection
+    
     setTimeout(() => {
       progressStatus.textContent = 'Collecting browser fingerprint...';
       stage1.classList.add('completed');
       stage2.classList.add('active');
     }, 600);
     
-    // Stage 2: Security analysis
+    
     setTimeout(() => {
       progressStatus.textContent = 'Analyzing security headers...';
       stage2.classList.add('completed');
       stage3.classList.add('active');
     }, 1400);
     
-    // Stage 3: Final verification
+    
     setTimeout(() => {
       progressStatus.textContent = 'Finalizing verification...';
     }, 2200);
     
-    // Send verification request
+    
     fetch('/api/verify/browser', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -146,27 +146,27 @@
     .then(res => res.json())
     .catch(e => console.warn('Verification request failed:', e));
     
-    // Update countdown timer
+    
     let seconds = 3.2;
     const timerInterval = setInterval(() => {
       seconds = Math.max(0, seconds - 0.1);
       progressTime.textContent = seconds.toFixed(1) + 's';
     }, 100);
     
-    // Complete verification sequence at 3.2s
+    
     setTimeout(() => {
       clearInterval(timerInterval);
       stage3.classList.add('completed');
       
-      // Show success state
+      
       successContainer.style.opacity = '1';
       
-      // Hide loading elements
+      
       document.getElementById('verifyMessage').style.opacity = '0';
       document.getElementById('verificationStages').style.opacity = '0';
       document.querySelector('.verification-progress-container').style.opacity = '0';
       
-      // Redirect after showing success
+      
       setTimeout(() => {
         overlay.classList.add('exiting');
         setTimeout(() => {
