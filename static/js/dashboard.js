@@ -1944,11 +1944,26 @@ class Dashboard {
         
         const contentArea = document.getElementById('contentArea');
         
-        const platforms = [
-            { platform: 'twitter', label: 'Twitter', icon: '<path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 7-7 7-7"></path>', color: '#1DA1F2' },
-            { platform: 'github', label: 'GitHub', icon: '<path d="M16 22v-5.5c0-.833.023-1.5-.75-2.75.75-.75 2.1-2.128 2.1-5.25 0-1.5-.75-2.25-1.5-3 .15-.75.7-2.325-.15-3 0 0-1.289-.15-4.25 1.3-1.848-.45-3.604-.45-5.452 0-2.961-1.45-4.25-1.3-4.25-1.3-.85.675-.3 2.25-.15 3-.75.75-1.5 1.5-1.5 3 0 3.122 1.35 4.5 2.1 5.25-.773 1.25-.75 1.917-.75 2.75V22"></path>', color: '#333' },
-            { platform: 'instagram', label: 'Instagram', icon: '<rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path><circle cx="17.5" cy="6.5" r="1.5"></circle>', color: '#E4405F' },
-            { platform: 'discord', label: 'Discord', icon: '<path d="M20.317 4.492c-1.53-.742-3.17-1.297-4.885-1.6a.058.058 0 00-.064.028c-.211.375-.444.864-.607 1.25-1.645-.246-3.281-.246-4.897 0-.163-.386-.397-.875-.61-1.25a.059.059 0 00-.064-.027c-1.723.303-3.341.858-4.887 1.6a.058.058 0 00-.033.052c-.331 4.942.278 9.789 1.238 14.565a.06.06 0 00.052.035c1.646.477 3.24.91 4.817 1.22a.059.059 0 00.066-.03c.23-.383.452-.829.626-1.275a.06.06 0 00-.033-.088c-.749-.227-1.456-.481-2.14-.76a.06.06 0 00-.028-.11c.142-.11.285-.228.422-.35a.059.059 0 00.064-.008c4.489 2.139 9.36 2.139 13.815 0a.059.059 0 00.064.008c.137.122.28.24.422.35a.06.06 0 00-.028.11c-.684.279-1.39.533-2.142.76a.06.06 0 00-.033.089c.175.446.397.892.627 1.275a.059.059 0 00.066.03c1.578-.31 3.172-.743 4.819-1.22a.06.06 0 00.052-.035c1.02-4.963 1.629-9.776 1.17-14.565a.059.059 0 00-.032-.052z"></path>', color: '#5865F2' }
+        const allPlatforms = [
+            { name: 'Patreon', icon: '🎉' },
+            { name: 'YouTube', icon: '▶️' },
+            { name: 'Discord', icon: '🎮' },
+            { name: 'Slack', icon: '💬' },
+            { name: 'Spotify', icon: '🎵' },
+            { name: 'Instagram', icon: '📷' },
+            { name: 'Twitter', icon: '𝕏' },
+            { name: 'TikTok', icon: '🎬' },
+            { name: 'Telegram', icon: '✈️' },
+            { name: 'SoundCloud', icon: '☁️' },
+            { name: 'PayPal', icon: '💳' },
+            { name: 'GitHub', icon: '🐙' },
+            { name: 'Cash App', icon: '💰' },
+            { name: 'Mastodon', icon: '🐘' },
+            { name: 'Twitch', icon: '📺' },
+            { name: 'Kick', icon: '⚡' },
+            { name: 'LinkedIn', icon: '💼' },
+            { name: 'Email', icon: '📧' },
+            { name: 'Website', icon: '🌐' }
         ];
         
         contentArea.innerHTML = `
@@ -1964,61 +1979,43 @@ class Dashboard {
                 </div>
             </div>
             
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
-                <div class="card" style="padding: 20px; text-align: center;">
-                    <div style="font-size: 32px; font-weight: 600; color: var(--accent-primary); margin-bottom: 8px;">${connections.length}</div>
-                    <p style="color: var(--text-muted); font-size: 14px;">Connected Accounts</p>
-                </div>
-                <div class="card" style="padding: 20px; text-align: center;">
-                    <div style="font-size: 32px; font-weight: 600; color: #a855f7; margin-bottom: 8px;">${platforms.length - connections.length}</div>
-                    <p style="color: var(--text-muted); font-size: 14px;">Available to Connect</p>
+            <div class="card" style="margin-bottom: 24px; padding: 24px;">
+                <h2 style="margin-top: 0; margin-bottom: 16px; color: var(--text-primary);">New Socials</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 12px;">
+                    ${allPlatforms.map(plat => `
+                        <button class="social-icon-btn" style="padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-secondary); cursor: pointer; font-size: 28px; transition: all 0.2s; display: flex; align-items: center; justify-content: center;" title="${plat.name}" onclick="dashboard.showModal('Add ${plat.name}', '<form id=&quot;socialForm&quot;><div class=&quot;form-group&quot;><label class=&quot;form-label&quot;>${plat.name} URL</label><input type=&quot;url&quot; class=&quot;form-input&quot; id=&quot;socialUrl&quot; placeholder=&quot;https://...&quot; required></div></form>', () => { const url = document.getElementById(&quot;socialUrl&quot;).value; if(url.trim()) { dashboard.showToast(&quot;${plat.name} connected&quot;, &quot;success&quot;); dashboard.renderConnections(); return true; } return false; })">
+                            ${plat.icon}
+                        </button>
+                    `).join('')}
                 </div>
             </div>
             
-            <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
-                ${platforms.map(plat => {
-                    const conn = connections.find(c => c.platform === plat.platform);
-                    return `
-                        <div class="card" style="overflow: hidden; position: relative;">
-                            <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: ${plat.color};"></div>
-                            
-                            <div class="card-header" style="padding-bottom: 12px;">
-                                <div class="card-icon" style="background: rgba(${parseInt(plat.color.slice(1,3), 16)}, ${parseInt(plat.color.slice(3,5), 16)}, ${parseInt(plat.color.slice(5,7), 16)}, 0.15); color: ${plat.color};">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        ${plat.icon}
+            <div class="card" style="padding: 24px;">
+                <h2 style="margin-top: 0; margin-bottom: 16px; color: var(--text-primary);">Existing Socials</h2>
+                ${connections.length === 0 ? `
+                    <div style="text-align: center; padding: 32px 20px; color: var(--text-muted);">
+                        <p>No social connections yet. Add one above to get started.</p>
+                    </div>
+                ` : `
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        ${connections.map(conn => `
+                            <div style="display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; padding: 12px; background: var(--bg-secondary); border-radius: 6px; border: 1px solid var(--border-color);">
+                                <div style="min-width: 0;">
+                                    <h4 style="margin: 0 0 4px 0; color: var(--text-primary);">${conn.platform}</h4>
+                                    <p style="margin: 0; font-size: 12px; color: var(--text-muted); word-break: break-all;">${conn.username}</p>
+                                </div>
+                                <button class="btn btn-danger" style="padding: 6px 12px; font-size: 12px; white-space: nowrap;" onclick="dashboard.disconnectPlatform('${conn.platform}')">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px; display: inline;">
+                                        <polyline points="3 6 5 4 21 4 23 6 23 20a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V6z"></polyline>
+                                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                                        <line x1="14" y1="11" x2="14" y2="17"></line>
                                     </svg>
-                                </div>
-                                <div>
-                                    <h3 class="card-title">${plat.label}</h3>
-                                    <div style="display: flex; align-items: center; gap: 6px;">
-                                        <span style="width: 6px; height: 6px; border-radius: 50%; background: ${conn ? '#22c55e' : '#ef4444'};"></span>
-                                        <p class="card-description" style="margin: 0; font-size: 12px;">${conn ? '● Connected' : '● Not Connected'}</p>
-                                    </div>
-                                </div>
+                                    Delete
+                                </button>
                             </div>
-                            
-                            ${conn ? `
-                                <div style="padding: 16px; border-top: 1px solid var(--border-color);">
-                                    <div style="margin-bottom: 12px;">
-                                        <label class="form-label" style="font-size: 12px;">Username</label>
-                                        <div style="display: flex; gap: 8px; align-items: center;">
-                                            <input type="text" id="${plat.platform}_username" class="form-input" value="${conn.username}" style="flex: 1;">
-                                        </div>
-                                    </div>
-                                    <div style="display: flex; gap: 8px;">
-                                        <button onclick="dashboard.updateConnection('${plat.platform}', '${conn.id}')" class="btn btn-primary" style="flex: 1; padding: 8px; font-size: 12px;">Save</button>
-                                        <button onclick="dashboard.disconnectPlatform('${plat.platform}')" class="btn btn-danger" style="flex: 1; padding: 8px; font-size: 12px;">Disconnect</button>
-                                    </div>
-                                </div>
-                            ` : `
-                                <div style="padding: 16px; border-top: 1px solid var(--border-color);">
-                                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Connect your ${plat.label} account to show on your bio profile.</p>
-                                    <button class="btn btn-primary" style="width: 100%; padding: 8px; font-size: 12px;">Connect ${plat.label}</button>
-                                </div>
-                            `}
-                        </div>
-                    `;
-                }).join('')}
+                        `).join('')}
+                    </div>
+                `}
             </div>
         `;
     }
