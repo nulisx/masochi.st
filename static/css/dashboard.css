@@ -274,62 +274,6 @@ body {
   color: var(--text-muted);
 }
 
-.header-dropdown-btn {
-  background: none;
-  border: 1px dashed rgba(168, 85, 247, 0.4);
-  color: #a855f7;
-  cursor: pointer;
-  font-size: 14px;
-  padding: 6px 10px;
-  transition: all 0.2s ease;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.header-dropdown-btn:hover {
-  background: rgba(168, 85, 247, 0.08);
-  border-color: rgba(168, 85, 247, 0.6);
-}
-
-.header-dropdown-menu {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  width: 140px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 4px 0;
-  display: none;
-  z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-}
-
-.header-dropdown-menu.open {
-  display: block;
-}
-
-.header-dropdown-item {
-  display: block;
-  width: 100%;
-  padding: 10px 12px;
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: 13px;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  box-sizing: border-box;
-}
-
-.header-dropdown-item:hover {
-  background: rgba(255,255,255,0.05);
-  color: var(--text-primary);
-}
-
 .logout-btn {
   background: none;
   border: none;
