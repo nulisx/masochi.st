@@ -433,14 +433,20 @@
                 if (mimeType.startsWith('image/')) {
                     const url = URL.createObjectURL(blob);
                     previewContent.innerHTML = `<img src="${url}" style="max-width: 100%; max-height: 400px; border-radius: 8px;" alt="File preview">`;
+                } else if (mimeType.startsWith('video/')) {
+                    const url = URL.createObjectURL(blob);
+                    previewContent.innerHTML = `<video controls style="max-width: 100%; max-height: 400px; border-radius: 8px; background: var(--bg-primary);"><source src="${url}" type="${mimeType}">Your browser does not support the video tag.</video>`;
+                } else if (mimeType.startsWith('audio/')) {
+                    const url = URL.createObjectURL(blob);
+                    previewContent.innerHTML = `<audio controls style="width: 100%; border-radius: 8px;"><source src="${url}" type="${mimeType}">Your browser does not support the audio element.</audio>`;
                 } else if (mimeType === 'application/pdf') {
                     const url = URL.createObjectURL(blob);
                     previewContent.innerHTML = `<iframe src="${url}" style="width: 100%; height: 400px; border: none; border-radius: 8px;"></iframe>`;
                 } else if (mimeType.startsWith('text/') || mimeType.includes('json') || mimeType.includes('xml')) {
                     const text = await blob.text();
-                    previewContent.innerHTML = `<pre style="text-align: left; color: var(--text-muted); font-size: 12px; overflow-x: auto;">${escapeHtml(text.substring(0, 1000))}</pre>`;
+                    previewContent.innerHTML = `<pre style="text-align: left; color: var(--text-muted); font-size: 12px; overflow-x: auto; max-height: 400px;">${escapeHtml(text.substring(0, 2000))}</pre>`;
                 } else {
-                    previewContent.innerHTML = `<p style="color: var(--text-muted);">Cannot preview ${mimeType || 'this file type'}</p><p style="font-size: 12px; margin-top: 8px;">File size: ${formatSize(file.size)}</p>`;
+                    previewContent.innerHTML = `<p style="color: var(--text-muted);">📁 Cannot preview ${mimeType || 'this file type'}</p><p style="font-size: 12px; margin-top: 8px; color: var(--text-muted);">File size: ${formatSize(file.size)}</p>`;
                 }
                 
                 previewContainer.style.display = 'block';

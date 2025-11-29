@@ -1528,7 +1528,8 @@ class Dashboard {
     }
 
     async renderFiles() {
-        const files = await this.fetchFiles();
+        const allFiles = await this.fetchFiles();
+        const files = allFiles.filter(f => !f.is_temporary);
         
         const contentArea = document.getElementById('contentArea');
         contentArea.innerHTML = `
@@ -1850,8 +1851,8 @@ class Dashboard {
     }
 
     async renderLitterBox() {
-        const files = await this.fetchFiles();
-        const litterboxFiles = files.filter(f => f.is_temporary);
+        const allFiles = await this.fetchFiles();
+        const litterboxFiles = allFiles.filter(f => f.is_temporary);
         
         const contentArea = document.getElementById('contentArea');
         contentArea.innerHTML = `
