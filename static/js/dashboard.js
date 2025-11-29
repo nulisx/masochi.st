@@ -226,20 +226,17 @@ class Dashboard {
         if (!searchInput) return;
 
         const dashboardFeatures = [
-            { title: 'Bio Profile', description: 'Edit the profile of your biolink', page: 'profile', keywords: ['bio', 'profile', 'biolink'] },
-            { title: 'File Upload', description: 'Upload a file', page: 'files', keywords: ['upload', 'file', 'image'] },
-            { title: 'File Delete', description: 'Delete a file(s)', page: 'files', keywords: ['delete', 'file', 'remove'] },
-            { title: 'Biolinks', description: 'Manage your biolinks', page: 'biolinks', keywords: ['link', 'biolink', 'url'] },
-            { title: 'Images', description: 'Manage your images and media', page: 'files', keywords: ['image', 'media', 'photo'] },
-            { title: 'LitterBox', description: 'Temporary file hosting', page: 'litterbox', keywords: ['litterbox', 'temporary', 'file'] },
-            { title: 'Background Settings', description: 'Edit the profile of your biolink', page: 'profile', keywords: ['background', 'settings', 'theme'] },
-            { title: 'IMAP Settings', description: 'View the settings for our email service', page: 'settings', keywords: ['imap', 'email', 'settings'] },
-            { title: 'Security', description: 'Manage account security and privacy', page: 'security', keywords: ['security', 'password', '2fa', 'authentication'] },
-            { title: 'Connections', description: 'Manage connected accounts', page: 'connections', keywords: ['connection', 'account', 'linked'] },
-            { title: 'Privacy', description: 'Control your privacy settings', page: 'privacy', keywords: ['privacy', 'visibility', 'profile'] },
-            { title: 'Settings', description: 'Configure application settings', page: 'settings', keywords: ['setting', 'config', 'preference'] },
-            { title: 'Account Recovery', description: 'Set up recovery methods', page: 'security', keywords: ['recovery', 'backup', 'code'] },
-            { title: 'Two-Factor Authentication', description: 'Enable 2FA for extra security', page: 'security', keywords: ['2fa', 'authentication', 'factor'] }
+            { title: 'Dashboard', description: 'View your dashboard overview', page: 'overview', keywords: ['overview', 'dashboard', 'home'] },
+            { title: 'Profile', description: 'Manage your profile information', page: 'profile', keywords: ['profile', 'user', 'account'] },
+            { title: 'Biolinks', description: 'Create and manage your biolinks', page: 'biolinks', keywords: ['biolink', 'link', 'url'] },
+            { title: 'Images', description: 'Upload and manage your images', page: 'files', keywords: ['image', 'images', 'media', 'photo', 'upload'] },
+            { title: 'Files', description: 'Manage your hosted files', page: 'files', keywords: ['file', 'files', 'upload', 'download'] },
+            { title: 'LitterBox', description: 'Temporary file hosting service', page: 'litterbox', keywords: ['litterbox', 'temporary', 'file', 'trash'] },
+            { title: 'Security', description: 'Manage account security settings', page: 'security', keywords: ['security', 'password', '2fa', 'authentication', 'recovery'] },
+            { title: 'Connections', description: 'Connect external accounts', page: 'connections', keywords: ['connection', 'social', 'account', 'linked', 'integration'] },
+            { title: 'Settings', description: 'Configure your preferences', page: 'settings', keywords: ['setting', 'settings', 'config', 'preference', 'customize'] },
+            { title: 'Privacy', description: 'Control your privacy settings', page: 'privacy', keywords: ['privacy', 'visibility', 'private', 'public', 'profile'] },
+            { title: 'Terms of Service', description: 'View terms and conditions', page: 'tos', keywords: ['terms', 'tos', 'service', 'agreement'] }
         ];
 
         let searchTimeout;
