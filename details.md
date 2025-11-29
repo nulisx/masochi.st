@@ -77,8 +77,4 @@ good now fix everything from being mock data to actual data w the backend you sa
 
 Add a MailHaven-style verification flow (see MailHavenVerify1.png / MailHavenVerify2.png). When users first load the site, show a lightweight verification flow to prevent bots and automated signups. Keep it smooth and unobtrusive but effective. Also add **profile view counters** (profile views) to user profiles.
 
-* Ensure the dashboard’s **image/file component** fully reflects the logic in `FilesView-*`, `DownloadFileView-*`, `file-*.js`, and `fileview` related files: image previews, secure E2EE download flow, file metadata, download links, and file-type detection.
-and
-8. Dashboard image/file components mirror `FilesView-*`, `DownloadFileView-*`, `file-*.js` logic (previews, E2EE download, file meta).
-
 look at this image and add it to the sidebar yk like how alo.ne does it on alo.ne/dash in the second image and its to close or reopen the sidebar where it goes from < when its opened to > when its closed now look at the third image it would still show the icons of the tabs on the sidebar whether its closed or open yk what i mean to still go there and stuff but make sure that the > thing is with a border dash thats purple around it and both the < and > symbols are purple yk what i mean (look at the images SideBar1.png, SideBar2.png, SideBar3.png, SideBar4.png, and SideBar5.png i put them in order)

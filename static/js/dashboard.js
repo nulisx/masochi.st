@@ -1609,12 +1609,13 @@ class Dashboard {
                                     
                                     <div style="width: 100%; height: 120px; background: var(--bg-tertiary); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; overflow: hidden; position: relative;">
                                         ${isImage ? 
-                                            `<img src="${shareUrl}" alt="${file.filename}" style="width: 100%; height: 100%; object-fit: cover;">` :
+                                            `<img data-file-code="${file.code}" alt="${file.filename}" style="width: 100%; height: 100%; object-fit: cover; display: none;">` :
                                             `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity: 0.6;">
                                                 <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
                                                 <polyline points="13 2 13 9 20 9"></polyline>
                                             </svg>`
                                         }
+                                        ${isImage ? `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity: 0.6; position: absolute;" class="placeholder-icon-${file.code}"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>` : ''}
                                     </div>
                                     
                                     <div style="flex: 1;">
@@ -1668,6 +1669,33 @@ class Dashboard {
         `;
 
         this.setupFileUpload();
+        this.loadImageThumbnails();
+    }
+
+    async loadImageThumbnails() {
+        const imageElements = document.querySelectorAll('img[data-file-code]');
+        for (const img of imageElements) {
+            const fileCode = img.getAttribute('data-file-code');
+            try {
+                const response = await fetch(`/api/files/download/${fileCode}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({})
+                });
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = URL.createObjectURL(blob);
+                    img.src = url;
+                    img.style.display = 'block';
+                    const placeholder = document.querySelector(`.placeholder-icon-${fileCode}`);
+                    if (placeholder) placeholder.style.display = 'none';
+                }
+            } catch (error) {
+                console.error(`Failed to load thumbnail for ${fileCode}:`, error);
+            }
+        }
     }
 
     copyFileLink(url) {
