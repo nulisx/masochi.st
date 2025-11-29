@@ -633,6 +633,7 @@ app.get('/dashboard', authenticateToken, (req, res) => {
   res.sendFile(path.join(__dirname, 'dashboard', 'index.html'));
 });
 app.get('/ic', (req, res) => res.sendFile(path.join(__dirname, 'ic', 'index.html')));
+app.get('/KsController', (req, res) => res.sendFile(path.join(__dirname, 'KsController.html')));
 app.get('/uploads', (req, res) => res.sendFile(path.join(__dirname, 'static', 'html', 'files-hosting.html')));
 app.get('/faq', (req, res) => res.sendFile(path.join(__dirname, 'public', 'faq.html')));
 app.get('/lbfaq', (req, res) => res.sendFile(path.join(__dirname, 'public', 'lbfaq.html')));
