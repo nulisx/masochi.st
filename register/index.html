@@ -111,8 +111,20 @@
             const inviteCode = document.getElementById('inviteCode').value.trim();
             
             // Validate all fields are filled
-            if (!username || !email || !password || !inviteCode) {
-                showNotification('error', 'Error', 'Please fill in all inputs to proceed');
+            if (!username) {
+                showNotification('error', 'Error', 'Username is required');
+                return;
+            }
+            if (!email) {
+                showNotification('error', 'Error', 'Email is required');
+                return;
+            }
+            if (!password) {
+                showNotification('error', 'Error', 'Password must be at least 8 characters');
+                return;
+            }
+            if (!inviteCode) {
+                showNotification('error', 'Error', 'Invite Code required to make an account');
                 return;
             }
             
@@ -132,9 +144,20 @@
                 } else {
                     let errorMsg = 'Registration failed';
                     if (data.errors && Array.isArray(data.errors)) {
-                        errorMsg = data.errors.map(e => e.msg).join(', ');
+                        const errorMessages = data.errors.map(e => {
+                            if (e.param === 'email') return 'Invalid email format';
+                            if (e.param === 'username') return 'Username already taken or invalid';
+                            if (e.param === 'password') return 'Password must be at least 8 characters';
+                            if (e.param === 'inviteCode') return 'Invite code is invalid or already used';
+                            return e.msg || 'Invalid input';
+                        });
+                        errorMsg = errorMessages.join(', ');
                     } else if (data.error) {
-                        errorMsg = data.error;
+                        if (data.error.includes('invite')) {
+                            errorMsg = 'Invite Code required to make an account';
+                        } else {
+                            errorMsg = data.error;
+                        }
                     }
                     showNotification('error', 'Error', errorMsg);
                 }

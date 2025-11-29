@@ -197,18 +197,19 @@ input::placeholder {
     position: fixed;
     top: 20px;
     right: 20px;
-    background: linear-gradient(135deg, rgba(20, 20, 20, 0.98) 0%, rgba(30, 30, 30, 0.98) 100%);
+    background: rgba(20, 20, 20, 0.3);
     border: 1px solid rgba(139, 92, 246, 0.4);
     border-radius: 12px;
     padding: 16px 20px;
     max-width: 350px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 60px rgba(139, 92, 246, 0.2);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 60px rgba(139, 92, 246, 0.2);
     display: flex;
     align-items: flex-start;
     gap: 12px;
     z-index: 10001;
     animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
 }
 
 .notification-popup.success {
