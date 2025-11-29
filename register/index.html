@@ -50,31 +50,25 @@
         <h1>Create Account</h1>
         <p class="subtitle">Join Glowi.es today</p>
         
-        <div id="errorMessage" class="error-message"></div>
-        <div id="successMessage" class="success-message"></div>
-        <div class="invite-code-info">
-            <i class="fas fa-info-circle"></i> Registration requires an invite code
-        </div>
-        
         <form id="registerForm">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Choose a username" required autocomplete="username">
+                <input type="text" id="username" name="username" placeholder="Choose a username" autocomplete="username">
             </div>
             
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required autocomplete="email">
+                <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email">
             </div>
             
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Create a password" required autocomplete="new-password">
+                <input type="password" id="password" name="password" placeholder="Create a password" autocomplete="new-password">
             </div>
             
             <div class="form-group">
                 <label for="inviteCode">Invite Code</label>
-                <input type="text" id="inviteCode" name="inviteCode" placeholder="Enter your invite code" required>
+                <input type="text" id="inviteCode" name="inviteCode" placeholder="Enter your invite code">
             </div>
             
             <button type="submit" class="auth-button">Create Account</button>
@@ -86,18 +80,53 @@
     </div>
 
     <script>
+        function showNotification(type, title, message) {
+            const notification = document.createElement('div');
+            notification.className = `notification-popup ${type}`;
+            notification.innerHTML = `
+                <div class="notification-icon">${type === 'error' ? '!' : '✓'}</div>
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <div class="notification-message">${message}</div>
+                </div>
+                <button class="notification-close">&times;</button>
+            `;
+            document.body.appendChild(notification);
+            
+            const closeBtn = notification.querySelector('.notification-close');
+            const removeNotification = () => {
+                notification.classList.add('removing');
+                setTimeout(() => notification.remove(), 300);
+            };
+            closeBtn.addEventListener('click', removeNotification);
+            setTimeout(removeNotification, 5000);
+        }
+
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const inviteCode = document.getElementById('inviteCode').value;
-            const errorMessage = document.getElementById('errorMessage');
-            const successMessage = document.getElementById('successMessage');
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const inviteCode = document.getElementById('inviteCode').value.trim();
             
-            errorMessage.classList.remove('show');
-            successMessage.classList.remove('show');
+            // Validate all fields are filled
+            if (!username) {
+                showNotification('error', 'Error', 'Please fill out the username field');
+                return;
+            }
+            if (!email) {
+                showNotification('error', 'Error', 'Please fill out the email field');
+                return;
+            }
+            if (!password) {
+                showNotification('error', 'Error', 'Please fill out the password field');
+                return;
+            }
+            if (!inviteCode) {
+                showNotification('error', 'Error', 'Please fill out the invite code field');
+                return;
+            }
             
             try {
                 const response = await fetch('/api/auth/register', {
@@ -113,16 +142,16 @@
                 if (response.ok) {
                     showRecoveryCodeModal(data.recoveryCode);
                 } else {
+                    let errorMsg = 'Registration failed';
                     if (data.errors && Array.isArray(data.errors)) {
-                        errorMessage.textContent = data.errors.map(e => e.msg).join(', ');
-                    } else {
-                        errorMessage.textContent = data.error || 'Registration failed';
+                        errorMsg = data.errors.map(e => e.msg).join(', ');
+                    } else if (data.error) {
+                        errorMsg = data.error;
                     }
-                    errorMessage.classList.add('show');
+                    showNotification('error', 'Error', errorMsg);
                 }
             } catch (error) {
-                errorMessage.textContent = 'An error occurred. Please try again.';
-                errorMessage.classList.add('show');
+                showNotification('error', 'Error', 'An error occurred. Please try again.');
             }
         });
 
