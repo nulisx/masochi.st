@@ -3,89 +3,74 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Keyboard Sounds with Controller</title>
+<title>Advanced Keyboard Sounds Controller Overlay</title>
 <style>
 :root{
-  --bg:#0b1020;
-  --card:#0f1724;
+  --bg:#0a0e1a;
+  --card:#0f1420;
   --accent:#7c3aed;
   --accent-light:#a855f7;
-  --muted:#99a0b3;
-  --glass:rgba(255,255,255,0.03);
-  --ok:#10b981;
-  --danger:#ef4444;
+  --muted:#6b7280;
   --text:#e6eef8;
+  --ok:#10b981;
 }
 *{box-sizing:border-box}
-html,body{height:100%}
+html,body{height:100%;margin:0}
 body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,sans-serif;
-  background:linear-gradient(180deg,#030510 0%,#0a0f1f 50%,#050a15 100%);
+  background:linear-gradient(135deg,#030511 0%,#0a0f1f 50%,#050a15 100%);
   color:var(--text);
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
+  font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:24px;
   min-height:100vh;
+  padding:16px;
+  -webkit-font-smoothing:antialiased;
 }
-.container{
-  width:100%;
-  max-width:1400px;
+.main{
   display:grid;
-  grid-template-columns:1fr 500px;
+  grid-template-columns:1fr 600px;
   gap:32px;
+  max-width:1600px;
+  width:100%;
 }
 .panel{
   background:linear-gradient(135deg,rgba(124,58,237,0.08),rgba(168,85,247,0.04));
   border:1px solid rgba(168,85,247,0.15);
-  padding:28px;
-  border-radius:16px;
-  box-shadow:0 12px 48px rgba(0,0,0,0.4);
+  padding:32px;
+  border-radius:20px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.5);
   backdrop-filter:blur(10px);
 }
-.title-section{
+.title{
   display:flex;
   gap:16px;
-  align-items:flex-start;
-  margin-bottom:24px;
+  margin-bottom:28px;
 }
 .logo{
-  width:56px;
-  height:56px;
-  border-radius:12px;
-  background:linear-gradient(135deg,var(--accent),var(--accent-light));
+  width:60px;
+  height:60px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#7c3aed,#a855f7);
   display:flex;
   align-items:center;
   justify-content:center;
-  font-weight:700;
-  color:white;
-  font-size:20px;
-  box-shadow:0 8px 24px rgba(124,58,237,0.3);
+  font-weight:800;
+  font-size:24px;
+  box-shadow:0 8px 24px rgba(124,58,237,0.4);
   flex-shrink:0;
 }
-.title-text h1{
-  font-size:24px;
-  font-weight:700;
-  margin:0;
-  color:var(--text);
-}
-.title-text p{
-  font-size:13px;
-  color:var(--muted);
-  margin:6px 0 0;
-}
-.controls-section{
+.title-text h1{font-size:26px;font-weight:800;margin:0}
+.title-text p{font-size:13px;color:var(--muted);margin:4px 0 0}
+.controls{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
   gap:12px;
   margin-bottom:24px;
 }
-.button{
-  background:linear-gradient(135deg,rgba(168,85,247,0.15),rgba(124,58,237,0.08));
-  border:1px solid rgba(168,85,247,0.3);
+.btn{
+  background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(124,58,237,0.1));
+  border:1px solid rgba(168,85,247,0.4);
   padding:12px 16px;
   border-radius:10px;
   color:var(--text);
@@ -93,113 +78,82 @@ body{
   font-size:13px;
   cursor:pointer;
   transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
-  display:inline-flex;
-  gap:8px;
-  align-items:center;
-  justify-content:center;
 }
-.button:hover{
-  background:linear-gradient(135deg,rgba(168,85,247,0.25),rgba(124,58,237,0.15));
-  border-color:rgba(168,85,247,0.5);
+.btn:hover{
+  background:linear-gradient(135deg,rgba(168,85,247,0.3),rgba(124,58,237,0.2));
+  border-color:rgba(168,85,247,0.7);
   transform:translateY(-2px);
-  box-shadow:0 8px 20px rgba(124,58,237,0.2);
 }
-.button.active{
-  background:linear-gradient(135deg,rgba(168,85,247,0.4),rgba(124,58,237,0.25));
-  border-color:rgba(168,85,247,0.8);
-  box-shadow:0 0 20px rgba(168,85,247,0.4);
+.btn.active{
+  background:linear-gradient(135deg,rgba(168,85,247,0.5),rgba(124,58,237,0.3));
+  box-shadow:0 0 20px rgba(168,85,247,0.5);
 }
 .row{
   display:flex;
   gap:12px;
   align-items:center;
-  flex-wrap:wrap;
   margin-bottom:16px;
+  flex-wrap:wrap;
 }
 .label{
   font-size:12px;
   color:var(--muted);
-  font-weight:500;
+  font-weight:600;
   text-transform:uppercase;
   letter-spacing:0.5px;
 }
-.select{
+.select,.range{
   background:linear-gradient(135deg,rgba(168,85,247,0.1),rgba(124,58,237,0.05));
   border:1px solid rgba(168,85,247,0.2);
-  padding:10px 14px;
-  border-radius:8px;
   color:var(--text);
+  border-radius:8px;
   font-size:13px;
-  font-weight:500;
-  cursor:pointer;
-  transition:all 0.3s;
+  padding:10px 12px;
 }
-.select:hover{
-  border-color:rgba(168,85,247,0.4);
-  background:linear-gradient(135deg,rgba(168,85,247,0.15),rgba(124,58,237,0.1));
-}
+.select{cursor:pointer}
 .range{
   appearance:none;
   width:100%;
   height:4px;
-  background:linear-gradient(90deg,rgba(124,58,237,0.2),rgba(168,85,247,0.2));
-  border-radius:999px;
-  outline:none;
-  cursor:pointer;
+  padding:0;
 }
 .range::-webkit-slider-thumb{
   appearance:none;
   width:16px;
   height:16px;
-  background:linear-gradient(135deg,var(--accent),var(--accent-light));
+  background:linear-gradient(135deg,#7c3aed,#a855f7);
   border-radius:50%;
   cursor:pointer;
   box-shadow:0 4px 12px rgba(124,58,237,0.4);
-  transition:all 0.3s;
 }
-.range::-webkit-slider-thumb:hover{
-  transform:scale(1.2);
-  box-shadow:0 6px 16px rgba(168,85,247,0.6);
-}
-.range::-moz-range-thumb{
-  width:16px;
-  height:16px;
-  background:linear-gradient(135deg,var(--accent),var(--accent-light));
-  border-radius:50%;
-  cursor:pointer;
-  border:none;
-  box-shadow:0 4px 12px rgba(124,58,237,0.4);
-}
-.status{
+.status-box{
+  background:rgba(16,185,129,0.1);
+  border:1px solid rgba(16,185,129,0.3);
+  padding:14px;
+  border-radius:12px;
   display:flex;
   gap:12px;
   align-items:center;
-  flex-wrap:wrap;
-  padding:12px;
-  background:rgba(16,185,129,0.08);
-  border:1px solid rgba(16,185,129,0.2);
-  border-radius:10px;
+  margin-bottom:20px;
 }
 .indicator{
   width:10px;
   height:10px;
   border-radius:50%;
   background:rgba(255,255,255,0.2);
-  display:inline-block;
   animation:pulse 2s ease-in-out infinite;
 }
 .indicator.connected{
-  background:var(--ok);
-  box-shadow:0 0 12px rgba(16,185,129,0.6);
-  animation:pulse-green 2s ease-in-out infinite;
+  background:#10b981;
+  box-shadow:0 0 12px rgba(16,185,129,0.8);
 }
-@keyframes pulse{
-  0%,100%{opacity:0.5}
-  50%{opacity:1}
+.info{
+  font-size:12px;
+  color:var(--muted);
 }
-@keyframes pulse-green{
-  0%,100%{box-shadow:0 0 12px rgba(16,185,129,0.3)}
-  50%{box-shadow:0 0 24px rgba(16,185,129,0.8)}
+.info-strong{
+  color:var(--text);
+  font-weight:600;
 }
 .info-box{
   background:rgba(99,102,241,0.08);
@@ -208,319 +162,252 @@ body{
   border-radius:10px;
   font-size:12px;
   color:var(--muted);
-  margin-bottom:16px;
   line-height:1.6;
+  margin-bottom:20px;
 }
-.key-display{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  margin-bottom:16px;
+.keys-section{
+  margin-bottom:20px;
 }
-.key-label{
-  font-size:12px;
+.keys-label{
+  font-size:11px;
   color:var(--muted);
-  font-weight:500;
   text-transform:uppercase;
   letter-spacing:0.5px;
+  margin-bottom:8px;
+  font-weight:600;
 }
-.key-stream{
+.keys-display{
   display:flex;
-  gap:8px;
   flex-wrap:wrap;
+  gap:8px;
 }
 .key-chip{
-  background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(124,58,237,0.1));
-  border:1px solid rgba(168,85,247,0.3);
+  background:linear-gradient(135deg,rgba(168,85,247,0.25),rgba(124,58,237,0.15));
+  border:1px solid rgba(168,85,247,0.4);
   padding:8px 12px;
   border-radius:8px;
-  font-weight:600;
   font-size:12px;
+  font-weight:600;
   color:var(--accent-light);
   animation:slideIn 0.3s ease-out;
-  max-height:24px;
-  white-space:nowrap;
 }
 @keyframes slideIn{
-  from{
-    opacity:0;
-    transform:translateX(-10px);
-  }
-  to{
-    opacity:1;
-    transform:translateX(0);
-  }
+  from{opacity:0;transform:translateX(-10px)}
+  to{opacity:1;transform:translateX(0)}
 }
-.controller-visual{
-  position:relative;
-  width:100%;
-  height:320px;
+.controller-panel{
   display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:24px 0;
+  flex-direction:column;
 }
-.ps4-controller{
-  width:380px;
-  height:220px;
-  background:linear-gradient(180deg,#0a0f1a,#050812);
-  border-radius:24px;
-  position:relative;
-  box-shadow:inset 0 -30px 80px rgba(0,0,0,0.8),0 20px 60px rgba(124,58,237,0.2);
+.controller-header{
   display:flex;
+  justify-content:space-between;
   align-items:center;
-  justify-content:center;
+  margin-bottom:20px;
 }
-.button-dot{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  background:rgba(255,255,255,0.08);
-  display:flex;
-  align-items:center;
-  justify-content:center;
+.controller-header h2{
+  margin:0;
+  font-size:18px;
   font-weight:700;
-  color:rgba(168,85,247,0.8);
-  border:2px solid rgba(168,85,247,0.2);
-  position:absolute;
-  transition:all 0.1s linear;
-  cursor:default;
-  font-size:10px;
 }
-.button-dot.active{
-  transform:translateY(3px) scale(0.92);
-  background:linear-gradient(135deg,rgba(168,85,247,0.4),rgba(124,58,237,0.3));
-  box-shadow:0 8px 20px rgba(124,58,237,0.4),inset 0 2px 4px rgba(0,0,0,0.6);
-  border-color:rgba(168,85,247,0.8);
-  color:var(--accent-light);
+.controller-viz{
+  background:linear-gradient(135deg,#0a0e1a,#050812);
+  border:1px solid rgba(168,85,247,0.2);
+  border-radius:16px;
+  padding:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:500px;
+  margin-bottom:20px;
+  position:relative;
+  overflow:hidden;
 }
-.info-grid{
+.controller-viz svg{
+  max-width:100%;
+  height:auto;
+}
+.stats-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:12px;
-  margin-top:16px;
 }
-.info-item{
+.stat-box{
   background:rgba(255,255,255,0.02);
   border:1px solid rgba(168,85,247,0.15);
   padding:12px;
   border-radius:10px;
 }
-.info-item-label{
+.stat-label{
   font-size:11px;
   color:var(--muted);
   text-transform:uppercase;
   letter-spacing:0.5px;
-  margin-bottom:6px;
+  margin-bottom:4px;
 }
-.info-item-value{
+.stat-value{
   font-size:13px;
   color:var(--accent-light);
-  font-weight:600;
+  font-weight:700;
   font-family:monospace;
 }
-.footer{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:24px;
-  padding-top:16px;
-  border-top:1px solid rgba(168,85,247,0.15);
-  font-size:12px;
-  color:var(--muted);
-}
-@media (max-width:1024px){
-  .container{
-    grid-template-columns:1fr;
-  }
-  .controller-visual{
-    height:280px;
-  }
-  .ps4-controller{
-    width:320px;
-    height:180px;
-  }
+@media (max-width:1200px){
+  .main{grid-template-columns:1fr}
+  .controller-viz{min-height:400px}
 }
 </style>
 </head>
 <body>
-<div class="container">
+<div class="main">
   <div class="panel">
-    <div class="title-section">
+    <div class="title">
       <div class="logo">KS</div>
-      <div class="title-text">
+      <div>
         <h1>Keyboard Sounds</h1>
-        <p>ASMR keyboard and controller input detection</p>
+        <p>Advanced controller & keyboard ASMR overlay</p>
       </div>
     </div>
 
-    <div class="controls-section">
-      <button id="startBtn" class="button">▶ Start Audio</button>
-      <button id="scanBtn" class="button">↻ Scan Gamepad</button>
+    <div class="controls">
+      <button id="startBtn" class="btn">▶ Start Audio</button>
+      <button id="scanBtn" class="btn">↻ Scan</button>
       <select id="profile" class="select">
         <option value="mechanical">Mechanical</option>
         <option value="cherry">Cherry MX</option>
         <option value="typewriter">Typewriter</option>
         <option value="bubble">Bubble</option>
         <option value="linear">Linear</option>
-        <option value="clicky">Clicky</option>
       </select>
     </div>
 
     <div class="row">
-      <label class="label">Master Volume</label>
-      <input id="volume" type="range" min="0" max="1" step="0.01" value="0.7" class="range" />
+      <label class="label">Volume</label>
+      <input type="range" id="volume" class="range" min="0" max="1" step="0.01" value="0.7" style="flex:1;max-width:150px;"/>
       <span id="volDisplay" style="font-size:12px;color:var(--accent-light);min-width:35px;">70%</span>
     </div>
 
-    <div class="status">
+    <div class="status-box">
       <span class="indicator" id="gpIndicator"></span>
-      <div class="label" id="gpText">No gamepad detected</div>
-      <div style="margin-left:auto;font-size:11px;color:var(--muted);">v2.0 Advanced</div>
+      <div>
+        <div class="info"><span class="info-strong" id="gpName">No Controller</span></div>
+        <div class="info" id="gpInfo" style="font-size:11px;margin-top:2px;"></div>
+      </div>
     </div>
 
     <div class="info-box">
-      🎮 Connect a PlayStation 4/5 or Xbox controller via USB or Bluetooth. Press any key on your keyboard or button on the controller to hear ASMR sounds instantly after starting audio.
+      🎮 Connect PS4, PS5, or Xbox controller via USB/Bluetooth. Press buttons or move analog sticks to trigger ASMR keyboard sounds. Each input type has unique audio characteristics.
     </div>
 
-    <div class="key-display">
-      <div class="key-label">Keyboard Input</div>
-      <div class="key-stream" id="recentKeys"></div>
+    <div class="keys-section">
+      <div class="keys-label">Keyboard Input</div>
+      <div class="keys-display" id="recentKeys"></div>
     </div>
 
-    <div class="key-display">
-      <div class="key-label">Controller Input</div>
-      <div class="key-stream" id="recentButtons"></div>
+    <div class="keys-section">
+      <div class="keys-label">Button Input</div>
+      <div class="keys-display" id="recentButtons"></div>
     </div>
 
-    <div class="footer">
-      <span>Works with modern browsers supporting Gamepad API and Web Audio</span>
-      <span>Made for you</span>
+    <div class="keys-section">
+      <div class="keys-label">Analog Input</div>
+      <div class="keys-display" id="recentAnalog"></div>
     </div>
   </div>
 
-  <div class="panel" style="display:flex;flex-direction:column;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-      <h2 style="margin:0;font-size:16px;font-weight:700;">Controller Visualization</h2>
-      <label style="display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted);">
-        <input type="checkbox" id="autoRepeat" checked style="cursor:pointer;" />
+  <div class="panel controller-panel">
+    <div class="controller-header">
+      <h2>Controller Overlay</h2>
+      <label style="font-size:12px;color:var(--muted);display:flex;gap:8px;">
+        <input type="checkbox" id="autoRepeat" checked/>
         Auto-repeat
       </label>
     </div>
-
-    <div class="controller-visual">
-      <div class="ps4-controller" id="ps4">
-        <div class="button-dot" data-btn="2" style="left:100px;top:60px;width:40px;height:40px;">▢</div>
-        <div class="button-dot" data-btn="3" style="left:140px;top:20px;width:40px;height:40px;">△</div>
-        <div class="button-dot" data-btn="1" style="left:180px;top:60px;width:40px;height:40px;">◯</div>
-        <div class="button-dot" data-btn="0" style="left:140px;top:100px;width:40px;height:40px;">✕</div>
-
-        <div class="button-dot" data-btn="4" style="left:20px;top:10px;width:32px;height:32px;">L1</div>
-        <div class="button-dot" data-btn="5" style="left:328px;top:10px;width:32px;height:32px;">R1</div>
-
-        <div class="button-dot" data-btn="6" style="left:20px;top:50px;width:32px;height:32px;">L2</div>
-        <div class="button-dot" data-btn="7" style="left:328px;top:50px;width:32px;height:32px;">R2</div>
-
-        <div class="button-dot" data-btn="10" style="left:60px;top:140px;width:36px;height:36px;">L3</div>
-        <div class="button-dot" data-btn="11" style="left:284px;top:140px;width:36px;height:36px;">R3</div>
-
-        <div class="button-dot" data-btn="8" style="left:100px;top:175px;width:32px;height:28px;">Share</div>
-        <div class="button-dot" data-btn="9" style="left:248px;top:175px;width:32px;height:28px;">Opt</div>
-
-        <div class="button-dot" data-btn="16" style="left:156px;top:190px;width:36px;height:36px;">PS</div>
+    <div class="controller-viz" id="controllerViz"></div>
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="stat-label">L Stick</div>
+        <div class="stat-value" id="lStick">x:0.00 y:0.00</div>
       </div>
-    </div>
-
-    <div class="info-grid">
-      <div class="info-item">
-        <div class="info-item-label">Left Stick</div>
-        <div class="info-item-value" id="lsAxis">x: 0.00  y: 0.00</div>
+      <div class="stat-box">
+        <div class="stat-label">R Stick</div>
+        <div class="stat-value" id="rStick">x:0.00 y:0.00</div>
       </div>
-      <div class="info-item">
-        <div class="info-item-label">Right Stick</div>
-        <div class="info-item-value" id="rsAxis">x: 0.00  y: 0.00</div>
+      <div class="stat-box">
+        <div class="stat-label">Triggers</div>
+        <div class="stat-value" id="triggers">L:0.00 R:0.00</div>
       </div>
-      <div class="info-item">
-        <div class="info-item-label">Triggers</div>
-        <div class="info-item-value" id="triggers">L2: 0.00  R2: 0.00</div>
-      </div>
-      <div class="info-item">
-        <div class="info-item-label">Active Profile</div>
-        <div class="info-item-value" id="currentProfile">Mechanical</div>
+      <div class="stat-box">
+        <div class="stat-label">Profile</div>
+        <div class="stat-value" id="profileName">Mechanical</div>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-let audioCtx=null;
-let masterGain=null;
-let isRunning=false;
-let profile="mechanical";
-const recentKeys=document.getElementById("recentKeys");
-const recentButtons=document.getElementById("recentButtons");
-const gpIndicator=document.getElementById("gpIndicator");
-const gpText=document.getElementById("gpText");
-const lsAxis=document.getElementById("lsAxis");
-const rsAxis=document.getElementById("rsAxis");
-const triggersEl=document.getElementById("triggers");
-const currentProfile=document.getElementById("currentProfile");
-const startBtn=document.getElementById("startBtn");
-const scanBtn=document.getElementById("scanBtn");
-const profileSelect=document.getElementById("profile");
-const volRange=document.getElementById("volume");
-const volDisplay=document.getElementById("volDisplay");
-const psDots=Array.from(document.querySelectorAll(".button-dot"));
-const autoRepeat=document.getElementById("autoRepeat");
-let prevButtonStates=[];
-let prevAxes=[];
-let connectedGpIndex=null;
-let lastPressTimes={};
-const MIN_INTERVAL=80;
-
-function initAudio(){
-  if(audioCtx)return;
-  audioCtx=new(window.AudioContext||window.webkitAudioContext)();
-  masterGain=audioCtx.createGain();
-  masterGain.gain.value=Number(volRange.value);
-  masterGain.connect(audioCtx.destination);
-}
-
-startBtn.addEventListener("click",()=>{
-  initAudio();
-  if(audioCtx.state==="suspended")audioCtx.resume();
-  isRunning=true;
-  startBtn.classList.add("active");
-  startBtn.textContent="⏸ Audio Running";
-});
-
-profileSelect.addEventListener("change",(e)=>{
-  profile=e.target.value;
-  const names={mechanical:"Mechanical",cherry:"Cherry MX",typewriter:"Typewriter",bubble:"Bubble",linear:"Linear",clicky:"Clicky"};
-  currentProfile.textContent=names[profile]||"Mechanical";
-});
-
-volRange.addEventListener("input",(e)=>{
-  const vol=Math.round(Number(e.target.value)*100);
-  volDisplay.textContent=vol+"%";
-  if(masterGain)masterGain.gain.value=Number(e.target.value);
-});
-
-scanBtn.addEventListener("click",()=>scanGamepads(true));
-
-window.addEventListener("gamepadconnected",()=>scanGamepads(true));
-window.addEventListener("gamepaddisconnected",()=>scanGamepads(true));
+let audioCtx=null,masterGain=null,isRunning=false,profile="mechanical";
+let connectedGpIndex=null,prevButtonStates=[],prevAxes=[];
+let lastPressTimes={},lastStickMovements={};
+const MIN_INTERVAL=80,STICK_DEADZONE=0.2,STICK_MOVE_THRESHOLD=0.15;
 
 const soundLibrary={
   mechanical:{freq:2200,q:1.8,dur:0.045},
   cherry:{freq:2600,q:1.5,dur:0.05},
   typewriter:{freq:3200,q:0.9,dur:0.055},
   bubble:{freq:1800,q:2.2,dur:0.04},
-  linear:{freq:2000,q:1.4,dur:0.035},
-  clicky:{freq:2800,q:1.6,dur:0.06}
+  linear:{freq:2000,q:1.4,dur:0.035}
 };
 
-function playSound(kind="mechanical",velocity=1){
+const elements={
+  startBtn:document.getElementById("startBtn"),
+  scanBtn:document.getElementById("scanBtn"),
+  profile:document.getElementById("profile"),
+  volume:document.getElementById("volume"),
+  volDisplay:document.getElementById("volDisplay"),
+  gpIndicator:document.getElementById("gpIndicator"),
+  gpName:document.getElementById("gpName"),
+  gpInfo:document.getElementById("gpInfo"),
+  recentKeys:document.getElementById("recentKeys"),
+  recentButtons:document.getElementById("recentButtons"),
+  recentAnalog:document.getElementById("recentAnalog"),
+  controllerViz:document.getElementById("controllerViz"),
+  lStick:document.getElementById("lStick"),
+  rStick:document.getElementById("rStick"),
+  triggers:document.getElementById("triggers"),
+  profileName:document.getElementById("profileName"),
+  autoRepeat:document.getElementById("autoRepeat")
+};
+
+function initAudio(){
+  if(audioCtx)return;
+  audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  masterGain=audioCtx.createGain();
+  masterGain.gain.value=Number(elements.volume.value);
+  masterGain.connect(audioCtx.destination);
+}
+
+elements.startBtn.addEventListener("click",()=>{
+  initAudio();
+  if(audioCtx.state==="suspended")audioCtx.resume();
+  isRunning=true;
+  elements.startBtn.classList.add("active");
+  elements.startBtn.textContent="⏸ Running";
+});
+
+elements.profile.addEventListener("change",(e)=>{
+  profile=e.target.value;
+  elements.profileName.textContent=profile.charAt(0).toUpperCase()+profile.slice(1);
+});
+
+elements.volume.addEventListener("input",(e)=>{
+  const vol=Math.round(Number(e.target.value)*100);
+  elements.volDisplay.textContent=vol+"%";
+  if(masterGain)masterGain.gain.value=Number(e.target.value);
+});
+
+elements.scanBtn.addEventListener("click",()=>scanGamepads(true));
+
+function playSound(kind=profile,velocity=1){
   if(!audioCtx)return;
   const now=audioCtx.currentTime;
   const config=soundLibrary[kind]||soundLibrary.mechanical;
@@ -546,8 +433,7 @@ function playSound(kind="mechanical",velocity=1){
 }
 
 window.addEventListener("keydown",(e)=>{
-  if(!isRunning)return;
-  if(["Shift","Control","Alt","Meta"].includes(e.key))return;
+  if(!isRunning||["Shift","Control","Alt","Meta"].includes(e.key))return;
   addRecentKey(e.key);
   playSound(profile,1.0);
 });
@@ -555,17 +441,121 @@ window.addEventListener("keydown",(e)=>{
 function addRecentKey(k){
   const chip=document.createElement("div");
   chip.className="key-chip";
-  chip.textContent=k.length>1?k.substring(0,6):k;
-  recentKeys.prepend(chip);
-  while(recentKeys.children.length>12)recentKeys.removeChild(recentKeys.lastChild);
+  chip.textContent=k.length>1?k.substring(0,8):k;
+  elements.recentKeys.prepend(chip);
+  while(elements.recentKeys.children.length>10)elements.recentKeys.removeChild(elements.recentKeys.lastChild);
 }
 
 function addRecentButton(s){
   const chip=document.createElement("div");
   chip.className="key-chip";
   chip.textContent=s;
-  recentButtons.prepend(chip);
-  while(recentButtons.children.length>12)recentButtons.removeChild(recentButtons.lastChild);
+  elements.recentButtons.prepend(chip);
+  while(elements.recentButtons.children.length>10)elements.recentButtons.removeChild(elements.recentButtons.lastChild);
+}
+
+function addRecentAnalog(s){
+  const chip=document.createElement("div");
+  chip.className="key-chip";
+  chip.textContent=s;
+  elements.recentAnalog.prepend(chip);
+  while(elements.recentAnalog.children.length>10)elements.recentAnalog.removeChild(elements.recentAnalog.lastChild);
+}
+
+function detectControllerType(gamepad){
+  const id=gamepad.id.toLowerCase();
+  if(id.includes("054c"))return"PS4";
+  if(id.includes("ps5")||id.includes("dualsense"))return"PS5";
+  if(id.includes("xbox")||id.includes("054c:09cc"))return"Xbox";
+  if(id.includes("054c"))return"PS4";
+  return"Generic";
+}
+
+function renderController(type){
+  let svg="";
+  if(type==="PS4"||type==="Generic"){
+    svg=`<svg viewBox="0 0 300 180" width="380" height="228">
+      <defs>
+        <linearGradient id="psGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#0f0f1e;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <rect width="300" height="180" rx="30" fill="url(#psGrad)" stroke="rgba(168,85,247,0.4)" stroke-width="2"/>
+      <circle cx="60" cy="80" r="18" class="stick" id="lstick" fill="rgba(168,85,247,0.3)" stroke="rgba(168,85,247,0.6)" stroke-width="2"/>
+      <circle cx="240" cy="110" r="18" class="stick" id="rstick" fill="rgba(168,85,247,0.3)" stroke="rgba(168,85,247,0.6)" stroke-width="2"/>
+      <circle cx="140" cy="60" r="16" class="btn" id="btn0" fill="rgba(100,200,255,0.2)" stroke="rgba(100,200,255,0.6)" stroke-width="2"/>
+      <circle cx="170" cy="45" r="16" class="btn" id="btn1" fill="rgba(255,100,150,0.2)" stroke="rgba(255,100,150,0.6)" stroke-width="2"/>
+      <circle cx="200" cy="60" r="16" class="btn" id="btn2" fill="rgba(100,100,255,0.2)" stroke="rgba(100,100,255,0.6)" stroke-width="2"/>
+      <circle cx="170" cy="75" r="16" class="btn" id="btn3" fill="rgba(100,255,150,0.2)" stroke="rgba(100,255,150,0.6)" stroke-width="2"/>
+      <text x="140" y="65" font-size="14" fill="rgba(168,85,247,0.8)" text-anchor="middle" dy=".3em">✕</text>
+      <text x="170" y="50" font-size="14" fill="rgba(168,85,247,0.8)" text-anchor="middle" dy=".3em">△</text>
+      <text x="205" y="65" font-size="14" fill="rgba(168,85,247,0.8)" text-anchor="middle" dy=".3em">◯</text>
+      <text x="170" y="80" font-size="14" fill="rgba(168,85,247,0.8)" text-anchor="middle" dy=".3em">▢</text>
+      <rect x="110" y="140" width="80" height="12" rx="6" fill="rgba(168,85,247,0.15)" stroke="rgba(168,85,247,0.3)" stroke-width="1"/>
+      <rect x="120" y="145" width="10" height="6" rx="3" id="dpad-l" class="dpad" fill="rgba(168,85,247,0.2)"/>
+      <rect x="138" y="145" width="10" height="6" rx="3" id="dpad-r" class="dpad" fill="rgba(168,85,247,0.2)"/>
+      <rect x="129" y="136" width="6" height="10" rx="3" id="dpad-u" class="dpad" fill="rgba(168,85,247,0.2)"/>
+      <rect x="129" y="154" width="6" height="10" rx="3" id="dpad-d" class="dpad" fill="rgba(168,85,247,0.2)"/>
+      <circle cx="80" cy="155" r="8" class="btn" id="btn8" fill="rgba(168,85,247,0.15)" stroke="rgba(168,85,247,0.4)" stroke-width="1"/>
+      <circle cx="220" cy="155" r="8" class="btn" id="btn9" fill="rgba(168,85,247,0.15)" stroke="rgba(168,85,247,0.4)" stroke-width="1"/>
+      <circle cx="50" cy="20" r="6" class="btn" id="btn4" fill="rgba(168,85,247,0.15)" stroke="rgba(168,85,247,0.4)" stroke-width="1"/>
+      <circle cx="250" cy="20" r="6" class="btn" id="btn5" fill="rgba(168,85,247,0.15)" stroke="rgba(168,85,247,0.4)" stroke-width="1"/>
+    </svg>`;
+  }else if(type==="PS5"){
+    svg=`<svg viewBox="0 0 300 180" width="380" height="228">
+      <defs>
+        <linearGradient id="ps5Grad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#2a2a3e;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#1a1a2e;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <rect width="300" height="180" rx="35" fill="url(#ps5Grad)" stroke="rgba(168,85,247,0.5)" stroke-width="2.5"/>
+      <circle cx="60" cy="80" r="20" class="stick" id="lstick" fill="rgba(168,85,247,0.3)" stroke="rgba(168,85,247,0.7)" stroke-width="2.5"/>
+      <circle cx="240" cy="110" r="20" class="stick" id="rstick" fill="rgba(168,85,247,0.3)" stroke="rgba(168,85,247,0.7)" stroke-width="2.5"/>
+      <circle cx="140" cy="55" r="18" class="btn" id="btn0" fill="rgba(100,200,255,0.25)" stroke="rgba(100,200,255,0.7)" stroke-width="2.5"/>
+      <circle cx="175" cy="40" r="18" class="btn" id="btn1" fill="rgba(255,100,150,0.25)" stroke="rgba(255,100,150,0.7)" stroke-width="2.5"/>
+      <circle cx="210" cy="55" r="18" class="btn" id="btn2" fill="rgba(100,100,255,0.25)" stroke="rgba(100,100,255,0.7)" stroke-width="2.5"/>
+      <circle cx="175" cy="70" r="18" class="btn" id="btn3" fill="rgba(100,255,150,0.25)" stroke="rgba(100,255,150,0.7)" stroke-width="2.5"/>
+      <text x="140" y="61" font-size="16" fill="rgba(168,85,247,0.9)" text-anchor="middle" dy=".3em">✕</text>
+      <text x="175" y="46" font-size="16" fill="rgba(168,85,247,0.9)" text-anchor="middle" dy=".3em">△</text>
+      <text x="215" y="61" font-size="16" fill="rgba(168,85,247,0.9)" text-anchor="middle" dy=".3em">◯</text>
+      <text x="175" y="76" font-size="16" fill="rgba(168,85,247,0.9)" text-anchor="middle" dy=".3em">▢</text>
+      <rect x="100" y="145" width="100" height="14" rx="7" fill="rgba(168,85,247,0.2)" stroke="rgba(168,85,247,0.4)" stroke-width="1.5"/>
+      <rect x="108" y="150" width="12" height="8" rx="4" id="dpad-l" class="dpad" fill="rgba(168,85,247,0.2)"/>
+      <rect x="180" y="150" width="12" height="8" rx="4" id="dpad-r" class="dpad" fill="rgba(168,85,247,0.2)"/>
+      <rect x="144" y="139" width="8" height="12" rx="4" id="dpad-u" class="dpad" fill="rgba(168,85,247,0.2)"/>
+      <rect x="144" y="161" width="8" height="12" rx="4" id="dpad-d" class="dpad" fill="rgba(168,85,247,0.2)"/>
+      <circle cx="75" cy="160" r="9" class="btn" id="btn8" fill="rgba(168,85,247,0.15)" stroke="rgba(168,85,247,0.5)" stroke-width="1.5"/>
+      <circle cx="225" cy="160" r="9" class="btn" id="btn9" fill="rgba(168,85,247,0.15)" stroke="rgba(168,85,247,0.5)" stroke-width="1.5"/>
+      <circle cx="45" cy="15" r="7" class="btn" id="btn4" fill="rgba(168,85,247,0.15)" stroke="rgba(168,85,247,0.5)" stroke-width="1.5"/>
+      <circle cx="255" cy="15" r="7" class="btn" id="btn5" fill="rgba(168,85,247,0.15)" stroke="rgba(168,85,247,0.5)" stroke-width="1.5"/>
+    </svg>`;
+  }else{
+    svg=`<svg viewBox="0 0 300 180" width="380" height="228">
+      <defs>
+        <linearGradient id="xboxGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#0f0f1e;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <rect width="300" height="180" rx="25" fill="url(#xboxGrad)" stroke="rgba(168,85,247,0.4)" stroke-width="2"/>
+      <circle cx="70" cy="90" r="18" class="stick" id="lstick" fill="rgba(168,85,247,0.3)" stroke="rgba(168,85,247,0.6)" stroke-width="2"/>
+      <circle cx="230" cy="90" r="18" class="stick" id="rstick" fill="rgba(168,85,247,0.3)" stroke="rgba(168,85,247,0.6)" stroke-width="2"/>
+      <circle cx="150" cy="50" r="15" class="btn" id="btn2" fill="rgba(255,200,50,0.2)" stroke="rgba(255,200,50,0.6)" stroke-width="2"/>
+      <circle cx="175" cy="65" r="15" class="btn" id="btn1" fill="rgba(50,150,255,0.2)" stroke="rgba(50,150,255,0.6)" stroke-width="2"/>
+      <circle cx="125" cy="65" r="15" class="btn" id="btn3" fill="rgba(100,50,200,0.2)" stroke="rgba(100,50,200,0.6)" stroke-width="2"/>
+      <circle cx="150" cy="80" r="15" class="btn" id="btn0" fill="rgba(50,200,100,0.2)" stroke="rgba(50,200,100,0.6)" stroke-width="2"/>
+      <text x="150" y="55" font-size="12" fill="rgba(255,200,50,0.8)" text-anchor="middle" dy=".3em">Y</text>
+      <text x="180" y="70" font-size="12" fill="rgba(50,150,255,0.8)" text-anchor="middle" dy=".3em">A</text>
+      <text x="120" y="70" font-size="12" fill="rgba(100,50,200,0.8)" text-anchor="middle" dy=".3em">X</text>
+      <text x="150" y="85" font-size="12" fill="rgba(50,200,100,0.8)" text-anchor="middle" dy=".3em">B</text>
+      <rect x="100" y="140" width="100" height="14" rx="7" fill="rgba(168,85,247,0.15)" stroke="rgba(168,85,247,0.3)" stroke-width="1"/>
+      <circle cx="85" cy="155" r="8" class="btn" id="btn8" fill="rgba(168,85,247,0.15)" stroke="rgba(168,85,247,0.4)" stroke-width="1"/>
+      <circle cx="215" cy="155" r="8" class="btn" id="btn9" fill="rgba(168,85,247,0.15)" stroke="rgba(168,85,247,0.4)" stroke-width="1"/>
+    </svg>`;
+  }
+  elements.controllerViz.innerHTML=svg;
 }
 
 function scanGamepads(force=false){
@@ -575,17 +565,22 @@ function scanGamepads(force=false){
     const g=gps[i];
     if(g&&g.connected){
       found=true;
-      gpIndicator.classList.add("connected");
-      gpText.textContent="Gamepad: "+g.id.substring(0,25);
       connectedGpIndex=i;
       prevButtonStates=new Array(g.buttons.length).fill(false);
       prevAxes=new Array(g.axes.length).fill(0);
+      const type=detectControllerType(g);
+      elements.gpIndicator.classList.add("connected");
+      elements.gpName.textContent=type+" Connected";
+      elements.gpInfo.textContent=g.id.substring(0,40);
+      renderController(type);
       break;
     }
   }
   if(!found){
-    gpIndicator.classList.remove("connected");
-    gpText.textContent="No gamepad detected";
+    elements.gpIndicator.classList.remove("connected");
+    elements.gpName.textContent="No Controller";
+    elements.gpInfo.textContent="";
+    renderController("PS4");
     connectedGpIndex=null;
   }
 }
@@ -601,35 +596,65 @@ function pollGamepad(){
         break;
       }
     }
+    requestAnimationFrame(pollGamepad);
+    return;
   }
-  if(g){
-    gpIndicator.classList.add("connected");
-    gpText.textContent="Gamepad: "+g.id.substring(0,25);
-    const buttons=g.buttons;
-    for(let i=0;i<buttons.length;i++){
-      const pressed=buttons[i].pressed||buttons[i].value>0.1;
-      const prev=prevButtonStates[i]||false;
-      if(pressed&&(!prev||autoRepeat.checked)){
-        handleButtonPress(i,buttons[i].value);
-      }
-      if(!pressed&&prev){
-        handleButtonRelease(i);
-      }
-      prevButtonStates[i]=pressed;
-      const dot=document.querySelector('.button-dot[data-btn="'+i+'"]');
-      if(dot)dot.classList.toggle("active",pressed);
+  const buttons=g.buttons;
+  for(let i=0;i<buttons.length;i++){
+    const pressed=buttons[i].pressed||buttons[i].value>0.1;
+    const prev=prevButtonStates[i]||false;
+    if(pressed&&(!prev||elements.autoRepeat.checked)){
+      handleButtonPress(i,buttons[i].value);
     }
-    const axes=g.axes;
-    if(axes.length>=4){
-      lsAxis.textContent=`x: ${axes[0].toFixed(2)}  y: ${axes[1].toFixed(2)}`;
-      rsAxis.textContent=`x: ${axes[2].toFixed(2)}  y: ${axes[3].toFixed(2)}`;
+    prevButtonStates[i]=pressed;
+    const dot=document.querySelector('.btn[id="btn'+i+'"]');
+    if(dot)dot.style.filter=pressed?"brightness(2) drop-shadow(0 0 10px rgba(168,85,247,0.8))":"brightness(1)";
+  }
+  const axes=g.axes;
+  if(axes.length>=4){
+    const lx=Math.abs(axes[0])>STICK_DEADZONE?axes[0]:0;
+    const ly=Math.abs(axes[1])>STICK_DEADZONE?axes[1]:0;
+    const rx=Math.abs(axes[2])>STICK_DEADZONE?axes[2]:0;
+    const ry=Math.abs(axes[3])>STICK_DEADZONE?axes[3]:0;
+    elements.lStick.textContent=`x:${lx.toFixed(2)} y:${ly.toFixed(2)}`;
+    elements.rStick.textContent=`x:${rx.toFixed(2)} y:${ry.toFixed(2)}`;
+    const lstick=document.getElementById("lstick");
+    const rstick=document.getElementById("rstick");
+    if(lstick){
+      lstick.style.transform=`translate(${lx*12}px,${ly*12}px)`;
+      lstick.style.filter=Math.abs(lx)>STICK_MOVE_THRESHOLD||Math.abs(ly)>STICK_MOVE_THRESHOLD?"brightness(2) drop-shadow(0 0 12px rgba(100,200,255,0.8))":"brightness(1)";
     }
-    const l2=buttons[6]?buttons[6].value:(axes[2]?(axes[2]+1)/2:0);
-    const r2=buttons[7]?buttons[7].value:(axes[5]?(axes[5]+1)/2:0);
-    triggersEl.textContent=`L2: ${Number(l2).toFixed(2)}  R2: ${Number(r2).toFixed(2)}`;
-  }else{
-    gpIndicator.classList.remove("connected");
-    gpText.textContent="No gamepad detected";
+    if(rstick){
+      rstick.style.transform=`translate(${rx*12}px,${ry*12}px)`;
+      rstick.style.filter=Math.abs(rx)>STICK_MOVE_THRESHOLD||Math.abs(ry)>STICK_MOVE_THRESHOLD?"brightness(2) drop-shadow(0 0 12px rgba(100,200,255,0.8))":"brightness(1)";
+    }
+    if((Math.abs(lx)>STICK_MOVE_THRESHOLD||Math.abs(ly)>STICK_MOVE_THRESHOLD)&&isRunning){
+      const now=performance.now();
+      if(!lastStickMovements.l||now-lastStickMovements.l>150){
+        lastStickMovements.l=now;
+        addRecentAnalog("LS");
+        playSound(profile,0.6);
+      }
+    }
+    if((Math.abs(rx)>STICK_MOVE_THRESHOLD||Math.abs(ry)>STICK_MOVE_THRESHOLD)&&isRunning){
+      const now=performance.now();
+      if(!lastStickMovements.r||now-lastStickMovements.r>150){
+        lastStickMovements.r=now;
+        addRecentAnalog("RS");
+        playSound(profile,0.6);
+      }
+    }
+  }
+  const l2=buttons[6]?buttons[6].value:0;
+  const r2=buttons[7]?buttons[7].value:0;
+  elements.triggers.textContent=`L:${l2.toFixed(2)} R:${r2.toFixed(2)}`;
+  if((l2>0.1||r2>0.1)&&isRunning){
+    const now=performance.now();
+    if(!lastStickMovements.t||now-lastStickMovements.t>200){
+      lastStickMovements.t=now;
+      addRecentAnalog(l2>r2?"L2":"R2");
+      playSound(profile,0.7);
+    }
   }
   requestAnimationFrame(pollGamepad);
 }
@@ -640,39 +665,18 @@ function handleButtonPress(index,value){
   if(lastPressTimes[key]&&(now-lastPressTimes[key]<MIN_INTERVAL))return;
   lastPressTimes[key]=now;
   if(!isRunning)return;
-  const readable=mapButtonName(index);
+  const readable=["✕","◯","▢","△","L1","R1","L2","R2","Share","Opt","L3","R3","↑","↓","←","→","PS","Touch"][index]||"Btn";
   addRecentButton(readable);
-  const velocity=Math.min(1,Math.max(0.1,value||1));
+  const velocity=Math.min(1,Math.max(0.2,value||1));
   playSound(profile,velocity);
 }
 
-function handleButtonRelease(index){}
+window.addEventListener("gamepadconnected",()=>scanGamepads(true));
+window.addEventListener("gamepaddisconnected",()=>scanGamepads(true));
+document.body.addEventListener("pointerdown",()=>{initAudio();if(audioCtx&&audioCtx.state==="suspended")audioCtx.resume()},{once:true});
 
-function mapButtonName(i){
-  const map={0:"✕",1:"◯",2:"▢",3:"△",4:"L1",5:"R1",6:"L2",7:"R2",8:"Share",9:"Opt",10:"L3",11:"R3",12:"↑",13:"↓",14:"←",15:"→",16:"PS",17:"Touch"};
-  return map[i]||"Btn "+i;
-}
-
+scanGamepads();
 pollGamepad();
-
-(function(){
-  if(!('ongamepadconnected'in window)){
-    gpText.textContent="Browser may not support gamepads - try Chrome/Edge";
-  }
-})();
-
-document.addEventListener("visibilitychange",()=>{
-  if(document.hidden&&audioCtx&&audioCtx.state==="running"){
-    try{audioCtx.suspend()}catch(e){}
-  }else{
-    try{if(audioCtx&&audioCtx.state==="suspended")audioCtx.resume()}catch(e){}
-  }
-});
-
-document.body.addEventListener("pointerdown",()=>{
-  if(!audioCtx)initAudio();
-  if(audioCtx&&audioCtx.state==="suspended")audioCtx.resume();
-},{once:true});
 </script>
 </body>
 </html>
