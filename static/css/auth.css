@@ -197,7 +197,7 @@ input::placeholder {
     position: fixed;
     top: 20px;
     right: 20px;
-    background: rgba(20, 20, 20, 0.3);
+    background: rgba(10, 10, 10, 0.08);
     border: 1px solid rgba(139, 92, 246, 0.4);
     border-radius: 12px;
     padding: 16px 20px;
