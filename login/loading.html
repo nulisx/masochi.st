@@ -64,9 +64,88 @@
             0% { transform: translateX(-100%); }
             100% { transform: translateX(300%); }
         }
+        .wait-message {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            margin-top: 2rem;
+            padding: 16px 24px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            color: #a0a0c0;
+        }
+        .wait-message.show {
+            opacity: 1;
+        }
+        .success-toast {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            background: linear-gradient(180deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05));
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 10px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #22c55e;
+            opacity: 0;
+            transform: translateX(400px);
+            transition: all 0.4s ease;
+            z-index: 2000;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+        .success-toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .success-icon {
+            width: 20px;
+            height: 20px;
+            background: #22c55e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0a0a0a;
+            flex-shrink: 0;
+            font-weight: bold;
+        }
+        .success-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .success-title {
+            font-weight: 600;
+            font-size: 13px;
+        }
+        .success-message {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            color: #22c55e;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0;
+            margin-left: 8px;
+        }
     </style>
 </head>
 <body>
+    <div class="success-toast" id="successToast">
+        <div class="success-icon">✓</div>
+        <div class="success-content">
+            <div class="success-title">Success</div>
+            <div class="success-message">Login successful, please wait</div>
+        </div>
+        <button class="close-btn">✕</button>
+    </div>
+
     <div class="loading-container">
         <svg class="logo-icon" viewBox="0 0 499.8 499.8" xmlns="http://www.w3.org/2000/svg">
             <path d="M477.16,292.045c0,0-62.848-4.221-125.061,22.069c11.664-13.634,23.084-28.804,33.416-45.603c51.428-83.723,56.047-174.385,56.047-174.385s-78.774,45.1-130.221,128.822c-7.563,12.3-13.99,24.738-19.668,37.029c3.467-20.557,5.744-42.617,5.744-65.72C297.417,86.977,249.892,0,249.892,0s-47.506,86.977-47.506,194.259c0,23.102,2.279,45.163,5.742,65.713c-5.68-12.293-12.123-24.723-19.67-37.023C137.017,139.227,58.238,94.127,58.238,94.127s4.623,90.662,56.05,174.385c10.329,16.799,21.75,31.969,33.416,45.603C85.472,287.824,22.64,292.045,22.64,292.045s37.99,47.329,100.418,73.905c23.818,10.137,47.734,15.764,68.231,18.881c-9.681,0.716-19.997,2.132-30.503,4.71c-45.443,11.111-77.006,38.909-77.006,38.909s42.105,9.768,87.561-1.351c29.467-7.217,52.928-21.347,65.893-30.448l-10.852,86.821c-0.506,4.125,0.635,8.272,3.157,11.404c2.522,3.125,6.147,4.923,9.974,4.923h20.791c3.826,0,7.451-1.798,9.975-4.923c2.522-3.132,3.66-7.279,3.156-11.404l-10.852-86.814c12.967,9.103,36.426,23.225,65.875,30.441c45.457,11.118,87.561,1.351,87.561,1.351s-31.564-27.798-77.002-38.909c-10.512-2.578-20.828-3.994-30.508-4.71c20.504-3.117,44.42-8.744,68.238-18.881C439.173,339.374,477.16,292.045,477.16,292.045z"/>
@@ -74,6 +153,7 @@
         <div class="welcome-text">Welcome <span id="username">back</span> to Glowi.es</div>
         <div class="tagline">The privacy based luxury service</div>
         <div class="loading-bar"></div>
+        <div class="wait-message" id="waitMessage">Please wait while we prepare your experience.</div>
     </div>
     <script>
         (async function() {
@@ -97,9 +177,17 @@
                     console.log('✅ User stored in sessionStorage');
                     
                     setTimeout(() => {
+                        document.getElementById('waitMessage').classList.add('show');
+                    }, 500);
+                    
+                    setTimeout(() => {
+                        document.getElementById('successToast').classList.add('show');
+                    }, 800);
+                    
+                    setTimeout(() => {
                         console.log('🔄 Redirecting to /dash');
                         window.location.replace('/dash');
-                    }, 800);
+                    }, 1600);
                 } else {
                     const errorData = await response.json().catch(() => ({}));
                     console.error('❌ Auth failed with status:', response.status, 'Error:', errorData.error);
