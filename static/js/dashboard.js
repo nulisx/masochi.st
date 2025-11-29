@@ -789,7 +789,7 @@ class Dashboard {
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
-                <div class="card">
+                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative;">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24">
@@ -827,9 +827,11 @@ class Dashboard {
                         </div>
                         <button id="changePasswordBtn" class="security-btn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 12px; cursor: pointer; font-weight: 500; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease;">Change</button>
                     </div>
+                    
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #a855f7 0%, #a855f7 100%); border-radius: 0 0 12px 12px;"></div>
                 </div>
                 
-                <div class="card">
+                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative;">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -872,11 +874,13 @@ class Dashboard {
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
                     </div>
+                    
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #a855f7 0%, #a855f7 100%); border-radius: 0 0 12px 12px;"></div>
                 </div>
             </div>
             
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
-                <div class="card">
+                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative;">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -891,9 +895,10 @@ class Dashboard {
                         </div>
                     </div>
                     <span class="badge success">● Protected</span>
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #a855f7 0%, #a855f7 100%); border-radius: 0 0 12px 12px;"></div>
                 </div>
                 
-                <div class="card">
+                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative;">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -907,14 +912,15 @@ class Dashboard {
                         </div>
                     </div>
                     <span class="badge success">● Up to date</span>
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #a855f7 0%, #a855f7 100%); border-radius: 0 0 12px 12px;"></div>
                 </div>
                 
-                <div class="card">
+                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative;">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="8" cy="12" r="3"></circle>
-                                <path d="M11 12h8M19 10v4M19 10h2M19 14h2"></path>
+                                <path d="M14 14a4 4 0 1 0-8 0v2M7 8a3 3 0 0 1 6 0" fill="rgba(168, 85, 247, 0.25)"></path>
+                                <path d="M14 14a4 4 0 1 0-8 0v2M7 8a3 3 0 0 1 6 0"></path>
                             </svg>
                         </div>
                         <div>
@@ -923,6 +929,7 @@ class Dashboard {
                         </div>
                     </div>
                     <span class="badge warning">● Setup Required</span>
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #a855f7 0%, #a855f7 100%); border-radius: 0 0 12px 12px;"></div>
                 </div>
             </div>
         `;
