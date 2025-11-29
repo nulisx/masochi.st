@@ -144,14 +144,24 @@
                 } else {
                     let errorMsg = 'Registration failed';
                     if (data.errors && Array.isArray(data.errors)) {
-                        const errorMessages = data.errors.map(e => {
-                            if (e.param === 'username') return 'Invalid Username: Taken or Invalid Format';
-                            if (e.param === 'email') return 'Invalid Email: Incorrect Format';
-                            if (e.param === 'password') return 'Invalid Password: Missing Requirements (8+ characters)';
-                            if (e.param === 'inviteCode') return 'Invalid Invite Code';
-                            return 'Invalid input';
+                        const errorMap = {};
+                        data.errors.forEach(e => {
+                            const param = e.param || e.field || 'unknown';
+                            if (!errorMap[param]) {
+                                if (param === 'username') {
+                                    errorMap[param] = 'Invalid Username: Invalid Format or Too Long';
+                                } else if (param === 'email') {
+                                    errorMap[param] = 'Invalid Email: Incorrect Format';
+                                } else if (param === 'password') {
+                                    errorMap[param] = 'Invalid Password: Missing Requirements (8+ characters)';
+                                } else if (param === 'inviteCode') {
+                                    errorMap[param] = 'Invalid Invite Code';
+                                } else {
+                                    errorMap[param] = `Invalid ${param.charAt(0).toUpperCase() + param.slice(1)}`;
+                                }
+                            }
                         });
-                        errorMsg = errorMessages.join(', ');
+                        errorMsg = Object.values(errorMap).join(', ');
                     } else if (data.error) {
                         if (data.error.includes('Username already')) {
                             errorMsg = 'Invalid Username: Taken';
@@ -159,6 +169,12 @@
                             errorMsg = 'Invalid Email: Already in use';
                         } else if (data.error.includes('invite')) {
                             errorMsg = 'Invalid Invite Code: Invalid or expired';
+                        } else if (data.error.includes('password')) {
+                            errorMsg = 'Invalid Password: Missing Requirements (8+ characters)';
+                        } else if (data.error.includes('email')) {
+                            errorMsg = 'Invalid Email: Incorrect Format';
+                        } else if (data.error.includes('username')) {
+                            errorMsg = 'Invalid Username: Invalid Format or Taken';
                         } else {
                             errorMsg = data.error;
                         }
