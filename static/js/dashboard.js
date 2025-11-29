@@ -828,8 +828,8 @@ class Dashboard {
                         <button id="changePasswordBtn" class="security-btn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 12px; cursor: pointer; font-weight: 500; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease;">Change</button>
                     </div>
                     
-                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 88px; background: linear-gradient(180deg, rgba(168,85,247,0) 0%, rgba(168,85,247,0.08) 50%, rgba(168,85,247,0.12) 100%); pointer-events: none; display: flex; align-items: center; justify-content: flex-end; padding-right: 20px;">
-                        <svg width="80" height="80" viewBox="0 0 24 24" style="opacity: 0.08; fill: #a855f7;" xmlns="http://www.w3.org/2000/svg">
+                    <div style="position: absolute; bottom: -30px; right: -30px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center;">
+                        <svg width="120" height="120" viewBox="0 0 24 24" style="opacity: 0.08; fill: #a855f7; transform: rotate(-25deg);" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12 2L4 7V12C4 18 12 22 12 22S20 18 20 12V7L12 2Z" fill="#a855f7"/>
                         </svg>
                     </div>
@@ -879,8 +879,8 @@ class Dashboard {
                         </svg>
                     </div>
                     
-                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 88px; background: linear-gradient(180deg, rgba(168,85,247,0) 0%, rgba(168,85,247,0.08) 50%, rgba(168,85,247,0.12) 100%); pointer-events: none; display: flex; align-items: center; justify-content: flex-end; padding-right: 20px;">
-                        <svg width="80" height="80" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.5">
+                    <div style="position: absolute; bottom: -30px; right: -30px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center;">
+                        <svg width="120" height="120" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7; transform: rotate(-25deg);" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.5">
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                             <circle cx="12" cy="12" r="3"></circle>
                         </svg>
@@ -904,8 +904,8 @@ class Dashboard {
                         </div>
                     </div>
                     <span class="badge success">● Protected</span>
-                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 88px; background: linear-gradient(180deg, rgba(168,85,247,0) 0%, rgba(168,85,247,0.08) 50%, rgba(168,85,247,0.12) 100%); pointer-events: none; display: flex; align-items: center; justify-content: flex-end; padding-right: 20px;">
-                        <svg width="80" height="80" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.5">
+                    <div style="position: absolute; bottom: -30px; right: -30px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center;">
+                        <svg width="120" height="120" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7; transform: rotate(-25deg);" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.5">
                             <path d="M12 1l10 6v6c0 6-10 8-10 8s-10-2-10-8V7l10-6z"></path>
                             <rect x="13" y="12" width="6" height="6" rx="1"></rect>
                             <path d="M16 12V9a1 1 0 0 0-2 0"></path>
@@ -927,8 +927,8 @@ class Dashboard {
                         </div>
                     </div>
                     <span class="badge success">● Up to date</span>
-                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 88px; background: linear-gradient(180deg, rgba(168,85,247,0) 0%, rgba(168,85,247,0.08) 50%, rgba(168,85,247,0.12) 100%); pointer-events: none; display: flex; align-items: center; justify-content: flex-end; padding-right: 20px;">
-                        <svg width="80" height="80" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.5">
+                    <div style="position: absolute; bottom: -30px; right: -30px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center;">
+                        <svg width="120" height="120" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7; transform: rotate(-25deg);" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.5">
                             <circle cx="12" cy="12" r="9"></circle>
                             <polyline points="12 6 12 12 15 15"></polyline>
                         </svg>
@@ -939,8 +939,8 @@ class Dashboard {
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 14a4 4 0 1 0-8 0v2M7 8a3 3 0 0 1 6 0" fill="rgba(168, 85, 247, 0.25)"></path>
-                                <path d="M14 14a4 4 0 1 0-8 0v2M7 8a3 3 0 0 1 6 0"></path>
+                                <circle cx="10" cy="13" r="3"></circle>
+                                <path d="M13 11l6-6m-6 6l-3-3m3 3v2c0 1 .5 2 2 2h6"></path>
                             </svg>
                         </div>
                         <div>
@@ -949,9 +949,10 @@ class Dashboard {
                         </div>
                     </div>
                     <span class="badge warning">● Setup Required</span>
-                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 88px; background: linear-gradient(180deg, rgba(168,85,247,0) 0%, rgba(168,85,247,0.08) 50%, rgba(168,85,247,0.12) 100%); pointer-events: none; display: flex; align-items: center; justify-content: flex-end; padding-right: 20px;">
-                        <svg width="80" height="80" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.5">
-                            <path d="M14 14a4 4 0 1 0-8 0v2M7 8a3 3 0 0 1 6 0"></path>
+                    <div style="position: absolute; bottom: -30px; right: -30px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center;">
+                        <svg width="120" height="120" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7; transform: rotate(-25deg);" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.5">
+                            <circle cx="10" cy="13" r="4"></circle>
+                            <path d="M14 10l7-7m-7 7l-3.5-3.5m3.5 3.5v2.5c0 1.2.5 2.5 2 2.5h7"></path>
                         </svg>
                     </div>
                 </div>
