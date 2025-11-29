@@ -789,7 +789,7 @@ class Dashboard {
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
-                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative;">
+                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative; overflow: hidden;">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24">
@@ -828,10 +828,14 @@ class Dashboard {
                         <button id="changePasswordBtn" class="security-btn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 12px; cursor: pointer; font-weight: 500; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease;">Change</button>
                     </div>
                     
-                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #a855f7 0%, #a855f7 100%); border-radius: 0 0 12px 12px;"></div>
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 88px; background: linear-gradient(180deg, rgba(168,85,247,0) 0%, rgba(168,85,247,0.08) 50%, rgba(168,85,247,0.12) 100%); pointer-events: none; display: flex; align-items: center; justify-content: flex-end; padding-right: 20px;">
+                        <svg width="80" height="80" viewBox="0 0 24 24" style="opacity: 0.08; fill: #a855f7;" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L4 7V12C4 18 12 22 12 22S20 18 20 12V7L12 2Z" fill="#a855f7"/>
+                        </svg>
+                    </div>
                 </div>
                 
-                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative;">
+                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative; overflow: hidden;">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -875,12 +879,17 @@ class Dashboard {
                         </svg>
                     </div>
                     
-                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #a855f7 0%, #a855f7 100%); border-radius: 0 0 12px 12px;"></div>
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 88px; background: linear-gradient(180deg, rgba(168,85,247,0) 0%, rgba(168,85,247,0.08) 50%, rgba(168,85,247,0.12) 100%); pointer-events: none; display: flex; align-items: center; justify-content: flex-end; padding-right: 20px;">
+                        <svg width="80" height="80" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.5">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </div>
                 </div>
             </div>
             
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
-                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative;">
+                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative; overflow: hidden;">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -895,10 +904,16 @@ class Dashboard {
                         </div>
                     </div>
                     <span class="badge success">● Protected</span>
-                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #a855f7 0%, #a855f7 100%); border-radius: 0 0 12px 12px;"></div>
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 88px; background: linear-gradient(180deg, rgba(168,85,247,0) 0%, rgba(168,85,247,0.08) 50%, rgba(168,85,247,0.12) 100%); pointer-events: none; display: flex; align-items: center; justify-content: flex-end; padding-right: 20px;">
+                        <svg width="80" height="80" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.5">
+                            <path d="M12 1l10 6v6c0 6-10 8-10 8s-10-2-10-8V7l10-6z"></path>
+                            <rect x="13" y="12" width="6" height="6" rx="1"></rect>
+                            <path d="M16 12V9a1 1 0 0 0-2 0"></path>
+                        </svg>
+                    </div>
                 </div>
                 
-                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative;">
+                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative; overflow: hidden;">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -912,10 +927,15 @@ class Dashboard {
                         </div>
                     </div>
                     <span class="badge success">● Up to date</span>
-                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #a855f7 0%, #a855f7 100%); border-radius: 0 0 12px 12px;"></div>
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 88px; background: linear-gradient(180deg, rgba(168,85,247,0) 0%, rgba(168,85,247,0.08) 50%, rgba(168,85,247,0.12) 100%); pointer-events: none; display: flex; align-items: center; justify-content: flex-end; padding-right: 20px;">
+                        <svg width="80" height="80" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <polyline points="12 6 12 12 15 15"></polyline>
+                        </svg>
+                    </div>
                 </div>
                 
-                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative;">
+                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative; overflow: hidden;">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -929,7 +949,11 @@ class Dashboard {
                         </div>
                     </div>
                     <span class="badge warning">● Setup Required</span>
-                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #a855f7 0%, #a855f7 100%); border-radius: 0 0 12px 12px;"></div>
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 88px; background: linear-gradient(180deg, rgba(168,85,247,0) 0%, rgba(168,85,247,0.08) 50%, rgba(168,85,247,0.12) 100%); pointer-events: none; display: flex; align-items: center; justify-content: flex-end; padding-right: 20px;">
+                        <svg width="80" height="80" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.5">
+                            <path d="M14 14a4 4 0 1 0-8 0v2M7 8a3 3 0 0 1 6 0"></path>
+                        </svg>
+                    </div>
                 </div>
             </div>
         `;
