@@ -1635,14 +1635,24 @@ class Dashboard {
                                     </div>
                                     
                                     <div style="display: flex; gap: 8px; flex-direction: column;">
-                                        <button class="btn btn-secondary" onclick="dashboard.copyFileLink('${shareUrl}')" style="font-size: 12px; padding: 8px 12px;">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                            </svg>
-                                            Copy Link
-                                        </button>
-                                        <button class="btn btn-danger" onclick="dashboard.deleteFile('${file.code}')" style="font-size: 12px; padding: 8px 12px;">
+                                        <div style="display: flex; gap: 8px;">
+                                            <button class="btn btn-secondary" onclick="dashboard.copyFileLink('${shareUrl}')" style="font-size: 12px; padding: 8px 12px; flex: 1;">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                                </svg>
+                                                Copy
+                                            </button>
+                                            <button class="btn btn-secondary" onclick="window.open('${shareUrl}', '_blank')" style="font-size: 12px; padding: 8px 12px; flex: 1;">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                                </svg>
+                                                Open
+                                            </button>
+                                        </div>
+                                        <button class="btn btn-danger" onclick="dashboard.deleteFile('${file.code}', 'files')" style="font-size: 12px; padding: 8px 12px;">
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                 <path d="M3 6h18M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2l-1-14"></path>
                                             </svg>
@@ -1722,7 +1732,7 @@ class Dashboard {
         }
     }
 
-    async deleteFile(code) {
+    async deleteFile(code, section = 'files') {
         if (!confirm('Are you sure you want to delete this file?')) return;
 
         try {
@@ -1733,7 +1743,11 @@ class Dashboard {
 
             if (response.ok) {
                 this.showToast('File deleted', 'success');
-                this.renderFiles();
+                if (section === 'litterbox') {
+                    this.renderLitterBox();
+                } else {
+                    this.renderFiles();
+                }
             } else {
                 throw new Error('Failed to delete');
             }
@@ -2000,8 +2014,10 @@ class Dashboard {
                                 '<span style="margin-right: 12px;">👁️ Views: ' + (file.view_count || 0) + '</span>' +
                                 '<span>⬇️ Downloads: ' + (file.download_count || 0) + '</span></div></div>' +
                                 '<div style="display: flex; gap: 8px; flex-direction: column;">' +
-                                '<button class="btn btn-secondary" onclick="dashboard.copyFileLink(\'' + shareUrl + '\')" style="font-size: 12px; padding: 8px 12px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>Copy Link</button>' +
-                                '<button class="btn btn-danger" onclick="dashboard.deleteFile(\'' + file.code + '\')" style="font-size: 12px; padding: 8px 12px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2l-1-14"></path></svg>Delete</button></div></div>';
+                                '<div style="display: flex; gap: 8px;">' +
+                                '<button class="btn btn-secondary" onclick="dashboard.copyFileLink(\'' + shareUrl + '\')" style="font-size: 12px; padding: 8px 12px; flex: 1;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>Copy</button>' +
+                                '<button class="btn btn-secondary" onclick="window.open(\'' + shareUrl + '\', \'_blank\')" style="font-size: 12px; padding: 8px 12px; flex: 1;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>Open</button></div>' +
+                                '<button class="btn btn-danger" onclick="dashboard.deleteFile(\'' + file.code + '\', \'litterbox\')" style="font-size: 12px; padding: 8px 12px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2l-1-14"></path></svg>Delete</button></div></div>';
                         }).join('')}
                     </div>
                 `}
@@ -2107,12 +2123,13 @@ class Dashboard {
 
                 if (response.ok) {
                     const data = await response.json();
-                    this.showToast('File uploaded! Link: ' + window.location.origin + '/file/' + data.code, 'success');
+                    this.showToast(selectedFile.name + ' uploaded', 'success');
                     form.reset();
                     selectedFile = null;
                     document.getElementById('selectedFileInfo').style.display = 'none';
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Upload Temporary File';
+                    await this.renderLitterBox();
                 } else {
                     throw new Error('Upload failed');
                 }
