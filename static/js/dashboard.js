@@ -2098,7 +2098,7 @@ class Dashboard {
             try {
                 submitBtn.disabled = true;
                 submitBtn.textContent = 'Uploading...';
-                const response = await fetch('/api/files/upload-litterbox', {
+                const response = await fetch('/api/files/litterbox', {
                     method: 'POST',
                     credentials: 'include',
                     body: formData
