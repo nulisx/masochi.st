@@ -225,16 +225,29 @@ class Dashboard {
         const searchInput = document.getElementById('searchInput');
         if (!searchInput) return;
 
+        const dashboardFeatures = [
+            { title: 'Bio Profile', description: 'Edit the profile of your biolink', page: 'profile', keywords: ['bio', 'profile', 'biolink'] },
+            { title: 'File Upload', description: 'Upload a file', page: 'files', keywords: ['upload', 'file', 'image'] },
+            { title: 'File Delete', description: 'Delete a file(s)', page: 'files', keywords: ['delete', 'file', 'remove'] },
+            { title: 'Biolinks', description: 'Manage your biolinks', page: 'biolinks', keywords: ['link', 'biolink', 'url'] },
+            { title: 'Images', description: 'Manage your images and media', page: 'files', keywords: ['image', 'media', 'photo'] },
+            { title: 'LitterBox', description: 'Temporary file hosting', page: 'litterbox', keywords: ['litterbox', 'temporary', 'file'] },
+            { title: 'Background Settings', description: 'Edit the profile of your biolink', page: 'profile', keywords: ['background', 'settings', 'theme'] },
+            { title: 'IMAP Settings', description: 'View the settings for our email service', page: 'settings', keywords: ['imap', 'email', 'settings'] },
+            { title: 'Security', description: 'Manage account security and privacy', page: 'security', keywords: ['security', 'password', '2fa', 'authentication'] },
+            { title: 'Connections', description: 'Manage connected accounts', page: 'connections', keywords: ['connection', 'account', 'linked'] },
+            { title: 'Privacy', description: 'Control your privacy settings', page: 'privacy', keywords: ['privacy', 'visibility', 'profile'] },
+            { title: 'Settings', description: 'Configure application settings', page: 'settings', keywords: ['setting', 'config', 'preference'] },
+            { title: 'Account Recovery', description: 'Set up recovery methods', page: 'security', keywords: ['recovery', 'backup', 'code'] },
+            { title: 'Two-Factor Authentication', description: 'Enable 2FA for extra security', page: 'security', keywords: ['2fa', 'authentication', 'factor'] }
+        ];
+
         let searchTimeout;
         let cachedResults = {};
 
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
+        const handleSearch = (query) => {
             const resultsContainer = document.getElementById('searchResults');
-
             if (!resultsContainer) return;
-
-            clearTimeout(searchTimeout);
 
             if (query.length === 0) {
                 resultsContainer.style.display = 'none';
@@ -246,44 +259,39 @@ class Dashboard {
                 return;
             }
 
-            searchTimeout = setTimeout(async () => {
-                try {
-                    const [linksRes, filesRes, connectionsRes] = await Promise.all([
-                        fetch('/api/links', { credentials: 'include' }),
-                        fetch('/api/files', { credentials: 'include' }),
-                        fetch('/api/connections', { credentials: 'include' })
-                    ]);
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                let results = [];
 
-                    let results = [];
+                const queryLower = query.toLowerCase();
+                results.push(...dashboardFeatures.filter(f =>
+                    f.title.toLowerCase().includes(queryLower) ||
+                    f.description.toLowerCase().includes(queryLower) ||
+                    f.keywords.some(k => k.includes(queryLower))
+                ).map(f => ({ type: 'feature', item: f })));
 
-                    if (linksRes.ok) {
-                        const data = await linksRes.json();
-                        results.push(...(data.links || []).filter(l => 
-                            l.title?.toLowerCase().includes(query) || 
-                            l.url?.toLowerCase().includes(query)
-                        ).map(l => ({ type: 'link', item: l })));
-                    }
+                cachedResults[query] = results;
+                this.displaySearchResults(results, resultsContainer);
+            }, 200);
+        };
 
-                    if (filesRes.ok) {
-                        const data = await filesRes.json();
-                        results.push(...(data.files || []).filter(f => 
-                            f.filename?.toLowerCase().includes(query)
-                        ).map(f => ({ type: 'file', item: f })));
-                    }
+        searchInput.addEventListener('input', (e) => {
+            handleSearch(e.target.value.toLowerCase().trim());
+        });
 
-                    if (connectionsRes.ok) {
-                        const data = await connectionsRes.json();
-                        results.push(...(data.connections || []).filter(c => 
-                            c.platform?.toLowerCase().includes(query)
-                        ).map(c => ({ type: 'connection', item: c })));
-                    }
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                searchInput.focus();
+                searchInput.select();
+            }
+        });
 
-                    cachedResults[query] = results;
-                    this.displaySearchResults(results, resultsContainer);
-                } catch (error) {
-                    console.error('Search failed:', error);
-                }
-            }, 300);
+        document.addEventListener('click', (e) => {
+            const resultsContainer = document.getElementById('searchResults');
+            if (resultsContainer && !e.target.closest('.search-container')) {
+                resultsContainer.style.display = 'none';
+            }
         });
     }
 
@@ -294,14 +302,15 @@ class Dashboard {
             return;
         }
 
-        const html = results.slice(0, 5).map(r => {
-            if (r.type === 'link') {
-                return `<div class="search-result-item" onclick="dashboard.loadPage('biolinks')"><strong>${r.item.title}</strong><p>${r.item.url}</p></div>`;
+        const html = results.slice(0, 8).map(r => {
+            if (r.type === 'feature') {
+                return `<div class="search-result-item" onclick="dashboard.loadPage('${r.item.page}'); document.getElementById('searchResults').style.display='none';" style="padding: 12px 16px; border-bottom: 1px solid rgba(168,85,247,0.1); cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; gap: 4px;" onmouseover="this.style.backgroundColor='rgba(168,85,247,0.08)'" onmouseout="this.style.backgroundColor='transparent'"><strong style="color: #a855f7; font-size: 14px;">${r.item.title}</strong><p style="color: var(--text-muted); font-size: 12px; margin: 0;">${r.item.description}</p></div>`;
+            } else if (r.type === 'link') {
+                return `<div class="search-result-item" onclick="dashboard.loadPage('biolinks'); document.getElementById('searchResults').style.display='none';" style="padding: 12px 16px; border-bottom: 1px solid rgba(168,85,247,0.1); cursor: pointer;"><strong style="color: #a855f7;">${r.item.title}</strong><p style="color: var(--text-muted); font-size: 12px; margin: 0;">${r.item.url}</p></div>`;
             } else if (r.type === 'file') {
-                return `<div class="search-result-item"><strong>${r.item.filename}</strong><p>${dashboard.formatFileSize(r.item.size)}</p></div>`;
-            } else {
-                return `<div class="search-result-item"><strong>${r.item.platform}</strong><p>Connected account</p></div>`;
+                return `<div class="search-result-item" onclick="dashboard.loadPage('files'); document.getElementById('searchResults').style.display='none';" style="padding: 12px 16px; border-bottom: 1px solid rgba(168,85,247,0.1); cursor: pointer;"><strong style="color: #a855f7;">${r.item.filename}</strong><p style="color: var(--text-muted); font-size: 12px; margin: 0;">${this.formatFileSize(r.item.size || 0)}</p></div>`;
             }
+            return '';
         }).join('');
 
         container.innerHTML = html;
