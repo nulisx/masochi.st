@@ -131,7 +131,7 @@
                     console.log('Login successful, redirecting...');
                     window.location.href = '/login/loading';
                 } else {
-                    showNotification('error', 'Error', data.error || 'Login failed');
+                    showNotification('error', 'Error', 'Invalid username, password or 2FA code');
                     isSubmitting = false;
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Login';
