@@ -1,0 +1,44 @@
+<div class="controller active ds4" id="gamepad-0" bis_skin_checked="1">
+            
+            <div class="triggers" bis_skin_checked="1">
+                <span class="trigger left" data-name="button-left-shoulder-bottom" style="opacity: 0;"></span>
+                <span class="trigger right" data-name="button-right-shoulder-bottom" style="opacity: 0;"></span>
+                <span class="trigger-button left" data-name="button-left-shoulder-bottom-digital"></span>
+                <span class="trigger-button right" data-name="button-right-shoulder-bottom-digital"></span>
+                <span class="clear"></span>
+            </div>
+            <div class="bumpers" bis_skin_checked="1">
+                <span class="bumper left" data-name="button-left-shoulder-top"></span>
+                <span class="bumper right" data-name="button-right-shoulder-top"></span>
+                <span class="clear"></span>
+            </div>
+            <div class="touchpad" data-name="touch-pad" bis_skin_checked="1"></div>
+            <div class="quadrant p0" bis_skin_checked="1"></div>
+            <div class="meta" data-name="button-meta" bis_skin_checked="1"></div>
+            <div class="arrows" bis_skin_checked="1">
+                <span class="back" data-name="button-select"></span>
+                <span class="start" data-name="button-start"></span>
+                <span class="clear"></span>
+            </div>
+            <div class="abxy" bis_skin_checked="1">
+                <span class="button a" data-name="button-1"></span>
+                <span class="button b" data-name="button-2"></span>
+                <span class="button x" data-name="button-3"></span>
+                <span class="button y" data-name="button-4"></span>
+            </div>
+            <div class="sticks" bis_skin_checked="1">
+                <span class="stick left" data-name="stick-1" style="margin-left: 0px; margin-top: 0px; transform: rotateX(0deg) rotateY(0deg);"></span>
+                <span class="stick right" data-name="stick-2" style="margin-left: 0px; margin-top: 0px; transform: rotateX(0deg) rotateY(0deg);"></span>
+            </div>
+            <div class="wheels" bis_skin_checked="1">
+                <span class="wheel left" data-name="stick-1-wheel" style="transform: rotate(0deg);"></span>
+                <span class="wheel right" data-name="stick-2-wheel" style="transform: rotate(0deg);"></span>
+            </div>
+            <div class="dpad" bis_skin_checked="1">
+                <span class="face up" data-name="button-dpad-top"></span>
+                <span class="face down" data-name="button-dpad-bottom"></span>
+                <span class="face left" data-name="button-dpad-left"></span>
+                <span class="face right" data-name="button-dpad-right"></span>
+            </div>
+            <div class="fstick" data-name="arcade-stick" bis_skin_checked="1"></div>
+        </div>
