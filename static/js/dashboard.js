@@ -1413,7 +1413,22 @@ class Dashboard {
                 </button>
                 <div>
                     <h1 class="page-title">Bio Links</h1>
-                    <p class="page-subtitle">Manage your bio link collection</p>
+                    <p class="page-subtitle">Manage and customize your bio link collection</p>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
+                <div class="card" style="padding: 20px; text-align: center;">
+                    <div style="font-size: 32px; font-weight: 600; color: var(--accent-primary); margin-bottom: 8px;">${links.length}</div>
+                    <p style="color: var(--text-muted); font-size: 14px;">Total Links</p>
+                </div>
+                <div class="card" style="padding: 20px; text-align: center;">
+                    <div style="font-size: 32px; font-weight: 600; color: var(--accent-secondary); margin-bottom: 8px;">0</div>
+                    <p style="color: var(--text-muted); font-size: 14px;">Total Clicks</p>
+                </div>
+                <div class="card" style="padding: 20px; text-align: center;">
+                    <div style="font-size: 32px; font-weight: 600; color: #a855f7; margin-bottom: 8px;">100%</div>
+                    <p style="color: var(--text-muted); font-size: 14px;">Active Rate</p>
                 </div>
             </div>
             
@@ -1428,7 +1443,7 @@ class Dashboard {
                     </div>
                     <div>
                         <h3 class="card-title">Add New Link</h3>
-                        <p class="card-description">Create a new bio link</p>
+                        <p class="card-description">Create a new bio link with validation</p>
                     </div>
                 </div>
                 
@@ -1443,7 +1458,8 @@ class Dashboard {
                             </svg>
                             Title
                         </label>
-                        <input type="text" class="form-input" id="linkTitle" placeholder="Link title" required>
+                        <input type="text" class="form-input" id="linkTitle" placeholder="e.g., My Portfolio" required maxlength="50">
+                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Up to 50 characters</p>
                     </div>
                     
                     <div class="form-group">
@@ -1455,7 +1471,8 @@ class Dashboard {
                             </svg>
                             URL
                         </label>
-                        <input type="url" class="form-input" id="linkUrl" placeholder="https:
+                        <input type="url" class="form-input" id="linkUrl" placeholder="https://example.com" required>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;" id="linkUrlStatus"></p>
                     </div>
                     
                     <button type="submit" class="btn btn-primary" style="width: 100%;">Add Link</button>
@@ -1463,28 +1480,33 @@ class Dashboard {
             </div>
             
             <div style="margin-top: 24px;">
-                <h3 style="margin-bottom: 16px;">Your Links</h3>
-                <div class="cards-grid" id="linksGrid" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                    <h3 style="margin: 0;">Your Links${links.length > 0 ? ' (' + links.length + ')' : ''}</h3>
+                    ${links.length > 0 ? '<span style="font-size: 12px; color: var(--text-muted);">Drag to reorder • Click to edit</span>' : ''}
+                </div>
+                <div id="linksGrid" style="display: flex; flex-direction: column; gap: 12px;">
                     ${links.length === 0 ? `
-                        <div class="empty-state" style="grid-column: 1 / -1;">
-                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <div class="card" style="padding: 48px 20px; text-align: center;">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 16px; opacity: 0.5;">
                                 <path d="M15 7h3a5 5 0 0 1 0 10h-3"></path>
                                 <path d="M9 17H6a5 5 0 0 1 0-10h3"></path>
                                 <path d="M8 12h8"></path>
                             </svg>
                             <h3>No links added yet</h3>
-                            <p>Create your first bio link above</p>
+                            <p style="color: var(--text-muted);">Create your first bio link above to get started</p>
                         </div>
-                    ` : links.map(link => `
-                        <div class="card">
-                            <div style="padding: 16px; border-bottom: 1px solid var(--border-color);">
+                    ` : links.map((link, idx) => `
+                        <div class="card" style="padding: 16px; display: flex; align-items: center; gap: 12px; cursor: move; transition: all 0.2s;" draggable="true" data-link-id="${link.id}" onclick="dashboard.editLink(${link.id})">
+                            <div style="color: var(--text-muted); font-weight: 600; cursor: grab;">≡</div>
+                            <div style="flex: 1;">
                                 <h4 style="margin-bottom: 4px; color: var(--text-primary);">${link.title}</h4>
-                                <p style="font-size: 12px; color: var(--text-muted); word-break: break-all;">${link.url}</p>
+                                <p style="font-size: 12px; color: var(--text-muted); word-break: break-all; margin-bottom: 8px;">${link.url}</p>
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    <span style="font-size: 11px; color: #22c55e; background: rgba(34,197,94,0.15); padding: 3px 8px; border-radius: 4px;">✓ Valid</span>
+                                    <span style="font-size: 11px; color: var(--text-muted); background: var(--bg-tertiary); padding: 3px 8px; border-radius: 4px;">Link ${idx + 1}</span>
+                                </div>
                             </div>
-                            <div style="padding: 12px; display: flex; gap: 8px;">
-                                <button class="btn btn-secondary" style="flex: 1; padding: 8px; font-size: 12px;" onclick="dashboard.editLink(${link.id})">Edit</button>
-                                <button class="btn btn-danger" style="flex: 1; padding: 8px; font-size: 12px;" onclick="dashboard.deleteLink(${link.id})">Delete</button>
-                            </div>
+                            <button class="btn btn-danger" style="padding: 6px 12px; font-size: 12px;" onclick="event.stopPropagation(); dashboard.deleteLink(${link.id})">Delete</button>
                         </div>
                     `).join('')}
                 </div>
@@ -1492,12 +1514,58 @@ class Dashboard {
         `;
 
         const form = document.getElementById('addLinkForm');
+        const urlInput = document.getElementById('linkUrl');
+        
+        urlInput.addEventListener('change', () => {
+            const status = document.getElementById('linkUrlStatus');
+            try {
+                new URL(urlInput.value);
+                status.style.color = '#22c55e';
+                status.textContent = '✓ Valid URL';
+            } catch {
+                status.style.color = '#ef4444';
+                status.textContent = '✗ Invalid URL';
+            }
+        });
+        
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             this.addLink(
                 document.getElementById('linkTitle').value,
                 document.getElementById('linkUrl').value
             );
+        });
+        
+        this.setupLinkDragDrop();
+    }
+    
+    setupLinkDragDrop() {
+        const links = document.querySelectorAll('[data-link-id]');
+        let draggedElement = null;
+        
+        links.forEach(link => {
+            link.addEventListener('dragstart', (e) => {
+                draggedElement = link;
+                link.style.opacity = '0.5';
+            });
+            
+            link.addEventListener('dragend', () => {
+                draggedElement = null;
+                link.style.opacity = '1';
+            });
+            
+            link.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                if (draggedElement && draggedElement !== link) {
+                    const rect = link.getBoundingClientRect();
+                    const midpoint = rect.top + rect.height / 2;
+                    if (e.clientY < midpoint) {
+                        link.parentNode.insertBefore(draggedElement, link);
+                    } else {
+                        link.parentNode.insertBefore(draggedElement, link.nextSibling);
+                    }
+                }
+            });
         });
     }
 
@@ -1526,29 +1594,72 @@ class Dashboard {
         const link = links.find(l => l.id === id);
         if (!link) return;
 
-        const title = prompt('Link title:', link.title);
-        if (!title) return;
+        this.showModal('Edit Link', `
+            <form id="editLinkForm">
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-input" id="editLinkTitle" value="${link.title}" required maxlength="50">
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Up to 50 characters</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">URL</label>
+                    <input type="url" class="form-input" id="editLinkUrl" value="${link.url}" required>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;" id="editUrlStatus"></p>
+                </div>
+            </form>
+        `, async () => {
+            const title = document.getElementById('editLinkTitle').value;
+            const url = document.getElementById('editLinkUrl').value;
 
-        const url = prompt('Link URL:', link.url);
-        if (!url) return;
-
-        try {
-            const response = await fetch(`/api/links/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify({ title, url })
-            });
-
-            if (response.ok) {
-                this.showToast('Link updated', 'success');
-                this.renderBiolinks();
-            } else {
-                throw new Error('Failed to update');
+            if (!title.trim()) {
+                this.showToast('Please enter a title', 'error');
+                return false;
             }
-        } catch (error) {
-            this.showToast('Failed to update link', 'error');
-        }
+
+            try {
+                new URL(url);
+            } catch {
+                this.showToast('Invalid URL format', 'error');
+                return false;
+            }
+
+            try {
+                const response = await fetch(`/api/links/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ title, url })
+                });
+
+                if (response.ok) {
+                    this.showToast('Link updated successfully', 'success');
+                    this.renderBiolinks();
+                    return true;
+                } else {
+                    throw new Error('Failed to update');
+                }
+            } catch (error) {
+                this.showToast('Failed to update link', 'error');
+                return false;
+            }
+        });
+        
+        setTimeout(() => {
+            const urlInput = document.getElementById('editLinkUrl');
+            if (urlInput) {
+                urlInput.addEventListener('change', () => {
+                    const status = document.getElementById('editUrlStatus');
+                    try {
+                        new URL(urlInput.value);
+                        status.style.color = '#22c55e';
+                        status.textContent = '✓ Valid URL';
+                    } catch {
+                        status.style.color = '#ef4444';
+                        status.textContent = '✗ Invalid URL';
+                    }
+                });
+            }
+        }, 100);
     }
 
     async deleteLink(id) {
@@ -1832,6 +1943,14 @@ class Dashboard {
         const connections = await this.fetchConnections();
         
         const contentArea = document.getElementById('contentArea');
+        
+        const platforms = [
+            { platform: 'twitter', label: 'Twitter', icon: '<path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 7-7 7-7"></path>', color: '#1DA1F2' },
+            { platform: 'github', label: 'GitHub', icon: '<path d="M16 22v-5.5c0-.833.023-1.5-.75-2.75.75-.75 2.1-2.128 2.1-5.25 0-1.5-.75-2.25-1.5-3 .15-.75.7-2.325-.15-3 0 0-1.289-.15-4.25 1.3-1.848-.45-3.604-.45-5.452 0-2.961-1.45-4.25-1.3-4.25-1.3-.85.675-.3 2.25-.15 3-.75.75-1.5 1.5-1.5 3 0 3.122 1.35 4.5 2.1 5.25-.773 1.25-.75 1.917-.75 2.75V22"></path>', color: '#333' },
+            { platform: 'instagram', label: 'Instagram', icon: '<rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path><circle cx="17.5" cy="6.5" r="1.5"></circle>', color: '#E4405F' },
+            { platform: 'discord', label: 'Discord', icon: '<path d="M20.317 4.492c-1.53-.742-3.17-1.297-4.885-1.6a.058.058 0 00-.064.028c-.211.375-.444.864-.607 1.25-1.645-.246-3.281-.246-4.897 0-.163-.386-.397-.875-.61-1.25a.059.059 0 00-.064-.027c-1.723.303-3.341.858-4.887 1.6a.058.058 0 00-.033.052c-.331 4.942.278 9.789 1.238 14.565a.06.06 0 00.052.035c1.646.477 3.24.91 4.817 1.22a.059.059 0 00.066-.03c.23-.383.452-.829.626-1.275a.06.06 0 00-.033-.088c-.749-.227-1.456-.481-2.14-.76a.06.06 0 00-.028-.11c.142-.11.285-.228.422-.35a.059.059 0 00.064-.008c4.489 2.139 9.36 2.139 13.815 0a.059.059 0 00.064.008c.137.122.28.24.422.35a.06.06 0 00-.028.11c-.684.279-1.39.533-2.142.76a.06.06 0 00-.033.089c.175.446.397.892.627 1.275a.059.059 0 00.066.03c1.578-.31 3.172-.743 4.819-1.22a.06.06 0 00.052-.035c1.02-4.963 1.629-9.776 1.17-14.565a.059.059 0 00-.032-.052z"></path>', color: '#5865F2' }
+        ];
+        
         contentArea.innerHTML = `
             <div class="page-header">
                 <button class="page-back" onclick="dashboard.loadPage('overview')">
@@ -1840,45 +1959,61 @@ class Dashboard {
                     </svg>
                 </button>
                 <div>
-                    <h1 class="page-title">Connections</h1>
-                    <p class="page-subtitle">Connect your social media accounts</p>
+                    <h1 class="page-title">Social Connections</h1>
+                    <p class="page-subtitle">Link your social media profiles to display on your bio</p>
                 </div>
             </div>
             
-            <div class="cards-grid">
-                ${[
-                    { platform: 'twitter', label: 'Twitter', icon: '<path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 7-7 7-7"></path>' },
-                    { platform: 'github', label: 'GitHub', icon: '<path d="M16 22v-5.5c0-.833.023-1.5-.75-2.75.75-.75 2.1-2.128 2.1-5.25 0-1.5-.75-2.25-1.5-3 .15-.75.7-2.325-.15-3 0 0-1.289-.15-4.25 1.3-1.848-.45-3.604-.45-5.452 0-2.961-1.45-4.25-1.3-4.25-1.3-.85.675-.3 2.25-.15 3-.75.75-1.5 1.5-1.5 3 0 3.122 1.35 4.5 2.1 5.25-.773 1.25-.75 1.917-.75 2.75V22"></path>' },
-                    { platform: 'instagram', label: 'Instagram', icon: '<rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path><circle cx="17.5" cy="6.5" r="1.5"></circle>' },
-                    { platform: 'discord', label: 'Discord', icon: '<path d="M20.317 4.492c-1.53-.742-3.17-1.297-4.885-1.6a.058.058 0 00-.064.028c-.211.375-.444.864-.607 1.25-1.645-.246-3.281-.246-4.897 0-.163-.386-.397-.875-.61-1.25a.059.059 0 00-.064-.027c-1.723.303-3.341.858-4.887 1.6a.058.058 0 00-.033.052c-.331 4.942.278 9.789 1.238 14.565a.06.06 0 00.052.035c1.646.477 3.24.91 4.817 1.22a.059.059 0 00.066-.03c.23-.383.452-.829.626-1.275a.06.06 0 00-.033-.088c-.749-.227-1.456-.481-2.14-.76a.06.06 0 00-.028-.11c.142-.11.285-.228.422-.35a.059.059 0 00.064-.008c4.489 2.139 9.36 2.139 13.815 0a.059.059 0 00.064.008c.137.122.28.24.422.35a.06.06 0 00-.028.11c-.684.279-1.39.533-2.142.76a.06.06 0 00-.033.089c.175.446.397.892.627 1.275a.059.059 0 00.066.03c1.578-.31 3.172-.743 4.819-1.22a.06.06 0 00.052-.035c1.02-4.963 1.629-9.776 1.17-14.565a.059.059 0 00-.032-.052z"></path>' }
-                ].map(plat => {
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+                <div class="card" style="padding: 20px; text-align: center;">
+                    <div style="font-size: 32px; font-weight: 600; color: var(--accent-primary); margin-bottom: 8px;">${connections.length}</div>
+                    <p style="color: var(--text-muted); font-size: 14px;">Connected Accounts</p>
+                </div>
+                <div class="card" style="padding: 20px; text-align: center;">
+                    <div style="font-size: 32px; font-weight: 600; color: #a855f7; margin-bottom: 8px;">${platforms.length - connections.length}</div>
+                    <p style="color: var(--text-muted); font-size: 14px;">Available to Connect</p>
+                </div>
+            </div>
+            
+            <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                ${platforms.map(plat => {
                     const conn = connections.find(c => c.platform === plat.platform);
                     return `
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-icon">
+                        <div class="card" style="overflow: hidden; position: relative;">
+                            <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: ${plat.color};"></div>
+                            
+                            <div class="card-header" style="padding-bottom: 12px;">
+                                <div class="card-icon" style="background: rgba(${parseInt(plat.color.slice(1,3), 16)}, ${parseInt(plat.color.slice(3,5), 16)}, ${parseInt(plat.color.slice(5,7), 16)}, 0.15); color: ${plat.color};">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         ${plat.icon}
                                     </svg>
                                 </div>
                                 <div>
                                     <h3 class="card-title">${plat.label}</h3>
-                                    <p class="card-description">${conn ? 'Connected' : 'Not connected'}</p>
+                                    <div style="display: flex; align-items: center; gap: 6px;">
+                                        <span style="width: 6px; height: 6px; border-radius: 50%; background: ${conn ? '#22c55e' : '#ef4444'};"></span>
+                                        <p class="card-description" style="margin: 0; font-size: 12px;">${conn ? '● Connected' : '● Not Connected'}</p>
+                                    </div>
                                 </div>
                             </div>
                             
                             ${conn ? `
-                                <div style="padding: 16px;">
-                                    <div style="background: var(--bg-tertiary); border-radius: 8px; padding: 12px; margin-bottom: 12px;">
-                                        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 6px;">Username</p>
-                                        <input type="text" id="${plat.platform}_username" class="form-input" value="${conn.username}" style="margin-bottom: 8px;">
-                                        <button onclick="dashboard.updateConnection('${plat.platform}', '${conn.id}')" class="btn btn-primary" style="width: 100%; padding: 8px; font-size: 12px; margin-bottom: 8px;">Save Changes</button>
-                                        <button onclick="dashboard.disconnectPlatform('${plat.platform}')" class="btn btn-danger" style="width: 100%; padding: 8px; font-size: 12px;">Disconnect</button>
+                                <div style="padding: 16px; border-top: 1px solid var(--border-color);">
+                                    <div style="margin-bottom: 12px;">
+                                        <label class="form-label" style="font-size: 12px;">Username</label>
+                                        <div style="display: flex; gap: 8px; align-items: center;">
+                                            <input type="text" id="${plat.platform}_username" class="form-input" value="${conn.username}" style="flex: 1;">
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 8px;">
+                                        <button onclick="dashboard.updateConnection('${plat.platform}', '${conn.id}')" class="btn btn-primary" style="flex: 1; padding: 8px; font-size: 12px;">Save</button>
+                                        <button onclick="dashboard.disconnectPlatform('${plat.platform}')" class="btn btn-danger" style="flex: 1; padding: 8px; font-size: 12px;">Disconnect</button>
                                     </div>
                                 </div>
                             ` : `
-                                <div style="padding: 16px;">
-                                    <button class="btn btn-primary" style="width: 100%;" onclick="alert('Connect ${plat.label}')">Connect Account</button>
+                                <div style="padding: 16px; border-top: 1px solid var(--border-color);">
+                                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Connect your ${plat.label} account to show on your bio profile.</p>
+                                    <button class="btn btn-primary" style="width: 100%; padding: 8px; font-size: 12px;">Connect ${plat.label}</button>
                                 </div>
                             `}
                         </div>
