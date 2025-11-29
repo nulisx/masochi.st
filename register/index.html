@@ -145,16 +145,20 @@
                     let errorMsg = 'Registration failed';
                     if (data.errors && Array.isArray(data.errors)) {
                         const errorMessages = data.errors.map(e => {
-                            if (e.param === 'email') return 'Invalid email format';
-                            if (e.param === 'username') return 'Username already taken or invalid';
-                            if (e.param === 'password') return 'Password must be at least 8 characters';
-                            if (e.param === 'inviteCode') return 'Invite code is invalid or already used';
-                            return e.msg || 'Invalid input';
+                            if (e.param === 'username') return 'Invalid Username: Taken or Invalid Format';
+                            if (e.param === 'email') return 'Invalid Email: Incorrect Format';
+                            if (e.param === 'password') return 'Invalid Password: Missing Requirements (8+ characters)';
+                            if (e.param === 'inviteCode') return 'Invalid Invite Code';
+                            return 'Invalid input';
                         });
                         errorMsg = errorMessages.join(', ');
                     } else if (data.error) {
-                        if (data.error.includes('invite')) {
-                            errorMsg = 'Invite Code required to make an account';
+                        if (data.error.includes('Username already')) {
+                            errorMsg = 'Invalid Username: Taken';
+                        } else if (data.error.includes('Email already')) {
+                            errorMsg = 'Invalid Email: Already in use';
+                        } else if (data.error.includes('invite')) {
+                            errorMsg = 'Invalid Invite Code: Invalid or expired';
                         } else {
                             errorMsg = data.error;
                         }
