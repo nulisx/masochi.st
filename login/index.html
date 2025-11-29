@@ -50,8 +50,6 @@
         <h1>Welcome Back</h1>
         <p class="subtitle">Login to access your account</p>
         
-        <div id="errorMessage" class="error-message"></div>
-        
         <form id="loginForm">
             <div class="form-group">
                 <label for="identifier">Username or Email</label>
@@ -75,6 +73,28 @@
     </div>
 
     <script>
+        function showNotification(type, title, message) {
+            const notification = document.createElement('div');
+            notification.className = `notification-popup ${type}`;
+            notification.innerHTML = `
+                <div class="notification-icon">${type === 'error' ? '!' : '✓'}</div>
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <div class="notification-message">${message}</div>
+                </div>
+                <button class="notification-close">&times;</button>
+            `;
+            document.body.appendChild(notification);
+            
+            const closeBtn = notification.querySelector('.notification-close');
+            const removeNotification = () => {
+                notification.classList.add('removing');
+                setTimeout(() => notification.remove(), 300);
+            };
+            closeBtn.addEventListener('click', removeNotification);
+            setTimeout(removeNotification, 5000);
+        }
+
         // Prevent multiple form submissions
         let isSubmitting = false;
         
@@ -90,7 +110,6 @@
             isSubmitting = true;
             const username = document.getElementById('identifier').value;
             const password = document.getElementById('password').value;
-            const errorMessage = document.getElementById('errorMessage');
             const submitBtn = document.querySelector('.auth-button');
             
             try {
@@ -112,15 +131,13 @@
                     console.log('Login successful, redirecting...');
                     window.location.href = '/login/loading';
                 } else {
-                    errorMessage.textContent = data.error || 'Login failed';
-                    errorMessage.classList.add('show');
+                    showNotification('error', 'Error', data.error || 'Login failed');
                     isSubmitting = false;
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Login';
                 }
             } catch (error) {
-                errorMessage.textContent = 'An error occurred. Please try again.';
-                errorMessage.classList.add('show');
+                showNotification('error', 'Error', 'An error occurred. Please try again.');
                 isSubmitting = false;
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Login';
