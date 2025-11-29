@@ -115,19 +115,19 @@ class Dashboard {
     setupHeaderDropdown() {
         const headerDropdownBtn = document.getElementById('headerDropdownBtn');
         const headerDropdownMenu = document.getElementById('headerDropdownMenu');
+        const headerDropdownToggle = document.getElementById('headerDropdownToggle');
         
         if (headerDropdownBtn && headerDropdownMenu) {
             headerDropdownBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const isOpen = headerDropdownMenu.style.display === 'block';
-                headerDropdownMenu.style.display = isOpen ? 'none' : 'block';
-                headerDropdownBtn.textContent = isOpen ? '˅' : '^';
+                headerDropdownMenu.classList.toggle('open');
+                headerDropdownToggle.textContent = headerDropdownMenu.classList.contains('open') ? '^' : '˅';
             });
             
             document.addEventListener('click', (e) => {
                 if (!e.target.closest('.header-user')) {
-                    headerDropdownMenu.style.display = 'none';
-                    headerDropdownBtn.textContent = '˅';
+                    headerDropdownMenu.classList.remove('open');
+                    headerDropdownToggle.textContent = '˅';
                 }
             });
         }
