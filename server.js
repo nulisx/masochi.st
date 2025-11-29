@@ -675,7 +675,7 @@ app.get('/file/:code', async (req, res) => {
 app.use((req, res) => res.status(404).sendFile(path.join(__dirname, '404.html')));
 
 if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
-  app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Server running on http:
+  app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Server running on http://0.0.0.0:${PORT}`));
 }
 
 export default app;
