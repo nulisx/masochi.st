@@ -1981,58 +1981,26 @@ class Dashboard {
                             const expiresAt = file.expires_at ? new Date(file.expires_at) : null;
                             const isExpired = expiresAt && expiresAt < new Date();
                             const expiryText = expiresAt ? expiresAt.toLocaleDateString() + ' ' + expiresAt.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'N/A';
-                            const shareUrl = \`\${window.location.origin}/file/\${file.code}\`;
+                            const shareUrl = window.location.origin + '/file/' + file.code;
                             const createdAt = file.created_at ? new Date(file.created_at).toLocaleDateString() : 'Unknown';
+                            const imgPreview = isImage ? '<img src="' + shareUrl + '" alt="' + file.filename + '" style="width: 100%; height: 100%; object-fit: cover;">' : '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity: 0.6;"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>';
                             
-                            return \`
-                                <div class="card" style="display: flex; flex-direction: column; padding: 16px; position: relative;">
-                                    \${isExpired ? '<div style="position: absolute; top: 8px; right: 8px; background: #ef4444; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">EXPIRED</div>' : ''}
-                                    
-                                    <div style="width: 100%; height: 120px; background: var(--bg-tertiary); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; overflow: hidden; position: relative;">
-                                        \${isImage ? 
-                                            \`<img src="\${shareUrl}" alt="\${file.filename}" style="width: 100%; height: 100%; object-fit: cover;">\` :
-                                            \`<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity: 0.6;">
-                                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-                                                <polyline points="13 2 13 9 20 9"></polyline>
-                                            </svg>\`
-                                        }
-                                    </div>
-                                    
-                                    <div style="flex: 1;">
-                                        <h4 style="font-weight: 600; font-size: 14px; margin-bottom: 6px; word-break: break-word; color: var(--text-primary);">\${file.filename}</h4>
-                                        
-                                        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
-                                            <span style="font-size: 11px; color: var(--text-muted); background: var(--bg-tertiary); padding: 3px 8px; border-radius: 6px;">
-                                                📦 \${this.formatFileSize(file.size)}
-                                            </span>
-                                            \${file.password_protected ? '<span style="font-size: 11px; color: #a855f7; background: rgba(168,85,247,0.15); padding: 3px 8px; border-radius: 6px;">🔒 Protected</span>' : ''}
-                                            <span style="font-size: 11px; color: #f59e0b; background: rgba(245,158,11,0.15); padding: 3px 8px; border-radius: 6px;">⏱️ \${expiryText}</span>
-                                        </div>
-                                        
-                                        <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">
-                                            <span style="margin-right: 12px;">📅 Uploaded: \${createdAt}</span><br>
-                                            <span style="margin-right: 12px;">👁️ Views: \${file.view_count || 0}</span>
-                                            <span>⬇️ Downloads: \${file.download_count || 0}</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <div style="display: flex; gap: 8px; flex-direction: column;">
-                                        <button class="btn btn-secondary" onclick="dashboard.copyFileLink('\${shareUrl}')" style="font-size: 12px; padding: 8px 12px;">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                            </svg>
-                                            Copy Link
-                                        </button>
-                                        <button class="btn btn-danger" onclick="dashboard.deleteFile('\${file.code}')" style="font-size: 12px; padding: 8px 12px;">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M3 6h18M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2l-1-14"></path>
-                                            </svg>
-                                            Delete
-                                        </button>
-                                    </div>
-                                </div>
-                            \`;
+                            return '<div class="card" style="display: flex; flex-direction: column; padding: 16px; position: relative;">' + 
+                                (isExpired ? '<div style="position: absolute; top: 8px; right: 8px; background: #ef4444; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">EXPIRED</div>' : '') +
+                                '<div style="width: 100%; height: 120px; background: var(--bg-tertiary); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; overflow: hidden; position: relative;">' +
+                                imgPreview +
+                                '</div><div style="flex: 1;"><h4 style="font-weight: 600; font-size: 14px; margin-bottom: 6px; word-break: break-word; color: var(--text-primary);">' + file.filename + '</h4>' +
+                                '<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">' +
+                                '<span style="font-size: 11px; color: var(--text-muted); background: var(--bg-tertiary); padding: 3px 8px; border-radius: 6px;">📦 ' + this.formatFileSize(file.size) + '</span>' +
+                                (file.password_protected ? '<span style="font-size: 11px; color: #a855f7; background: rgba(168,85,247,0.15); padding: 3px 8px; border-radius: 6px;">🔒 Protected</span>' : '') +
+                                '<span style="font-size: 11px; color: #f59e0b; background: rgba(245,158,11,0.15); padding: 3px 8px; border-radius: 6px;">⏱️ ' + expiryText + '</span></div>' +
+                                '<div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">' +
+                                '<span style="margin-right: 12px;">📅 Uploaded: ' + createdAt + '</span><br>' +
+                                '<span style="margin-right: 12px;">👁️ Views: ' + (file.view_count || 0) + '</span>' +
+                                '<span>⬇️ Downloads: ' + (file.download_count || 0) + '</span></div></div>' +
+                                '<div style="display: flex; gap: 8px; flex-direction: column;">' +
+                                '<button class="btn btn-secondary" onclick="dashboard.copyFileLink(\'' + shareUrl + '\')" style="font-size: 12px; padding: 8px 12px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>Copy Link</button>' +
+                                '<button class="btn btn-danger" onclick="dashboard.deleteFile(\'' + file.code + '\')" style="font-size: 12px; padding: 8px 12px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2l-1-14"></path></svg>Delete</button></div></div>';
                         }).join('')}
                     </div>
                 `}
