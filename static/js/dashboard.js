@@ -1540,7 +1540,7 @@ class Dashboard {
                 </button>
                 <div>
                     <h1 class="page-title">Images</h1>
-                    <p class="page-subtitle">Secure file storage with E2EE encryption</p>
+                    <p class="page-subtitle">Secure file storage with E2EE encryption - End-to-End Encrypted</p>
                 </div>
             </div>
             
@@ -1554,7 +1554,7 @@ class Dashboard {
                     </svg>
                 </div>
                 <h3 style="margin-bottom: 8px;">Select or drop files</h3>
-                <p style="color: var(--text-muted); margin-bottom: 16px;">Files up to 200 MB. Encrypted end-to-end.</p>
+                <p style="color: var(--text-muted); margin-bottom: 16px;">Files up to 200 MB. AES-256-GCM encrypted end-to-end.</p>
                 <button class="btn btn-primary">Choose Files</button>
             </div>
             
@@ -1570,69 +1570,98 @@ class Dashboard {
                         </div>
                         <div>
                             <h3 class="card-title">About Images</h3>
-                            <p class="card-description">Secure permanent file storage with E2EE encryption</p>
+                            <p class="card-description">Secure permanent E2EE encrypted file storage</p>
                         </div>
                     </div>
                     <button class="btn btn-secondary" onclick="window.location.href='./faq'">View FAQ</button>
                 </div>
                 <div style="padding: 16px; color: var(--text-muted); line-height: 1.6;">
-                    <p>Upload and store files permanently with full end-to-end encryption. Your files are encrypted before they leave your device, and we cannot access them. Perfect for long-term secure storage.</p>
-                    <p style="margin-top: 12px;"><strong style="color: var(--text-primary);">Forbidden file types:</strong> .exe, .scr, .cpl, .doc*, .jar</p>
+                    <p><strong style="color: #22c55e;">🔐 End-to-End Encrypted:</strong> All files are encrypted with AES-256-GCM before upload. Even we cannot access your files.</p>
+                    <p style="margin-top: 12px;"><strong style="color: var(--text-primary);">Features:</strong> Permanent storage • Password protection • Expiration dates • Download tracking</p>
+                    <p style="margin-top: 12px;"><strong style="color: var(--text-primary);">Forbidden types:</strong> .exe, .scr, .cpl, .doc*, .jar</p>
                 </div>
             </div>
             
             <div style="margin-top: 32px;">
-                <h3 style="margin-bottom: 16px;">Your Files</h3>
-                <div class="cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));" id="filesGrid">
-                    ${files.length === 0 ? `
-                        <div class="empty-state" style="grid-column: 1 / -1;">
-                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-                                <polyline points="13 2 13 9 20 9"></polyline>
-                            </svg>
-                            <h3>No files uploaded</h3>
-                            <p>Upload your first file to get started</p>
-                        </div>
-                    ` : files.map(file => `
-                        <div class="file-card">
-                            <div class="file-preview">
-                                ${file.mime_type?.startsWith('image/') ? 
-                                    `<img src="${file.url}" alt="${file.filename}">` :
-                                    `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-                                        <polyline points="13 2 13 9 20 9"></polyline>
-                                    </svg>`
-                                }
-                            </div>
-                            <div class="file-info">
-                                <h4>${file.filename}</h4>
-                                <div class="file-meta">
-                                    <span>${this.formatFileSize(file.size)}</span>
-                                    ${file.expires_at ? `<span>Expires: ${new Date(file.expires_at).toLocaleDateString()}</span>` : ''}
-                                    ${file.password_protected ? '<span>Protected</span>' : ''}
+                <h3 style="margin-bottom: 16px;">Your Files (${files.length})</h3>
+                ${files.length === 0 ? `
+                    <div class="empty-state" style="text-align: center; padding: 48px 20px;">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                            <polyline points="13 2 13 9 20 9"></polyline>
+                        </svg>
+                        <h3>No files uploaded</h3>
+                        <p>Upload your first file to get started</p>
+                    </div>
+                ` : `
+                    <div class="cards-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));" id="filesGrid">
+                        ${files.map(file => {
+                            const isImage = file.mime_type?.startsWith('image/');
+                            const expiresAt = file.expires_at ? new Date(file.expires_at) : null;
+                            const isExpired = expiresAt && expiresAt < new Date();
+                            const expiryText = expiresAt ? expiresAt.toLocaleDateString() : 'Never';
+                            const shareUrl = `${window.location.origin}/file/${file.code}`;
+                            
+                            return `
+                                <div class="card" style="display: flex; flex-direction: column; padding: 16px; position: relative;">
+                                    ${isExpired ? '<div style="position: absolute; top: 8px; right: 8px; background: #ef4444; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">EXPIRED</div>' : ''}
+                                    
+                                    <div style="width: 100%; height: 120px; background: var(--bg-tertiary); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; overflow: hidden; position: relative;">
+                                        ${isImage ? 
+                                            `<img src="${shareUrl}" alt="${file.filename}" style="width: 100%; height: 100%; object-fit: cover;">` :
+                                            `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity: 0.6;">
+                                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                                <polyline points="13 2 13 9 20 9"></polyline>
+                                            </svg>`
+                                        }
+                                    </div>
+                                    
+                                    <div style="flex: 1;">
+                                        <h4 style="font-weight: 600; font-size: 14px; margin-bottom: 6px; word-break: break-word; color: var(--text-primary);">${file.filename}</h4>
+                                        
+                                        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
+                                            <span style="font-size: 11px; color: var(--text-muted); background: var(--bg-tertiary); padding: 3px 8px; border-radius: 6px;">
+                                                📦 ${this.formatFileSize(file.size)}
+                                            </span>
+                                            ${file.password_protected ? '<span style="font-size: 11px; color: #a855f7; background: rgba(168,85,247,0.15); padding: 3px 8px; border-radius: 6px;">🔒 Protected</span>' : ''}
+                                            ${expiresAt ? `<span style="font-size: 11px; color: #f59e0b; background: rgba(245,158,11,0.15); padding: 3px 8px; border-radius: 6px;">⏱️ ${expiryText}</span>` : ''}
+                                        </div>
+                                        
+                                        <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">
+                                            <span style="margin-right: 12px;">👁️ Views: ${file.view_count || 0}</span>
+                                            <span>⬇️ Downloads: ${file.download_count || 0}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="display: flex; gap: 8px; flex-direction: column;">
+                                        <button class="btn btn-secondary" onclick="dashboard.copyFileLink('${shareUrl}')" style="font-size: 12px; padding: 8px 12px;">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                            </svg>
+                                            Copy Link
+                                        </button>
+                                        <button class="btn btn-danger" onclick="dashboard.deleteFile('${file.code}')" style="font-size: 12px; padding: 8px 12px;">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M3 6h18M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2l-1-14"></path>
+                                            </svg>
+                                            Delete
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="file-actions">
-                                <button class="btn btn-secondary" onclick="navigator.clipboard.writeText('${window.location.origin}/file/${file.code}'); dashboard.showToast('Link copied!', 'success');">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                    </svg>
-                                    Copy
-                                </button>
-                                <button class="btn btn-danger" onclick="dashboard.deleteFile('${file.code}')">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M3 6h18M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2l-1-14"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `}
             </div>
         `;
 
         this.setupFileUpload();
+    }
+
+    copyFileLink(url) {
+        navigator.clipboard.writeText(url);
+        this.showToast('📋 Download link copied to clipboard!', 'success');
     }
 
     setupFileUpload() {
@@ -1821,6 +1850,9 @@ class Dashboard {
     }
 
     async renderLitterBox() {
+        const files = await this.fetchFiles();
+        const litterboxFiles = files.filter(f => f.is_temporary);
+        
         const contentArea = document.getElementById('contentArea');
         contentArea.innerHTML = `
             <div class="page-header">
@@ -1831,7 +1863,7 @@ class Dashboard {
                 </button>
                 <div>
                     <h1 class="page-title">LitterBox</h1>
-                    <p class="page-subtitle">Temporary encrypted file hosting - Files auto-delete after expiry</p>
+                    <p class="page-subtitle">Temporary E2EE encrypted file hosting - Auto-delete after expiry</p>
                 </div>
             </div>
             
@@ -1845,8 +1877,8 @@ class Dashboard {
                         </svg>
                     </div>
                     <div>
-                        <h3 class="card-title">Temporary File Upload</h3>
-                        <p class="card-description">Files up to 1GB with automatic expiration</p>
+                        <h3 class="card-title">Upload Temporary File</h3>
+                        <p class="card-description">Up to 1GB with automatic expiration (1h, 12h, 1d, 3d)</p>
                     </div>
                 </div>
                 

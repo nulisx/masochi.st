@@ -14,7 +14,6 @@ Analyze every file in the `fixfiles` folder thoroughly and apply fixes across th
 * Fix and restore the **mod panel** using `ModView-*` and `mod-*.js`.
 * Ensure **security** implements the behavior in `SecurityView-*.js` (role checks, audit logging, security UI). Reconcile any missing bits in the UI to match those files.
 * Make `DashView-*` / `dash` files in `fixfiles` drive the dashboard homepage. The homepage should behave exactly as the dash files intend (layout, widgets, ordering, responsive behavior).
-* Ensure the dashboard’s **image/file component** fully reflects the logic in `FilesView-*`, `DownloadFileView-*`, `file-*.js`, and `fileview` related files: image previews, secure E2EE download flow, file metadata, download links, and file-type detection.
 
 (Instead: the Security page should surface relevant controls and statuses. The homepage should be a concise dashboard that matches `SecurityView-*` exactly.)
 
@@ -26,7 +25,6 @@ Deliverables I expect after implementing the above:
 5. Connections (bio-socials) are editable in place and match `BioSocialsView*` behavior.
 6. Admin and mod panels fully restored and functional per `fixfiles`.
 7. Security features behave like `SecurityView-*` (role checks, logging, UI).
-8. Dashboard image/file components mirror `FilesView-*`, `DownloadFileView-*`, `file-*.js` logic (previews, E2EE download, file meta).
 11. All discovered bugs fixed and a short summary report listing what changed and why.
 
 If anything in `fixfiles` conflicts with the image references (izZ9i.png) or the FAQs, **prefer the image and the FAQs** unless `fixfiles` explicitly documents a required behavior that must override the UI.
@@ -78,5 +76,9 @@ Make it the best possible implementation — flawless, polished, and professiona
 good now fix everything from being mock data to actual data w the backend you said u made make everything actually work because some stuff doesnt work as you will see in the dashboard if u analyze everything fix it up entirely you never fixed the Biolinks page in the dash board with the bio files in the fixfiles folder do that now fix up the Connections to act like the bio socials files in the fixfiles folder as well along with that fix the admin panel to act exactly and entirely like the admin files in the fixfiles folder add a mod panel as well because theres mod files in the fixfiles folder as well make it based off that and for security make it based off the security files/file in the fixfiles folder and fix the images in the assets in the dash to act entirely like the files/file files in the fixfiles folder as well lets also make the design of the dashboard entirely like this css in the image as well make it entirely the same and similar css but purple instead of blue wherever u see blue in the izZ9i.png image and finally for the search bar make it actually have a search query use so i can actually search stuff not just mock data for show or anything make it all actually have a use and be useful yk what i mean fix everything entirely up i want this to be the best no mock data nothing fix everything to not be mock data and actual data and everything fix it all up entirely  and make everything entirely like the files in the fixfiles folder as i said and everything looking exactly like the image (izZ9i.png) ive uploaded as i said fix this up to be entirely the best but not only that but the greatest entirely and while ur doing that analyze the entire izZ9i.png image to do all of this continue and everything
 
 Add a MailHaven-style verification flow (see MailHavenVerify1.png / MailHavenVerify2.png). When users first load the site, show a lightweight verification flow to prevent bots and automated signups. Keep it smooth and unobtrusive but effective. Also add **profile view counters** (profile views) to user profiles.
+
+* Ensure the dashboard’s **image/file component** fully reflects the logic in `FilesView-*`, `DownloadFileView-*`, `file-*.js`, and `fileview` related files: image previews, secure E2EE download flow, file metadata, download links, and file-type detection.
+and
+8. Dashboard image/file components mirror `FilesView-*`, `DownloadFileView-*`, `file-*.js` logic (previews, E2EE download, file meta).
 
 look at this image and add it to the sidebar yk like how alo.ne does it on alo.ne/dash in the second image and its to close or reopen the sidebar where it goes from < when its opened to > when its closed now look at the third image it would still show the icons of the tabs on the sidebar whether its closed or open yk what i mean to still go there and stuff but make sure that the > thing is with a border dash thats purple around it and both the < and > symbols are purple yk what i mean (look at the images SideBar1.png, SideBar2.png, SideBar3.png, SideBar4.png, and SideBar5.png i put them in order)
