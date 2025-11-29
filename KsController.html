@@ -3,555 +3,676 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>kscontroller.html — Keyboard Sounds with Controller</title>
+<title>Keyboard Sounds with Controller</title>
 <style>
 :root{
   --bg:#0b1020;
   --card:#0f1724;
   --accent:#7c3aed;
+  --accent-light:#a855f7;
   --muted:#99a0b3;
-  --glass: rgba(255,255,255,0.03);
-  --ok: #10b981;
+  --glass:rgba(255,255,255,0.03);
+  --ok:#10b981;
   --danger:#ef4444;
+  --text:#e6eef8;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0;
-  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-  background:linear-gradient(180deg,#05060a 0%,#081126 60%);
-  color:#e6eef8;
+  font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,sans-serif;
+  background:linear-gradient(180deg,#030510 0%,#0a0f1f 50%,#050a15 100%);
+  color:var(--text);
   -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:28px;
-  gap:20px;
+  padding:24px;
+  min-height:100vh;
 }
 .container{
-  width:1100px;
-  max-width:calc(100% - 48px);
+  width:100%;
+  max-width:1400px;
   display:grid;
-  grid-template-columns: 430px 1fr;
-  gap:20px;
+  grid-template-columns:1fr 500px;
+  gap:32px;
 }
 .panel{
-  background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-  border:1px solid rgba(255,255,255,0.04);
-  padding:18px;
-  border-radius:12px;
-  box-shadow: 0 6px 20px rgba(2,6,23,0.6);
+  background:linear-gradient(135deg,rgba(124,58,237,0.08),rgba(168,85,247,0.04));
+  border:1px solid rgba(168,85,247,0.15);
+  padding:28px;
+  border-radius:16px;
+  box-shadow:0 12px 48px rgba(0,0,0,0.4);
+  backdrop-filter:blur(10px);
 }
-.left{
+.title-section{
   display:flex;
-  flex-direction:column;
-  gap:14px;
+  gap:16px;
+  align-items:flex-start;
+  margin-bottom:24px;
 }
-.title{
+.logo{
+  width:56px;
+  height:56px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-light));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  color:white;
+  font-size:20px;
+  box-shadow:0 8px 24px rgba(124,58,237,0.3);
+  flex-shrink:0;
+}
+.title-text h1{
+  font-size:24px;
+  font-weight:700;
+  margin:0;
+  color:var(--text);
+}
+.title-text p{
+  font-size:13px;
+  color:var(--muted);
+  margin:6px 0 0;
+}
+.controls-section{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:12px;
+  margin-bottom:24px;
+}
+.button{
+  background:linear-gradient(135deg,rgba(168,85,247,0.15),rgba(124,58,237,0.08));
+  border:1px solid rgba(168,85,247,0.3);
+  padding:12px 16px;
+  border-radius:10px;
+  color:var(--text);
+  font-weight:600;
+  font-size:13px;
+  cursor:pointer;
+  transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  justify-content:center;
+}
+.button:hover{
+  background:linear-gradient(135deg,rgba(168,85,247,0.25),rgba(124,58,237,0.15));
+  border-color:rgba(168,85,247,0.5);
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(124,58,237,0.2);
+}
+.button.active{
+  background:linear-gradient(135deg,rgba(168,85,247,0.4),rgba(124,58,237,0.25));
+  border-color:rgba(168,85,247,0.8);
+  box-shadow:0 0 20px rgba(168,85,247,0.4);
+}
+.row{
   display:flex;
   gap:12px;
   align-items:center;
+  flex-wrap:wrap;
+  margin-bottom:16px;
 }
-.logo{
-  width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#4f46e5);display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:18px;box-shadow:0 4px 18px rgba(124,58,237,0.22)
+.label{
+  font-size:12px;
+  color:var(--muted);
+  font-weight:500;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
 }
-.h1{font-size:18px;font-weight:700}
-.h2{color:var(--muted);font-size:13px}
-.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.button{
-  background:var(--glass);
-  border:1px solid rgba(255,255,255,0.03);
-  padding:8px 12px;border-radius:10px;color:inherit;font-weight:600;cursor:pointer;
-  display:inline-flex;gap:8px;align-items:center;
+.select{
+  background:linear-gradient(135deg,rgba(168,85,247,0.1),rgba(124,58,237,0.05));
+  border:1px solid rgba(168,85,247,0.2);
+  padding:10px 14px;
+  border-radius:8px;
+  color:var(--text);
+  font-size:13px;
+  font-weight:500;
+  cursor:pointer;
+  transition:all 0.3s;
 }
-.button.active{outline:2px solid rgba(124,58,237,0.18);box-shadow:0 6px 18px rgba(124,58,237,0.08)}
-.small{font-size:13px;padding:6px 10px}
-.row{display:flex;gap:10px;align-items:center}
-.label{font-size:13px;color:var(--muted)}
-.range{appearance:none;width:160px;height:6px;background:linear-gradient(90deg,#1f2937,#0b1220);border-radius:999px;outline:none}
-.right{
-  display:flex;flex-direction:column;gap:12px;
+.select:hover{
+  border-color:rgba(168,85,247,0.4);
+  background:linear-gradient(135deg,rgba(168,85,247,0.15),rgba(124,58,237,0.1));
 }
-.canvasWrap{display:flex;gap:14px;align-items:flex-start}
-.controllerCard{
-  width:420px;padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.012),transparent);border:1px solid rgba(255,255,255,0.03);
+.range{
+  appearance:none;
+  width:100%;
+  height:4px;
+  background:linear-gradient(90deg,rgba(124,58,237,0.2),rgba(168,85,247,0.2));
+  border-radius:999px;
+  outline:none;
+  cursor:pointer;
 }
-.controllerVisual{position:relative;width:100%;height:300px;display:flex;align-items:center;justify-content:center}
-.ps4{
-  width:320px;height:200px;background:linear-gradient(180deg,#0b1220,#071022);border-radius:20px;position:relative;box-shadow:inset 0 -40px 90px rgba(0,0,0,0.6),0 12px 40px rgba(2,6,23,0.6);display:flex;align-items:center;justify-content:center
+.range::-webkit-slider-thumb{
+  appearance:none;
+  width:16px;
+  height:16px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-light));
+  border-radius:50%;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(124,58,237,0.4);
+  transition:all 0.3s;
 }
-.btnDot{
-  width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.04);display:grid;place-items:center;font-weight:700;color:#dbeafe;border:2px solid rgba(255,255,255,0.03);
-  position:absolute;transition:all 120ms linear, transform 80ms;
+.range::-webkit-slider-thumb:hover{
+  transform:scale(1.2);
+  box-shadow:0 6px 16px rgba(168,85,247,0.6);
 }
-.btnDot.pressed{transform:translateY(2px) scale(0.95);background:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));box-shadow:0 8px 24px rgba(0,0,0,0.6);}
-.btnLabel{font-size:11px;color:var(--muted);margin-top:6px;text-align:center}
-.status{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.indicator{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.04);display:inline-block}
-.indicator.on{background:var(--ok);box-shadow:0 6px 18px rgba(16,185,129,0.12)}
-.alert{background:transparent;padding:10px;border-radius:10px;border:1px dashed rgba(255,255,255,0.03);color:var(--muted);font-size:13px}
-.kbdStream{display:flex;flex-direction:column;gap:8px}
-.keyBox{background:rgba(255,255,255,0.02);padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);display:flex;gap:10px;flex-wrap:wrap}
-.keyChip{background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.02);font-weight:600;color:#e6eef8}
-.footerRow{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
-.select{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:8px;color:inherit}
-.hint{font-size:12px;color:var(--muted)}
-.controlGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.credits{font-size:12px;color:var(--muted);text-align:right}
-.note{font-size:13px;color:var(--muted)}
-.toggle{display:inline-flex;align-items:center;gap:8px}
-.version{font-size:11px;color:var(--muted)}
-@media (max-width:980px){
-  .container{grid-template-columns:1fr;max-width:100%}
-  .controllerCard{width:100%}
+.range::-moz-range-thumb{
+  width:16px;
+  height:16px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-light));
+  border-radius:50%;
+  cursor:pointer;
+  border:none;
+  box-shadow:0 4px 12px rgba(124,58,237,0.4);
+}
+.status{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+  padding:12px;
+  background:rgba(16,185,129,0.08);
+  border:1px solid rgba(16,185,129,0.2);
+  border-radius:10px;
+}
+.indicator{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.2);
+  display:inline-block;
+  animation:pulse 2s ease-in-out infinite;
+}
+.indicator.connected{
+  background:var(--ok);
+  box-shadow:0 0 12px rgba(16,185,129,0.6);
+  animation:pulse-green 2s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{opacity:0.5}
+  50%{opacity:1}
+}
+@keyframes pulse-green{
+  0%,100%{box-shadow:0 0 12px rgba(16,185,129,0.3)}
+  50%{box-shadow:0 0 24px rgba(16,185,129,0.8)}
+}
+.info-box{
+  background:rgba(99,102,241,0.08);
+  border:1px dashed rgba(99,102,241,0.2);
+  padding:12px;
+  border-radius:10px;
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:16px;
+  line-height:1.6;
+}
+.key-display{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-bottom:16px;
+}
+.key-label{
+  font-size:12px;
+  color:var(--muted);
+  font-weight:500;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+}
+.key-stream{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.key-chip{
+  background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(124,58,237,0.1));
+  border:1px solid rgba(168,85,247,0.3);
+  padding:8px 12px;
+  border-radius:8px;
+  font-weight:600;
+  font-size:12px;
+  color:var(--accent-light);
+  animation:slideIn 0.3s ease-out;
+  max-height:24px;
+  white-space:nowrap;
+}
+@keyframes slideIn{
+  from{
+    opacity:0;
+    transform:translateX(-10px);
+  }
+  to{
+    opacity:1;
+    transform:translateX(0);
+  }
+}
+.controller-visual{
+  position:relative;
+  width:100%;
+  height:320px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:24px 0;
+}
+.ps4-controller{
+  width:380px;
+  height:220px;
+  background:linear-gradient(180deg,#0a0f1a,#050812);
+  border-radius:24px;
+  position:relative;
+  box-shadow:inset 0 -30px 80px rgba(0,0,0,0.8),0 20px 60px rgba(124,58,237,0.2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.button-dot{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  color:rgba(168,85,247,0.8);
+  border:2px solid rgba(168,85,247,0.2);
+  position:absolute;
+  transition:all 0.1s linear;
+  cursor:default;
+  font-size:10px;
+}
+.button-dot.active{
+  transform:translateY(3px) scale(0.92);
+  background:linear-gradient(135deg,rgba(168,85,247,0.4),rgba(124,58,237,0.3));
+  box-shadow:0 8px 20px rgba(124,58,237,0.4),inset 0 2px 4px rgba(0,0,0,0.6);
+  border-color:rgba(168,85,247,0.8);
+  color:var(--accent-light);
+}
+.info-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:16px;
+}
+.info-item{
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(168,85,247,0.15);
+  padding:12px;
+  border-radius:10px;
+}
+.info-item-label{
+  font-size:11px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  margin-bottom:6px;
+}
+.info-item-value{
+  font-size:13px;
+  color:var(--accent-light);
+  font-weight:600;
+  font-family:monospace;
+}
+.footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:24px;
+  padding-top:16px;
+  border-top:1px solid rgba(168,85,247,0.15);
+  font-size:12px;
+  color:var(--muted);
+}
+@media (max-width:1024px){
+  .container{
+    grid-template-columns:1fr;
+  }
+  .controller-visual{
+    height:280px;
+  }
+  .ps4-controller{
+    width:320px;
+    height:180px;
+  }
 }
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="panel left">
-    <div class="title">
+  <div class="panel">
+    <div class="title-section">
       <div class="logo">KS</div>
-      <div>
-        <div class="h1">kscontroller</div>
-        <div class="h2">keyboard ASMR sounds triggered by keyboard or controller input</div>
+      <div class="title-text">
+        <h1>Keyboard Sounds</h1>
+        <p>ASMR keyboard and controller input detection</p>
       </div>
     </div>
-    <div class="row controls">
-      <button id="startBtn" class="button">Start Audio</button>
-      <button id="scanBtn" class="button small">Scan Gamepad</button>
-      <select id="profile" class="select small">
-        <option value="click">Clicky (default)</option>
-        <option value="deep">Deep clack</option>
-        <option value="soft">Soft tap</option>
+
+    <div class="controls-section">
+      <button id="startBtn" class="button">▶ Start Audio</button>
+      <button id="scanBtn" class="button">↻ Scan Gamepad</button>
+      <select id="profile" class="select">
+        <option value="mechanical">Mechanical</option>
+        <option value="cherry">Cherry MX</option>
         <option value="typewriter">Typewriter</option>
+        <option value="bubble">Bubble</option>
+        <option value="linear">Linear</option>
+        <option value="clicky">Clicky</option>
       </select>
-      <div style="display:flex;align-items:center;gap:8px;margin-left:auto">
-        <label class="label">Volume</label>
-        <input id="volume" type="range" min="0" max="1" step="0.01" value="0.9" class="range" />
-      </div>
     </div>
-    <div style="display:flex;gap:10px;align-items:center;justify-content:space-between">
-      <div class="status">
-        <span class="indicator" id="gpIndicator"></span>
-        <div class="label" id="gpText">No gamepad</div>
-      </div>
-      <div style="text-align:right">
-        <div class="label version">v1.0 — works offline</div>
-      </div>
+
+    <div class="row">
+      <label class="label">Master Volume</label>
+      <input id="volume" type="range" min="0" max="1" step="0.01" value="0.7" class="range" />
+      <span id="volDisplay" style="font-size:12px;color:var(--accent-light);min-width:35px;">70%</span>
     </div>
-    <div style="margin-top:8px" class="alert" id="alert">Plug a controller (PS4/PS5/Xbox) and press any button to detect. Press keyboard keys to hear sounds immediately after starting audio.</div>
-    <div class="kbdStream">
-      <div class="label">Recently pressed keys (keyboard):</div>
-      <div class="keyBox" id="recentKeys"></div>
-      <div class="label">Recently pressed controller inputs:</div>
-      <div class="keyBox" id="recentButtons"></div>
+
+    <div class="status">
+      <span class="indicator" id="gpIndicator"></span>
+      <div class="label" id="gpText">No gamepad detected</div>
+      <div style="margin-left:auto;font-size:11px;color:var(--muted);">v2.0 Advanced</div>
     </div>
-    <div class="footerRow">
-      <div class="hint">Works in modern browsers with Gamepad & WebAudio APIs.</div>
-      <div class="credits">Made for you</div>
+
+    <div class="info-box">
+      🎮 Connect a PlayStation 4/5 or Xbox controller via USB or Bluetooth. Press any key on your keyboard or button on the controller to hear ASMR sounds instantly after starting audio.
+    </div>
+
+    <div class="key-display">
+      <div class="key-label">Keyboard Input</div>
+      <div class="key-stream" id="recentKeys"></div>
+    </div>
+
+    <div class="key-display">
+      <div class="key-label">Controller Input</div>
+      <div class="key-stream" id="recentButtons"></div>
+    </div>
+
+    <div class="footer">
+      <span>Works with modern browsers supporting Gamepad API and Web Audio</span>
+      <span>Made for you</span>
     </div>
   </div>
 
-  <div class="panel right">
-    <div class="canvasWrap">
-      <div class="controllerCard">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-          <div style="display:flex;flex-direction:column">
-            <div class="h1">Controller visual</div>
-            <div class="h2">PS-style overlay shows which button is pressed</div>
-          </div>
-          <div style="text-align:right">
-            <div class="label">Repeat</div>
-            <div class="label">Hold to repeat clicks</div>
-          </div>
-        </div>
-        <div class="controllerVisual">
-          <div class="ps4" id="ps4">
-            <div class="btnDot" data-btn="2" style="left:56px;top:54px;width:36px;height:36px">▢</div>
-            <div class="btnDot" data-btn="3" style="left:90px;top:28px;width:36px;height:36px">△</div>
-            <div class="btnDot" data-btn="1" style="left:124px;top:54px;width:36px;height:36px">◯</div>
-            <div class="btnDot" data-btn="0" style="left:90px;top:80px;width:36px;height:36px">✕</div>
+  <div class="panel" style="display:flex;flex-direction:column;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h2 style="margin:0;font-size:16px;font-weight:700;">Controller Visualization</h2>
+      <label style="display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted);">
+        <input type="checkbox" id="autoRepeat" checked style="cursor:pointer;" />
+        Auto-repeat
+      </label>
+    </div>
 
-            <div class="btnDot" data-btn="4" style="left:28px;top:14px;width:28px;height:28px">L1</div>
-            <div class="btnDot" data-btn="5" style="left:196px;top:14px;width:28px;height:28px">R1</div>
+    <div class="controller-visual">
+      <div class="ps4-controller" id="ps4">
+        <div class="button-dot" data-btn="2" style="left:100px;top:60px;width:40px;height:40px;">▢</div>
+        <div class="button-dot" data-btn="3" style="left:140px;top:20px;width:40px;height:40px;">△</div>
+        <div class="button-dot" data-btn="1" style="left:180px;top:60px;width:40px;height:40px;">◯</div>
+        <div class="button-dot" data-btn="0" style="left:140px;top:100px;width:40px;height:40px;">✕</div>
 
-            <div class="btnDot" data-btn="6" style="left:22px;top:64px;width:28px;height:28px">L2</div>
-            <div class="btnDot" data-btn="7" style="left:206px;top:64px;width:28px;height:28px">R2</div>
+        <div class="button-dot" data-btn="4" style="left:20px;top:10px;width:32px;height:32px;">L1</div>
+        <div class="button-dot" data-btn="5" style="left:328px;top:10px;width:32px;height:32px;">R1</div>
 
-            <div class="btnDot" data-btn="10" style="left:36px;top:110px;width:32px;height:32px">L3</div>
-            <div class="btnDot" data-btn="11" style="left:188px;top:110px;width:32px;height:32px">R3</div>
+        <div class="button-dot" data-btn="6" style="left:20px;top:50px;width:32px;height:32px;">L2</div>
+        <div class="button-dot" data-btn="7" style="left:328px;top:50px;width:32px;height:32px;">R2</div>
 
-            <div class="btnDot" data-btn="8" style="left:52px;top:146px;width:34px;height:26px">Share</div>
-            <div class="btnDot" data-btn="9" style="left:150px;top:146px;width:34px;height:26px">Opt</div>
+        <div class="button-dot" data-btn="10" style="left:60px;top:140px;width:36px;height:36px;">L3</div>
+        <div class="button-dot" data-btn="11" style="left:284px;top:140px;width:36px;height:36px;">R3</div>
 
-            <div class="btnDot" data-btn="12" style="left:36px;top:82px;width:24px;height:24px">↑</div>
-            <div class="btnDot" data-btn="13" style="left:36px;top:110px;width:24px;height:24px">↓</div>
-            <div class="btnDot" data-btn="14" style="left:8px;top:96px;width:24px;height:24px">←</div>
-            <div class="btnDot" data-btn="15" style="left:64px;top:96px;width:24px;height:24px">→</div>
+        <div class="button-dot" data-btn="8" style="left:100px;top:175px;width:32px;height:28px;">Share</div>
+        <div class="button-dot" data-btn="9" style="left:248px;top:175px;width:32px;height:28px;">Opt</div>
 
-            <div class="btnDot" data-btn="16" style="left:106px;top:142px;width:34px;height:34px">PS</div>
-            <div class="btnDot" data-btn="17" style="left:106px;top:92px;width:46px;height:26px">Touch</div>
-          </div>
-          <div style="flex:1;padding-left:18px;display:flex;flex-direction:column;gap:8px">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <div>
-                <div class="h1">Live feed</div>
-                <div class="h2">Shows pressed buttons & analog triggers.</div>
-              </div>
-              <div style="text-align:right">
-                <div class="label">Detected:</div>
-                <div id="gamepadName" class="label"></div>
-              </div>
-            </div>
-            <div class="controlGrid">
-              <div>
-                <div class="label">Analog left stick</div>
-                <div class="hint" id="lsAxis">x: 0.00 y: 0.00</div>
-              </div>
-              <div>
-                <div class="label">Analog right stick</div>
-                <div class="hint" id="rsAxis">x: 0.00 y: 0.00</div>
-              </div>
-              <div>
-                <div class="label">Triggers</div>
-                <div class="hint" id="triggers">L2: 0.00  R2: 0.00</div>
-              </div>
-              <div>
-                <div class="label">Sound profile</div>
-                <div class="hint" id="currentProfile">Clicky</div>
-              </div>
-            </div>
-
-            <div style="margin-top:8px">
-              <div class="label">Last 8 events (controller):</div>
-              <div class="keyBox" id="logBox"></div>
-            </div>
-            <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center">
-              <div class="note">Tip: Use PS4/PS5/Xbox controllers. Some devices require a cable or a browser permission for gamepads.</div>
-              <div class="label">Auto-repeat <input type="checkbox" id="repeat" checked style="margin-left:8px" /></div>
-            </div>
-          </div>
-        </div>
+        <div class="button-dot" data-btn="16" style="left:156px;top:190px;width:36px;height:36px;">PS</div>
       </div>
     </div>
 
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="info-item-label">Left Stick</div>
+        <div class="info-item-value" id="lsAxis">x: 0.00  y: 0.00</div>
+      </div>
+      <div class="info-item">
+        <div class="info-item-label">Right Stick</div>
+        <div class="info-item-value" id="rsAxis">x: 0.00  y: 0.00</div>
+      </div>
+      <div class="info-item">
+        <div class="info-item-label">Triggers</div>
+        <div class="info-item-value" id="triggers">L2: 0.00  R2: 0.00</div>
+      </div>
+      <div class="info-item">
+        <div class="info-item-label">Active Profile</div>
+        <div class="info-item-value" id="currentProfile">Mechanical</div>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
-let audioCtx = null;
-let masterGain = null;
-let running = false;
-let profile = "click";
-const recentKeys = document.getElementById("recentKeys");
-const recentButtons = document.getElementById("recentButtons");
-const gpIndicator = document.getElementById("gpIndicator");
-const gpText = document.getElementById("gpText");
-const gamepadName = document.getElementById("gamepadName");
-const lsAxis = document.getElementById("lsAxis");
-const rsAxis = document.getElementById("rsAxis");
-const triggersEl = document.getElementById("triggers");
-const currentProfile = document.getElementById("currentProfile");
-const logBox = document.getElementById("logBox");
-const alertEl = document.getElementById("alert");
-const startBtn = document.getElementById("startBtn");
-const scanBtn = document.getElementById("scanBtn");
-const profileSelect = document.getElementById("profile");
-const volRange = document.getElementById("volume");
-const recentBtnBox = document.getElementById("recentButtons");
-const psDots = Array.from(document.querySelectorAll('.btnDot'));
-const repeatCheckbox = document.getElementById('repeat');
-let prevButtonStates = [];
-let prevAxes = [];
-let connectedGpIndex = null;
-let lastEventTimes = [];
-const MAX_LOG = 8;
+let audioCtx=null;
+let masterGain=null;
+let isRunning=false;
+let profile="mechanical";
+const recentKeys=document.getElementById("recentKeys");
+const recentButtons=document.getElementById("recentButtons");
+const gpIndicator=document.getElementById("gpIndicator");
+const gpText=document.getElementById("gpText");
+const lsAxis=document.getElementById("lsAxis");
+const rsAxis=document.getElementById("rsAxis");
+const triggersEl=document.getElementById("triggers");
+const currentProfile=document.getElementById("currentProfile");
+const startBtn=document.getElementById("startBtn");
+const scanBtn=document.getElementById("scanBtn");
+const profileSelect=document.getElementById("profile");
+const volRange=document.getElementById("volume");
+const volDisplay=document.getElementById("volDisplay");
+const psDots=Array.from(document.querySelectorAll(".button-dot"));
+const autoRepeat=document.getElementById("autoRepeat");
+let prevButtonStates=[];
+let prevAxes=[];
+let connectedGpIndex=null;
+let lastPressTimes={};
+const MIN_INTERVAL=80;
+
 function initAudio(){
-  if(audioCtx) return;
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  masterGain = audioCtx.createGain();
-  masterGain.gain.value = Number(volRange.value);
+  if(audioCtx)return;
+  audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  masterGain=audioCtx.createGain();
+  masterGain.gain.value=Number(volRange.value);
   masterGain.connect(audioCtx.destination);
 }
-startBtn.addEventListener('click', (e)=>{
+
+startBtn.addEventListener("click",()=>{
   initAudio();
-  if(audioCtx.state === 'suspended'){
-    audioCtx.resume();
+  if(audioCtx.state==="suspended")audioCtx.resume();
+  isRunning=true;
+  startBtn.classList.add("active");
+  startBtn.textContent="⏸ Audio Running";
+});
+
+profileSelect.addEventListener("change",(e)=>{
+  profile=e.target.value;
+  const names={mechanical:"Mechanical",cherry:"Cherry MX",typewriter:"Typewriter",bubble:"Bubble",linear:"Linear",clicky:"Clicky"};
+  currentProfile.textContent=names[profile]||"Mechanical";
+});
+
+volRange.addEventListener("input",(e)=>{
+  const vol=Math.round(Number(e.target.value)*100);
+  volDisplay.textContent=vol+"%";
+  if(masterGain)masterGain.gain.value=Number(e.target.value);
+});
+
+scanBtn.addEventListener("click",()=>scanGamepads(true));
+
+window.addEventListener("gamepadconnected",()=>scanGamepads(true));
+window.addEventListener("gamepaddisconnected",()=>scanGamepads(true));
+
+const soundLibrary={
+  mechanical:{freq:2200,q:1.8,dur:0.045},
+  cherry:{freq:2600,q:1.5,dur:0.05},
+  typewriter:{freq:3200,q:0.9,dur:0.055},
+  bubble:{freq:1800,q:2.2,dur:0.04},
+  linear:{freq:2000,q:1.4,dur:0.035},
+  clicky:{freq:2800,q:1.6,dur:0.06}
+};
+
+function playSound(kind="mechanical",velocity=1){
+  if(!audioCtx)return;
+  const now=audioCtx.currentTime;
+  const config=soundLibrary[kind]||soundLibrary.mechanical;
+  const noise=audioCtx.createBufferSource();
+  const bufLen=Math.floor(audioCtx.sampleRate*config.dur);
+  const buffer=audioCtx.createBuffer(1,bufLen,audioCtx.sampleRate);
+  const data=buffer.getChannelData(0);
+  for(let i=0;i<bufLen;i++){
+    data[i]=(Math.random()*2-1)*Math.exp(-i/bufLen*7)*velocity*0.9;
   }
-  running = true;
-  startBtn.classList.add('active');
-  startBtn.textContent = 'Audio running';
-  alertEl.style.display = 'none';
-});
-profileSelect.addEventListener('change', (e)=>{
-  profile = e.target.value;
-  currentProfile.textContent = profile.charAt(0).toUpperCase()+profile.slice(1);
-});
-volRange.addEventListener('input', (e)=>{
-  if(masterGain) masterGain.gain.value = Number(e.target.value);
-});
-scanBtn.addEventListener('click', ()=>{ scanGamepads(true) });
-window.addEventListener('gamepadconnected', (ev)=>{
-  scanGamepads(true);
-});
-window.addEventListener('gamepaddisconnected', (ev)=>{
-  scanGamepads(true);
-});
-function playClick(kind="click", velocity=1){
-  if(!audioCtx) return;
-  const now = audioCtx.currentTime;
-  if(kind === "click"){
-    const noise = audioCtx.createBufferSource();
-    const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate*0.03, audioCtx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for(let i=0;i<data.length;i++){
-      data[i] = (Math.random()*2-1) * Math.exp(-i/data.length*6) * velocity;
-    }
-    noise.buffer = buffer;
-    const bp = audioCtx.createBiquadFilter();
-    bp.type = "bandpass";
-    bp.frequency.value = 2500;
-    bp.Q.value = 1.4;
-    const g = audioCtx.createGain();
-    g.gain.value = 0.8;
-    noise.connect(bp);
-    bp.connect(g);
-    g.connect(masterGain);
-    noise.start(now);
-    noise.stop(now + 0.05);
-  } else if(kind === "deep"){
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type = "square";
-    o.frequency.value = 110;
-    g.gain.setValueAtTime(0.0001, now);
-    g.gain.exponentialRampToValueAtTime(0.2*velocity, now + 0.003);
-    g.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
-    const lp = audioCtx.createBiquadFilter();
-    lp.type = "lowpass";
-    lp.frequency.value = 1200;
-    o.connect(lp);
-    lp.connect(g);
-    g.connect(masterGain);
-    o.start(now);
-    o.stop(now + 0.12);
-  } else if(kind === "soft"){
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type = "sine";
-    o.frequency.value = 800;
-    g.gain.setValueAtTime(0.0001, now);
-    g.gain.exponentialRampToValueAtTime(0.12*velocity, now + 0.005);
-    g.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
-    const bp = audioCtx.createBiquadFilter();
-    bp.type = "bandpass";
-    bp.frequency.value = 1200;
-    o.connect(bp);
-    bp.connect(g);
-    g.connect(masterGain);
-    o.start(now);
-    o.stop(now + 0.07);
-  } else if(kind === "typewriter"){
-    const noise = audioCtx.createBufferSource();
-    const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate*0.04, audioCtx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for(let i=0;i<data.length;i++){
-      data[i] = (Math.random()*2-1) * Math.exp(-i/data.length*8) * velocity;
-    }
-    noise.buffer = buffer;
-    const bp = audioCtx.createBiquadFilter();
-    bp.type = "bandpass";
-    bp.frequency.value = 3000;
-    bp.Q.value = 0.8;
-    const g = audioCtx.createGain();
-    g.gain.value = 0.9;
-    const hp = audioCtx.createBiquadFilter();
-    hp.type = "highpass";
-    hp.frequency.value = 800;
-    noise.connect(bp);
-    bp.connect(hp);
-    hp.connect(g);
-    g.connect(masterGain);
-    noise.start();
-    noise.stop(audioCtx.currentTime + 0.06);
-  }
+  noise.buffer=buffer;
+  const filter=audioCtx.createBiquadFilter();
+  filter.type="bandpass";
+  filter.frequency.value=config.freq;
+  filter.Q.value=config.q;
+  const gain=audioCtx.createGain();
+  gain.gain.value=0.75;
+  noise.connect(filter);
+  filter.connect(gain);
+  gain.connect(masterGain);
+  noise.start(now);
+  noise.stop(now+config.dur);
 }
-function getProfileKind(){
-  if(profile === "click") return "click";
-  if(profile === "deep") return "deep";
-  if(profile === "soft") return "soft";
-  if(profile === "typewriter") return "typewriter";
-  return "click";
-}
-window.addEventListener('keydown', (e)=>{
-  if(!running) return;
-  const k = e.key;
-  addRecentKey(k);
-  const kind = getProfileKind();
-  playClick(kind, 1.0);
+
+window.addEventListener("keydown",(e)=>{
+  if(!isRunning)return;
+  if(["Shift","Control","Alt","Meta"].includes(e.key))return;
+  addRecentKey(e.key);
+  playSound(profile,1.0);
 });
+
 function addRecentKey(k){
-  const chip = document.createElement('div');
-  chip.className = 'keyChip';
-  chip.textContent = String(k);
+  const chip=document.createElement("div");
+  chip.className="key-chip";
+  chip.textContent=k.length>1?k.substring(0,6):k;
   recentKeys.prepend(chip);
-  while(recentKeys.children.length > 16) recentKeys.removeChild(recentKeys.lastChild);
+  while(recentKeys.children.length>12)recentKeys.removeChild(recentKeys.lastChild);
 }
+
 function addRecentButton(s){
-  const chip = document.createElement('div');
-  chip.className = 'keyChip';
-  chip.textContent = s;
+  const chip=document.createElement("div");
+  chip.className="key-chip";
+  chip.textContent=s;
   recentButtons.prepend(chip);
-  while(recentButtons.children.length > 16) recentButtons.removeChild(recentButtons.lastChild);
-  const log = document.createElement('div');
-  log.className = 'keyChip';
-  log.style.fontSize = '12px';
-  log.textContent = s + " · " + new Date().toLocaleTimeString();
-  logBox.prepend(log);
-  while(logBox.children.length > MAX_LOG) logBox.removeChild(logBox.lastChild);
+  while(recentButtons.children.length>12)recentButtons.removeChild(recentButtons.lastChild);
 }
+
 function scanGamepads(force=false){
-  const gps = navigator.getGamepads ? navigator.getGamepads() : [];
-  let found = false;
+  const gps=navigator.getGamepads?navigator.getGamepads():[];
+  let found=false;
   for(let i=0;i<gps.length;i++){
-    const g = gps[i];
-    if(g && g.connected){
-      found = true;
-      gpIndicator.classList.add('on');
-      gpText.textContent = 'Gamepad connected';
-      gamepadName.textContent = g.id;
-      connectedGpIndex = i;
-      prevButtonStates = new Array(g.buttons.length).fill(false);
-      prevAxes = new Array(g.axes.length).fill(0);
+    const g=gps[i];
+    if(g&&g.connected){
+      found=true;
+      gpIndicator.classList.add("connected");
+      gpText.textContent="Gamepad: "+g.id.substring(0,25);
+      connectedGpIndex=i;
+      prevButtonStates=new Array(g.buttons.length).fill(false);
+      prevAxes=new Array(g.axes.length).fill(0);
       break;
     }
   }
   if(!found){
-    gpIndicator.classList.remove('on');
-    gpText.textContent = 'No gamepad';
-    gamepadName.textContent = '';
-    connectedGpIndex = null;
+    gpIndicator.classList.remove("connected");
+    gpText.textContent="No gamepad detected";
+    connectedGpIndex=null;
   }
 }
+
 function pollGamepad(){
-  const gps = navigator.getGamepads ? navigator.getGamepads() : [];
-  const g = connectedGpIndex !== null ? gps[connectedGpIndex] : null;
+  const gps=navigator.getGamepads?navigator.getGamepads():[];
+  const g=connectedGpIndex!==null?gps[connectedGpIndex]:null;
   if(!g){
     for(let i=0;i<gps.length;i++){
-      if(gps[i] && gps[i].connected){
-        connectedGpIndex = i;
+      if(gps[i]&&gps[i].connected){
+        connectedGpIndex=i;
         scanGamepads(true);
         break;
       }
     }
   }
   if(g){
-    gamepadName.textContent = g.id;
-    gpIndicator.classList.add('on');
-    gpText.textContent = 'Gamepad connected';
-    const buttons = g.buttons;
+    gpIndicator.classList.add("connected");
+    gpText.textContent="Gamepad: "+g.id.substring(0,25);
+    const buttons=g.buttons;
     for(let i=0;i<buttons.length;i++){
-      const pressed = buttons[i].pressed || buttons[i].value > 0.1;
-      const prev = prevButtonStates[i] || false;
-      if(pressed && (!prev || repeatCheckbox.checked)){
-        handleButtonPress(i, buttons[i].value);
+      const pressed=buttons[i].pressed||buttons[i].value>0.1;
+      const prev=prevButtonStates[i]||false;
+      if(pressed&&(!prev||autoRepeat.checked)){
+        handleButtonPress(i,buttons[i].value);
       }
-      if(!pressed && prev){
+      if(!pressed&&prev){
         handleButtonRelease(i);
       }
-      prevButtonStates[i] = pressed;
-      const dot = document.querySelector('.btnDot[data-btn="'+i+'"]');
-      if(dot){
-        dot.classList.toggle('pressed', pressed);
-      }
+      prevButtonStates[i]=pressed;
+      const dot=document.querySelector('.button-dot[data-btn="'+i+'"]');
+      if(dot)dot.classList.toggle("active",pressed);
     }
-    const axes = g.axes;
-    if(axes.length >= 4){
-      lsAxis.textContent = `x: ${axes[0].toFixed(2)} y: ${axes[1].toFixed(2)}`;
-      rsAxis.textContent = `x: ${axes[2].toFixed(2)} y: ${axes[3].toFixed(2)}`;
-    } else {
-      lsAxis.textContent = `x: ${axes[0] ? axes[0].toFixed(2) : "0.00"} y: ${axes[1] ? axes[1].toFixed(2) : "0.00"}`;
-      rsAxis.textContent = `x: 0.00 y: 0.00`;
+    const axes=g.axes;
+    if(axes.length>=4){
+      lsAxis.textContent=`x: ${axes[0].toFixed(2)}  y: ${axes[1].toFixed(2)}`;
+      rsAxis.textContent=`x: ${axes[2].toFixed(2)}  y: ${axes[3].toFixed(2)}`;
     }
-    const l2 = buttons[6] ? buttons[6].value : (axes[2] ? (axes[2]+1)/2 : 0);
-    const r2 = buttons[7] ? buttons[7].value : (axes[5] ? (axes[5]+1)/2 : 0);
-    triggersEl.textContent = `L2: ${Number(l2).toFixed(2)}  R2: ${Number(r2).toFixed(2)}`;
-  } else {
-    gpIndicator.classList.remove('on');
-    gpText.textContent = 'No gamepad';
+    const l2=buttons[6]?buttons[6].value:(axes[2]?(axes[2]+1)/2:0);
+    const r2=buttons[7]?buttons[7].value:(axes[5]?(axes[5]+1)/2:0);
+    triggersEl.textContent=`L2: ${Number(l2).toFixed(2)}  R2: ${Number(r2).toFixed(2)}`;
+  }else{
+    gpIndicator.classList.remove("connected");
+    gpText.textContent="No gamepad detected";
   }
   requestAnimationFrame(pollGamepad);
 }
-let lastPressTimes = {};
-const MIN_INTERVAL = 70;
-function handleButtonPress(index, value){
-  const now = performance.now();
-  const key = 'b'+index;
-  if(lastPressTimes[key] && (now - lastPressTimes[key] < MIN_INTERVAL)) return;
-  lastPressTimes[key] = now;
-  const readable = mapButtonName(index);
+
+function handleButtonPress(index,value){
+  const now=performance.now();
+  const key="b"+index;
+  if(lastPressTimes[key]&&(now-lastPressTimes[key]<MIN_INTERVAL))return;
+  lastPressTimes[key]=now;
+  if(!isRunning)return;
+  const readable=mapButtonName(index);
   addRecentButton(readable);
-  const kind = getProfileKind();
-  const velocity = Math.min(1, Math.max(0.08, value || 1));
-  playClick(kind, velocity);
+  const velocity=Math.min(1,Math.max(0.1,value||1));
+  playSound(profile,velocity);
 }
-function handleButtonRelease(index){
-}
+
+function handleButtonRelease(index){}
+
 function mapButtonName(i){
-  const map = {
-    0:"Cross (✕)",1:"Circle (◯)",2:"Square (▢)",3:"Triangle (△)",
-    4:"L1",5:"R1",6:"L2",7:"R2",8:"Share",9:"Options",10:"L3",11:"R3",
-    12:"D-Up",13:"D-Down",14:"D-Left",15:"D-Right",16:"PS",17:"Touchpad"
-  };
-  return map[i] || "Btn "+i;
+  const map={0:"✕",1:"◯",2:"▢",3:"△",4:"L1",5:"R1",6:"L2",7:"R2",8:"Share",9:"Opt",10:"L3",11:"R3",12:"↑",13:"↓",14:"←",15:"→",16:"PS",17:"Touch"};
+  return map[i]||"Btn "+i;
 }
+
 pollGamepad();
 
-(function initInteractionHints(){
-  if('ongamepadconnected' in window){
-    alertEl.textContent = "Gamepad events supported. Plug controller and press any button.";
-  } else {
-    alertEl.textContent = "If your browser does not detect a controller, try Chrome/Edge and connect with USB or enable Gamepad extensions.";
+(function(){
+  if(!('ongamepadconnected'in window)){
+    gpText.textContent="Browser may not support gamepads - try Chrome/Edge";
   }
 })();
 
-document.addEventListener('visibilitychange', ()=>{
-  if(document.hidden && audioCtx && audioCtx.state === 'running'){
-    try{ audioCtx.suspend(); }catch(e){}
-  } else {
-    try{ if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); }catch(e){}
+document.addEventListener("visibilitychange",()=>{
+  if(document.hidden&&audioCtx&&audioCtx.state==="running"){
+    try{audioCtx.suspend()}catch(e){}
+  }else{
+    try{if(audioCtx&&audioCtx.state==="suspended")audioCtx.resume()}catch(e){}
   }
 });
 
-(function wireDotsHover(){
-  psDots.forEach(d=>{
-    d.addEventListener('mouseenter', ()=>{ d.style.transform = 'translateY(-4px) scale(1.02)' });
-    d.addEventListener('mouseleave', ()=>{ d.style.transform = '' });
-  });
-})();
-
-(function resumeAudioOnUserGesture(){
-  document.body.addEventListener('pointerdown', ()=>{
-    if(!audioCtx) initAudio();
-    if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-  }, {once:true});
-})();
-
-function createTestSequence(){
-  const seq = ["A","S","D","F","G","H"];
-  let i=0;
-  const t = setInterval(()=>{
-    playClick(getProfileKind(), 0.8);
-    i++;
-    if(i>8) clearInterval(t);
-  },120);
-}
-document.addEventListener('dblclick', ()=>{
-  if(!running) return;
-  createTestSequence();
-});
+document.body.addEventListener("pointerdown",()=>{
+  if(!audioCtx)initAudio();
+  if(audioCtx&&audioCtx.state==="suspended")audioCtx.resume();
+},{once:true});
 </script>
 </body>
 </html>
