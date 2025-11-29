@@ -134,6 +134,16 @@ class Dashboard {
     }
 
     setupSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        
+        if (sidebarToggle && sidebar) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                sidebarToggle.textContent = sidebar.classList.contains('collapsed') ? '>' : '<';
+            });
+        }
+        
         const dropdownBtn = document.getElementById('userDropdownBtn');
         const dropdownMenu = document.getElementById('userDropdownMenu');
         const dropdownToggle = document.getElementById('dropdownToggle');

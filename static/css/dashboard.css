@@ -79,6 +79,54 @@ body {
   z-index: 60;
   box-shadow: 0 8px 28px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
   backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 80px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.sidebar.collapsed .logo span {
+  display: none;
+}
+
+.sidebar.collapsed .nav-label,
+.sidebar.collapsed .nav-item span,
+.sidebar.collapsed .user-info,
+.sidebar.collapsed .sign-out-btn {
+  display: none;
+}
+
+.sidebar.collapsed .nav-item {
+  justify-content: center;
+  margin: 6px auto;
+  width: 44px;
+  padding: 10px;
+}
+
+.sidebar.collapsed .user-profile {
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.sidebar.collapsed .user-avatar {
+  width: 32px;
+  height: 32px;
+}
+
+.sidebar.collapsed .sidebar-nav {
+  padding: 8px 0;
+}
+
+.sidebar.collapsed .sidebar-footer {
+  padding: 8px 0;
 }
 
 .sidebar .logo {
