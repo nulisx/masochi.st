@@ -2026,12 +2026,14 @@ class Dashboard {
                             const expiryText = expiresAt ? expiresAt.toLocaleDateString() + ' ' + expiresAt.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'N/A';
                             const shareUrl = window.location.origin + '/file/' + file.code;
                             const createdAt = file.created_at ? new Date(file.created_at).toLocaleDateString() : 'Unknown';
-                            const imgPreview = isImage ? '<img src="' + shareUrl + '" alt="' + file.filename + '" style="width: 100%; height: 100%; object-fit: cover;">' : '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity: 0.6;"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>';
+                            const imgPreview = isImage ? '<img data-file-code="' + file.code + '" alt="' + file.filename + '" style="width: 100%; height: 100%; object-fit: cover; display: none;">' : '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity: 0.6;"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>';
+                            const placeholderIcon = isImage ? '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity: 0.6; position: absolute;" class="placeholder-icon-' + file.code + '"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>' : '';
                             
                             return '<div class="card" style="display: flex; flex-direction: column; padding: 16px; position: relative;">' + 
                                 (isExpired ? '<div style="position: absolute; top: 8px; right: 8px; background: #ef4444; color: white; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">EXPIRED</div>' : '') +
                                 '<div style="width: 100%; height: 120px; background: var(--bg-tertiary); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; overflow: hidden; position: relative;">' +
                                 imgPreview +
+                                placeholderIcon +
                                 '</div><div style="flex: 1;"><h4 style="font-weight: 600; font-size: 14px; margin-bottom: 6px; word-break: break-word; color: var(--text-primary);">' + file.filename + '</h4>' +
                                 '<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">' +
                                 '<span style="font-size: 11px; color: var(--text-muted); background: var(--bg-tertiary); padding: 3px 8px; border-radius: 6px;">📦 ' + this.formatFileSize(file.size) + '</span>' +
@@ -2078,6 +2080,7 @@ class Dashboard {
         `;
 
         this.setupLitterBoxUpload();
+        this.loadImageThumbnails();
     }
 
     setupLitterBoxUpload() {
