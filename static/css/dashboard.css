@@ -1745,6 +1745,16 @@ input[type="range"].form-input::-moz-range-thumb {
   transform: translateY(-2px);
 }
 
+.social-icon-btn:hover svg {
+  animation: iconRotate 0.6s ease-in-out;
+}
+
+@keyframes iconRotate {
+  0% { transform: rotateZ(0deg); }
+  50% { transform: rotateZ(15deg); }
+  100% { transform: rotateZ(0deg); }
+}
+
 .social-icon-btn.connected {
   opacity: 0.4;
   cursor: not-allowed;

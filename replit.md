@@ -102,9 +102,13 @@ Dashboard Pages:
     - Discord User: "Discord connected successfully: /users/123456"
     - Discord Server: "Discord connected successfully: @servername"
     - Snapchat: "Snapchat connected successfully: add/username"
-    - YouTube: "YouTube connected successfully: @username"
-    - TikTok: "TikTok connected successfully: @username"
+    - YouTube: "YouTube connected successfully: @youtube"
+    - TikTok: "TikTok connected successfully: @tiktok"
   - Purple theme with backdrop blur for glass-morphism effect (matching error modal style)
+- **Icon Hover Rotation Effect (Nov 30)**:
+  - New Socials icons rotate right (15°) on hover and smoothly return to normal position
+  - CSS animation: `iconRotate 0.6s ease-in-out` on icon SVG elements
+  - Smooth visual feedback for better UX
 - **Connections Visual Enhancements (Nov 30)**: 
   - Added Edit button before Delete button for in-place connection editing
   - Platform-specific dashed border colors on existing social items (Snapchat yellow, YouTube red, Discord blue, TikTok pink, etc.)
