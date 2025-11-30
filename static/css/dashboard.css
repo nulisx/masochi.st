@@ -1510,3 +1510,180 @@ button:focus-visible, a:focus-visible, .nav-item:focus-visible {
   pointer-events: none;
   transform: rotate(-12deg);
 }
+
+.biolinks-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 24px 0;
+  border-bottom: 1px solid var(--border-color);
+  overflow-x: auto;
+  padding-bottom: 16px;
+}
+
+.biolinks-tab-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.biolinks-tab-btn:hover {
+  color: var(--text-primary);
+}
+
+.biolinks-tab-btn.active {
+  color: var(--accent-primary);
+  border-bottom-color: var(--accent-primary);
+}
+
+.biolinks-form {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--card-radius);
+  padding: 24px;
+  margin: 24px 0;
+}
+
+.biolinks-tab-content {
+  display: none;
+}
+
+.biolinks-tab-content.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.form-input:hover {
+  border-color: rgba(255,255,255,0.1);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px rgba(147,51,234,0.1);
+}
+
+input[type="color"].form-input {
+  height: 44px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+input[type="range"].form-input {
+  padding: 0;
+  cursor: pointer;
+  height: 6px;
+  appearance: none;
+  background: var(--bg-tertiary);
+}
+
+input[type="range"].form-input::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(147,51,234,0.3);
+}
+
+input[type="range"].form-input::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 8px rgba(147,51,234,0.3);
+}
+
+.toggle-switch {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.toggle-switch input {
+  display: none;
+}
+
+.toggle-slider {
+  width: 44px;
+  height: 24px;
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  position: relative;
+  transition: background 0.3s;
+  border: 1px solid var(--border-color);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+.toggle-slider::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s;
+}
+
+.toggle-switch input:checked + .toggle-slider::after {
+  transform: translateX(20px);
+}
+
+@media (max-width: 768px) {
+  .biolinks-tabs {
+    gap: 4px;
+    padding-bottom: 12px;
+  }
+
+  .biolinks-tab-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .biolinks-form {
+    padding: 16px;
+  }
+}

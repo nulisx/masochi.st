@@ -26,13 +26,13 @@ args = "dashboard-dev"
 name = "web-server"
 author = "agent"
 
+[workflows.workflow.metadata]
+outputType = "webview"
+
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "npm start"
 waitForPort = 5000
-
-[workflows.workflow.metadata]
-outputType = "webview"
 
 [[workflows.workflow]]
 name = "dashboard-dev"
@@ -49,10 +49,6 @@ outputType = "webview"
 [[ports]]
 localPort = 5000
 externalPort = 80
-
-[[ports]]
-localPort = 34065
-externalPort = 3000
 
 [[ports]]
 localPort = 35797

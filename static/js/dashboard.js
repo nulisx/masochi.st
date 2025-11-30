@@ -1401,8 +1401,9 @@ class Dashboard {
     }
 
     async renderBiolinks() {
-        const links = await this.fetchLinks();
         const contentArea = document.getElementById('contentArea');
+        const response = await fetch('/api/biolinks', { credentials: 'include' });
+        const { settings } = await response.json();
         
         contentArea.innerHTML = `
             <div class="page-header">
@@ -1412,131 +1413,312 @@ class Dashboard {
                     </svg>
                 </button>
                 <div>
-                    <h1 class="page-title">Bio Links</h1>
-                    <p class="page-subtitle">Manage and customize your bio link collection</p>
+                    <h1 class="page-title">Bio Customize</h1>
+                    <p class="page-subtitle">Customize your biolink appearance</p>
                 </div>
+                <button class="btn btn-primary" id="saveBiolinksBtn" style="margin-left: auto;">Save changes</button>
             </div>
             
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
-                <div class="card" style="padding: 20px; text-align: center;">
-                    <div style="font-size: 32px; font-weight: 600; color: var(--accent-primary); margin-bottom: 8px;">${links.length}</div>
-                    <p style="color: var(--text-muted); font-size: 14px;">Total Links</p>
-                </div>
-                <div class="card" style="padding: 20px; text-align: center;">
-                    <div style="font-size: 32px; font-weight: 600; color: var(--accent-secondary); margin-bottom: 8px;">0</div>
-                    <p style="color: var(--text-muted); font-size: 14px;">Total Clicks</p>
-                </div>
-                <div class="card" style="padding: 20px; text-align: center;">
-                    <div style="font-size: 32px; font-weight: 600; color: #a855f7; margin-bottom: 8px;">100%</div>
-                    <p style="color: var(--text-muted); font-size: 14px;">Active Rate</p>
-                </div>
+            <div class="biolinks-tabs">
+                <button class="biolinks-tab-btn active" data-tab="general">General</button>
+                <button class="biolinks-tab-btn" data-tab="background">Background</button>
+                <button class="biolinks-tab-btn" data-tab="profile">Profile</button>
+                <button class="biolinks-tab-btn" data-tab="link">Link</button>
+                <button class="biolinks-tab-btn" data-tab="badge">Badge</button>
+                <button class="biolinks-tab-btn" data-tab="layout">Layout</button>
+                <button class="biolinks-tab-btn" data-tab="effects">Effects</button>
+                <button class="biolinks-tab-btn" data-tab="embed">Embed</button>
+                <button class="biolinks-tab-btn" data-tab="config">Config</button>
             </div>
             
-            <div class="card" style="margin-bottom: 24px;">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M15 7h3a5 5 0 0 1 0 10h-3"></path>
-                            <path d="M9 17H6a5 5 0 0 1 0-10h3"></path>
-                            <path d="M8 12h8"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="card-title">Add New Link</h3>
-                        <p class="card-description">Create a new bio link with validation</p>
+            <form id="biolinksForm" class="biolinks-form">
+                <!-- General Tab -->
+                <div class="biolinks-tab-content active" id="tab-general">
+                    <div class="form-group">
+                        <label class="form-label">Layout</label>
+                        <select class="form-input" name="layout">
+                            <option value="modern" ${settings.layout === 'modern' ? 'selected' : ''}>Modern</option>
+                            <option value="classic" ${settings.layout === 'classic' ? 'selected' : ''}>Classic</option>
+                            <option value="minimal" ${settings.layout === 'minimal' ? 'selected' : ''}>Minimal</option>
+                        </select>
                     </div>
                 </div>
                 
-                <form id="addLinkForm" style="padding: 20px;">
+                <!-- Background Tab -->
+                <div class="biolinks-tab-content" id="tab-background">
                     <div class="form-group">
-                        <label class="form-label">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display: inline; vertical-align: middle; margin-right: 6px;">
-                                <line x1="17" y1="10" x2="3" y2="10"></line>
-                                <line x1="21" y1="6" x2="3" y2="6"></line>
-                                <line x1="21" y1="14" x2="3" y2="14"></line>
-                                <line x1="17" y1="18" x2="3" y2="18"></line>
-                            </svg>
-                            Title
-                        </label>
-                        <input type="text" class="form-input" id="linkTitle" placeholder="e.g., My Portfolio" required maxlength="50">
-                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Up to 50 characters</p>
+                        <label class="form-label">Background Effects</label>
+                        <select class="form-input" name="bg_effects">
+                            <option value="none" ${settings.bg_effects === 'none' ? 'selected' : ''}>None</option>
+                            <option value="snow" ${settings.bg_effects === 'snow' ? 'selected' : ''}>Snow Animated</option>
+                            <option value="particles" ${settings.bg_effects === 'particles' ? 'selected' : ''}>Particles</option>
+                            <option value="waves" ${settings.bg_effects === 'waves' ? 'selected' : ''}>Waves</option>
+                            <option value="tv" ${settings.bg_effects === 'tv' ? 'selected' : ''}>TV</option>
+                        </select>
                     </div>
-                    
                     <div class="form-group">
-                        <label class="form-label">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display: inline; vertical-align: middle; margin-right: 6px;">
-                                <path d="M15 7h3a5 5 0 0 1 0 10h-3"></path>
-                                <path d="M9 17H6a5 5 0 0 1 0-10h3"></path>
-                                <path d="M8 12h8"></path>
-                            </svg>
-                            URL
-                        </label>
-                        <input type="url" class="form-input" id="linkUrl" placeholder="https://example.com" required>
-                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;" id="linkUrlStatus"></p>
+                        <label class="form-label">Background Color</label>
+                        <input type="color" class="form-input" name="bg_effects_color" value="${settings.bg_effects_color || '#1a1a1c'}">
                     </div>
-                    
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Add Link</button>
-                </form>
-            </div>
-            
-            <div style="margin-top: 24px;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
-                    <h3 style="margin: 0;">Your Links${links.length > 0 ? ' (' + links.length + ')' : ''}</h3>
-                    ${links.length > 0 ? '<span style="font-size: 12px; color: var(--text-muted);">Drag to reorder • Click to edit</span>' : ''}
+                    <div class="form-group">
+                        <label class="form-label">Background Opacity: <span id="bgOpacityValue">${settings.bg_effects_opacity || 100}%</span></label>
+                        <input type="range" class="form-input" name="bg_effects_opacity" min="0" max="100" value="${settings.bg_effects_opacity || 100}" oninput="document.getElementById('bgOpacityValue').textContent = this.value + '%'">
+                    </div>
                 </div>
-                <div id="linksGrid" style="display: flex; flex-direction: column; gap: 12px;">
-                    ${links.length === 0 ? `
-                        <div class="card" style="padding: 48px 20px; text-align: center;">
-                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 16px; opacity: 0.5;">
-                                <path d="M15 7h3a5 5 0 0 1 0 10h-3"></path>
-                                <path d="M9 17H6a5 5 0 0 1 0-10h3"></path>
-                                <path d="M8 12h8"></path>
-                            </svg>
-                            <h3>No links added yet</h3>
-                            <p style="color: var(--text-muted);">Create your first bio link above to get started</p>
-                        </div>
-                    ` : links.map((link, idx) => `
-                        <div class="card" style="padding: 16px; display: flex; align-items: center; gap: 12px; cursor: move; transition: all 0.2s;" draggable="true" data-link-id="${link.id}" onclick="dashboard.editLink(${link.id})">
-                            <div style="color: var(--text-muted); font-weight: 600; cursor: grab;">≡</div>
-                            <div style="flex: 1;">
-                                <h4 style="margin-bottom: 4px; color: var(--text-primary);">${link.title}</h4>
-                                <p style="font-size: 12px; color: var(--text-muted); word-break: break-all; margin-bottom: 8px;">${link.url}</p>
-                                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                    <span style="font-size: 11px; color: #22c55e; background: rgba(34,197,94,0.15); padding: 3px 8px; border-radius: 4px;">✓ Valid</span>
-                                    <span style="font-size: 11px; color: var(--text-muted); background: var(--bg-tertiary); padding: 3px 8px; border-radius: 4px;">Link ${idx + 1}</span>
-                                </div>
-                            </div>
-                            <button class="btn btn-danger" style="padding: 6px 12px; font-size: 12px;" onclick="event.stopPropagation(); dashboard.deleteLink(${link.id})">Delete</button>
-                        </div>
-                    `).join('')}
+                
+                <!-- Profile Tab -->
+                <div class="biolinks-tab-content" id="tab-profile">
+                    <div class="form-group">
+                        <label class="form-label">Profile Text Color</label>
+                        <input type="color" class="form-input" name="profile_text_color" value="${settings.profile_text_color || '#dededd'}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Avatar Border</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="profile_avatar_border" ${settings.profile_avatar_border ? 'checked' : ''}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Avatar Border Color</label>
+                        <input type="color" class="form-input" name="profile_avatar_border_color" value="${settings.profile_avatar_border_color || '#000000'}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Avatar Border Width: <span id="avatarBorderValue">${settings.profile_avatar_border_width || 2}px</span></label>
+                        <input type="range" class="form-input" name="profile_avatar_border_width" min="0" max="20" value="${settings.profile_avatar_border_width || 2}" oninput="document.getElementById('avatarBorderValue').textContent = this.value + 'px'">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Profile Background Color</label>
+                        <input type="color" class="form-input" name="profile_bg_color" value="${settings.profile_bg_color || '#0a0a0a'}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Profile BG Opacity: <span id="profileBgOpacityValue">${settings.profile_bg_opacity || 100}%</span></label>
+                        <input type="range" class="form-input" name="profile_bg_opacity" min="0" max="100" value="${settings.profile_bg_opacity || 100}" oninput="document.getElementById('profileBgOpacityValue').textContent = this.value + '%'">
+                    </div>
                 </div>
-            </div>
+                
+                <!-- Link Tab -->
+                <div class="biolinks-tab-content" id="tab-link">
+                    <div class="form-group">
+                        <label class="form-label">Link Border</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="link_border" ${settings.link_border ? 'checked' : ''}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Link Border Radius: <span id="linkRadiusValue">${settings.link_border_radius || 50}px</span></label>
+                        <input type="range" class="form-input" name="link_border_radius" min="0" max="100" value="${settings.link_border_radius || 50}" oninput="document.getElementById('linkRadiusValue').textContent = this.value + 'px'">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Link Text Color</label>
+                        <input type="color" class="form-input" name="link_text_color" value="${settings.link_text_color || '#6e3e3e'}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Link Icon Color</label>
+                        <input type="color" class="form-input" name="link_icon_color" value="${settings.link_icon_color || '#f6f5f4'}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Link Icon Background</label>
+                        <input type="color" class="form-input" name="link_icon_bg_color" value="${settings.link_icon_bg_color || '#1e1e1e'}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Link Icon Opacity: <span id="linkIconOpacityValue">${settings.link_icon_opacity || 100}%</span></label>
+                        <input type="range" class="form-input" name="link_icon_opacity" min="0" max="100" value="${settings.link_icon_opacity || 100}" oninput="document.getElementById('linkIconOpacityValue').textContent = this.value + '%'">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Link Icon Glow</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="link_icon_glow" ${settings.link_icon_glow ? 'checked' : ''}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Link Icon Glow Size: <span id="linkGlowSizeValue">${settings.link_icon_glow_size || 0}px</span></label>
+                        <input type="range" class="form-input" name="link_icon_glow_size" min="0" max="50" value="${settings.link_icon_glow_size || 0}" oninput="document.getElementById('linkGlowSizeValue').textContent = this.value + 'px'">
+                    </div>
+                </div>
+                
+                <!-- Badge Tab -->
+                <div class="biolinks-tab-content" id="tab-badge">
+                    <div class="form-group">
+                        <label class="form-label">Show Badge</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="badge_show_hide" ${settings.badge_show_hide ? 'checked' : ''}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Badge Border</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="badge_border" ${settings.badge_border ? 'checked' : ''}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Badge Border Radius: <span id="badgeRadiusValue">${settings.badge_border_radius || 50}px</span></label>
+                        <input type="range" class="form-input" name="badge_border_radius" min="0" max="100" value="${settings.badge_border_radius || 50}" oninput="document.getElementById('badgeRadiusValue').textContent = this.value + 'px'">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Badge Text Color</label>
+                        <input type="color" class="form-input" name="badge_text_color" value="${settings.badge_text_color || '#000000'}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Badge Icon Color</label>
+                        <input type="color" class="form-input" name="badge_icon_color" value="${settings.badge_icon_color || '#f6f5f4'}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Badge Icon Opacity: <span id="badgeIconOpacityValue">${settings.badge_icon_opacity || 100}%</span></label>
+                        <input type="range" class="form-input" name="badge_icon_opacity" min="0" max="100" value="${settings.badge_icon_opacity || 100}" oninput="document.getElementById('badgeIconOpacityValue').textContent = this.value + '%'">
+                    </div>
+                </div>
+                
+                <!-- Layout Tab -->
+                <div class="biolinks-tab-content" id="tab-layout">
+                    <p style="color: var(--text-muted); margin-bottom: 16px;">Layout customization options coming soon</p>
+                </div>
+                
+                <!-- Effects Tab -->
+                <div class="biolinks-tab-content" id="tab-effects">
+                    <div class="form-group">
+                        <label class="form-label">Nickname Effects</label>
+                        <select class="form-input" name="effects_nickname_effects">
+                            <option value="none" ${settings.effects_nickname_effects === 'none' ? 'selected' : ''}>None</option>
+                            <option value="rainbow" ${settings.effects_nickname_effects === 'rainbow' ? 'selected' : ''}>Rainbow</option>
+                            <option value="glow" ${settings.effects_nickname_effects === 'glow' ? 'selected' : ''}>Glow</option>
+                            <option value="pulse" ${settings.effects_nickname_effects === 'pulse' ? 'selected' : ''}>Pulse</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description Effects</label>
+                        <select class="form-input" name="effects_description_effects">
+                            <option value="none" ${settings.effects_description_effects === 'none' ? 'selected' : ''}>None</option>
+                            <option value="fade" ${settings.effects_description_effects === 'fade' ? 'selected' : ''}>Fade</option>
+                            <option value="slide" ${settings.effects_description_effects === 'slide' ? 'selected' : ''}>Slide</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Username Glow</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="effects_username_glow" ${settings.effects_username_glow ? 'checked' : ''}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Username Glow Size: <span id="usernameGlowValue">${settings.effects_username_glow_size || 0}px</span></label>
+                        <input type="range" class="form-input" name="effects_username_glow_size" min="0" max="50" value="${settings.effects_username_glow_size || 0}" oninput="document.getElementById('usernameGlowValue').textContent = this.value + 'px'">
+                    </div>
+                </div>
+                
+                <!-- Embed Tab -->
+                <div class="biolinks-tab-content" id="tab-embed">
+                    <p style="color: var(--text-muted); margin-bottom: 16px;">Embed customization options coming soon</p>
+                </div>
+                
+                <!-- Config Tab -->
+                <div class="biolinks-tab-content" id="tab-config">
+                    <div class="form-group" style="padding: 16px; background: var(--bg-tertiary); border-radius: 8px;">
+                        <h3 style="margin-bottom: 12px;">Import Settings</h3>
+                        <input type="file" id="importSettings" accept=".json" style="margin-bottom: 12px;">
+                        <button type="button" class="btn btn-secondary" onclick="dashboard.importBiolinkSettings()">Import</button>
+                    </div>
+                    <div class="form-group" style="padding: 16px; background: var(--bg-tertiary); border-radius: 8px; margin-top: 16px;">
+                        <h3 style="margin-bottom: 12px;">Export Settings</h3>
+                        <button type="button" class="btn btn-secondary" onclick="dashboard.exportBiolinkSettings()">Download Settings</button>
+                    </div>
+                </div>
+            </form>
         `;
-
-        const form = document.getElementById('addLinkForm');
-        const urlInput = document.getElementById('linkUrl');
         
-        urlInput.addEventListener('change', () => {
-            const status = document.getElementById('linkUrlStatus');
+        this.setupBiolinksInterface(settings);
+    }
+
+    setupBiolinksInterface(settings) {
+        const tabButtons = document.querySelectorAll('.biolinks-tab-btn');
+        const tabContents = document.querySelectorAll('.biolinks-tab-content');
+        const form = document.getElementById('biolinksForm');
+        const saveBtn = document.getElementById('saveBiolinksBtn');
+        
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabButtons.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+            });
+        });
+        
+        saveBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                if (value === 'on') data[key] = true;
+                else if (value === '') data[key] = false;
+                else data[key] = value;
+            }
+            
             try {
-                new URL(urlInput.value);
-                status.style.color = '#22c55e';
-                status.textContent = '✓ Valid URL';
-            } catch {
-                status.style.color = '#ef4444';
-                status.textContent = '✗ Invalid URL';
+                const response = await fetch('/api/biolinks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    this.showToast('Biolink settings saved successfully', 'success');
+                    saveBtn.style.opacity = '0.5';
+                    setTimeout(() => { saveBtn.style.opacity = '1'; }, 1000);
+                } else {
+                    this.showToast('Failed to save settings', 'error');
+                }
+            } catch (error) {
+                this.showToast('Error saving settings', 'error');
             }
         });
+    }
+    
+    exportBiolinkSettings() {
+        fetch('/api/biolinks', { credentials: 'include' })
+            .then(r => r.json())
+            .then(({ settings }) => {
+                const json = JSON.stringify(settings, null, 2);
+                const blob = new Blob([json], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'biolink-settings.json';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+    }
+    
+    importBiolinkSettings() {
+        const file = document.getElementById('importSettings').files[0];
+        if (!file) return this.showToast('Please select a file', 'error');
         
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.addLink(
-                document.getElementById('linkTitle').value,
-                document.getElementById('linkUrl').value
-            );
-        });
-        
-        this.setupLinkDragDrop();
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            try {
+                const settings = JSON.parse(e.target.result);
+                const response = await fetch('/api/biolinks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(settings)
+                });
+                if (response.ok) {
+                    this.showToast('Settings imported successfully', 'success');
+                    this.renderBiolinks();
+                } else {
+                    this.showToast('Failed to import settings', 'error');
+                }
+            } catch (err) {
+                this.showToast('Invalid file format', 'error');
+            }
+        };
+        reader.readAsText(file);
     }
     
     setupLinkDragDrop() {
