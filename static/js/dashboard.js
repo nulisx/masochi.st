@@ -1736,6 +1736,9 @@ class Dashboard {
         const form = document.getElementById('biolinksForm');
         const saveBtn = document.getElementById('saveBiolinksBtn');
         
+        // Generate embed code
+        this.generateEmbedCode(settings);
+        
         tabButtons.forEach(btn => {
             btn.addEventListener('click', () => {
                 tabButtons.forEach(b => b.classList.remove('active'));
@@ -1816,6 +1819,35 @@ class Dashboard {
             }
         };
         reader.readAsText(file);
+    }
+
+    generateEmbedCode(settings) {
+        const embedWidth = settings.embed_width || 100;
+        const embedHeight = settings.embed_height || 600;
+        const username = this.user?.username || 'username';
+        const scrollable = settings.embed_scrollable ? 'yes' : 'no';
+        
+        const embedCode = `<iframe 
+  src="https://glowi.es/@${username}" 
+  width="${embedWidth}%" 
+  height="${embedHeight}px" 
+  frameborder="${settings.embed_show_border ? '1' : '0'}" 
+  scrolling="${scrollable}" 
+  style="border-radius: ${settings.embed_border_radius || 12}px; border: ${settings.embed_show_border ? `1px solid ${settings.embed_border_color || '#9333ea'}` : 'none'};"></iframe>`;
+        
+        const codeArea = document.getElementById('embedCode');
+        if (codeArea) {
+            codeArea.textContent = embedCode;
+        }
+    }
+
+    copyEmbedCode() {
+        const codeArea = document.getElementById('embedCode');
+        if (!codeArea) return this.showToast('Embed code not found', 'error');
+        
+        codeArea.select();
+        document.execCommand('copy');
+        this.showToast('Embed code copied to clipboard', 'success');
     }
     
     setupLinkDragDrop() {
