@@ -3026,12 +3026,15 @@ class Dashboard {
             bottom: 24px;
             right: 24px;
             padding: 12px 20px;
-            background: ${type === 'error' ? '#ef4444' : type === 'success' ? '#10b981' : 'var(--bg-secondary)'};
+            background: linear-gradient(180deg, rgba(147, 51, 234, 0.2), rgba(147, 51, 234, 0.1));
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            border-left: 4px solid rgba(147, 51, 234, 0.6);
             color: white;
             border-radius: 8px;
             font-size: 14px;
             z-index: 10000;
             animation: slideIn 0.3s ease;
+            backdrop-filter: blur(8px);
         `;
         toast.textContent = message;
         document.body.appendChild(toast);
