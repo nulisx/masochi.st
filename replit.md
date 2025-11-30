@@ -89,12 +89,17 @@ Dashboard Pages:
 
 ### Recent Changes (November 2025 - COMPLETE)
 - **Discord Two-Field Modal (Nov 30 - Latest)**:
-  - Discord now has dedicated two-input modal: User ID (for https://discord.com/users/userid) and Username
+  - Discord has dedicated two-input modal: User ID (for https://discord.com/users/userid) and Username
+  - Field badges show "User" and "Username" labels for clarity
   - Either field is optional - at least one must be provided ("Please enter Discord User ID or Username")
   - User ID properly pre-fills when editing existing Discord connections
-  - Username field copies to clipboard on submit instead of opening a link
-  - Shows "Copy Username to Clipboard" button text, "Update" when editing
+  - Button shows "Submit" for new connections, "Update" when editing (no clipboard copy in modal)
+  - Success message format: "Discord connected successfully: @username"
   - Platform-specific modal handling with special UI for Discord
+- **Toast Notification Styling (Nov 30)**:
+  - Success toasts now display with purple gradient background and transparency
+  - Format: "Platform connected successfully: @username" for all platforms
+  - Purple theme with backdrop blur for glass-morphism effect
 - **Connections Visual Enhancements (Nov 30)**: 
   - Added Edit button before Delete button for in-place connection editing
   - Platform-specific dashed border colors on existing social items (Snapchat yellow, YouTube red, Discord blue, TikTok pink, etc.)

@@ -2430,7 +2430,7 @@ class Dashboard {
         if (isDiscord) {
             bodyHTML = `
                 <div class="connection-input-wrapper">
-                    <label class="connection-input-label">Discord User ID</label>
+                    <label class="connection-input-label">Discord User ID <span class="connection-field-badge">User</span></label>
                     <svg class="connection-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
                         <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
@@ -2438,7 +2438,7 @@ class Dashboard {
                     <input type="text" id="connDiscordUserId" class="connection-input" placeholder="Enter Discord User ID" value="${prefilledDiscordUserId}" autocomplete="off">
                 </div>
                 <div class="connection-input-wrapper" style="margin-top: 16px;">
-                    <label class="connection-input-label">Discord Username</label>
+                    <label class="connection-input-label">Discord Username <span class="connection-field-badge">Username</span></label>
                     <svg class="connection-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
                         <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
@@ -2459,9 +2459,7 @@ class Dashboard {
             `;
         }
         
-        const buttonLabel = isDiscord 
-            ? (connectionId ? 'Update' : 'Copy Username to Clipboard')
-            : (connectionId ? 'Update' : 'Submit');
+        const buttonLabel = connectionId ? 'Update' : 'Submit';
         
         modal.innerHTML = `
             <div class="connection-modal">
@@ -2520,19 +2518,9 @@ class Dashboard {
                 return;
             }
             
-            // Copy username to clipboard
-            if (username) {
-                try {
-                    await navigator.clipboard.writeText(username);
-                    this.showToast('Discord username copied to clipboard', 'success');
-                } catch (err) {
-                    this.showToast('Failed to copy to clipboard', 'error');
-                    return;
-                }
-            }
-            
             // Save the User ID and username
             const profileUrl = userId ? `https://discord.com/users/${userId}` : `discord://${username}`;
+            const displayName = username || userId;
             
             try {
                 const method = connectionId ? 'PUT' : 'POST';
@@ -2551,7 +2539,7 @@ class Dashboard {
                 
                 if (response.ok) {
                     const action = connectionId ? 'updated' : 'connected';
-                    this.showToast(`Discord ${action} successfully`, 'success');
+                    this.showToast(`Discord ${action} successfully: @${displayName}`, 'success');
                     document.getElementById('connectionModal')?.remove();
                     this.renderConnections();
                 } else {
@@ -2596,7 +2584,7 @@ class Dashboard {
             
             if (response.ok) {
                 const action = connectionId ? 'updated' : 'connected';
-                this.showToast(`${platformName} ${action} successfully`, 'success');
+                this.showToast(`${platformName} ${action} successfully: @${username}`, 'success');
                 document.getElementById('connectionModal')?.remove();
                 this.renderConnections();
             } else {
