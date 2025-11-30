@@ -338,11 +338,13 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(255,255,255,0.01);
-  border: 1px solid rgba(255,255,255,0.02);
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
   border-radius: 12px;
   padding: 10px 14px;
   width: 540px;
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
 }
 
 .search-container svg {
@@ -1696,7 +1698,7 @@ input[type="range"].form-input::-moz-range-thumb {
 
 .connections-card {
   background: rgba(24, 24, 32, 0.6);
-  border: 1px solid rgba(63, 63, 70, 0.5);
+  border: 2px dashed rgba(128, 128, 128, 0.3);
   border-radius: 12px;
   padding: 24px;
 }
@@ -1721,7 +1723,7 @@ input[type="range"].form-input::-moz-range-thumb {
   align-items: center;
   justify-content: center;
   background: rgba(39, 39, 42, 0.8);
-  border: 1px solid rgba(63, 63, 70, 0.5);
+  border: 2px dashed rgba(128, 128, 128, 0.3);
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1756,9 +1758,65 @@ input[type="range"].form-input::-moz-range-thumb {
   gap: 12px;
   padding: 14px 16px;
   background: rgba(99, 102, 241, 0.08);
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  border: 2px dashed rgba(99, 102, 241, 0.4);
   border-radius: 10px;
   transition: all 0.2s ease;
+}
+
+.existing-social-item[data-platform="snapchat"] {
+  border-color: rgba(255, 252, 0, 0.5);
+}
+
+.existing-social-item[data-platform="youtube"] {
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.existing-social-item[data-platform="discord"] {
+  border-color: rgba(88, 101, 242, 0.5);
+}
+
+.existing-social-item[data-platform="twitch"] {
+  border-color: rgba(145, 70, 255, 0.5);
+}
+
+.existing-social-item[data-platform="spotify"] {
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+.existing-social-item[data-platform="instagram"] {
+  border-color: rgba(236, 72, 153, 0.5);
+}
+
+.existing-social-item[data-platform="twitter"] {
+  border-color: rgba(29, 155, 240, 0.5);
+}
+
+.existing-social-item[data-platform="tiktok"] {
+  border-color: rgba(236, 72, 153, 0.5);
+}
+
+.existing-social-item[data-platform="telegram"] {
+  border-color: rgba(0, 136, 204, 0.5);
+}
+
+.existing-social-item[data-platform="github"] {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.existing-social-item[data-platform="linkedin"] {
+  border-color: rgba(0, 119, 182, 0.5);
+}
+
+.existing-social-item[data-platform="facebook"] {
+  border-color: rgba(24, 119, 242, 0.5);
+}
+
+.existing-social-item[data-platform="reddit"] {
+  border-color: rgba(255, 69, 0, 0.5);
+}
+
+.existing-social-item[data-platform="mail"] {
+  border-color: rgba(168, 85, 247, 0.5);
 }
 
 .existing-social-item:hover {
@@ -1823,6 +1881,28 @@ input[type="range"].form-input::-moz-range-thumb {
 
 .social-delete-btn svg {
   color: #ef4444;
+}
+
+.social-edit-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(147, 51, 234, 0.1);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.social-edit-btn:hover {
+  background: rgba(147, 51, 234, 0.25);
+}
+
+.social-edit-btn svg {
+  color: #a855f7;
 }
 
 .empty-connections {

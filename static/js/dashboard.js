@@ -2378,7 +2378,7 @@ class Dashboard {
                             ${connections.map(conn => {
                                 const url = getPlatformUrl(conn);
                                 return `
-                                    <div class="existing-social-item">
+                                    <div class="existing-social-item" data-platform="${conn.platform.toLowerCase()}">
                                         <div class="social-item-icon">
                                             ${getPlatformIcon(conn.platform)}
                                         </div>
@@ -2386,6 +2386,12 @@ class Dashboard {
                                             <span class="social-item-name">${conn.platform}</span>
                                             <span class="social-item-url">${url}</span>
                                         </div>
+                                        <button class="social-edit-btn" onclick="dashboard.editConnection('${conn.id}', '${conn.platform}', '${conn.username || ''}')" title="Edit">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                            </svg>
+                                        </button>
                                         <button class="social-delete-btn" onclick="dashboard.deleteConnection('${conn.id}', '${conn.platform}')" title="Delete">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                 <polyline points="3 6 5 6 21 6"></polyline>
@@ -2402,7 +2408,7 @@ class Dashboard {
         `;
     }
 
-    showConnectionModal(platformName, prefix = '', modalTitle = '') {
+    showConnectionModal(platformName, prefix = '', modalTitle = '', prefilledUsername = '', connectionId = null) {
         const existingModal = document.getElementById('connectionModal');
         if (existingModal) existingModal.remove();
         
@@ -2419,7 +2425,7 @@ class Dashboard {
         modal.innerHTML = `
             <div class="connection-modal">
                 <div class="connection-modal-header">
-                    <h2 class="connection-modal-title">${title}</h2>
+                    <h2 class="connection-modal-title">${connectionId ? 'Edit ' + title : title}</h2>
                     <button class="connection-modal-close" onclick="document.getElementById('connectionModal').remove()">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -2435,12 +2441,12 @@ class Dashboard {
                             <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
                         </svg>
                         ${displayPrefix ? `<span class="connection-input-prefix">${displayPrefix}</span>` : ''}
-                        <input type="text" id="connUsername" class="connection-input" placeholder="Enter ${platformName}" autocomplete="off">
+                        <input type="text" id="connUsername" class="connection-input" placeholder="Enter ${platformName}" value="${prefilledUsername}" autocomplete="off">
                     </div>
                 </div>
                 
-                <button class="connection-submit-btn" onclick="dashboard.saveConnection('${platformName}', '${prefix}', ${hidePrefix})">
-                    Submit
+                <button class="connection-submit-btn" onclick="dashboard.saveConnection('${platformName}', '${prefix}', ${hidePrefix}, ${connectionId ? `'${connectionId}'` : 'null'})">
+                    ${connectionId ? 'Update' : 'Submit'}
                 </button>
             </div>
         `;
@@ -2461,7 +2467,7 @@ class Dashboard {
         setTimeout(() => document.getElementById('connUsername')?.focus(), 100);
     }
 
-    async saveConnection(platformName, prefix = '', hidePrefix = false) {
+    async saveConnection(platformName, prefix = '', hidePrefix = false, connectionId = null) {
         const input = document.querySelector('#connUsername');
         const username = input?.value.trim();
         
@@ -2476,8 +2482,11 @@ class Dashboard {
         }
         
         try {
-            const response = await fetch('/api/connections', {
-                method: 'POST',
+            const method = connectionId ? 'PUT' : 'POST';
+            const endpoint = connectionId ? `/api/connections/${connectionId}` : '/api/connections';
+            
+            const response = await fetch(endpoint, {
+                method: method,
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 body: JSON.stringify({
@@ -2488,17 +2497,28 @@ class Dashboard {
             });
             
             if (response.ok) {
-                this.showToast(`${platformName} connected successfully`, 'success');
+                const action = connectionId ? 'updated' : 'connected';
+                this.showToast(`${platformName} ${action} successfully`, 'success');
                 document.getElementById('connectionModal')?.remove();
                 this.renderConnections();
             } else {
                 const err = await response.json();
-                this.showToast(err.error || 'Failed to connect', 'error');
+                this.showToast(err.error || 'Failed to save', 'error');
             }
         } catch (error) {
-            this.showToast('Failed to connect platform', 'error');
+            this.showToast('Failed to save connection', 'error');
             console.error(error);
         }
+    }
+
+    async editConnection(connectionId, platformName, currentUsername) {
+        const allPlatforms = this.getSocialPlatforms();
+        const platform = allPlatforms.find(p => p.name === platformName);
+        const prefix = platform?.prefix || '';
+        const hidePrefix = platform?.hidePrefix || false;
+        const modalTitle = platform?.modalTitle || `${platformName} Username`;
+        
+        this.showConnectionModal(platformName, prefix, modalTitle, currentUsername, connectionId);
     }
 
     async deleteConnection(connectionId, platformName) {

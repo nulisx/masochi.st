@@ -88,6 +88,15 @@ Dashboard Pages:
 - `DELETE /api/updates/:id` - Delete update (admin only)
 
 ### Recent Changes (November 2025 - COMPLETE)
+- **Connections Visual Enhancements (Nov 30 - Latest)**: 
+  - Added Edit button before Delete button for in-place connection editing
+  - Platform-specific dashed border colors on existing social items (Snapchat yellow, YouTube red, Discord blue, TikTok pink, etc.)
+  - Grey dashed borders around New Socials and Existing Socials container boxes
+  - Dashed grey borders on individual social icon buttons  
+  - Blur background effect on search container
+  - Purple-themed edit button styling with icon
+  - Modal now shows "Edit" or "Submit" based on context
+  - Edit preserves existing username in input field for quick updates
 - **Connections Tab Redesign (Nov 30)**: Completely redesigned to match Bio-Socials reference:
   - New Socials grid with 27+ platform SVG icons (Snapchat, YouTube, Discord, Spotify, Instagram, Twitter, TikTok, etc.)
   - Existing Socials section showing connected platforms with icon, name, full URL, and delete button
