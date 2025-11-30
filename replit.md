@@ -97,14 +97,14 @@ Dashboard Pages:
   - Success message format: "Discord connected successfully: @username"
   - Platform-specific modal handling with special UI for Discord
 - **Toast Notification Styling & Platform-Specific Messages (Nov 30)**:
-  - Success toasts display with purple gradient background and transparency
+  - ALL toasts (success, error, warning, delete) display with purple gradient background and transparency
   - Platform-specific URL formats in success messages:
     - Discord User: "Discord connected successfully: /users/123456"
     - Discord Server: "Discord connected successfully: @servername"
     - Snapchat: "Snapchat connected successfully: add/username"
     - YouTube: "YouTube connected successfully: @username"
     - TikTok: "TikTok connected successfully: @username"
-  - Purple theme with backdrop blur for glass-morphism effect
+  - Purple theme with backdrop blur for glass-morphism effect (matching error modal style)
 - **Connections Visual Enhancements (Nov 30)**: 
   - Added Edit button before Delete button for in-place connection editing
   - Platform-specific dashed border colors on existing social items (Snapchat yellow, YouTube red, Discord blue, TikTok pink, etc.)

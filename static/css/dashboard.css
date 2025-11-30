@@ -919,11 +919,17 @@ textarea.form-input {
 }
 
 .toast.error {
-  border-left-color: var(--danger);
+  background: linear-gradient(180deg, rgba(147, 51, 234, 0.2), rgba(147, 51, 234, 0.1));
+  border: 1px solid rgba(147, 51, 234, 0.3);
+  border-left: 4px solid rgba(147, 51, 234, 0.6);
+  backdrop-filter: blur(8px);
 }
 
 .toast.warning {
-  border-left-color: var(--warning);
+  background: linear-gradient(180deg, rgba(147, 51, 234, 0.2), rgba(147, 51, 234, 0.1));
+  border: 1px solid rgba(147, 51, 234, 0.3);
+  border-left: 4px solid rgba(147, 51, 234, 0.6);
+  backdrop-filter: blur(8px);
 }
 
 .avatar-upload {
