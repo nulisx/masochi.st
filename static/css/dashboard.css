@@ -1751,8 +1751,7 @@ input[type="range"].form-input::-moz-range-thumb {
 
 @keyframes iconRotate {
   0% { transform: rotateZ(0deg); }
-  50% { transform: rotateZ(15deg); }
-  100% { transform: rotateZ(0deg); }
+  100% { transform: rotateZ(360deg); }
 }
 
 .social-icon-btn.connected {

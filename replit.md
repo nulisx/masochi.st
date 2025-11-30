@@ -106,8 +106,8 @@ Dashboard Pages:
     - TikTok: "TikTok connected successfully: @tiktok"
   - Purple theme with backdrop blur for glass-morphism effect (matching error modal style)
 - **Icon Hover Rotation Effect (Nov 30)**:
-  - New Socials icons rotate right (15°) on hover and smoothly return to normal position
-  - CSS animation: `iconRotate 0.6s ease-in-out` on icon SVG elements
+  - New Socials icons perform full 360° rotation on hover and smoothly return to normal position
+  - CSS animation: `iconRotate 0.6s ease-in-out` with full rotation (0° to 360°)
   - Smooth visual feedback for better UX
 - **Platform Badge System (Nov 30)**:
   - Discord Server shows "S" badge in bottom-right corner to distinguish from Discord User
