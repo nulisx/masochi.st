@@ -106,10 +106,10 @@ Dashboard Pages:
     - TikTok: "TikTok connected successfully: @tiktok"
   - Purple theme with backdrop blur for glass-morphism effect (matching error modal style)
 - **Icon Hover Rotation Effect (Nov 30)**:
-  - New Socials icons perform full 360° rotation on hover with brief pause when upside down
-  - Animation: 0.5s up to 180°, holds for 0.3s while upside down, then 0.5s back to normal
-  - Total animation time: 1.3s with smooth ease-in-out timing
-  - Quick visual feedback with smooth pause effect
+  - New Socials icons perform full 360° rotation on hover with pause when upside down
+  - Animation: Slows down as it approaches 180°, pauses while upside down, then continues
+  - Total animation time: 1.3s with smooth cubic-bezier easing
+  - Visual effect: deceleration on approach, pause, acceleration on return
 - **Platform Badge System (Nov 30)**:
   - Discord Server shows "S" badge in bottom-right corner to distinguish from Discord User
   - Purple badge with white text at position bottom-right of icon

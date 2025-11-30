@@ -1746,13 +1746,13 @@ input[type="range"].form-input::-moz-range-thumb {
 }
 
 .social-icon-btn:hover svg {
-  animation: iconRotate 1.3s ease-in-out;
+  animation: iconRotate 1.3s cubic-bezier(0.42, 0, 0.58, 1);
 }
 
 @keyframes iconRotate {
   0% { transform: rotateZ(0deg); }
-  38% { transform: rotateZ(180deg); }
-  61% { transform: rotateZ(180deg); }
+  50% { transform: rotateZ(180deg); }
+  65% { transform: rotateZ(180deg); }
   100% { transform: rotateZ(360deg); }
 }
 
