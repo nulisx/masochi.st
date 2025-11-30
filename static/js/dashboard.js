@@ -2396,49 +2396,50 @@ class Dashboard {
                 name: 'BTC', 
                 prefix: '', 
                 color: '#F7931A', 
-                modalTitle: 'Bitcoin Address',
+                modalTitle: 'BTC Username',
                 icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#F7931A"><path d="M23.638 14.904c-1.602 6.43-8.113 10.34-14.542 8.736C2.67 22.05-1.244 15.525.362 9.105 1.962 2.67 8.475-1.243 14.9.358c6.43 1.605 10.342 8.115 8.738 14.548v-.002zm-6.35-4.613c.24-1.59-.974-2.45-2.64-3.03l.54-2.153-1.315-.33-.525 2.107c-.345-.087-.7-.17-1.053-.252l.53-2.127-1.312-.33-.54 2.165c-.285-.065-.565-.13-.84-.2l-1.815-.45-.35 1.407s.974.225.955.238c.535.136.63.486.615.766l-1.477 5.92c-.075.166-.24.406-.614.314.015.02-.96-.24-.96-.24l-.655 1.51 1.71.426.93.236-.54 2.19 1.313.327.54-2.17c.36.1.705.19 1.05.273l-.538 2.155 1.315.33.545-2.19c2.24.427 3.93.257 4.64-1.774.57-1.637-.03-2.58-1.217-3.196.854-.193 1.5-.76 1.68-1.93h.01zm-3.01 4.22c-.404 1.64-3.157.75-4.05.53l.72-2.9c.896.23 3.757.67 3.33 2.37zm.41-4.24c-.37 1.49-2.662.735-3.405.55l.654-2.64c.744.18 3.137.52 2.75 2.084v.006z"/></svg>`
             },
             { 
                 name: 'ETH', 
                 prefix: '', 
                 color: '#627EEA', 
-                modalTitle: 'Ethereum Address',
+                modalTitle: 'ETH Username',
                 icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#627EEA"><path d="M11.944 17.97L4.58 13.62 11.943 24l7.37-10.38-7.372 4.35h.003zM12.056 0L4.69 12.223l7.365 4.354 7.365-4.35L12.056 0z"/></svg>`
             },
             { 
                 name: 'LTC', 
                 prefix: '', 
                 color: '#345D9D', 
-                modalTitle: 'Litecoin Address',
+                modalTitle: 'LTC Username',
                 icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#345D9D"><path d="M12 0a12 12 0 1012 12A12 12 0 0012 0zm-.262 3.678h2.584a.343.343 0 01.33.435l-2.03 6.918 1.905-.582-.478 1.58-1.906.59L10.9 17.161h6.063a.343.343 0 01.329.436l-.358 1.2a.343.343 0 01-.33.248H7.065l1.349-4.584-1.98.608.494-1.58 1.98-.61L11.368 4.1a.343.343 0 01.37-.422z"/></svg>`
             },
             { 
                 name: 'XMR', 
                 prefix: '', 
                 color: '#FF6600', 
-                modalTitle: 'Monero Address',
+                modalTitle: 'XMR Username',
                 icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#FF6600"><path d="M12 0C5.372 0 0 5.373 0 12s5.372 12 12 12 12-5.373 12-12S18.628 0 12 0zm-.046 4.453l4.778 4.778v4.629h-2.39v-3.2l-2.388-2.387-2.388 2.388v3.199h-2.39V9.23l4.778-4.778zm-7.5 11.16h2.39v2.934h5.11v-4.86l1.502 1.5 1.502-1.5v4.86h5.11v-2.935h2.39v5.325H4.453v-5.325z"/></svg>`
             },
             { 
                 name: 'Mail', 
                 prefix: 'mailto:', 
                 color: '#ffffff', 
-                modalTitle: 'Email Address',
+                modalTitle: 'Mail Username',
+                hidePrefix: true,
                 icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#ffffff"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>`
             },
             { 
                 name: 'Roblox', 
-                prefix: 'roblox.com/users/', 
+                prefix: 'roblox.com/', 
                 color: '#FF0000', 
-                modalTitle: 'Roblox User ID',
+                modalTitle: 'Roblox Username',
                 icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#FF0000"><path d="M5.164 0L.16 18.928l18.718 5.07L23.88 5.07 5.164 0zm7.78 13.873l-3.748-1.02 1.016-3.74 3.748 1.02-1.016 3.74z"/></svg>`
             },
             { 
                 name: 'NameMC', 
-                prefix: 'namemc.com/profile/', 
+                prefix: 'namemc.com/', 
                 color: '#4caf50', 
-                modalTitle: 'NameMC Profile',
+                modalTitle: 'NameMC Username',
                 icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#4caf50"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L19.18 7 12 9.82 4.82 7 12 4.18zM4 8.72l7 3.5v7.5l-7-3.5v-7.5zm9 11v-7.5l7-3.5v7.5l-7 3.5z"/></svg>`
             },
             { 
@@ -2450,7 +2451,7 @@ class Dashboard {
             },
             { 
                 name: 'Custom URL', 
-                prefix: '', 
+                prefix: 'https://', 
                 color: '#9333EA', 
                 modalTitle: 'Custom URL',
                 icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#9333EA"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>`
