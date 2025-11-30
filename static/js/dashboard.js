@@ -2252,30 +2252,36 @@ class Dashboard {
 
     async renderConnections() {
         const connections = await this.fetchConnections();
-        
         const contentArea = document.getElementById('contentArea');
         
         const allPlatforms = [
-            { name: 'Patreon', icon: '🎉' },
-            { name: 'YouTube', icon: '▶️' },
-            { name: 'Discord', icon: '🎮' },
-            { name: 'Slack', icon: '💬' },
-            { name: 'Spotify', icon: '🎵' },
-            { name: 'Instagram', icon: '📷' },
-            { name: 'Twitter', icon: '𝕏' },
-            { name: 'TikTok', icon: '🎬' },
-            { name: 'Telegram', icon: '✈️' },
-            { name: 'SoundCloud', icon: '☁️' },
-            { name: 'PayPal', icon: '💳' },
-            { name: 'GitHub', icon: '🐙' },
-            { name: 'Cash App', icon: '💰' },
-            { name: 'Mastodon', icon: '🐘' },
-            { name: 'Twitch', icon: '📺' },
-            { name: 'Kick', icon: '⚡' },
-            { name: 'LinkedIn', icon: '💼' },
-            { name: 'Email', icon: '📧' },
-            { name: 'Website', icon: '🌐' }
+            { name: 'Twitter', icon: '𝕏', prefix: 'twitter.com/', color: '#1DA1F2' },
+            { name: 'Discord', icon: '💬', prefix: 'discord.com/users/', color: '#5865F2' },
+            { name: 'YouTube', icon: '▶️', prefix: 'youtube.com/@', color: '#FF0000' },
+            { name: 'Twitch', icon: '📺', prefix: 'twitch.tv/', color: '#9146FF' },
+            { name: 'Instagram', icon: '📷', prefix: 'instagram.com/', color: '#E4405F' },
+            { name: 'TikTok', icon: '🎬', prefix: 'tiktok.com/@', color: '#000000' },
+            { name: 'GitHub', icon: '🐙', prefix: 'github.com/', color: '#181717' },
+            { name: 'LinkedIn', icon: '💼', prefix: 'linkedin.com/in/', color: '#0A66C2' },
+            { name: 'Spotify', icon: '🎵', prefix: 'open.spotify.com/user/', color: '#1DB954' },
+            { name: 'PayPal', icon: '💳', prefix: 'paypal.me/', color: '#003087' },
+            { name: 'Reddit', icon: '🔴', prefix: 'reddit.com/u/', color: '#FF4500' },
+            { name: 'Telegram', icon: '✈️', prefix: 't.me/', color: '#0088cc' },
+            { name: 'Pinterest', icon: '📌', prefix: 'pinterest.com/', color: '#E60023' },
+            { name: 'Facebook', icon: '👥', prefix: 'facebook.com/', color: '#1877F2' },
+            { name: 'BTC', icon: '₿', prefix: '', color: '#F7931A' },
+            { name: 'ETH', icon: 'Ξ', prefix: '', color: '#627EEA' },
+            { name: 'LTC', icon: 'Ł', prefix: '', color: '#345D9D' },
+            { name: 'XMR', icon: '🔐', prefix: '', color: '#FF6600' },
+            { name: 'Mail', icon: '📧', prefix: 'mailto:', color: '#EA4335' },
+            { name: 'Roblox', icon: '🎮', prefix: 'roblox.com/users/', color: '#00A2E8' },
+            { name: 'NameMC', icon: '⛏️', prefix: 'namemc.com/profile/', color: '#62B47E' },
+            { name: 'Steam', icon: '🎮', prefix: 'steamcommunity.com/id/', color: '#000000' },
+            { name: 'Custom URL', icon: '🔗', prefix: 'https://', color: '#9333EA' }
         ];
+        
+        const connectedPlatforms = connections.map(c => c.platform.toLowerCase());
+        const availablePlatforms = allPlatforms.filter(p => !connectedPlatforms.includes(p.name.toLowerCase()));
         
         contentArea.innerHTML = `
             <div class="page-header">
@@ -2285,44 +2291,45 @@ class Dashboard {
                     </svg>
                 </button>
                 <div>
-                    <h1 class="page-title">Social Connections</h1>
-                    <p class="page-subtitle">Link your social media profiles to display on your bio</p>
+                    <h1 class="page-title">Connections</h1>
+                    <p class="page-subtitle">Link your social media and crypto profiles</p>
                 </div>
             </div>
             
-            <div class="card" style="margin-bottom: 24px; padding: 24px;">
-                <h2 style="margin-top: 0; margin-bottom: 16px; color: var(--text-primary);">New Socials</h2>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 12px;">
-                    ${allPlatforms.map(plat => `
-                        <button class="social-icon-btn" style="padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-secondary); cursor: pointer; font-size: 28px; transition: all 0.2s; display: flex; align-items: center; justify-content: center;" title="${plat.name}" onclick="dashboard.showModal('Add ${plat.name}', '<form id=&quot;socialForm&quot;><div class=&quot;form-group&quot;><label class=&quot;form-label&quot;>${plat.name} URL</label><input type=&quot;url&quot; class=&quot;form-input&quot; id=&quot;socialUrl&quot; placeholder=&quot;https://...&quot; required></div></form>', () => { const url = document.getElementById(&quot;socialUrl&quot;).value; if(url.trim()) { dashboard.showToast(&quot;${plat.name} connected&quot;, &quot;success&quot;); dashboard.renderConnections(); return true; } return false; })">
-                            ${plat.icon}
-                        </button>
-                    `).join('')}
+            ${availablePlatforms.length > 0 ? `
+                <div class="card" style="margin-bottom: 24px; padding: 24px;">
+                    <h2 style="margin-top: 0; margin-bottom: 16px; color: var(--text-primary);">Add Socials</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 12px;">
+                        ${availablePlatforms.map(plat => `
+                            <button class="social-icon-btn" 
+                                style="padding: 12px; border-radius: 8px; border: 1px solid rgba(168, 85, 247, 0.2); background: var(--bg-secondary); cursor: pointer; font-size: 28px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; hover: background: var(--bg-tertiary);" 
+                                title="${plat.name}" 
+                                onclick="dashboard.showConnectionModal('${plat.name}', '${plat.prefix}')">
+                                ${plat.icon}
+                            </button>
+                        `).join('')}
+                    </div>
                 </div>
-            </div>
+            ` : ''}
             
             <div class="card" style="padding: 24px;">
-                <h2 style="margin-top: 0; margin-bottom: 16px; color: var(--text-primary);">Existing Socials</h2>
+                <h2 style="margin-top: 0; margin-bottom: 16px; color: var(--text-primary);">Connected (${connections.length})</h2>
                 ${connections.length === 0 ? `
                     <div style="text-align: center; padding: 32px 20px; color: var(--text-muted);">
-                        <p>No social connections yet. Add one above to get started.</p>
+                        <p>No connections yet. Add one above to get started.</p>
                     </div>
                 ` : `
-                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
                         ${connections.map(conn => `
-                            <div style="display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; padding: 12px; background: var(--bg-secondary); border-radius: 6px; border: 1px solid var(--border-color);">
+                            <div style="display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; padding: 16px; background: rgba(147, 51, 234, 0.04); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 8px;">
                                 <div style="min-width: 0;">
-                                    <h4 style="margin: 0 0 4px 0; color: var(--text-primary);">${conn.platform}</h4>
-                                    <p style="margin: 0; font-size: 12px; color: var(--text-muted); word-break: break-all;">${conn.username}</p>
+                                    <h4 style="margin: 0 0 6px 0; color: var(--text-primary); font-weight: 600;">${conn.platform}</h4>
+                                    <p style="margin: 0; font-size: 12px; color: var(--text-muted); word-break: break-all;">${conn.username || conn.profile_url || 'Connected'}</p>
                                 </div>
-                                <button class="btn btn-danger" style="padding: 6px 12px; font-size: 12px; white-space: nowrap;" onclick="dashboard.disconnectPlatform('${conn.platform}')">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px; display: inline;">
-                                        <polyline points="3 6 5 4 21 4 23 6 23 20a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V6z"></polyline>
-                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                    </svg>
-                                    Delete
-                                </button>
+                                <div style="display: flex; gap: 8px;">
+                                    <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px; white-space: nowrap;" onclick="dashboard.showConnectionModal('${conn.platform}', '${allPlatforms.find(p => p.name === conn.platform)?.prefix || ''}', '${conn.username || ''}')">Edit</button>
+                                    <button class="btn btn-danger" style="padding: 6px 12px; font-size: 12px; white-space: nowrap;" onclick="dashboard.deleteConnection('${conn.id}', '${conn.platform}')">Delete</button>
+                                </div>
                             </div>
                         `).join('')}
                     </div>
@@ -2331,53 +2338,108 @@ class Dashboard {
         `;
     }
 
-    async updateConnection(platform, id) {
-        const username = document.getElementById(`${platform}_username`).value.trim();
+    showConnectionModal(platformName, prefix = '', currentValue = '') {
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            backdrop-filter: blur(8px);
+        `;
+        
+        const modalContent = `
+            <div style="background: var(--bg-secondary); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 12px; padding: 24px; max-width: 450px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.8);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin: 0; font-size: 20px; color: var(--text-primary);">${platformName} Username</h2>
+                    <button class="modal-close" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-muted); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">×</button>
+                </div>
+                
+                <div style="margin-bottom: 24px;">
+                    <div style="display: flex; align-items: center; gap: 8px; background: var(--bg-tertiary); border-radius: 8px; padding: 12px; margin-bottom: 16px; border: 1px solid rgba(168, 85, 247, 0.1);">
+                        <span style="color: var(--text-muted); font-size: 14px; flex-shrink: 0;">🔗</span>
+                        <input type="text" id="connUsername" class="form-input" style="flex: 1; border: none; background: transparent; color: var(--text-primary);" placeholder="Enter ${platformName}" value="${currentValue}">
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 16px; font-weight: 600;" onclick="dashboard.saveConnection('${platformName}')">
+                    Submit
+                </button>
+            </div>
+        `;
+        
+        modal.innerHTML = modalContent;
+        document.body.appendChild(modal);
+        
+        const closeBtn = modal.querySelector('.modal-close');
+        closeBtn.addEventListener('click', () => modal.remove());
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.remove();
+        });
+    }
+
+    async saveConnection(platformName) {
+        const input = document.querySelector('#connUsername');
+        const username = input?.value.trim();
         
         if (!username) {
             this.showToast('Please enter a username', 'error');
-            return false;
+            return;
         }
-
+        
         try {
-            const response = await fetch(`/api/connections/${platform}`, {
-                method: 'PUT',
+            const response = await fetch('/api/connections', {
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
-                body: JSON.stringify({ username })
+                body: JSON.stringify({
+                    platform: platformName,
+                    username: username,
+                    profile_url: username
+                })
             });
-
+            
             if (response.ok) {
-                this.showToast('Connection updated', 'success');
+                this.showToast(`${platformName} connected successfully`, 'success');
+                document.querySelector('[style*="position: fixed"]')?.remove();
                 this.renderConnections();
             } else {
-                throw new Error('Failed to update');
+                const err = await response.json();
+                this.showToast(err.error || 'Failed to connect', 'error');
             }
         } catch (error) {
-            this.showToast('Failed to update connection', 'error');
-            return false;
+            this.showToast('Failed to connect platform', 'error');
+            console.error(error);
         }
     }
 
-    async disconnectPlatform(platform) {
-        if (!confirm(`Disconnect ${platform.replace('_', ' ')}?`)) return;
-
+    async deleteConnection(connectionId, platformName) {
+        if (!confirm(`Delete ${platformName} connection?`)) return;
+        
         try {
-            const response = await fetch(`/api/connections/${platform}`, {
+            const response = await fetch(`/api/connections/${connectionId}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
-
+            
             if (response.ok) {
-                this.showToast('Disconnected', 'success');
+                this.showToast(`${platformName} disconnected`, 'success');
                 this.renderConnections();
             } else {
-                throw new Error('Failed to disconnect');
+                this.showToast('Failed to delete connection', 'error');
             }
         } catch (error) {
-            this.showToast('Failed to disconnect', 'error');
+            this.showToast('Failed to delete connection', 'error');
+            console.error(error);
         }
     }
+
 
     async renderLitterBox() {
         const allFiles = await this.fetchFiles();
