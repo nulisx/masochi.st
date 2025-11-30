@@ -2001,6 +2001,16 @@ input[type="range"].form-input::-moz-range-thumb {
   transition: border-color 0.2s ease;
 }
 
+.connection-input-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  display: block;
+}
+
 .connection-input-wrapper:focus-within {
   border-color: rgba(147, 51, 234, 0.5);
 }

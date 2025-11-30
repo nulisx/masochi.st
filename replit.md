@@ -88,7 +88,12 @@ Dashboard Pages:
 - `DELETE /api/updates/:id` - Delete update (admin only)
 
 ### Recent Changes (November 2025 - COMPLETE)
-- **Connections Visual Enhancements (Nov 30 - Latest)**: 
+- **Discord Two-Field Modal (Nov 30 - Latest)**:
+  - Discord now has dedicated two-input modal: User ID (for https://discord.com/users/userid) and Username
+  - Username field copies to clipboard on submit instead of opening a link
+  - Shows "Copy Username to Clipboard" button text, "Update" when editing
+  - Platform-specific modal handling with special UI for Discord
+- **Connections Visual Enhancements (Nov 30)**: 
   - Added Edit button before Delete button for in-place connection editing
   - Platform-specific dashed border colors on existing social items (Snapchat yellow, YouTube red, Discord blue, TikTok pink, etc.)
   - Grey dashed borders around New Socials and Existing Socials container boxes

@@ -2422,6 +2422,47 @@ class Dashboard {
         const modal = document.createElement('div');
         modal.id = 'connectionModal';
         modal.className = 'connection-modal-overlay';
+        
+        // Special handling for Discord with two inputs
+        const isDiscord = platformName === 'Discord';
+        let bodyHTML = '';
+        
+        if (isDiscord) {
+            bodyHTML = `
+                <div class="connection-input-wrapper">
+                    <label class="connection-input-label">Discord User ID</label>
+                    <svg class="connection-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
+                    <input type="text" id="connDiscordUserId" class="connection-input" placeholder="Enter Discord User ID" autocomplete="off">
+                </div>
+                <div class="connection-input-wrapper" style="margin-top: 16px;">
+                    <label class="connection-input-label">Discord Username</label>
+                    <svg class="connection-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
+                    <input type="text" id="connDiscordUsername" class="connection-input" placeholder="Enter Discord username" value="${prefilledUsername}" autocomplete="off">
+                </div>
+            `;
+        } else {
+            bodyHTML = `
+                <div class="connection-input-wrapper">
+                    <svg class="connection-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
+                    ${displayPrefix ? `<span class="connection-input-prefix">${displayPrefix}</span>` : ''}
+                    <input type="text" id="connUsername" class="connection-input" placeholder="Enter ${platformName}" value="${prefilledUsername}" autocomplete="off">
+                </div>
+            `;
+        }
+        
+        const buttonLabel = isDiscord 
+            ? (connectionId ? 'Update' : 'Copy Username to Clipboard')
+            : (connectionId ? 'Update' : 'Submit');
+        
         modal.innerHTML = `
             <div class="connection-modal">
                 <div class="connection-modal-header">
@@ -2435,18 +2476,11 @@ class Dashboard {
                 </div>
                 
                 <div class="connection-modal-body">
-                    <div class="connection-input-wrapper">
-                        <svg class="connection-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                        </svg>
-                        ${displayPrefix ? `<span class="connection-input-prefix">${displayPrefix}</span>` : ''}
-                        <input type="text" id="connUsername" class="connection-input" placeholder="Enter ${platformName}" value="${prefilledUsername}" autocomplete="off">
-                    </div>
+                    ${bodyHTML}
                 </div>
                 
                 <button class="connection-submit-btn" onclick="dashboard.saveConnection('${platformName}', '${prefix}', ${hidePrefix}, ${connectionId ? `'${connectionId}'` : 'null'})">
-                    ${connectionId ? 'Update' : 'Submit'}
+                    ${buttonLabel}
                 </button>
             </div>
         `;
@@ -2464,10 +2498,74 @@ class Dashboard {
             }
         });
         
-        setTimeout(() => document.getElementById('connUsername')?.focus(), 100);
+        setTimeout(() => {
+            if (isDiscord) {
+                document.getElementById('connDiscordUserId')?.focus();
+            } else {
+                document.getElementById('connUsername')?.focus();
+            }
+        }, 100);
     }
 
     async saveConnection(platformName, prefix = '', hidePrefix = false, connectionId = null) {
+        // Special handling for Discord
+        if (platformName === 'Discord') {
+            const userIdInput = document.querySelector('#connDiscordUserId');
+            const usernameInput = document.querySelector('#connDiscordUsername');
+            const userId = userIdInput?.value.trim();
+            const username = usernameInput?.value.trim();
+            
+            if (!userId) {
+                this.showToast('Please enter Discord User ID', 'error');
+                return;
+            }
+            
+            // Copy username to clipboard
+            if (username) {
+                try {
+                    await navigator.clipboard.writeText(username);
+                    this.showToast('Discord username copied to clipboard', 'success');
+                } catch (err) {
+                    this.showToast('Failed to copy to clipboard', 'error');
+                    return;
+                }
+            }
+            
+            // Save the User ID and username
+            const profileUrl = `https://discord.com/users/${userId}`;
+            
+            try {
+                const method = connectionId ? 'PUT' : 'POST';
+                const endpoint = connectionId ? `/api/connections/${connectionId}` : '/api/connections';
+                
+                const response = await fetch(endpoint, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        platform: platformName,
+                        username: username || userId,
+                        profile_url: profileUrl
+                    })
+                });
+                
+                if (response.ok) {
+                    const action = connectionId ? 'updated' : 'connected';
+                    this.showToast(`Discord ${action} successfully`, 'success');
+                    document.getElementById('connectionModal')?.remove();
+                    this.renderConnections();
+                } else {
+                    const err = await response.json();
+                    this.showToast(err.error || 'Failed to save', 'error');
+                }
+            } catch (error) {
+                this.showToast('Failed to save connection', 'error');
+                console.error(error);
+            }
+            return;
+        }
+        
+        // Standard handling for other platforms
         const input = document.querySelector('#connUsername');
         const username = input?.value.trim();
         
