@@ -1580,7 +1580,38 @@ class Dashboard {
                 
                 <!-- Layout Tab -->
                 <div class="biolinks-tab-content" id="tab-layout">
-                    <p style="color: var(--text-muted); margin-bottom: 16px;">Layout customization options coming soon</p>
+                    <div class="form-group">
+                        <label class="form-label">Link Spacing: <span id="linkSpacingValue">${settings.layout_link_spacing || 12}px</span></label>
+                        <input type="range" class="form-input" name="layout_link_spacing" min="0" max="50" value="${settings.layout_link_spacing || 12}" oninput="document.getElementById('linkSpacingValue').textContent = this.value + 'px'">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Link Alignment</label>
+                        <select class="form-input" name="layout_link_alignment">
+                            <option value="center" ${settings.layout_link_alignment === 'center' ? 'selected' : ''}>Center</option>
+                            <option value="left" ${settings.layout_link_alignment === 'left' ? 'selected' : ''}>Left</option>
+                            <option value="right" ${settings.layout_link_alignment === 'right' ? 'selected' : ''}>Right</option>
+                            <option value="stretch" ${settings.layout_link_alignment === 'stretch' ? 'selected' : ''}>Stretch</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Link Width: <span id="linkWidthValue">${settings.layout_link_width || 100}%</span></label>
+                        <input type="range" class="form-input" name="layout_link_width" min="50" max="100" value="${settings.layout_link_width || 100}" oninput="document.getElementById('linkWidthValue').textContent = this.value + '%'">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Link Padding: <span id="linkPaddingValue">${settings.layout_link_padding || 16}px</span></label>
+                        <input type="range" class="form-input" name="layout_link_padding" min="0" max="32" value="${settings.layout_link_padding || 16}" oninput="document.getElementById('linkPaddingValue').textContent = this.value + 'px'">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Profile Spacing: <span id="profileSpacingValue">${settings.layout_profile_spacing || 24}px</span></label>
+                        <input type="range" class="form-input" name="layout_profile_spacing" min="0" max="100" value="${settings.layout_profile_spacing || 24}" oninput="document.getElementById('profileSpacingValue').textContent = this.value + 'px'">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Show Grid</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="layout_show_grid" ${settings.layout_show_grid ? 'checked' : ''}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
                 </div>
                 
                 <!-- Effects Tab -->
@@ -1617,7 +1648,48 @@ class Dashboard {
                 
                 <!-- Embed Tab -->
                 <div class="biolinks-tab-content" id="tab-embed">
-                    <p style="color: var(--text-muted); margin-bottom: 16px;">Embed customization options coming soon</p>
+                    <div class="form-group">
+                        <label class="form-label">Enable Embed Code</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="embed_enable_code" ${settings.embed_enable_code ? 'checked' : ''}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Embed Width: <span id="embedWidthValue">${settings.embed_width || 100}%</span></label>
+                        <input type="range" class="form-input" name="embed_width" min="50" max="100" value="${settings.embed_width || 100}" oninput="document.getElementById('embedWidthValue').textContent = this.value + '%'">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Embed Height: <span id="embedHeightValue">${settings.embed_height || 600}px</span></label>
+                        <input type="range" class="form-input" name="embed_height" min="300" max="1200" value="${settings.embed_height || 600}" oninput="document.getElementById('embedHeightValue').textContent = this.value + 'px'">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Embed Border</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="embed_show_border" ${settings.embed_show_border ? 'checked' : ''}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Embed Border Color</label>
+                        <input type="color" class="form-input" name="embed_border_color" value="${settings.embed_border_color || '#9333ea'}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Embed Border Radius: <span id="embedRadiusValue">${settings.embed_border_radius || 12}px</span></label>
+                        <input type="range" class="form-input" name="embed_border_radius" min="0" max="50" value="${settings.embed_border_radius || 12}" oninput="document.getElementById('embedRadiusValue').textContent = this.value + 'px'">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Enable Scrolling</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="embed_scrollable" ${settings.embed_scrollable ? 'checked' : ''}>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="form-group" style="padding: 16px; background: var(--bg-tertiary); border-radius: 8px; margin-top: 16px;">
+                        <h3 style="margin-bottom: 12px;">Embed Code</h3>
+                        <textarea id="embedCode" readonly style="width: 100%; height: 100px; padding: 8px; background: var(--bg-secondary); border: 1px solid rgba(168,85,247,0.2); border-radius: 4px; color: var(--text-primary); font-family: monospace; font-size: 12px; resize: none;"></textarea>
+                        <button type="button" class="btn btn-secondary" style="margin-top: 8px;" onclick="dashboard.copyEmbedCode()">Copy Code</button>
+                    </div>
                 </div>
                 
                 <!-- Config Tab -->
