@@ -1765,6 +1765,27 @@ input[type="range"].form-input::-moz-range-thumb {
   height: 24px;
 }
 
+.social-icon-btn {
+  position: relative;
+}
+
+.social-icon-badge {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  background: rgba(147, 51, 234, 0.9);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(15, 15, 17, 0.9);
+}
+
 .existing-socials-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

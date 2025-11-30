@@ -109,6 +109,10 @@ Dashboard Pages:
   - New Socials icons rotate right (15°) on hover and smoothly return to normal position
   - CSS animation: `iconRotate 0.6s ease-in-out` on icon SVG elements
   - Smooth visual feedback for better UX
+- **Platform Badge System (Nov 30)**:
+  - Discord Server shows "S" badge in bottom-right corner to distinguish from Discord User
+  - Purple badge with white text at position bottom-right of icon
+  - Reusable badge system for any platform needing visual distinction
 - **Connections Visual Enhancements (Nov 30)**: 
   - Added Edit button before Delete button for in-place connection editing
   - Platform-specific dashed border colors on existing social items (Snapchat yellow, YouTube red, Discord blue, TikTok pink, etc.)
