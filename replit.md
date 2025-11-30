@@ -88,6 +88,11 @@ Dashboard Pages:
 - `DELETE /api/updates/:id` - Delete update (admin only)
 
 ### Recent Changes (November 2025 - COMPLETE)
+- **Connections Tab Redesign (Nov 30)**: Completely redesigned to match Bio-Socials reference:
+  - New Socials grid with 27+ platform SVG icons (Snapchat, YouTube, Discord, Spotify, Instagram, Twitter, TikTok, etc.)
+  - Existing Socials section showing connected platforms with icon, name, full URL, and delete button
+  - Platform-specific modals with URL prefix display (e.g., "snapchat.com/add/", "youtube.com/@")
+  - Centralized getSocialPlatforms() catalog for platform metadata
 - **Dashboard Redesign**: Removed clutter, streamlined overview with stats grid + Latest Updates modal
 - **Blurred Updates Modal**: Implemented backdrop-filter blur effect for glass-morphism design
 - **FAQ Pages**: Created comprehensive E2EE File Host and LitterBox FAQ pages with full documentation
