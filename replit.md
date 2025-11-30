@@ -96,9 +96,14 @@ Dashboard Pages:
   - Button shows "Submit" for new connections, "Update" when editing (no clipboard copy in modal)
   - Success message format: "Discord connected successfully: @username"
   - Platform-specific modal handling with special UI for Discord
-- **Toast Notification Styling (Nov 30)**:
-  - Success toasts now display with purple gradient background and transparency
-  - Format: "Platform connected successfully: @username" for all platforms
+- **Toast Notification Styling & Platform-Specific Messages (Nov 30)**:
+  - Success toasts display with purple gradient background and transparency
+  - Platform-specific URL formats in success messages:
+    - Discord User: "Discord connected successfully: /users/123456"
+    - Discord Server: "Discord connected successfully: @servername"
+    - Snapchat: "Snapchat connected successfully: add/username"
+    - YouTube: "YouTube connected successfully: @username"
+    - TikTok: "TikTok connected successfully: @username"
   - Purple theme with backdrop blur for glass-morphism effect
 - **Connections Visual Enhancements (Nov 30)**: 
   - Added Edit button before Delete button for in-place connection editing

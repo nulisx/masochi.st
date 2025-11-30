@@ -2539,7 +2539,14 @@ class Dashboard {
                 
                 if (response.ok) {
                     const action = connectionId ? 'updated' : 'connected';
-                    this.showToast(`Discord ${action} successfully: @${displayName}`, 'success');
+                    // Format display text based on profile URL
+                    let displayText = profileUrl;
+                    if (profileUrl.startsWith('https://discord.com/users/')) {
+                        displayText = `/users/${profileUrl.split('/').pop()}`;
+                    } else if (profileUrl.startsWith('discord://')) {
+                        displayText = `@${profileUrl.split('://')[1]}`;
+                    }
+                    this.showToast(`Discord ${action} successfully: ${displayText}`, 'success');
                     document.getElementById('connectionModal')?.remove();
                     this.renderConnections();
                 } else {
@@ -2584,7 +2591,21 @@ class Dashboard {
             
             if (response.ok) {
                 const action = connectionId ? 'updated' : 'connected';
-                this.showToast(`${platformName} ${action} successfully: @${username}`, 'success');
+                // Format display text based on profile URL
+                let displayText = profileUrl;
+                try {
+                    const url = new URL(profileUrl);
+                    const pathname = url.pathname + url.search;
+                    displayText = pathname.startsWith('/') ? pathname : '/' + pathname;
+                } catch (e) {
+                    // If not a valid URL, use as-is
+                    displayText = profileUrl;
+                }
+                // Remove leading slash and add prefix if it looks like a path
+                if (displayText.startsWith('/')) {
+                    displayText = displayText.substring(1);
+                }
+                this.showToast(`${platformName} ${action} successfully: ${displayText || username}`, 'success');
                 document.getElementById('connectionModal')?.remove();
                 this.renderConnections();
             } else {
