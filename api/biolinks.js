@@ -12,10 +12,12 @@ router.all('/', authenticateToken, async (req, res) => {
       let settings = await getQuery('biolinks_settings', 'user_id', userId);
       
       if (!settings) {
-        settings = await runQuery('biolinks_settings', {
+        const defaults = {
           user_id: userId,
           layout: 'modern',
           bg_effects: 'none',
+          bg_effects_color: '#1a1a1c',
+          bg_effects_opacity: 100,
           profile_text_color: '#dededd',
           profile_separator_color: '#000000',
           profile_avatar_border: true,
@@ -74,38 +76,50 @@ router.all('/', authenticateToken, async (req, res) => {
           effects_username_glow: true,
           effects_username_glow_size: 0,
           effects_click_to_enter: false
-        });
+        };
+        
+        try {
+          settings = await runQuery('biolinks_settings', defaults);
+        } catch (err) {
+          console.warn('Could not create default settings:', err.message);
+          settings = defaults;
+        }
       }
       
       return res.status(200).json({ settings });
     }
 
     if (req.method === 'POST' || req.method === 'PUT') {
-      const settings = req.body;
+      const data = req.body;
       
-      let existing = await getQuery('biolinks_settings', 'user_id', userId);
-      
-      if (existing) {
-        const updated = await runQuery(
-          'biolinks_settings',
-          { ...settings, updated_at: new Date().toISOString() },
-          'update',
-          { column: 'user_id', value: userId }
-        );
-        return res.status(200).json({ message: 'Settings updated', settings: updated });
-      } else {
-        const created = await runQuery('biolinks_settings', {
-          user_id: userId,
-          ...settings
-        });
-        return res.status(201).json({ message: 'Settings created', settings: created });
+      try {
+        let existing = await getQuery('biolinks_settings', 'user_id', userId);
+        
+        if (existing) {
+          const updated = await runQuery(
+            'biolinks_settings',
+            { ...data, updated_at: new Date().toISOString() },
+            'update',
+            { column: 'user_id', value: userId }
+          );
+          return res.status(200).json({ message: 'Settings updated', settings: updated });
+        } else {
+          const created = await runQuery('biolinks_settings', {
+            user_id: userId,
+            ...data
+          });
+          return res.status(201).json({ message: 'Settings created', settings: created });
+        }
+      } catch (err) {
+        console.error('Error updating biolinks settings:', err);
+        return res.status(500).json({ error: 'Failed to save settings', details: err.message });
       }
     }
 
     return res.status(405).json({ error: 'Method not allowed' });
   } catch (err) {
     console.error('Biolinks API error:', err);
-    return res.status(500).json({ error: 'Biolinks operation failed' });
+    return res.status(500).json({ error: 'Biolinks operation failed', details: err.message });
   }
 });
 

@@ -1402,10 +1402,15 @@ class Dashboard {
 
     async renderBiolinks() {
         const contentArea = document.getElementById('contentArea');
-        const response = await fetch('/api/biolinks', { credentials: 'include' });
-        const { settings } = await response.json();
         
-        contentArea.innerHTML = `
+        try {
+            const response = await fetch('/api/biolinks', { credentials: 'include' });
+            if (!response.ok) throw new Error('Failed to load biolinks settings');
+            
+            const data = await response.json();
+            const settings = data.settings || {};
+            
+            contentArea.innerHTML = `
             <div class="page-header">
                 <button class="page-back" onclick="dashboard.loadPage('overview')">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1629,8 +1634,28 @@ class Dashboard {
                 </div>
             </form>
         `;
-        
-        this.setupBiolinksInterface(settings);
+            
+            this.setupBiolinksInterface(settings);
+        } catch (error) {
+            console.error('Error loading biolinks:', error);
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <button class="page-back" onclick="dashboard.loadPage('overview')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    <div>
+                        <h1 class="page-title">Bio Customize</h1>
+                    </div>
+                </div>
+                <div class="card" style="margin-top: 24px; padding: 32px; text-align: center;">
+                    <p style="color: #ef4444; margin-bottom: 16px;">Error loading biolinks settings</p>
+                    <p style="color: var(--text-muted); margin-bottom: 16px;">${error.message}</p>
+                    <button class="btn btn-primary" onclick="dashboard.renderBiolinks()">Retry</button>
+                </div>
+            `;
+        }
     }
 
     setupBiolinksInterface(settings) {
