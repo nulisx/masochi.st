@@ -2515,8 +2515,8 @@ class Dashboard {
             const userId = userIdInput?.value.trim();
             const username = usernameInput?.value.trim();
             
-            if (!userId) {
-                this.showToast('Please enter Discord User ID', 'error');
+            if (!userId && !username) {
+                this.showToast('Please enter Discord User ID or Username', 'error');
                 return;
             }
             
@@ -2532,7 +2532,7 @@ class Dashboard {
             }
             
             // Save the User ID and username
-            const profileUrl = `https://discord.com/users/${userId}`;
+            const profileUrl = userId ? `https://discord.com/users/${userId}` : `discord://${username}`;
             
             try {
                 const method = connectionId ? 'PUT' : 'POST';

@@ -90,6 +90,7 @@ Dashboard Pages:
 ### Recent Changes (November 2025 - COMPLETE)
 - **Discord Two-Field Modal (Nov 30 - Latest)**:
   - Discord now has dedicated two-input modal: User ID (for https://discord.com/users/userid) and Username
+  - Either field is optional - at least one must be provided ("Please enter Discord User ID or Username")
   - Username field copies to clipboard on submit instead of opening a link
   - Shows "Copy Username to Clipboard" button text, "Update" when editing
   - Platform-specific modal handling with special UI for Discord
