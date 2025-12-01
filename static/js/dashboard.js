@@ -2883,18 +2883,15 @@ class Dashboard {
             if (match) userId = match[1];
         }
         
-        // If only username: copy and open Discord
+        // If only username: copy to clipboard
         if (hasUsername && !userId) {
             navigator.clipboard.writeText(username).then(() => {
                 this.showNotificationModal(`Copied "${username}" to clipboard`, 'success');
-                setTimeout(() => {
-                    window.open(`https://discord.com/users/${username}`, '_blank');
-                }, 200);
             });
             return;
         }
         
-        // If only user ID: open Discord profile
+        // If only user ID: open Discord profile directly
         if (userId && !hasUsername) {
             window.open(`https://discord.com/users/${userId}`, '_blank');
             return;

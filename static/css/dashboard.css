@@ -2132,3 +2132,33 @@ input[type="range"].form-input::-moz-range-thumb {
     padding: 20px;
   }
 }
+
+.notification-modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s ease;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+}
+
+.notification-modal {
+  background: linear-gradient(180deg, rgba(147, 51, 234, 0.15), rgba(147, 51, 234, 0.05));
+  border: 1px solid rgba(147, 51, 234, 0.4);
+  border-radius: 14px;
+  padding: 20px 24px;
+  width: 90%;
+  max-width: 380px;
+  box-shadow: 0 10px 40px rgba(147, 51, 234, 0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+  backdrop-filter: blur(12px);
+}
+
+.notification-modal-overlay {
+  opacity: 1;
+  visibility: visible;
+}
