@@ -1578,11 +1578,16 @@ class Dashboard {
         `;
     }
 
+    biolinksActiveTab = 'links';
+    biolinksCustomizeSubTab = 'general';
+    bioSettings = {};
+
     async renderBiolinks() {
         const contentArea = document.getElementById('contentArea');
         
         try {
             const links = await this.fetchLinks();
+            await this.loadBioSettings();
             
             contentArea.innerHTML = `
             <div class="page-header">
@@ -1593,23 +1598,78 @@ class Dashboard {
                 </button>
                 <div>
                     <h1 class="page-title">Biolinks</h1>
-                    <p class="page-subtitle">Create and manage your biolink collection</p>
+                    <p class="page-subtitle">Create and customize your bio page</p>
                 </div>
-                <button class="btn btn-primary" id="addLinkBtn" style="margin-left: auto;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                    Add Link
+            </div>
+            
+            <div class="biolinks-tabs">
+                <button class="biolinks-tab ${this.biolinksActiveTab === 'links' ? 'active' : ''}" onclick="dashboard.switchBiolinksTab('links')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                    Links
+                </button>
+                <button class="biolinks-tab ${this.biolinksActiveTab === 'customize' ? 'active' : ''}" onclick="dashboard.switchBiolinksTab('customize')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    Customize
                 </button>
             </div>
             
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+            <div id="biolinksContent">
+                ${this.biolinksActiveTab === 'links' ? this.renderLinksTab(links) : this.renderCustomizeTab()}
+            </div>`;
+            
+            this.setupBiolinksEventListeners();
+        } catch (error) {
+            console.error('Error loading biolinks:', error);
+            contentArea.innerHTML = `<div class="empty-state"><p>Error loading biolinks</p></div>`;
+        }
+    }
+
+    async loadBioSettings() {
+        try {
+            const response = await fetch('/api/bio/settings', { credentials: 'include' });
+            if (response.ok) {
+                this.bioSettings = await response.json();
+            }
+        } catch (error) {
+            console.log('No bio settings found, using defaults');
+            this.bioSettings = {};
+        }
+    }
+
+    switchBiolinksTab(tab) {
+        this.biolinksActiveTab = tab;
+        this.renderBiolinks();
+    }
+
+    switchCustomizeSubTab(subTab) {
+        this.biolinksCustomizeSubTab = subTab;
+        const content = document.getElementById('customizeContent');
+        if (content) {
+            content.innerHTML = this.getCustomizeSubTabContent(subTab);
+            this.setupCustomizeEventListeners();
+        }
+        document.querySelectorAll('.customize-subtab').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.tab === subTab);
+        });
+    }
+
+    renderLinksTab(links) {
+        return `
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 24px;">
                 <div>
                     <div class="card" style="margin-bottom: 24px;">
-                        <div class="card-header">
-                            <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></div>
-                            <div>
-                                <h3 class="card-title">Your Biolinks (${links.length})</h3>
-                                <p class="card-description">Manage your collection of links</p>
+                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></div>
+                                <div>
+                                    <h3 class="card-title">Your Biolinks (${links.length})</h3>
+                                    <p class="card-description">Manage your collection of links</p>
+                                </div>
                             </div>
+                            <button class="btn btn-primary" id="addLinkBtn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                Add Link
+                            </button>
                         </div>
                     </div>
                     
@@ -1623,7 +1683,7 @@ class Dashboard {
                     ` : `
                         <div style="display: flex; flex-direction: column; gap: 12px;" id="linksList">
                             ${links.map(link => `
-                                <div class="card" style="display: flex; justify-content: space-between; align-items: center; padding: 16px;">
+                                <div class="card link-card" style="display: flex; justify-content: space-between; align-items: center; padding: 16px;">
                                     <div style="flex: 1; min-width: 0;">
                                         <p style="font-weight: 600; margin-bottom: 4px; word-break: break-word;">${link.title}</p>
                                         <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 4px; word-break: break-all;">${link.url}</p>
@@ -1659,13 +1719,763 @@ class Dashboard {
                     </div>
                 </div>
             </div>`;
-            
-            const addLinkBtn = document.getElementById('addLinkBtn');
-            if (addLinkBtn) {
-                addLinkBtn.addEventListener('click', () => this.showAddLinkModal());
+    }
+
+    renderCustomizeTab() {
+        const subTabs = [
+            { id: 'general', label: 'General', icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>' },
+            { id: 'background', label: 'Background', icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>' },
+            { id: 'profile', label: 'Profile', icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>' },
+            { id: 'link', label: 'Link', icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>' },
+            { id: 'badge', label: 'Badge', icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>' },
+            { id: 'layout', label: 'Layout', icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>' },
+            { id: 'effects', label: 'Effects', icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>' },
+            { id: 'embed', label: 'Embed', icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>' },
+            { id: 'config', label: 'Config', icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>' }
+        ];
+
+        return `
+            <div class="customize-container" style="margin-top: 24px;">
+                <div class="customize-subtabs">
+                    ${subTabs.map(tab => `
+                        <button class="customize-subtab ${this.biolinksCustomizeSubTab === tab.id ? 'active' : ''}" 
+                                data-tab="${tab.id}" 
+                                onclick="dashboard.switchCustomizeSubTab('${tab.id}')">
+                            ${tab.icon}
+                            <span>${tab.label}</span>
+                        </button>
+                    `).join('')}
+                </div>
+                
+                <div id="customizeContent" class="customize-content">
+                    ${this.getCustomizeSubTabContent(this.biolinksCustomizeSubTab)}
+                </div>
+            </div>`;
+    }
+
+    getCustomizeSubTabContent(subTab) {
+        const s = this.bioSettings || {};
+        
+        switch(subTab) {
+            case 'general':
+                return `
+                    <div class="card customize-card">
+                        <div class="card-header">
+                            <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></div>
+                            <div>
+                                <h3 class="card-title">General Settings</h3>
+                                <p class="card-description">Basic bio page configuration</p>
+                            </div>
+                        </div>
+                        <div class="customize-form">
+                            <div class="form-group">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-input" id="bioUsername" value="${s.username || this.user?.username || ''}" placeholder="Your username">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Nickname</label>
+                                <input type="text" class="form-input" id="bioNickname" value="${s.nickname || ''}" placeholder="Display nickname">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Title</label>
+                                <input type="text" class="form-input" id="bioTitle" value="${s.title || ''}" placeholder="Page title">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-input form-textarea" id="bioDescription" placeholder="Bio description">${s.description || ''}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Audio URL</label>
+                                <input type="text" class="form-input" id="bioAudio" value="${s.audio_url || ''}" placeholder="https://example.com/audio.mp3">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Browser Page Title</label>
+                                <input type="text" class="form-input" id="bioPageTitle" value="${s.page_title || ''}" placeholder="Browser tab title">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Favicon URL</label>
+                                <input type="text" class="form-input" id="bioFavicon" value="${s.favicon_url || ''}" placeholder="https://example.com/favicon.ico">
+                            </div>
+                            <button class="btn btn-primary" onclick="dashboard.saveBioSettings('general')">Save Changes</button>
+                        </div>
+                    </div>`;
+
+            case 'background':
+                return `
+                    <div class="card customize-card">
+                        <div class="card-header">
+                            <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></div>
+                            <div>
+                                <h3 class="card-title">Background Settings</h3>
+                                <p class="card-description">Customize your page background</p>
+                            </div>
+                        </div>
+                        <div class="customize-form">
+                            <div class="form-group">
+                                <label class="form-label">Background Video URL</label>
+                                <input type="text" class="form-input" id="bgVideo" value="${s.bg_video || ''}" placeholder="https://example.com/video.mp4">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Background Image URL</label>
+                                <input type="text" class="form-input" id="bgImage" value="${s.bg_image || ''}" placeholder="https://example.com/image.jpg">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Background Effect</label>
+                                <select class="form-input form-select" id="bgEffect">
+                                    <option value="none" ${s.bg_effect === 'none' ? 'selected' : ''}>None</option>
+                                    <option value="particles" ${s.bg_effect === 'particles' ? 'selected' : ''}>Particles</option>
+                                    <option value="waves" ${s.bg_effect === 'waves' ? 'selected' : ''}>Waves</option>
+                                    <option value="tv" ${s.bg_effect === 'tv' ? 'selected' : ''}>TV Static</option>
+                                    <option value="snow-animated" ${s.bg_effect === 'snow-animated' ? 'selected' : ''}>Snow Animated</option>
+                                    <option value="snow" ${s.bg_effect === 'snow' ? 'selected' : ''}>Snow</option>
+                                    <option value="rain" ${s.bg_effect === 'rain' ? 'selected' : ''}>Rain</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Background Color</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="form-color" id="bgColor" value="${s.bg_color || '#0a0a0a'}">
+                                    <input type="text" class="form-input" id="bgColorText" value="${s.bg_color || '#0a0a0a'}" placeholder="#0a0a0a">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Background Opacity</label>
+                                <div class="range-wrapper">
+                                    <input type="range" class="form-range" id="bgOpacity" min="0" max="100" value="${s.bg_opacity || 100}">
+                                    <span class="range-value">${s.bg_opacity || 100}%</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="dashboard.saveBioSettings('background')">Save Changes</button>
+                        </div>
+                    </div>`;
+
+            case 'profile':
+                return `
+                    <div class="card customize-card">
+                        <div class="card-header">
+                            <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+                            <div>
+                                <h3 class="card-title">Profile Settings</h3>
+                                <p class="card-description">Customize profile appearance</p>
+                            </div>
+                        </div>
+                        <div class="customize-form">
+                            <div class="form-group">
+                                <label class="form-label">Username Color</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="form-color" id="usernameColor" value="${s.username_color || '#ffffff'}">
+                                    <input type="text" class="form-input" id="usernameColorText" value="${s.username_color || '#ffffff'}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Description Color</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="form-color" id="descColor" value="${s.desc_color || '#a0a0a0'}">
+                                    <input type="text" class="form-input" id="descColorText" value="${s.desc_color || '#a0a0a0'}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Avatar URL</label>
+                                <input type="text" class="form-input" id="avatarUrl" value="${s.avatar_url || ''}" placeholder="https://example.com/avatar.png">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Avatar Border Color</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="form-color" id="avatarBorder" value="${s.avatar_border || '#a855f7'}">
+                                    <input type="text" class="form-input" id="avatarBorderText" value="${s.avatar_border || '#a855f7'}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Avatar Border Width</label>
+                                <div class="range-wrapper">
+                                    <input type="range" class="form-range" id="avatarBorderWidth" min="0" max="10" value="${s.avatar_border_width || 3}">
+                                    <span class="range-value">${s.avatar_border_width || 3}px</span>
+                                </div>
+                            </div>
+                            <div class="form-group toggle-group">
+                                <label class="form-label">Show View Count</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="showViewCount" ${s.show_view_count ? 'checked' : ''}>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Card Background Color</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="form-color" id="cardBgColor" value="${s.card_bg_color || '#1a1a1a'}">
+                                    <input type="text" class="form-input" id="cardBgColorText" value="${s.card_bg_color || '#1a1a1a'}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Card Background Opacity</label>
+                                <div class="range-wrapper">
+                                    <input type="range" class="form-range" id="cardBgOpacity" min="0" max="100" value="${s.card_bg_opacity || 80}">
+                                    <span class="range-value">${s.card_bg_opacity || 80}%</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="dashboard.saveBioSettings('profile')">Save Changes</button>
+                        </div>
+                    </div>`;
+
+            case 'link':
+                return `
+                    <div class="card customize-card">
+                        <div class="card-header">
+                            <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></div>
+                            <div>
+                                <h3 class="card-title">Link Settings</h3>
+                                <p class="card-description">Customize link button appearance</p>
+                            </div>
+                        </div>
+                        <div class="customize-form">
+                            <div class="form-group">
+                                <label class="form-label">Link Border Width</label>
+                                <div class="range-wrapper">
+                                    <input type="range" class="form-range" id="linkBorderWidth" min="0" max="5" value="${s.link_border_width || 1}">
+                                    <span class="range-value">${s.link_border_width || 1}px</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Link Border Color</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="form-color" id="linkBorderColor" value="${s.link_border_color || '#333333'}">
+                                    <input type="text" class="form-input" id="linkBorderColorText" value="${s.link_border_color || '#333333'}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Link Border Radius</label>
+                                <div class="range-wrapper">
+                                    <input type="range" class="form-range" id="linkRadius" min="0" max="25" value="${s.link_radius || 8}">
+                                    <span class="range-value">${s.link_radius || 8}px</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Link Background Color</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="form-color" id="linkBgColor" value="${s.link_bg_color || '#1a1a1a'}">
+                                    <input type="text" class="form-input" id="linkBgColorText" value="${s.link_bg_color || '#1a1a1a'}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Link Text Color</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="form-color" id="linkTextColor" value="${s.link_text_color || '#ffffff'}">
+                                    <input type="text" class="form-input" id="linkTextColorText" value="${s.link_text_color || '#ffffff'}">
+                                </div>
+                            </div>
+                            <div class="form-group toggle-group">
+                                <label class="form-label">Show Link Icons</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="showLinkIcons" ${s.show_link_icons !== false ? 'checked' : ''}>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Hover Effect</label>
+                                <select class="form-input form-select" id="linkHoverEffect">
+                                    <option value="none" ${s.link_hover === 'none' ? 'selected' : ''}>None</option>
+                                    <option value="scale" ${s.link_hover === 'scale' ? 'selected' : ''}>Scale Up</option>
+                                    <option value="glow" ${s.link_hover === 'glow' ? 'selected' : ''}>Glow</option>
+                                    <option value="slide" ${s.link_hover === 'slide' ? 'selected' : ''}>Slide</option>
+                                </select>
+                            </div>
+                            <div class="form-group toggle-group">
+                                <label class="form-label">Link Glow Effect</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="linkGlow" ${s.link_glow ? 'checked' : ''}>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Link Glow Color</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="form-color" id="linkGlowColor" value="${s.link_glow_color || '#a855f7'}">
+                                    <input type="text" class="form-input" id="linkGlowColorText" value="${s.link_glow_color || '#a855f7'}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Link Animation</label>
+                                <select class="form-input form-select" id="linkAnimation">
+                                    <option value="none" ${s.link_animation === 'none' ? 'selected' : ''}>None</option>
+                                    <option value="fade-in" ${s.link_animation === 'fade-in' ? 'selected' : ''}>Fade In</option>
+                                    <option value="slide-up" ${s.link_animation === 'slide-up' ? 'selected' : ''}>Slide Up</option>
+                                    <option value="bounce" ${s.link_animation === 'bounce' ? 'selected' : ''}>Bounce</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" onclick="dashboard.saveBioSettings('link')">Save Changes</button>
+                        </div>
+                    </div>`;
+
+            case 'badge':
+                return `
+                    <div class="card customize-card">
+                        <div class="card-header">
+                            <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg></div>
+                            <div>
+                                <h3 class="card-title">Badge Settings</h3>
+                                <p class="card-description">Customize social badges</p>
+                            </div>
+                        </div>
+                        <div class="customize-form">
+                            <div class="form-group toggle-group">
+                                <label class="form-label">Show Badges</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="showBadges" ${s.show_badges !== false ? 'checked' : ''}>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Badge Border Width</label>
+                                <div class="range-wrapper">
+                                    <input type="range" class="form-range" id="badgeBorderWidth" min="0" max="5" value="${s.badge_border_width || 1}">
+                                    <span class="range-value">${s.badge_border_width || 1}px</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Badge Border Color</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="form-color" id="badgeBorderColor" value="${s.badge_border_color || '#333333'}">
+                                    <input type="text" class="form-input" id="badgeBorderColorText" value="${s.badge_border_color || '#333333'}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Badge Background Color</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="form-color" id="badgeBgColor" value="${s.badge_bg_color || '#1a1a1a'}">
+                                    <input type="text" class="form-input" id="badgeBgColorText" value="${s.badge_bg_color || '#1a1a1a'}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Badge Background Opacity</label>
+                                <div class="range-wrapper">
+                                    <input type="range" class="form-range" id="badgeBgOpacity" min="0" max="100" value="${s.badge_bg_opacity || 80}">
+                                    <span class="range-value">${s.badge_bg_opacity || 80}%</span>
+                                </div>
+                            </div>
+                            <div class="form-group toggle-group">
+                                <label class="form-label">Badge Glow Effect</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="badgeGlow" ${s.badge_glow ? 'checked' : ''}>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Badge Glow Color</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="form-color" id="badgeGlowColor" value="${s.badge_glow_color || '#a855f7'}">
+                                    <input type="text" class="form-input" id="badgeGlowColorText" value="${s.badge_glow_color || '#a855f7'}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Badge Hover Effect</label>
+                                <select class="form-input form-select" id="badgeHoverEffect">
+                                    <option value="none" ${s.badge_hover === 'none' ? 'selected' : ''}>None</option>
+                                    <option value="scale" ${s.badge_hover === 'scale' ? 'selected' : ''}>Scale Up</option>
+                                    <option value="glow" ${s.badge_hover === 'glow' ? 'selected' : ''}>Glow</option>
+                                    <option value="bounce" ${s.badge_hover === 'bounce' ? 'selected' : ''}>Bounce</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" onclick="dashboard.saveBioSettings('badge')">Save Changes</button>
+                        </div>
+                    </div>`;
+
+            case 'layout':
+                return `
+                    <div class="card customize-card">
+                        <div class="card-header">
+                            <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg></div>
+                            <div>
+                                <h3 class="card-title">Layout Settings</h3>
+                                <p class="card-description">Choose your page layout style</p>
+                            </div>
+                        </div>
+                        <div class="customize-form">
+                            <div class="form-group">
+                                <label class="form-label">Layout Style</label>
+                                <select class="form-input form-select" id="layoutStyle">
+                                    <option value="default" ${s.layout === 'default' ? 'selected' : ''}>Default</option>
+                                    <option value="modern" ${s.layout === 'modern' ? 'selected' : ''}>Modern</option>
+                                    <option value="retro" ${s.layout === 'retro' ? 'selected' : ''}>Retro</option>
+                                </select>
+                            </div>
+                            <div class="layout-previews">
+                                <div class="layout-preview ${s.layout === 'default' || !s.layout ? 'active' : ''}" onclick="document.getElementById('layoutStyle').value='default'">
+                                    <div class="layout-preview-box default">
+                                        <div class="preview-avatar"></div>
+                                        <div class="preview-text"></div>
+                                        <div class="preview-links">
+                                            <div class="preview-link"></div>
+                                            <div class="preview-link"></div>
+                                            <div class="preview-link"></div>
+                                        </div>
+                                    </div>
+                                    <span>Default</span>
+                                </div>
+                                <div class="layout-preview ${s.layout === 'modern' ? 'active' : ''}" onclick="document.getElementById('layoutStyle').value='modern'">
+                                    <div class="layout-preview-box modern">
+                                        <div class="preview-avatar"></div>
+                                        <div class="preview-text"></div>
+                                        <div class="preview-links grid">
+                                            <div class="preview-link"></div>
+                                            <div class="preview-link"></div>
+                                            <div class="preview-link"></div>
+                                            <div class="preview-link"></div>
+                                        </div>
+                                    </div>
+                                    <span>Modern</span>
+                                </div>
+                                <div class="layout-preview ${s.layout === 'retro' ? 'active' : ''}" onclick="document.getElementById('layoutStyle').value='retro'">
+                                    <div class="layout-preview-box retro">
+                                        <div class="preview-avatar"></div>
+                                        <div class="preview-text"></div>
+                                        <div class="preview-links">
+                                            <div class="preview-link retro"></div>
+                                            <div class="preview-link retro"></div>
+                                        </div>
+                                    </div>
+                                    <span>Retro</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="dashboard.saveBioSettings('layout')">Save Changes</button>
+                        </div>
+                    </div>`;
+
+            case 'effects':
+                return `
+                    <div class="card customize-card">
+                        <div class="card-header">
+                            <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
+                            <div>
+                                <h3 class="card-title">Effects Settings</h3>
+                                <p class="card-description">Add special effects to your page</p>
+                            </div>
+                        </div>
+                        <div class="customize-form">
+                            <div class="form-group">
+                                <label class="form-label">Text Effect</label>
+                                <select class="form-input form-select" id="textEffect">
+                                    <option value="none" ${s.text_effect === 'none' ? 'selected' : ''}>None</option>
+                                    <option value="sparkles" ${s.text_effect === 'sparkles' ? 'selected' : ''}>Sparkles</option>
+                                    <option value="typewriter" ${s.text_effect === 'typewriter' ? 'selected' : ''}>Typewriter</option>
+                                    <option value="glitch" ${s.text_effect === 'glitch' ? 'selected' : ''}>Glitch</option>
+                                    <option value="binary-scroll" ${s.text_effect === 'binary-scroll' ? 'selected' : ''}>Binary Scroll</option>
+                                </select>
+                            </div>
+                            <div class="form-group toggle-group">
+                                <label class="form-label">Click to Enter</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="clickToEnter" ${s.click_to_enter ? 'checked' : ''}>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Click to Enter Text</label>
+                                <input type="text" class="form-input" id="clickToEnterText" value="${s.click_to_enter_text || 'Click to Enter'}" placeholder="Click to Enter">
+                            </div>
+                            <div class="form-group toggle-group">
+                                <label class="form-label">Username Glow</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="usernameGlow" ${s.username_glow ? 'checked' : ''}>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Username Glow Color</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="form-color" id="usernameGlowColor" value="${s.username_glow_color || '#a855f7'}">
+                                    <input type="text" class="form-input" id="usernameGlowColorText" value="${s.username_glow_color || '#a855f7'}">
+                                </div>
+                            </div>
+                            <div class="form-group toggle-group">
+                                <label class="form-label">Username Gradient</label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="usernameGradient" ${s.username_gradient ? 'checked' : ''}>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Gradient Start Color</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="form-color" id="gradientStart" value="${s.gradient_start || '#a855f7'}">
+                                    <input type="text" class="form-input" id="gradientStartText" value="${s.gradient_start || '#a855f7'}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Gradient End Color</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="form-color" id="gradientEnd" value="${s.gradient_end || '#ec4899'}">
+                                    <input type="text" class="form-input" id="gradientEndText" value="${s.gradient_end || '#ec4899'}">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="dashboard.saveBioSettings('effects')">Save Changes</button>
+                        </div>
+                    </div>`;
+
+            case 'embed':
+                return `
+                    <div class="card customize-card">
+                        <div class="card-header">
+                            <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></div>
+                            <div>
+                                <h3 class="card-title">Embed Settings</h3>
+                                <p class="card-description">Customize link embed appearance</p>
+                            </div>
+                        </div>
+                        <div class="customize-form">
+                            <div class="form-group">
+                                <label class="form-label">Embed Title</label>
+                                <input type="text" class="form-input" id="embedTitle" value="${s.embed_title || ''}" placeholder="My Bio Page">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Embed Description</label>
+                                <textarea class="form-input form-textarea" id="embedDescription" placeholder="Check out my bio page!">${s.embed_description || ''}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Embed Image URL</label>
+                                <input type="text" class="form-input" id="embedImage" value="${s.embed_image || ''}" placeholder="https://example.com/embed-image.png">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Embed Color</label>
+                                <div class="color-input-wrapper">
+                                    <input type="color" class="form-color" id="embedColor" value="${s.embed_color || '#a855f7'}">
+                                    <input type="text" class="form-input" id="embedColorText" value="${s.embed_color || '#a855f7'}">
+                                </div>
+                            </div>
+                            <div class="embed-preview">
+                                <h4>Preview</h4>
+                                <div class="embed-preview-box">
+                                    <div class="embed-preview-accent" style="background: ${s.embed_color || '#a855f7'}"></div>
+                                    <div class="embed-preview-content">
+                                        <p class="embed-preview-title">${s.embed_title || 'Your Bio Page'}</p>
+                                        <p class="embed-preview-desc">${s.embed_description || 'Check out my bio page!'}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="dashboard.saveBioSettings('embed')">Save Changes</button>
+                        </div>
+                    </div>`;
+
+            case 'config':
+                return `
+                    <div class="card customize-card">
+                        <div class="card-header">
+                            <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div>
+                            <div>
+                                <h3 class="card-title">Config Settings</h3>
+                                <p class="card-description">Import and export your settings</p>
+                            </div>
+                        </div>
+                        <div class="customize-form">
+                            <div class="config-section">
+                                <h4>Export Settings</h4>
+                                <p class="config-description">Download your current bio page settings as a JSON file</p>
+                                <button class="btn btn-secondary" onclick="dashboard.exportBioSettings()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                    Export Settings
+                                </button>
+                            </div>
+                            <div class="config-divider"></div>
+                            <div class="config-section">
+                                <h4>Import Settings</h4>
+                                <p class="config-description">Upload a previously exported settings file</p>
+                                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="dashboard.importBioSettings(event)">
+                                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                    Import Settings
+                                </button>
+                            </div>
+                            <div class="config-divider"></div>
+                            <div class="config-section">
+                                <h4>Reset Settings</h4>
+                                <p class="config-description">Reset all settings to default values</p>
+                                <button class="btn btn-danger" onclick="dashboard.resetBioSettings()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                                    Reset to Defaults
+                                </button>
+                            </div>
+                        </div>
+                    </div>`;
+
+            default:
+                return '<p>Select a tab</p>';
+        }
+    }
+
+    setupBiolinksEventListeners() {
+        const addLinkBtn = document.getElementById('addLinkBtn');
+        if (addLinkBtn) {
+            addLinkBtn.addEventListener('click', () => this.showAddLinkModal());
+        }
+        this.setupCustomizeEventListeners();
+    }
+
+    setupCustomizeEventListeners() {
+        document.querySelectorAll('.form-range').forEach(range => {
+            range.addEventListener('input', (e) => {
+                const valueSpan = e.target.parentElement.querySelector('.range-value');
+                if (valueSpan) {
+                    const unit = e.target.id.includes('Opacity') ? '%' : 'px';
+                    valueSpan.textContent = e.target.value + unit;
+                }
+            });
+        });
+
+        document.querySelectorAll('.form-color').forEach(colorInput => {
+            colorInput.addEventListener('input', (e) => {
+                const textInput = e.target.parentElement.querySelector('input[type="text"]');
+                if (textInput) textInput.value = e.target.value;
+            });
+        });
+
+        document.querySelectorAll('.color-input-wrapper input[type="text"]').forEach(textInput => {
+            textInput.addEventListener('input', (e) => {
+                const colorInput = e.target.parentElement.querySelector('.form-color');
+                if (colorInput && /^#[0-9A-Fa-f]{6}$/.test(e.target.value)) {
+                    colorInput.value = e.target.value;
+                }
+            });
+        });
+    }
+
+    async saveBioSettings(section) {
+        const settings = { ...this.bioSettings };
+
+        switch(section) {
+            case 'general':
+                settings.username = document.getElementById('bioUsername')?.value;
+                settings.nickname = document.getElementById('bioNickname')?.value;
+                settings.title = document.getElementById('bioTitle')?.value;
+                settings.description = document.getElementById('bioDescription')?.value;
+                settings.audio_url = document.getElementById('bioAudio')?.value;
+                settings.page_title = document.getElementById('bioPageTitle')?.value;
+                settings.favicon_url = document.getElementById('bioFavicon')?.value;
+                break;
+            case 'background':
+                settings.bg_video = document.getElementById('bgVideo')?.value;
+                settings.bg_image = document.getElementById('bgImage')?.value;
+                settings.bg_effect = document.getElementById('bgEffect')?.value;
+                settings.bg_color = document.getElementById('bgColor')?.value;
+                settings.bg_opacity = parseInt(document.getElementById('bgOpacity')?.value);
+                break;
+            case 'profile':
+                settings.username_color = document.getElementById('usernameColor')?.value;
+                settings.desc_color = document.getElementById('descColor')?.value;
+                settings.avatar_url = document.getElementById('avatarUrl')?.value;
+                settings.avatar_border = document.getElementById('avatarBorder')?.value;
+                settings.avatar_border_width = parseInt(document.getElementById('avatarBorderWidth')?.value);
+                settings.show_view_count = document.getElementById('showViewCount')?.checked;
+                settings.card_bg_color = document.getElementById('cardBgColor')?.value;
+                settings.card_bg_opacity = parseInt(document.getElementById('cardBgOpacity')?.value);
+                break;
+            case 'link':
+                settings.link_border_width = parseInt(document.getElementById('linkBorderWidth')?.value);
+                settings.link_border_color = document.getElementById('linkBorderColor')?.value;
+                settings.link_radius = parseInt(document.getElementById('linkRadius')?.value);
+                settings.link_bg_color = document.getElementById('linkBgColor')?.value;
+                settings.link_text_color = document.getElementById('linkTextColor')?.value;
+                settings.show_link_icons = document.getElementById('showLinkIcons')?.checked;
+                settings.link_hover = document.getElementById('linkHoverEffect')?.value;
+                settings.link_glow = document.getElementById('linkGlow')?.checked;
+                settings.link_glow_color = document.getElementById('linkGlowColor')?.value;
+                settings.link_animation = document.getElementById('linkAnimation')?.value;
+                break;
+            case 'badge':
+                settings.show_badges = document.getElementById('showBadges')?.checked;
+                settings.badge_border_width = parseInt(document.getElementById('badgeBorderWidth')?.value);
+                settings.badge_border_color = document.getElementById('badgeBorderColor')?.value;
+                settings.badge_bg_color = document.getElementById('badgeBgColor')?.value;
+                settings.badge_bg_opacity = parseInt(document.getElementById('badgeBgOpacity')?.value);
+                settings.badge_glow = document.getElementById('badgeGlow')?.checked;
+                settings.badge_glow_color = document.getElementById('badgeGlowColor')?.value;
+                settings.badge_hover = document.getElementById('badgeHoverEffect')?.value;
+                break;
+            case 'layout':
+                settings.layout = document.getElementById('layoutStyle')?.value;
+                break;
+            case 'effects':
+                settings.text_effect = document.getElementById('textEffect')?.value;
+                settings.click_to_enter = document.getElementById('clickToEnter')?.checked;
+                settings.click_to_enter_text = document.getElementById('clickToEnterText')?.value;
+                settings.username_glow = document.getElementById('usernameGlow')?.checked;
+                settings.username_glow_color = document.getElementById('usernameGlowColor')?.value;
+                settings.username_gradient = document.getElementById('usernameGradient')?.checked;
+                settings.gradient_start = document.getElementById('gradientStart')?.value;
+                settings.gradient_end = document.getElementById('gradientEnd')?.value;
+                break;
+            case 'embed':
+                settings.embed_title = document.getElementById('embedTitle')?.value;
+                settings.embed_description = document.getElementById('embedDescription')?.value;
+                settings.embed_image = document.getElementById('embedImage')?.value;
+                settings.embed_color = document.getElementById('embedColor')?.value;
+                break;
+        }
+
+        try {
+            const response = await fetch('/api/bio/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify(settings)
+            });
+
+            if (response.ok) {
+                this.bioSettings = settings;
+                this.showToast('Settings saved successfully', 'success');
+            } else {
+                throw new Error('Failed to save');
             }
         } catch (error) {
-            contentArea.innerHTML = `<div class="empty-state"><p>Error loading biolinks</p></div>`;
+            this.showToast('Failed to save settings', 'error');
+        }
+    }
+
+    exportBioSettings() {
+        const dataStr = JSON.stringify(this.bioSettings, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `glowies-bio-settings-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        this.showToast('Settings exported', 'success');
+    }
+
+    importBioSettings(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            try {
+                const settings = JSON.parse(e.target.result);
+                this.bioSettings = settings;
+                await this.saveBioSettings('general');
+                this.renderBiolinks();
+                this.showToast('Settings imported successfully', 'success');
+            } catch (error) {
+                this.showToast('Invalid settings file', 'error');
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    async resetBioSettings() {
+        if (!confirm('Are you sure you want to reset all settings to default? This cannot be undone.')) return;
+
+        try {
+            const response = await fetch('/api/bio/settings', {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                this.bioSettings = {};
+                this.renderBiolinks();
+                this.showToast('Settings reset to defaults', 'success');
+            }
+        } catch (error) {
+            this.showToast('Failed to reset settings', 'error');
         }
     }
 
@@ -2348,7 +3158,7 @@ class Dashboard {
                 prefix: 'soundcloud.com/', 
                 color: '#FF5500', 
                 modalTitle: 'Soundcloud Username',
-                icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#FF5500"><path d="M1.175 12.225c-.051 0-.094.046-.101.1l-.233 2.154.233 2.105c.007.058.05.098.101.098.05 0 .09-.04.099-.098l.255-2.105-.27-2.154c-.009-.06-.052-.1-.084-.1zm-.899 1.108c-.053 0-.098.04-.104.104l-.177 1.046.177 1.022c.006.058.051.098.104.098.05 0 .095-.04.103-.098l.202-1.022-.202-1.046c-.008-.058-.053-.104-.103-.104zm1.795-.883c-.053 0-.095.04-.103.098l-.227 1.927.227 1.877c.008.058.05.098.103.098.053 0 .095-.04.103-.098l.255-1.877-.255-1.927c-.008-.052-.05-.098-.103-.098zm.897-.312c-.053 0-.095.04-.103.098l-.227 2.239.227 2.127c.008.058.05.098.103.098.052 0 .095-.04.103-.098l.255-2.127-.255-2.239c-.008-.058-.05-.098-.103-.098zm.897-.375c-.053 0-.095.04-.103.098l-.227 2.614.227 2.378c.008.058.05.098.103.098.052 0 .095-.04.103-.098l.255-2.378-.255-2.614c-.008-.058-.05-.098-.103-.098zm.897-.375c-.053 0-.095.04-.103.098l-.227 2.989.227 2.558c.008.058.05.098.103.098.052 0 .095-.04.103-.098l.255-2.558-.255-2.989c-.008-.058-.05-.098-.103-.098zm1.025-.478c-.061 0-.112.046-.118.104l-.193 3.467.193 2.582c.006.058.057.104.118.104.061 0 .112-.046.118-.104l.217-2.582-.217-3.467c-.006-.058-.057-.104-.118-.104zm.897-.146c-.061 0-.112.046-.118.104l-.193 3.613.193 2.582c.006.058.057.104.118.104.061 0 .112-.046.118-.104l.217-2.582-.217-3.613c-.006-.058-.057-.104-.118-.104zm.897-.146c-.061 0-.112.046-.118.104l-.193 3.759.193 2.582c.006.058.057.104.118.104.061 0 .112-.046.118-.104l.217-2.582-.217-3.759c-.006-.058-.057-.104-.118-.104zm.897-.146c-.061 0-.112.046-.118.104l-.193 3.905.193 2.582c.006.058.057.104.118.104.061 0 .112-.046.118-.104l.217-2.582-.217-3.905c-.006-.058-.057-.104-.118-.104zm.897.208c-.061 0-.112.046-.118.104l-.193 3.697.193 2.582c.006.058.057.104.118.104.061 0 .112-.046.118-.104l.217-2.582-.217-3.697c-.006-.058-.057-.104-.118-.104zm.897-.854c-.061 0-.112.046-.118.104l-.193 4.551.193 2.547c.006.058.057.104.118.104.061 0 .112-.046.118-.104l.217-2.547-.217-4.551c-.006-.058-.057-.104-.118-.104zm1.025.146c-.069 0-.125.052-.131.117l-.172 4.405.172 2.505c.006.065.062.117.131.117.069 0 .125-.052.131-.117l.193-2.505-.193-4.405c-.006-.065-.062-.117-.131-.117zm.897-.146c-.069 0-.125.052-.131.117l-.172 4.551.172 2.505c.006.065.062.117.131.117.069 0 .125-.052.131-.117l.193-2.505-.193-4.551c-.006-.065-.062-.117-.131-.117zm.897-.354c-.069 0-.125.052-.131.117l-.172 4.905.172 2.463c.006.065.062.117.131.117.069 0 .125-.052.131-.117l.193-2.463-.193-4.905c-.006-.065-.062-.117-.131-.117zm1.025.5c-.076 0-.138.058-.145.131l-.151 4.405.151 2.42c.007.073.069.131.145.131.076 0 .138-.058.145-.131l.172-2.42-.172-4.405c-.007-.073-.069-.131-.145-.131zm.922-.583c-.076 0-.138.058-.145.131l-.151 4.988.151 2.378c.007.073.069.131.145.131.076 0 .138-.058.145-.131l.172-2.378-.172-4.988c-.007-.073-.069-.131-.145-.131zm.897-.271c-.076 0-.138.058-.145.131l-.151 5.259.151 2.336c.007.073.069.131.145.131.076 0 .138-.058.145-.131l.172-2.336-.172-5.259c-.007-.073-.069-.131-.145-.131zm1.025.708c-.084 0-.151.065-.158.145l-.13 4.551.13 2.294c.007.08.074.145.158.145.084 0 .151-.065.158-.145l.151-2.294-.151-4.551c-.007-.08-.074-.145-.158-.145zm.897-1.062c-.084 0-.151.065-.158.145l-.13 5.613.13 2.252c.007.08.074.145.158.145.084 0 .151-.065.158-.145l.151-2.252-.151-5.613c-.007-.08-.074-.145-.158-.145zm1.922 5.488c-.042-.474-.142-.936-.296-1.373-.154-.436-.361-.851-.617-1.232a4.478 4.478 0 00-.893-1.023c-.338-.296-.719-.54-1.129-.723-.41-.182-.852-.303-1.31-.362-.108-.015-.218-.022-.328-.022-.423 0-.834.071-1.22.203v7.581c.008.085.072.151.158.158h6.043c.585 0 1.131-.228 1.543-.64.412-.412.64-.958.64-1.543 0-.585-.228-1.131-.64-1.543-.412-.412-.958-.64-1.543-.64-.204 0-.403.028-.592.081z"/></svg>`
+                icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#FF5500"><path d="M23.999 14.165c-.052 1.796-1.612 3.169-3.4 3.169h-8.18a.68.68 0 0 1-.675-.683V7.862a.747.747 0 0 1 .452-.724s.75-.513 2.333-.513a5.364 5.364 0 0 1 2.763.755 5.433 5.433 0 0 1 2.57 3.54c.282-.08.574-.121.868-.12.884 0 1.73.358 2.347.992s.948 1.49.922 2.373ZM10.721 8.421c.247 2.98.427 5.697 0 8.672a.264.264 0 0 1-.53 0c-.395-2.946-.22-5.718 0-8.672a.264.264 0 0 1 .53 0ZM9.072 9.448c.285 2.659.37 4.986-.006 7.655a.277.277 0 0 1-.55 0c-.331-2.63-.256-5.02 0-7.655a.277.277 0 0 1 .556 0Zm-1.663-.257c.27 2.726.39 5.171 0 7.904a.266.266 0 0 1-.532 0c-.38-2.69-.257-5.21 0-7.904a.266.266 0 0 1 .532 0Zm-1.647.77a26.108 26.108 0 0 1-.008 7.147.272.272 0 0 1-.542 0 27.955 27.955 0 0 1 0-7.147.275.275 0 0 1 .55 0Zm-1.67 1.769c.421 1.865.228 3.5-.029 5.388a.257.257 0 0 1-.514 0c-.21-1.858-.398-3.549 0-5.389a.272.272 0 0 1 .543 0Zm-1.655-.273c.388 1.897.26 3.508-.01 5.412-.026.28-.514.283-.54 0-.244-1.878-.347-3.54-.01-5.412a.283.283 0 0 1 .56 0Zm-1.668.911c.4 1.268.257 2.292-.026 3.572a.257.257 0 0 1-.514 0c-.241-1.262-.354-2.312-.023-3.572a.283.283 0 0 1 .563 0Z"/></svg>`
             },
             { 
                 name: 'PayPal', 
@@ -2369,14 +3179,14 @@ class Dashboard {
                 prefix: 'cash.app/$', 
                 color: '#00D632', 
                 modalTitle: 'Cashapp Username',
-                icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#00D632"><path d="M23.59 3.47A5.1 5.1 0 0 0 20.54.42C19.23 0 18.04 0 15.66 0H8.34C5.96 0 4.77 0 3.46.42A5.1 5.1 0 0 0 .41 3.47C0 4.78 0 5.96 0 8.34v7.32c0 2.38 0 3.56.42 4.87a5.1 5.1 0 0 0 3.05 3.05c1.31.42 2.5.42 4.87.42h7.32c2.38 0 3.56 0 4.87-.42a5.1 5.1 0 0 0 3.05-3.05c.42-1.31.42-2.5.42-4.87V8.34c0-2.38 0-3.56-.42-4.87zM17.7 13.28c-.14.45-.76.87-1.57 1.02-.38.07-.77.1-1.16.1-.53 0-1.06-.06-1.57-.18a6.9 6.9 0 0 1-1.57-.53l.58-1.7a5.27 5.27 0 0 0 2.56.68c.65 0 1.09-.17 1.09-.55 0-.36-.44-.52-1.09-.7l-.35-.1c-1.21-.35-2.19-.83-2.19-2.06 0-1.29 1.08-2.26 2.87-2.45V5.6h1.05v1.17c.98.1 1.72.37 2.17.66l-.6 1.64a4.36 4.36 0 0 0-2.05-.55c-.7 0-.99.23-.99.52 0 .32.4.47 1.16.7l.35.1c1.43.42 2.13 1.01 2.13 2.15 0 1.26-1.01 2.17-2.74 2.45v1.21h-1.05v-1.17c-.01-.01-.02-.03-.03-.2z"/></svg>`
+                icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#00D632"><path d="M23.59 3.475a5.1 5.1 0 00-3.05-3.05c-1.31-.42-2.5-.42-4.92-.42H8.36c-2.4 0-3.61 0-4.9.4a5.1 5.1 0 00-3.05 3.06C0 4.765 0 5.965 0 8.365v7.27c0 2.41 0 3.6.4 4.9a5.1 5.1 0 003.05 3.05c1.3.41 2.5.41 4.9.41h7.28c2.41 0 3.61 0 4.9-.4a5.1 5.1 0 003.06-3.06c.41-1.3.41-2.5.41-4.9v-7.25c0-2.41 0-3.61-.41-4.91zm-6.17 4.63l-.93.93a.5.5 0 01-.67.01 5 5 0 00-3.22-1.18c-.97 0-1.94.32-1.94 1.21 0 .9 1.04 1.2 2.24 1.65 2.1.7 3.84 1.58 3.84 3.64 0 2.24-1.74 3.78-4.58 3.95l-.26 1.2a.49.49 0 01-.48.39H9.63l-.09-.01a.5.5 0 01-.38-.59l.28-1.27a6.54 6.54 0 01-2.88-1.57v-.01a.48.48 0 010-.68l1-.97a.49.49 0 01.67 0c.91.86 2.13 1.34 3.39 1.32 1.3 0 2.17-.55 2.17-1.42 0-.87-.88-1.1-2.54-1.72-1.76-.63-3.43-1.52-3.43-3.6 0-2.42 2.01-3.6 4.39-3.71l.25-1.23a.48.48 0 01.48-.38h1.78l.1.01c.26.06.43.31.37.57l-.27 1.37c.9.3 1.75.77 2.48 1.39l.02.02c.19.2.19.5 0 .68z"/></svg>`
             },
             { 
                 name: 'Brave', 
                 prefix: '', 
                 color: '#FB542B', 
                 modalTitle: 'Brave Wallet',
-                icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#FB542B"><path d="M12 0L2.524 4.455l1.186 15.39L12 24l8.29-4.155 1.186-15.39L12 0zm7.098 13.795l-.984 4.188c-.098.42-.492.743-.924.743H6.81c-.432 0-.826-.322-.924-.743l-.984-4.188c-.098-.42.148-.842.555-.96l5.987-1.8c.174-.052.358-.052.532 0l5.987 1.8c.407.118.653.54.555.96h-.42zm-1.31-5.953l-5.194 1.558a1.06 1.06 0 01-.588 0l-5.194-1.558c-.432-.13-.615-.63-.37-.99l2.05-3.004c.123-.18.32-.288.532-.288h5.552c.212 0 .41.108.532.287l2.05 3.005c.246.36.062.86-.37.99z"/></svg>`
+                icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#FB542B"><path d="M15.68 0l2.096 2.38s1.84-.512 2.709.358c.868.87 1.584 1.638 1.584 1.638l-.562 1.381.715 2.047s-2.104 7.98-2.35 8.955c-.486 1.919-.818 2.66-2.198 3.633-1.38.972-3.884 2.66-4.293 2.916-.409.256-.92.692-1.38.692-.46 0-.97-.436-1.38-.692a185.796 185.796 0 01-4.293-2.916c-1.38-.973-1.712-1.714-2.197-3.633-.247-.975-2.351-8.955-2.351-8.955l.715-2.047-.562-1.381s.716-.768 1.585-1.638c.868-.87 2.708-.358 2.708-.358L8.321 0h7.36zm-3.679 14.936c-.14 0-1.038.317-1.758.69-.72.373-1.242.637-1.409.742-.167.104-.065.301.087.409.152.107 2.194 1.69 2.393 1.866.198.175.489.464.687.464.198 0 .49-.29.688-.464.198-.175 2.24-1.759 2.392-1.866.152-.108.254-.305.087-.41-.167-.104-.689-.368-1.41-.741-.72-.373-1.617-.69-1.757-.69zm0-11.278s-.409.001-1.022.206-1.278.46-1.584.46c-.307 0-2.581-.434-2.581-.434S4.119 7.152 4.119 7.849c0 .697.339.881.68 1.243l2.02 2.149c.192.203.59.511.356 1.066-.235.555-.58 1.26-.196 1.977.384.716 1.042 1.194 1.464 1.115.421-.08 1.412-.598 1.776-.834.364-.237 1.518-1.19 1.518-1.554 0-.365-1.193-1.02-1.413-1.168-.22-.15-1.226-.725-1.247-.95-.02-.227-.012-.293.284-.851.297-.559.831-1.304.742-1.8-.089-.495-.95-.753-1.565-.986-.615-.232-1.799-.671-1.947-.74-.148-.068-.11-.133.339-.175.448-.043 1.719-.212 2.292-.052.573.16 1.552.403 1.632.532.079.13.149.134.067.579-.081.445-.5 2.581-.541 2.96-.04.38-.12.63.288.724.409.094 1.097.256 1.333.256s.924-.162 1.333-.256c.408-.093.329-.344.288-.723-.04-.38-.46-2.516-.541-2.961-.082-.445-.012-.45.067-.579.08-.129 1.059-.372 1.632-.532.573-.16 1.845.009 2.292.052.449.042.487.107.339.175-.148.069-1.332.508-1.947.74-.615.233-1.476.49-1.565.986-.09.496.445 1.241.742 1.8.297.558.304.624.284.85-.02.226-1.026.802-1.247.95-.22.15-1.413.804-1.413 1.169 0 .364 1.154 1.317 1.518 1.554.364.236 1.355.755 1.776.834.422.079 1.08-.4 1.464-1.115.384-.716.039-1.422-.195-1.977-.235-.555.163-.863.355-1.066l2.02-2.149c.341-.362.68-.546.68-1.243 0-.697-2.695-3.96-2.695-3.96s-2.274.436-2.58.436c-.307 0-.972-.256-1.585-.461-.613-.205-1.022-.206-1.022-.206z"/></svg>`
             },
             { 
                 name: 'Twitch', 
@@ -2390,7 +3200,7 @@ class Dashboard {
                 prefix: 'kick.com/', 
                 color: '#53FC18', 
                 modalTitle: 'Kick Username',
-                icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#53FC18"><path d="M1.333 0h21.334C23.403 0 24 .597 24 1.333v21.334c0 .736-.597 1.333-1.333 1.333H1.333C.597 24 0 23.403 0 22.667V1.333C0 .597.597 0 1.333 0zm5.334 5.333H4v13.334h2.667V12.89l1.777-1.778 3.556 7.556h2.667v-.001l-4.445-9.778L14.667 4.443h-2.89L8 8.223V5.333h-1.333z"/></svg>`
+                icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#53FC18"><path d="M1.333 0h8v5.333H12V2.667h2.667V0h8v8H20v2.667h-2.667v2.666H20V16h2.667v8h-8v-2.667H12v-2.666H9.333V24h-8Z"/></svg>`
             },
             { 
                 name: 'Reddit', 
@@ -2450,7 +3260,7 @@ class Dashboard {
                 color: '#FF6600', 
                 modalTitle: 'Monero Address',
                 placeholder: 'Enter XMR Address',
-                icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#FF6600"><path d="M12 0C5.372 0 0 5.373 0 12s5.372 12 12 12 12-5.373 12-12S18.628 0 12 0zm-.046 4.453l4.778 4.778v4.629h-2.39v-3.2l-2.388-2.387-2.388 2.388v3.199h-2.39V9.23l4.778-4.778zm-7.5 11.16h2.39v2.934h5.11v-4.86l1.502 1.5 1.502-1.5v4.86h5.11v-2.935h2.39v5.325H4.453v-5.325z"/></svg>`
+                icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#FF6600"><path d="M12 0C5.365 0 0 5.373 0 12.015c0 1.335.228 2.607.618 3.81h3.577V5.729L12 13.545l7.805-7.815v10.095h3.577c.389-1.203.618-2.475.618-3.81C24 5.375 18.635 0 12 0zm-1.788 15.307l-3.417-3.421v6.351H1.758C3.87 21.689 7.678 24 12 24s8.162-2.311 10.245-5.764h-5.04v-6.351l-3.386 3.421-1.788 1.79-1.814-1.79h-.005z"/></svg>`
             },
             { 
                 name: 'Mail', 
@@ -2463,16 +3273,16 @@ class Dashboard {
             { 
                 name: 'Roblox', 
                 prefix: 'roblox.com/users/', 
-                color: '#FF0000', 
+                color: '#ffffff', 
                 modalTitle: 'Roblox User ID',
-                icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#FF0000"><path d="M5.164 0L.16 18.928l18.718 5.07L23.88 5.07 5.164 0zm7.78 13.873l-3.748-1.02 1.016-3.74 3.748 1.02-1.016 3.74z"/></svg>`
+                icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#ffffff"><path d="M18.926 23.998 0 18.892 5.075.002 24 5.108ZM15.348 10.09l-5.282-1.453-1.414 5.273 5.282 1.453z"/></svg>`
             },
             { 
                 name: 'NameMC', 
                 prefix: 'namemc.com/profile/', 
-                color: '#4caf50', 
+                color: '#ffffff', 
                 modalTitle: 'NameMC Profile',
-                icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#4caf50"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L19.18 7 12 9.82 4.82 7 12 4.18zM4 8.72l7 3.5v7.5l-7-3.5v-7.5zm9 11v-7.5l7-3.5v7.5l-7 3.5z"/></svg>`
+                icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#ffffff"><path d="M0 0v24h24V0Zm4.8 4.8H16V8h3.2v11.2H16V8H8v11.2H4.8V8Z"/></svg>`
             },
             { 
                 name: 'Steam', 
@@ -2493,7 +3303,7 @@ class Dashboard {
                 prefix: 'gitlab.com/', 
                 color: '#FC6D26', 
                 modalTitle: 'Gitlab Username',
-                icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#FC6D26"><path d="m23.6 9.593-.033-.086L20.3.98a.851.851 0 0 0-.336-.405.87.87 0 0 0-.52-.144.87.87 0 0 0-.52.144.85.85 0 0 0-.334.405l-2.217 6.748H7.63L5.414.98a.851.851 0 0 0-.336-.405.87.87 0 0 0-.52-.144.87.87 0 0 0-.522.144.85.85 0 0 0-.333.405L.434 9.51l-.033.083a6.01 6.01 0 0 0 1.992 6.954l.01.008.028.02 4.91 3.696 2.432 1.842 1.48 1.12a1.008 1.008 0 0 0 1.22 0l1.48-1.12 2.432-1.842 4.938-3.715.012-.01a6.01 6.01 0 0 0 1.992-6.953z"/></svg>`
+                icon: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#FC6D26"><path d="m23.6004 9.5927-.0337-.0862L20.3.9814a.851.851 0 0 0-.3362-.405.8748.8748 0 0 0-.9997.0539.8748.8748 0 0 0-.29.4399l-2.2055 6.748H7.5375l-2.2057-6.748a.8573.8573 0 0 0-.29-.4412.8748.8748 0 0 0-.9997-.0537.8585.8585 0 0 0-.3362.4049L.4332 9.5015l-.0325.0862a6.0657 6.0657 0 0 0 2.0119 7.0105l.0113.0087.03.0213 4.976 3.7264 2.462 1.8633 1.4995 1.1321a1.0085 1.0085 0 0 0 1.2197 0l1.4995-1.1321 2.4619-1.8633 5.006-3.7489.0125-.01a6.0682 6.0682 0 0 0 2.0094-7.003z"/></svg>`
             }
         ];
     }

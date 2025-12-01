@@ -734,6 +734,65 @@ app.get('/api/profile/views', authenticateToken, async (req, res) => {
   }
 });
 
+app.get('/api/bio/settings', authenticateToken, async (req, res) => {
+  try {
+    const profile = await getQuery('profiles', 'user_id', req.user.id);
+    if (profile && profile.bio_settings) {
+      res.status(200).json(profile.bio_settings);
+    } else {
+      res.status(200).json({});
+    }
+  } catch (err) {
+    console.error('Get bio settings error:', err);
+    res.status(500).json({ error: 'Failed to get bio settings' });
+  }
+});
+
+app.post('/api/bio/settings', authenticateToken, async (req, res) => {
+  try {
+    const settings = req.body;
+    const profile = await getQuery('profiles', 'user_id', req.user.id);
+    
+    if (profile) {
+      await runQuery(
+        'profiles',
+        { user_id: req.user.id, bio_settings: settings },
+        'update',
+        { column: 'user_id', value: req.user.id }
+      );
+    } else {
+      await runQuery(
+        'profiles',
+        { user_id: req.user.id, bio_settings: settings },
+        'insert'
+      );
+    }
+    
+    res.status(200).json({ success: true });
+  } catch (err) {
+    console.error('Save bio settings error:', err);
+    res.status(500).json({ error: 'Failed to save bio settings' });
+  }
+});
+
+app.delete('/api/bio/settings', authenticateToken, async (req, res) => {
+  try {
+    const profile = await getQuery('profiles', 'user_id', req.user.id);
+    if (profile) {
+      await runQuery(
+        'profiles',
+        { user_id: req.user.id, bio_settings: {} },
+        'update',
+        { column: 'user_id', value: req.user.id }
+      );
+    }
+    res.status(200).json({ success: true });
+  } catch (err) {
+    console.error('Delete bio settings error:', err);
+    res.status(500).json({ error: 'Failed to reset bio settings' });
+  }
+});
+
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.get('/about', (req, res) => res.sendFile(path.join(__dirname, 'about', 'index.html')));
 app.get('/pricing', (req, res) => res.sendFile(path.join(__dirname, 'pricing', 'index.html')));
