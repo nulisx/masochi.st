@@ -1578,7 +1578,7 @@ class Dashboard {
         `;
     }
 
-    biolinksActiveTab = 'links';
+    biolinksActiveTab = 'overview';
     biolinksCustomizeSubTab = 'general';
     bioSettings = {};
 
@@ -1603,9 +1603,9 @@ class Dashboard {
             </div>
             
             <div class="biolinks-tabs">
-                <button class="biolinks-tab ${this.biolinksActiveTab === 'links' ? 'active' : ''}" onclick="dashboard.switchBiolinksTab('links')">
+                <button class="biolinks-tab ${this.biolinksActiveTab === 'overview' ? 'active' : ''}" onclick="dashboard.switchBiolinksTab('overview')">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                    Links
+                    Overview
                 </button>
                 <button class="biolinks-tab ${this.biolinksActiveTab === 'customize' ? 'active' : ''}" onclick="dashboard.switchBiolinksTab('customize')">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
@@ -1614,7 +1614,7 @@ class Dashboard {
             </div>
             
             <div id="biolinksContent">
-                ${this.biolinksActiveTab === 'links' ? this.renderLinksTab(links) : this.renderCustomizeTab()}
+                ${this.biolinksActiveTab === 'overview' ? this.renderLinksTab(links) : this.renderCustomizeTab()}
             </div>`;
             
             this.setupBiolinksEventListeners();
@@ -1722,20 +1722,29 @@ class Dashboard {
         ];
 
         return `
-            <div class="customize-container" style="margin-top: 24px; display: flex; gap: 24px;">
-                <div class="customize-subtabs-sidebar">
-                    ${subTabs.map(tab => `
-                        <button class="customize-subtab ${this.biolinksCustomizeSubTab === tab.id ? 'active' : ''}" 
-                                data-tab="${tab.id}" 
-                                onclick="dashboard.switchCustomizeSubTab('${tab.id}')">
-                            ${tab.icon}
-                            <span>${tab.label}</span>
-                        </button>
-                    `).join('')}
+            <div class="customize-container" style="margin-top: 24px; display: flex; gap: 24px; flex-direction: column;">
+                <div style="display: flex; gap: 24px;">
+                    <div class="customize-subtabs-sidebar">
+                        ${subTabs.map(tab => `
+                            <button class="customize-subtab ${this.biolinksCustomizeSubTab === tab.id ? 'active' : ''}" 
+                                    data-tab="${tab.id}" 
+                                    onclick="dashboard.switchCustomizeSubTab('${tab.id}')">
+                                ${tab.icon}
+                                <span>${tab.label}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                    
+                    <div id="customizeContent" class="customize-content" style="flex: 1; overflow-y: auto; max-height: calc(100vh - 250px);">
+                        ${this.getCustomizeSubTabContent(this.biolinksCustomizeSubTab)}
+                    </div>
                 </div>
                 
-                <div id="customizeContent" class="customize-content" style="flex: 1; overflow-y: auto; max-height: calc(100vh - 250px);">
-                    ${this.getCustomizeSubTabContent(this.biolinksCustomizeSubTab)}
+                <div style="margin-top: 8px;">
+                    <button class="btn btn-primary" style="width: 100%;" onclick="dashboard.saveBioSettings('${this.biolinksCustomizeSubTab}')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                        Save Changes
+                    </button>
                 </div>
             </div>`;
     }
@@ -2077,16 +2086,8 @@ class Dashboard {
                             </div>
                         </div>
                         <div class="customize-form">
-                            <div class="form-group">
-                                <label class="form-label">Layout Style</label>
-                                <select class="form-input form-select" id="layoutStyle">
-                                    <option value="default" ${s.layout === 'default' ? 'selected' : ''}>Default</option>
-                                    <option value="modern" ${s.layout === 'modern' ? 'selected' : ''}>Modern</option>
-                                    <option value="retro" ${s.layout === 'retro' ? 'selected' : ''}>Retro</option>
-                                </select>
-                            </div>
                             <div class="layout-previews">
-                                <div class="layout-preview ${s.layout === 'default' || !s.layout ? 'active' : ''}" onclick="document.getElementById('layoutStyle').value='default'">
+                                <div class="layout-preview ${s.layout === 'default' || !s.layout ? 'active' : ''}" onclick="dashboard.bioSettings.layout='default'; document.querySelector('.layout-preview.active')?.classList.remove('active'); this.classList.add('active');">
                                     <div class="layout-preview-box default">
                                         <div class="preview-avatar"></div>
                                         <div class="preview-text"></div>
@@ -2098,7 +2099,7 @@ class Dashboard {
                                     </div>
                                     <span>Default</span>
                                 </div>
-                                <div class="layout-preview ${s.layout === 'modern' ? 'active' : ''}" onclick="document.getElementById('layoutStyle').value='modern'">
+                                <div class="layout-preview ${s.layout === 'modern' ? 'active' : ''}" onclick="dashboard.bioSettings.layout='modern'; document.querySelectorAll('.layout-preview').forEach(el => el.classList.remove('active')); this.classList.add('active');">
                                     <div class="layout-preview-box modern">
                                         <div class="preview-avatar"></div>
                                         <div class="preview-text"></div>
@@ -2111,7 +2112,7 @@ class Dashboard {
                                     </div>
                                     <span>Modern</span>
                                 </div>
-                                <div class="layout-preview ${s.layout === 'retro' ? 'active' : ''}" onclick="document.getElementById('layoutStyle').value='retro'">
+                                <div class="layout-preview ${s.layout === 'retro' ? 'active' : ''}" onclick="dashboard.bioSettings.layout='retro'; document.querySelectorAll('.layout-preview').forEach(el => el.classList.remove('active')); this.classList.add('active');">
                                     <div class="layout-preview-box retro">
                                         <div class="preview-avatar"></div>
                                         <div class="preview-text"></div>
@@ -2123,7 +2124,6 @@ class Dashboard {
                                     <span>Retro</span>
                                 </div>
                             </div>
-                            <button class="btn btn-primary" onclick="dashboard.saveBioSettings('layout')">Save Changes</button>
                         </div>
                     </div>`;
 
