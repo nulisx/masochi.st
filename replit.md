@@ -87,8 +87,27 @@ Dashboard Pages:
 - `POST /api/updates` - Create update (admin only)
 - `DELETE /api/updates/:id` - Delete update (admin only)
 
-### Recent Changes (November 2025 - COMPLETE)
-- **Discord Two-Field Modal (Nov 30 - Latest)**:
+### Recent Changes (December 2025)
+- **Biolinks Customize Tab (Dec 1 - Latest)**:
+  - Complete 9-tab customization system for bio pages
+  - Sub-tabs: General, Background, Profile, Link, Badge, Layout, Effects, Embed, Config
+  - General: Username, Nickname, Title, Description, Audio URL, Page Title, Favicon
+  - Background: Video/Image URLs, Effects dropdown (None/Particles/Waves/TV/Snow/Rain), Color, Opacity
+  - Profile: Username/Description colors, Avatar settings, View Count toggle, Card styling
+  - Link: Border, radius, colors, icons, hover effects (Scale/Glow/Shake/Bounce), glow, animations
+  - Badge: Show/Hide, borders, colors, opacity, glow, hover effects
+  - Layout: Style dropdown (Default/Modern/Retro) with visual previews
+  - Effects: Text effects (Sparkles/Typewriter/Glitch/Binary Scroll), Click to Enter, Username Glow/Gradient
+  - Embed: Title, Description, Image URL, Color for Discord embeds
+  - Config: Import/Export settings as JSON, Reset to defaults
+  - API endpoints: GET/POST/DELETE `/api/bio/settings`
+  - Database: `bio_settings` JSONB column in profiles table
+- **Official Simple Icons (Dec 1)**:
+  - Updated all social media icons to official Simple Icons SVG paths
+  - Platforms: SoundCloud, CashApp, Brave, Kick, Monero, NameMC, Roblox, GitLab
+
+### Previous Changes (November 2025)
+- **Discord Two-Field Modal (Nov 30)**:
   - Discord has dedicated two-input modal: User ID (for https://discord.com/users/userid) and Username
   - Field badges show "User" and "Username" labels for clarity
   - Either field is optional - at least one must be provided ("Please enter Discord User ID or Username")
