@@ -1778,14 +1778,6 @@ input[type="range"].form-input::-moz-range-thumb {
   position: relative;
 }
 
-.social-icon-btn-namemc {
-  background: #000000 !important;
-}
-
-.social-icon-btn-namemc:hover {
-  background: #1a1a1a !important;
-}
-
 .social-icon-badge {
   position: absolute;
   bottom: -4px;
