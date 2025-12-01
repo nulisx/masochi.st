@@ -60,3 +60,5 @@ good now go through the entire source code and everything make sure there isnt a
 good now i want you to go through the entire source code again and make sure there isnt any errors fix up all errors that you find fix everything make this the best entirely
 
 now fix it where instead of it sending me from @r to @r# on the site it actually does what its supposed to do when i click on one of the connections yk what i mean
+
+good now analyze every file in the bio folder along w the bio/bioprofile and bio/biosettings folders as well with the files bioprofileview* and biosettingsview* along with all that analyze these images entirely as well so you can use them to change up the biolinks tab entirely and make it based off those files and the images entirely fix up the biolinks tab with all of this entirely as i want analyze everything to do all of this which will be the Bio-Customize-4Biolinks1.png all the way to Bio-Customize-4Biolinks.19
