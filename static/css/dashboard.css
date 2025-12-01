@@ -2211,6 +2211,25 @@ input[type="range"].form-input::-moz-range-thumb {
 .customize-container {
   display: flex;
   gap: 24px;
+  position: relative;
+}
+
+.customize-subtabs-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 200px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+  border: 2px dashed rgba(168,85,247,0.2);
+  border-radius: 12px;
+  padding: 12px;
+  height: fit-content;
+  position: sticky;
+  top: 0;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  backdrop-filter: blur(4px);
 }
 
 .customize-subtabs {
@@ -2231,7 +2250,7 @@ input[type="range"].form-input::-moz-range-thumb {
   gap: 10px;
   padding: 12px 14px;
   background: transparent;
-  border: none;
+  border: 2px solid transparent;
   border-radius: 8px;
   color: var(--text-muted);
   font-size: 13px;
@@ -2244,12 +2263,14 @@ input[type="range"].form-input::-moz-range-thumb {
 .customize-subtab:hover {
   background: rgba(255,255,255,0.05);
   color: var(--text-primary);
+  border-color: rgba(168,85,247,0.2);
 }
 
 .customize-subtab.active {
-  background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(168,85,247,0.1));
+  background: linear-gradient(135deg, rgba(168,85,247,0.15), rgba(168,85,247,0.05));
   color: var(--accent-secondary);
-  border: 1px solid rgba(168,85,247,0.3);
+  border: 2px dashed var(--accent-secondary);
+  box-shadow: inset 0 0 12px rgba(168,85,247,0.1);
 }
 
 .customize-subtab svg {
@@ -2260,11 +2281,15 @@ input[type="range"].form-input::-moz-range-thumb {
 .customize-subtab.active svg {
   opacity: 1;
   stroke: var(--accent-secondary);
+  filter: drop-shadow(0 0 4px rgba(168,85,247,0.3));
 }
 
 .customize-content {
   flex: 1;
   min-width: 0;
+  overflow-y: auto;
+  max-height: calc(100vh - 250px);
+  padding-right: 8px;
 }
 
 .customize-card {
