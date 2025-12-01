@@ -145,6 +145,30 @@ app.post(
   }
 );
 
+function parseUserAgent(ua) {
+  if (!ua) return { device: 'Unknown', browser: 'Unknown', os: 'Unknown' };
+  
+  let device = 'Desktop';
+  if (/mobile/i.test(ua)) device = 'Mobile';
+  else if (/tablet|ipad/i.test(ua)) device = 'Tablet';
+  
+  let browser = 'Unknown';
+  if (/firefox/i.test(ua)) browser = 'Firefox';
+  else if (/edg/i.test(ua)) browser = 'Edge';
+  else if (/chrome/i.test(ua)) browser = 'Chrome';
+  else if (/safari/i.test(ua)) browser = 'Safari';
+  else if (/opera|opr/i.test(ua)) browser = 'Opera';
+  
+  let os = 'Unknown';
+  if (/windows/i.test(ua)) os = 'Windows';
+  else if (/mac os|macos/i.test(ua)) os = 'macOS';
+  else if (/linux/i.test(ua)) os = 'Linux';
+  else if (/android/i.test(ua)) os = 'Android';
+  else if (/iphone|ipad|ipod/i.test(ua)) os = 'iOS';
+  
+  return { device, browser, os };
+}
+
 app.post('/api/auth/login', async (req, res) => {
   const { username, identifier, password } = req.body;
   try {
@@ -164,7 +188,24 @@ app.post('/api/auth/login', async (req, res) => {
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
 
-    const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
+    const sessionId = crypto.randomBytes(32).toString('hex');
+    const userAgent = req.headers['user-agent'] || '';
+    const ipAddress = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip || req.connection?.remoteAddress || 'Unknown';
+    const { device, browser, os } = parseUserAgent(userAgent);
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+    
+    await runQuery('sessions', {
+      id: sessionId,
+      user_id: user.id,
+      ip_address: ipAddress,
+      user_agent: userAgent,
+      device_type: device,
+      browser: browser,
+      os: os,
+      expires_at: expiresAt
+    });
+
+    const token = jwt.sign({ id: user.id, username: user.username, role: user.role, sessionId }, JWT_SECRET, { expiresIn: '7d' });
 
     res.cookie('token', token, {
       httpOnly: true,
@@ -207,6 +248,14 @@ app.get('/api/auth/me', authenticateToken, async (req, res) => {
 });
 
 app.post('/api/auth/logout', authenticateToken, async (req, res) => {
+  try {
+    if (req.user.sessionId) {
+      await runQuery('sessions', { id: req.user.sessionId }, 'delete', { column: 'id', value: req.user.sessionId });
+    }
+  } catch (err) {
+    console.error('Failed to delete session:', err);
+  }
+  
   res.clearCookie('token', {
     httpOnly: true,
     path: '/',
@@ -214,6 +263,53 @@ app.post('/api/auth/logout', authenticateToken, async (req, res) => {
     secure: false
   });
   res.status(200).json({ message: 'Logged out successfully' });
+});
+
+app.get('/api/auth/sessions', authenticateToken, async (req, res) => {
+  try {
+    const sessions = await allQuery('sessions', 'user_id', req.user.id);
+    const now = new Date();
+    
+    const activeSessions = sessions
+      .filter(s => new Date(s.expires_at) > now)
+      .map(s => ({
+        id: s.id,
+        ip_address: s.ip_address,
+        device_type: s.device_type,
+        browser: s.browser,
+        os: s.os,
+        created_at: s.created_at,
+        last_active_at: s.last_active_at,
+        is_current: s.id === req.user.sessionId
+      }));
+    
+    res.json({ sessions: activeSessions, count: activeSessions.length });
+  } catch (err) {
+    console.error('Failed to fetch sessions:', err);
+    res.status(500).json({ error: 'Failed to fetch sessions' });
+  }
+});
+
+app.delete('/api/auth/sessions/:sessionId', authenticateToken, async (req, res) => {
+  try {
+    const { sessionId } = req.params;
+    
+    const session = await getQuery('sessions', 'id', sessionId);
+    if (!session) {
+      return res.status(404).json({ error: 'Session not found' });
+    }
+    
+    if (session.user_id.toString() !== req.user.id.toString()) {
+      return res.status(403).json({ error: 'Unauthorized' });
+    }
+    
+    await runQuery('sessions', { id: sessionId }, 'delete', { column: 'id', value: sessionId });
+    
+    res.json({ message: 'Session deleted successfully' });
+  } catch (err) {
+    console.error('Failed to delete session:', err);
+    res.status(500).json({ error: 'Failed to delete session' });
+  }
 });
 
 app.post(
