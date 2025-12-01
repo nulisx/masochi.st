@@ -1666,8 +1666,8 @@ class Dashboard {
                         Share Your Biolink
                     </h3>
                     <div style="background: var(--bg-tertiary); border-radius: 10px; padding: 16px; display: flex; align-items: center; gap: 12px;">
-                        <a href="https://${bioUrl}" target="_blank" style="flex: 1; font-size: 14px; color: var(--accent-secondary); word-break: break-all; text-decoration: none; transition: all 0.2s ease; border-bottom: 2px solid transparent; padding-bottom: 2px; cursor: pointer;" onmouseover="this.style.borderBottomColor='var(--accent-secondary)'" onmouseout="this.style.borderBottomColor='transparent'">${bioUrl}</a>
-                        <button class="btn btn-secondary" style="padding: 8px 12px; white-space: nowrap;" onclick="navigator.clipboard.writeText('https://${bioUrl}'); dashboard.showToast('Biolink copied!', 'success');">
+                        <a href="https://${bioUrl}" target="_blank" style="display: inline-block; font-size: 14px; color: var(--accent-secondary); word-break: break-word; text-decoration: none; transition: all 0.2s ease; border-bottom: 2px solid transparent; padding-bottom: 2px; cursor: pointer;" onmouseover="this.style.borderBottomColor='var(--accent-secondary)'" onmouseout="this.style.borderBottomColor='transparent'">${bioUrl}</a>
+                        <button class="btn btn-secondary" style="padding: 8px 12px; white-space: nowrap; flex-shrink: 0;" onclick="navigator.clipboard.writeText('https://${bioUrl}'); dashboard.showToast('Biolink copied!', 'success');">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                         </button>
                     </div>
