@@ -60,3 +60,8 @@ good now go through the entire source code and everything make sure there isnt a
 good now i want you to go through the entire source code again and make sure there isnt any errors fix up all errors that you find fix everything make this the best entirely
 
 good now analyze every file in the bio folder along w the bio/bioprofile and bio/biosettings folders as well with the files bioprofileview* and biosettingsview* along with all that analyze these images entirely as well so you can use them to change up the biolinks tab entirely and make it based off those files and the images entirely fix up the biolinks tab with all of this entirely as i want analyze everything to do all of this which will be the Bio-Customize-4Biolinks1.png all the way to Bio-Customize-4Biolinks.19
+
+good now finally change up the svgs/icons in the Connections tab in the dash w New Socials with the SoundCloud, CashApp, Brave Wallet, Kick, Monero/XMR, NameMC, and GitLab Connections
+
+and then make it where Custom URL is the last social after GitLab Username instead of GitLab being the last Custom URL is instead yk what i mean
+
