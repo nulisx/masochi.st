@@ -2840,6 +2840,38 @@ class Dashboard {
         }
     }
 
+    showNotificationModal(message, type = 'info') {
+        const existingNotif = document.querySelector('.notification-modal-overlay');
+        if (existingNotif) existingNotif.remove();
+        
+        const notifHTML = `
+            <div class="notification-modal-overlay">
+                <div class="notification-modal">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <div style="font-size: 24px;">
+                            ${type === 'success' ? '✓' : type === 'error' ? '⚠' : 'ℹ'}
+                        </div>
+                        <span style="color: var(--text-primary); font-weight: 500;">${message}</span>
+                    </div>
+                    <button onclick="this.closest('.notification-modal-overlay').remove()" style="width: 100%; padding: 10px 12px; background: var(--accent-primary); border: none; border-radius: 8px; color: white; font-weight: 500; cursor: pointer; transition: all 0.2s;">
+                        OK
+                    </button>
+                </div>
+            </div>
+        `;
+        const notifEl = document.createElement('div');
+        notifEl.innerHTML = notifHTML;
+        document.body.appendChild(notifEl.firstElementChild);
+        
+        setTimeout(() => {
+            const overlay = document.querySelector('.notification-modal-overlay');
+            if (overlay) {
+                overlay.style.opacity = '1';
+                overlay.style.visibility = 'visible';
+            }
+        }, 10);
+    }
+
     handleDiscordClick(username, profileUrl) {
         const hasUsername = username && username.trim().length > 0;
         const hasUserId = profileUrl && profileUrl.includes('discord.com/users');
@@ -2854,7 +2886,7 @@ class Dashboard {
         // If only username: copy and open Discord
         if (hasUsername && !userId) {
             navigator.clipboard.writeText(username).then(() => {
-                this.showToast(`Copied "${username}" to clipboard`, 'success');
+                this.showNotificationModal(`Copied "${username}" to clipboard`, 'success');
                 setTimeout(() => {
                     window.open(`https://discord.com/users/${username}`, '_blank');
                 }, 200);
@@ -2871,19 +2903,19 @@ class Dashboard {
         // If both: show menu with options
         if (hasUsername && userId) {
             const menuHTML = `
-                <div class="discord-menu" style="position: fixed; background: #1a1a24; border: 1px solid #9333ea; border-radius: 8px; padding: 8px; z-index: 10000; box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);">
+                <div class="discord-menu" style="position: fixed; background: linear-gradient(135deg, rgba(147, 51, 234, 0.1), rgba(168, 85, 247, 0.05)); border: 1px solid rgba(147, 51, 234, 0.3); border-radius: 12px; padding: 8px; z-index: 10000; box-shadow: 0 4px 20px rgba(147, 51, 234, 0.4), inset 0 1px 0 rgba(255,255,255,0.1); backdrop-filter: blur(8px);">
                     <button onclick="(() => {
                         navigator.clipboard.writeText('${username}').then(() => {
-                            dashboard.showToast('Copied username to clipboard', 'success');
+                            dashboard.showNotificationModal('Copied username to clipboard', 'success');
                             document.querySelector('.discord-menu').remove();
                         });
-                    })()" style="display: block; width: 100%; padding: 10px 12px; background: none; border: none; color: #fff; text-align: left; cursor: pointer; font-size: 14px; border-radius: 4px; transition: all 0.2s;">
+                    })()" style="display: block; width: 100%; padding: 10px 12px; background: none; border: none; color: #fff; text-align: left; cursor: pointer; font-size: 14px; border-radius: 6px; transition: all 0.2s; white-space: nowrap; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
                         📋 Copy Username
                     </button>
                     <button onclick="(() => {
                         window.open('https://discord.com/users/${userId}', '_blank');
                         document.querySelector('.discord-menu').remove();
-                    })()" style="display: block; width: 100%; padding: 10px 12px; background: none; border: none; color: #fff; text-align: left; cursor: pointer; font-size: 14px; border-radius: 4px; transition: all 0.2s; margin-top: 4px;">
+                    })()" style="display: block; width: 100%; padding: 10px 12px; background: none; border: none; color: #fff; text-align: left; cursor: pointer; font-size: 14px; border-radius: 6px; transition: all 0.2s; margin-top: 4px; white-space: nowrap; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
                         🔗 Open Profile
                     </button>
                 </div>
