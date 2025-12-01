@@ -52,3 +52,11 @@ Make it the best possible implementation — flawless, polished, and professiona
 
 2:
 good now fix everything from being mock data to actual data w the backend you said u made make everything actually work because some stuff doesnt work as you will see in the dashboard if u analyze everything fix it up entirely along with that fix the admin panel to act exactly and entirely like the admin files in the fixfiles folder add a mod panel as well because theres mod files in the fixfiles folder as well make it based off that make it all actually have a use and be useful yk what i mean fix everything entirely up i want this to be the best no mock data nothing fix everything to not be mock data and actual data and everything fix it all up entirely and make everything entirely like the files in the fixfiles folder as i said and everything as i said fix this up to be entirely the best but not only that but the greatest entirely and while ur doing that analyze the entire thing to do all of this continue and everything
+
+good now make sure biolinks and connections is connected with the profile tab as well as i see connections tab already is but still make sure
+
+good now go through the entire source code and everything make sure there isnt any comments remove all of the comments
+
+good now i want you to go through the entire source code again and make sure there isnt any errors fix up all errors that you find fix everything make this the best entirely
+
+now fix it where instead of it sending me from @r to @r# on the site it actually does what its supposed to do when i click on one of the connections yk what i mean
