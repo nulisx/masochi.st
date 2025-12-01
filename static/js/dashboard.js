@@ -2844,12 +2844,31 @@ class Dashboard {
         const existingNotif = document.querySelector('.notification-modal-overlay');
         if (existingNotif) existingNotif.remove();
         
+        let icon = '';
+        if (type === 'success') {
+            icon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--success);">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>`;
+        } else if (type === 'error') {
+            icon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--danger);">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>`;
+        } else {
+            icon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-primary);">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>`;
+        }
+        
         const notifHTML = `
             <div class="notification-modal-overlay">
                 <div class="notification-modal">
                     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                        <div style="font-size: 24px;">
-                            ${type === 'success' ? '✓' : type === 'error' ? '⚠' : 'ℹ'}
+                        <div style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px;">
+                            ${icon}
                         </div>
                         <span style="color: var(--text-primary); font-weight: 500;">${message}</span>
                     </div>
@@ -2906,14 +2925,23 @@ class Dashboard {
                             dashboard.showNotificationModal('Copied username to clipboard', 'success');
                             document.querySelector('.discord-menu').remove();
                         });
-                    })()" style="display: block; width: 100%; padding: 10px 12px; background: none; border: none; color: #fff; text-align: left; cursor: pointer; font-size: 14px; border-radius: 6px; transition: all 0.2s; white-space: nowrap; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
-                        📋 Copy Username
+                    })()" style="display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 12px; background: none; border: none; color: #fff; text-align: left; cursor: pointer; font-size: 14px; border-radius: 6px; transition: all 0.2s; white-space: nowrap; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                        Copy Username
                     </button>
                     <button onclick="(() => {
                         window.open('https://discord.com/users/${userId}', '_blank');
                         document.querySelector('.discord-menu').remove();
-                    })()" style="display: block; width: 100%; padding: 10px 12px; background: none; border: none; color: #fff; text-align: left; cursor: pointer; font-size: 14px; border-radius: 6px; transition: all 0.2s; margin-top: 4px; white-space: nowrap; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
-                        🔗 Open Profile
+                    })()" style="display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 12px; background: none; border: none; color: #fff; text-align: left; cursor: pointer; font-size: 14px; border-radius: 6px; transition: all 0.2s; margin-top: 4px; white-space: nowrap; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                        Open Profile
                     </button>
                 </div>
             `;
