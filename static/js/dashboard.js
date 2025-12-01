@@ -1665,11 +1665,16 @@ class Dashboard {
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 7h3a5 5 0 0 1 0 10h-3"></path><path d="M9 17H6a5 5 0 0 1 0-10h3"></path><path d="M8 12h8"></path></svg>
                         Share Your Biolink
                     </h3>
-                    <div style="background: var(--bg-tertiary); border-radius: 10px; padding: 16px; display: flex; align-items: center; gap: 12px;">
+                    <div style="background: var(--bg-tertiary); border-radius: 10px; padding: 16px; display: flex; align-items: center; gap: 12px; justify-content: space-between;">
                         <a href="https://${bioUrl}" target="_blank" style="display: inline-block; font-size: 14px; color: var(--accent-secondary); word-break: break-word; text-decoration: none; transition: all 0.2s ease; border-bottom: 2px solid transparent; padding-bottom: 2px; cursor: pointer;" onmouseover="this.style.borderBottomColor='var(--accent-secondary)'" onmouseout="this.style.borderBottomColor='transparent'">${bioUrl}</a>
-                        <button class="btn btn-secondary" style="padding: 8px 12px; white-space: nowrap; flex-shrink: 0;" onclick="navigator.clipboard.writeText('https://${bioUrl}'); dashboard.showToast('Biolink copied!', 'success');">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                        </button>
+                        <div style="display: flex; gap: 8px; flex-shrink: 0;">
+                            <button class="btn btn-secondary" style="padding: 8px 12px; white-space: nowrap;" onclick="window.open('https://${bioUrl}', '_blank');" title="Open link">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                            </button>
+                            <button class="btn btn-secondary" style="padding: 8px 12px; white-space: nowrap;" onclick="navigator.clipboard.writeText('https://${bioUrl}'); dashboard.showToast('Biolink copied!', 'success');" title="Copy link">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
