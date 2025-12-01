@@ -3337,8 +3337,9 @@ class Dashboard {
                     <div class="social-icons-grid">
                         ${allPlatforms.map(plat => {
                             const isConnected = connectedPlatforms.includes(plat.name.toLowerCase());
+                            const isNameMC = plat.name.toLowerCase() === 'namemc';
                             return `
-                                <button class="social-icon-btn ${isConnected ? 'connected' : ''}" 
+                                <button class="social-icon-btn ${isConnected ? 'connected' : ''} ${isNameMC ? 'social-icon-btn-namemc' : ''}" 
                                     title="${plat.name}${isConnected ? ' (Connected)' : ''}" 
                                     onclick="dashboard.showConnectionModal('${plat.name}', '${plat.prefix}', '${plat.modalTitle}')"
                                     ${isConnected ? 'style="opacity: 0.4; cursor: not-allowed;"' : ''}>
