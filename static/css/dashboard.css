@@ -97,6 +97,14 @@ body {
   display: none;
 }
 
+.sidebar.collapsed .logo img {
+  display: none;
+}
+
+.sidebar.collapsed .logo svg {
+  display: none;
+}
+
 .sidebar.collapsed .nav-label,
 .sidebar.collapsed .nav-item span,
 .sidebar.collapsed .user-info,
