@@ -1092,15 +1092,30 @@ class Dashboard {
             document.querySelectorAll('.hover-reveal-container').forEach(container => {
                 const placeholder = container.querySelector('.hover-reveal-placeholder');
                 const content = container.querySelector('.hover-reveal-content');
+                let isRevealed = false;
                 
-                container.addEventListener('mouseenter', () => {
+                const showContent = () => {
                     placeholder.style.display = 'none';
                     content.style.display = 'block';
-                });
+                    isRevealed = true;
+                };
                 
-                container.addEventListener('mouseleave', () => {
+                const hideContent = () => {
                     placeholder.style.display = 'block';
                     content.style.display = 'none';
+                    isRevealed = false;
+                };
+                
+                container.addEventListener('mouseenter', showContent);
+                container.addEventListener('mouseleave', hideContent);
+                
+                container.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (isRevealed) {
+                        hideContent();
+                    } else {
+                        showContent();
+                    }
                 });
             });
             

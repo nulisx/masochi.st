@@ -270,18 +270,39 @@ app.get('/api/auth/sessions', authenticateToken, async (req, res) => {
     const sessions = await allQuery('sessions', 'user_id', req.user.id);
     const now = new Date();
     
-    const activeSessions = sessions
-      .filter(s => new Date(s.expires_at) > now)
-      .map(s => ({
-        id: s.id,
-        ip_address: s.ip_address,
-        device_type: s.device_type,
-        browser: s.browser,
-        os: s.os,
-        created_at: s.created_at,
-        last_active_at: s.last_active_at,
-        is_current: s.id === req.user.sessionId
-      }));
+    const validSessions = [];
+    const expiredSessionIds = [];
+    
+    for (const s of sessions) {
+      if (new Date(s.expires_at) > now) {
+        validSessions.push(s);
+      } else {
+        expiredSessionIds.push(s.id);
+      }
+    }
+    
+    if (expiredSessionIds.length > 0) {
+      setImmediate(async () => {
+        for (const expiredId of expiredSessionIds) {
+          try {
+            await runQuery('sessions', { id: expiredId }, 'delete', { column: 'id', value: expiredId });
+          } catch (e) {
+            console.error('Failed to delete expired session:', e);
+          }
+        }
+      });
+    }
+    
+    const activeSessions = validSessions.map(s => ({
+      id: s.id,
+      ip_address: s.ip_address,
+      device_type: s.device_type,
+      browser: s.browser,
+      os: s.os,
+      created_at: s.created_at,
+      last_active_at: s.last_active_at,
+      is_current: s.id === req.user.sessionId
+    }));
     
     res.json({ sessions: activeSessions, count: activeSessions.length });
   } catch (err) {
