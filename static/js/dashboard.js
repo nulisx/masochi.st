@@ -1694,39 +1694,6 @@ class Dashboard {
                         </div>
                     </div>
                 </div>
-
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; margin-top: 24px;">
-                    <h3>Biolinks (${links.length})</h3>
-                    <button class="btn btn-primary" id="addLinkBtn">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        Add Link
-                    </button>
-                </div>
-                
-                ${links.length === 0 ? `
-                    <div class="card" style="text-align: center; padding: 48px 20px;">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" style="margin: 0 auto 16px;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                        <h3 style="margin-bottom: 8px;">No links yet</h3>
-                        <p style="color: var(--text-muted); margin-bottom: 16px;">Create your first biolink to get started</p>
-                        <button class="btn btn-primary" onclick="dashboard.showAddLinkModal()">Add Link</button>
-                    </div>
-                ` : `
-                    <div style="display: flex; flex-direction: column; gap: 12px;" id="linksList">
-                        ${links.map(link => `
-                            <div class="card link-card" style="display: flex; justify-content: space-between; align-items: center; padding: 16px;">
-                                <div style="flex: 1; min-width: 0;">
-                                    <p style="font-weight: 600; margin-bottom: 4px; word-break: break-word;">${link.title}</p>
-                                    <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 4px; word-break: break-all;">${link.url}</p>
-                                    <p style="color: var(--text-muted); font-size: 12px;">Clicks: ${link.click_count || 0}</p>
-                                </div>
-                                <div style="display: flex; gap: 8px; margin-left: 16px;">
-                                    <button class="btn btn-secondary" onclick="dashboard.editLink('${link.id}')" title="Edit" style="padding: 8px 12px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>
-                                    <button class="btn btn-secondary" onclick="dashboard.deleteLink('${link.id}')" title="Delete" style="padding: 8px 12px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `}
             </div>`;
     }
 
