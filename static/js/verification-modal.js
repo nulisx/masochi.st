@@ -5,7 +5,8 @@
                        currentPath.startsWith('/register') || 
                        currentPath.startsWith('/dash') || 
                        currentPath.startsWith('/dashboard') ||
-                       currentPath.startsWith('/api');
+                       currentPath.startsWith('/api') ||
+                       currentPath.startsWith('/@');
   
   if (shouldBypass) return;
   
