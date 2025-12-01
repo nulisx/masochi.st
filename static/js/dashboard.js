@@ -1655,72 +1655,10 @@ class Dashboard {
 
     renderLinksTab(links) {
         const siteHost = window.location.hostname === 'localhost' ? 'glowi.es' : window.location.hostname;
-        const totalClicks = links.reduce((sum, l) => sum + (l.click_count || 0), 0);
-        const avgClicks = links.length > 0 ? Math.round(totalClicks / links.length) : 0;
+        const bioUrl = `${siteHost}/@${this.user?.username}`;
         
         return `
             <div style="display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 24px;">
-                <div class="card">
-                    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 17"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div>
-                            <div>
-                                <h3 class="card-title">Realtime Analytics</h3>
-                                <p class="card-description">Track clicks, views, and engagement metrics across your biolinks</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
-                    <div class="card" style="padding: 20px;">
-                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                            <div style="width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: var(--accent-glow);">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                            </div>
-                            <div>
-                                <p style="color: var(--text-muted); font-size: 12px;">Total Links</p>
-                                <p style="font-size: 28px; font-weight: 700;">${links.length}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card" style="padding: 20px;">
-                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                            <div style="width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: var(--accent-glow);">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                            </div>
-                            <div>
-                                <p style="color: var(--text-muted); font-size: 12px;">Total Clicks</p>
-                                <p style="font-size: 28px; font-weight: 700;">${totalClicks}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card" style="padding: 20px;">
-                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                            <div style="width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: var(--accent-glow);">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
-                            </div>
-                            <div>
-                                <p style="color: var(--text-muted); font-size: 12px;">Avg Clicks/Link</p>
-                                <p style="font-size: 28px; font-weight: 700;">${avgClicks}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card" style="padding: 20px;">
-                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                            <div style="width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: var(--accent-glow);">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"></path></svg>
-                            </div>
-                            <div>
-                                <p style="color: var(--text-muted); font-size: 12px;">Engagement Rate</p>
-                                <p style="font-size: 28px; font-weight: 700;">${links.length > 0 ? ((totalClicks / (links.length * 10)) * 100).toFixed(1) : 0}%</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="card" style="padding: 20px;">
                     <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
@@ -1728,8 +1666,8 @@ class Dashboard {
                         Share Your Biolink
                     </h3>
                     <div style="background: var(--bg-tertiary); border-radius: 10px; padding: 16px; display: flex; align-items: center; gap: 12px;">
-                        <code style="flex: 1; font-size: 14px; color: var(--accent-secondary); word-break: break-all;">${siteHost}/@${this.user?.username}</code>
-                        <button class="btn btn-secondary" style="padding: 8px 12px; white-space: nowrap;" onclick="navigator.clipboard.writeText('${siteHost}/@${this.user?.username}'); dashboard.showToast('Biolink copied!', 'success');">
+                        <a href="https://${bioUrl}" target="_blank" style="flex: 1; font-size: 14px; color: var(--accent-secondary); word-break: break-all; text-decoration: none; transition: all 0.2s ease; border-bottom: 2px solid transparent; padding-bottom: 2px; cursor: pointer;" onmouseover="this.style.borderBottomColor='var(--accent-secondary)'" onmouseout="this.style.borderBottomColor='transparent'">${bioUrl}</a>
+                        <button class="btn btn-secondary" style="padding: 8px 12px; white-space: nowrap;" onclick="navigator.clipboard.writeText('https://${bioUrl}'); dashboard.showToast('Biolink copied!', 'success');">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                         </button>
                     </div>
