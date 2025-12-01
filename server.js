@@ -552,7 +552,7 @@ app.get('/api/biolink/:username', async (req, res) => {
       connections: connections.map(c => ({
         platform: c.platform,
         username: c.username,
-        url: c.url
+        url: c.profile_url
       }))
     });
   } catch (err) {
