@@ -1673,8 +1673,30 @@ class Dashboard {
                     </div>
                 </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h3>Your Biolinks (${links.length})</h3>
+                <div class="card" style="padding: 20px;">
+                    <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 17"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                        Realtime Analytics
+                    </h3>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">Track clicks, views, and engagement metrics across the biolinks with detailed statistics and insights</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px;">
+                        <div style="background: var(--bg-tertiary); border-radius: 10px; padding: 16px; text-align: center;">
+                            <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 8px;">Total Clicks</p>
+                            <p style="font-size: 24px; font-weight: 700; color: var(--accent-secondary);">${links.reduce((sum, link) => sum + (link.click_count || 0), 0)}</p>
+                        </div>
+                        <div style="background: var(--bg-tertiary); border-radius: 10px; padding: 16px; text-align: center;">
+                            <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 8px;">Active Links</p>
+                            <p style="font-size: 24px; font-weight: 700; color: var(--accent-secondary);">${links.length}</p>
+                        </div>
+                        <div style="background: var(--bg-tertiary); border-radius: 10px; padding: 16px; text-align: center;">
+                            <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 8px;">Avg Clicks</p>
+                            <p style="font-size: 24px; font-weight: 700; color: var(--accent-secondary);">${links.length > 0 ? Math.round(links.reduce((sum, link) => sum + (link.click_count || 0), 0) / links.length) : 0}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; margin-top: 24px;">
+                    <h3>Biolinks (${links.length})</h3>
                     <button class="btn btn-primary" id="addLinkBtn">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                         Add Link
