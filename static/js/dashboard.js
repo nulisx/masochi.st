@@ -2840,6 +2840,75 @@ class Dashboard {
         }
     }
 
+    handleDiscordClick(username, profileUrl) {
+        const hasUsername = username && username.trim().length > 0;
+        const hasUserId = profileUrl && profileUrl.includes('discord.com/users');
+        
+        // Extract user ID from URL if it exists
+        let userId = '';
+        if (hasUserId) {
+            const match = profileUrl.match(/https:\/\/discord\.com\/users\/(\d+)/);
+            if (match) userId = match[1];
+        }
+        
+        // If only username: copy and open Discord
+        if (hasUsername && !userId) {
+            navigator.clipboard.writeText(username).then(() => {
+                this.showToast(`Copied "${username}" to clipboard`, 'success');
+                setTimeout(() => {
+                    window.open(`https://discord.com/users/${username}`, '_blank');
+                }, 200);
+            });
+            return;
+        }
+        
+        // If only user ID: open Discord profile
+        if (userId && !hasUsername) {
+            window.open(`https://discord.com/users/${userId}`, '_blank');
+            return;
+        }
+        
+        // If both: show menu with options
+        if (hasUsername && userId) {
+            const menuHTML = `
+                <div class="discord-menu" style="position: fixed; background: #1a1a24; border: 1px solid #9333ea; border-radius: 8px; padding: 8px; z-index: 10000; box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);">
+                    <button onclick="(() => {
+                        navigator.clipboard.writeText('${username}').then(() => {
+                            dashboard.showToast('Copied username to clipboard', 'success');
+                            document.querySelector('.discord-menu').remove();
+                        });
+                    })()" style="display: block; width: 100%; padding: 10px 12px; background: none; border: none; color: #fff; text-align: left; cursor: pointer; font-size: 14px; border-radius: 4px; transition: all 0.2s;">
+                        📋 Copy Username
+                    </button>
+                    <button onclick="(() => {
+                        window.open('https://discord.com/users/${userId}', '_blank');
+                        document.querySelector('.discord-menu').remove();
+                    })()" style="display: block; width: 100%; padding: 10px 12px; background: none; border: none; color: #fff; text-align: left; cursor: pointer; font-size: 14px; border-radius: 4px; transition: all 0.2s; margin-top: 4px;">
+                        🔗 Open Profile
+                    </button>
+                </div>
+            `;
+            const menuEl = document.createElement('div');
+            menuEl.innerHTML = menuHTML;
+            const menu = menuEl.querySelector('.discord-menu');
+            document.body.appendChild(menu);
+            
+            // Position menu near cursor
+            const event = window.lastClickEvent || {};
+            menu.style.top = (event.clientY || 100) + 'px';
+            menu.style.left = (event.clientX || 100) + 'px';
+            
+            // Close menu on outside click
+            setTimeout(() => {
+                document.addEventListener('click', (e) => {
+                    if (e.target !== menu && !menu.contains(e.target)) {
+                        menu.remove();
+                    }
+                }, { once: true });
+            }, 0);
+        }
+    }
+
 
     async renderLitterBox() {
         const allFiles = await this.fetchFiles();
