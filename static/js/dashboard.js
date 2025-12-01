@@ -3263,7 +3263,7 @@ class Dashboard {
                 prefix: 'namemc.com/profile/', 
                 color: '#ffffff', 
                 modalTitle: 'NameMC Profile',
-                icon: `<svg viewBox="0 0 24 24" width="24" height="24"><rect width="24" height="24" fill="#0a0a0a"/><path d="M0 0v24h24V0Zm4.8 4.8H16V8h3.2v11.2H16V8H8v11.2H4.8V8Z" fill="#ffffff"/></svg>`
+                icon: `<svg viewBox="0 0 24 24" width="24" height="24"><rect width="24" height="24" fill="#000000"/><path d="M0 0v24h24V0Zm4.8 4.8H16V8h3.2v11.2H16V8H8v11.2H4.8V8Z" fill="#ffffff"/></svg>`
             },
             { 
                 name: 'Steam', 
