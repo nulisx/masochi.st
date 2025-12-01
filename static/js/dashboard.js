@@ -3291,6 +3291,7 @@ class Dashboard {
 
     async renderConnections() {
         const connections = await this.fetchConnections();
+        const profile = await this.fetchProfile();
         const contentArea = document.getElementById('contentArea');
         const allPlatforms = this.getSocialPlatforms();
         
@@ -3320,6 +3321,14 @@ class Dashboard {
                 <div>
                     <h1 class="page-title">Connections</h1>
                     <p class="page-subtitle">Link your social media and crypto profiles</p>
+                </div>
+            </div>
+            
+            <div class="card" style="padding: 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 16px;">
+                <img src="${profile.avatar_url || '/api/avatar/default'}" alt="Profile" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover; border: 2px solid var(--accent-secondary);">
+                <div style="flex: 1;">
+                    <h2 style="margin: 0 0 4px 0; font-size: 20px; font-weight: 700; color: var(--text-primary);">@${profile.username}</h2>
+                    <p style="margin: 0; font-size: 14px; color: var(--text-muted);">${profile.bio || 'No bio yet'}</p>
                 </div>
             </div>
             
