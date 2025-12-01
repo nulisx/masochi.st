@@ -775,6 +775,16 @@ class Dashboard {
     async renderSecurity() {
         const contentArea = document.getElementById('contentArea');
         
+        let sessionCount = 0;
+        try {
+            const sessionsRes = await fetch('/api/auth/sessions', { credentials: 'include' });
+            if (sessionsRes.ok) {
+                const data = await sessionsRes.json();
+                sessionCount = data.count || 0;
+            }
+        } catch (err) {
+            console.error('Failed to fetch sessions:', err);
+        }
         
         let passwordText = 'Last changed recently';
         if (this.user?.password_changed_at) {
@@ -831,9 +841,9 @@ class Dashboard {
                     <div class="card-item">
                         <div class="item-info">
                             <span class="item-label">Active Sessions</span>
-                            <span class="item-value">0 active</span>
+                            <span class="item-value" id="sessionCountDisplay">${sessionCount} active</span>
                         </div>
-                        <button class="security-btn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 12px; cursor: pointer; font-weight: 500; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease;">Manage</button>
+                        <button id="manageSessionsBtn" class="security-btn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 12px; cursor: pointer; font-weight: 500; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease;">Manage</button>
                     </div>
                     
                     <div class="card-item">
@@ -989,6 +999,13 @@ class Dashboard {
             });
         }
         
+        const manageSessionsBtn = document.getElementById('manageSessionsBtn');
+        if (manageSessionsBtn) {
+            manageSessionsBtn.addEventListener('click', () => {
+                this.showSessionsModal();
+            });
+        }
+        
         const manageBtn = document.querySelectorAll('.security-btn');
         manageBtn.forEach(btn => {
             btn.addEventListener('mouseover', () => {
@@ -1000,6 +1017,152 @@ class Dashboard {
                 btn.style.borderColor = 'rgba(168, 85, 247, 0.2)';
             });
         });
+    }
+    
+    async showSessionsModal() {
+        let sessions = [];
+        try {
+            const res = await fetch('/api/auth/sessions', { credentials: 'include' });
+            if (res.ok) {
+                const data = await res.json();
+                sessions = data.sessions || [];
+            }
+        } catch (err) {
+            console.error('Failed to fetch sessions:', err);
+        }
+        
+        const sessionsHtml = sessions.length === 0 
+            ? '<p style="color: var(--text-muted); text-align: center; padding: 20px;">No active sessions found</p>'
+            : sessions.map(session => `
+                <div class="session-item" data-session-id="${session.id}" style="background: rgba(15, 15, 17, 0.6); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 12px; padding: 16px; margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-primary); background: rgba(168, 85, 247, 0.1); padding: 4px 8px; border-radius: 6px;">${session.id.substring(0, 32)}...</span>
+                                ${session.is_current ? '<span style="background: rgba(34, 197, 94, 0.2); color: #22c55e; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 500;">(Current)</span>' : ''}
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px;">
+                                <div class="hover-reveal-container" style="position: relative;">
+                                    <div class="hover-reveal-placeholder" style="background: rgba(168, 85, 247, 0.05); border: 1px dashed rgba(168, 85, 247, 0.2); border-radius: 8px; padding: 10px; cursor: pointer; transition: all 0.2s ease;">
+                                        <span style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 2px;">IP Address</span>
+                                        <span style="font-size: 12px; color: rgba(168, 85, 247, 0.6); font-style: italic;">Hover to reveal</span>
+                                    </div>
+                                    <div class="hover-reveal-content" style="display: none; background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 8px; padding: 10px;">
+                                        <span style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 2px;">IP Address</span>
+                                        <span style="font-size: 13px; color: var(--text-primary); font-family: 'JetBrains Mono', monospace;">${session.ip_address || 'Unknown'}</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="hover-reveal-container" style="position: relative;">
+                                    <div class="hover-reveal-placeholder" style="background: rgba(168, 85, 247, 0.05); border: 1px dashed rgba(168, 85, 247, 0.2); border-radius: 8px; padding: 10px; cursor: pointer; transition: all 0.2s ease;">
+                                        <span style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 2px;">Device Info</span>
+                                        <span style="font-size: 12px; color: rgba(168, 85, 247, 0.6); font-style: italic;">Hover to reveal</span>
+                                    </div>
+                                    <div class="hover-reveal-content" style="display: none; background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 8px; padding: 10px;">
+                                        <span style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 2px;">Device Info</span>
+                                        <span style="font-size: 13px; color: var(--text-primary);">${session.device_type || 'Unknown'} - ${session.browser || 'Unknown'} on ${session.os || 'Unknown'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="delete-session-btn" data-session-id="${session.id}" ${session.is_current ? 'disabled' : ''} style="background: ${session.is_current ? 'rgba(100, 100, 100, 0.1)' : 'rgba(239, 68, 68, 0.1)'}; border: 1px solid ${session.is_current ? 'rgba(100, 100, 100, 0.2)' : 'rgba(239, 68, 68, 0.2)'}; color: ${session.is_current ? '#666' : '#ef4444'}; font-size: 12px; cursor: ${session.is_current ? 'not-allowed' : 'pointer'}; font-weight: 500; padding: 8px 14px; border-radius: 8px; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                            </svg>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        
+        const modalContent = `
+            <div style="margin-bottom: 16px;">
+                <p style="color: var(--text-muted); font-size: 13px; margin: 0;">All sessions are stored in memory only</p>
+            </div>
+            <div id="sessionsContainer" style="max-height: 400px; overflow-y: auto; padding-right: 8px;">
+                ${sessionsHtml}
+            </div>
+        `;
+        
+        this.showModal('Active Sessions', modalContent, null, 'Close');
+        
+        setTimeout(() => {
+            document.querySelectorAll('.hover-reveal-container').forEach(container => {
+                const placeholder = container.querySelector('.hover-reveal-placeholder');
+                const content = container.querySelector('.hover-reveal-content');
+                
+                container.addEventListener('mouseenter', () => {
+                    placeholder.style.display = 'none';
+                    content.style.display = 'block';
+                });
+                
+                container.addEventListener('mouseleave', () => {
+                    placeholder.style.display = 'block';
+                    content.style.display = 'none';
+                });
+            });
+            
+            document.querySelectorAll('.delete-session-btn:not([disabled])').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const sessionId = e.currentTarget.dataset.sessionId;
+                    if (!sessionId) return;
+                    
+                    btn.disabled = true;
+                    btn.innerHTML = '<span style="opacity: 0.7;">Deleting...</span>';
+                    
+                    try {
+                        const res = await fetch(`/api/auth/sessions/${sessionId}`, {
+                            method: 'DELETE',
+                            credentials: 'include'
+                        });
+                        
+                        if (res.ok) {
+                            const sessionItem = document.querySelector(`.session-item[data-session-id="${sessionId}"]`);
+                            if (sessionItem) {
+                                sessionItem.style.opacity = '0';
+                                sessionItem.style.transform = 'translateX(-20px)';
+                                sessionItem.style.transition = 'all 0.3s ease';
+                                setTimeout(() => sessionItem.remove(), 300);
+                            }
+                            
+                            const countDisplay = document.getElementById('sessionCountDisplay');
+                            if (countDisplay) {
+                                const currentCount = parseInt(countDisplay.textContent) || 0;
+                                countDisplay.textContent = `${Math.max(0, currentCount - 1)} active`;
+                            }
+                            
+                            this.showToast('Session deleted successfully', 'success');
+                        } else {
+                            const data = await res.json();
+                            this.showToast(data.error || 'Failed to delete session', 'error');
+                            btn.disabled = false;
+                            btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Delete';
+                        }
+                    } catch (err) {
+                        console.error('Failed to delete session:', err);
+                        this.showToast('Failed to delete session', 'error');
+                        btn.disabled = false;
+                        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Delete';
+                    }
+                });
+                
+                btn.addEventListener('mouseover', () => {
+                    if (!btn.disabled) {
+                        btn.style.background = 'rgba(239, 68, 68, 0.2)';
+                        btn.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+                    }
+                });
+                
+                btn.addEventListener('mouseout', () => {
+                    if (!btn.disabled) {
+                        btn.style.background = 'rgba(239, 68, 68, 0.1)';
+                        btn.style.borderColor = 'rgba(239, 68, 68, 0.2)';
+                    }
+                });
+            });
+        }, 100);
     }
 
     setupPasswordChange() {
