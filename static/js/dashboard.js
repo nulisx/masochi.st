@@ -2702,6 +2702,12 @@ class Dashboard {
                 return;
             }
             
+            // Validate Discord User ID if provided
+            if (userId && !/^\d+$/.test(userId)) {
+                this.showToast(`Discord update failed: Invalid User ID format - must contain only numbers`, 'error');
+                return;
+            }
+            
             // Save the User ID and username
             const profileUrl = userId ? `https://discord.com/users/${userId}` : `discord://${username}`;
             const displayName = username || userId;
