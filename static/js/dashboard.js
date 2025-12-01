@@ -2557,6 +2557,10 @@ class Dashboard {
                         <div class="existing-socials-grid">
                             ${connections.map(conn => {
                                 const url = getPlatformUrl(conn);
+                                const isDiscord = conn.platform.toLowerCase() === 'discord';
+                                const hasUserId = conn.profile_url && conn.profile_url.includes('discord.com/users');
+                                const hasUsername = conn.username;
+                                
                                 return `
                                     <div class="existing-social-item" data-platform="${conn.platform.toLowerCase()}">
                                         <div class="social-item-icon">
@@ -2564,7 +2568,7 @@ class Dashboard {
                                         </div>
                                         <div class="social-item-info">
                                             <span class="social-item-name">${conn.platform}</span>
-                                            <span class="social-item-url">${url}</span>
+                                            <span class="social-item-url" ${isDiscord && (hasUserId || hasUsername) ? `style="cursor: pointer;" onclick="dashboard.handleDiscordClick('${conn.username || ''}', '${conn.profile_url || ''}')"` : ''}>${url}</span>
                                         </div>
                                         <button class="social-edit-btn" onclick="dashboard.editConnection('${conn.id}', '${conn.platform}', '${conn.username || ''}', '${conn.profile_url || ''}')" title="Edit">
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
