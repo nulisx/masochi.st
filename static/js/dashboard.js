@@ -1654,70 +1654,119 @@ class Dashboard {
     }
 
     renderLinksTab(links) {
+        const siteHost = window.location.hostname === 'localhost' ? 'glowi.es' : window.location.hostname;
+        const totalClicks = links.reduce((sum, l) => sum + (l.click_count || 0), 0);
+        const avgClicks = links.length > 0 ? Math.round(totalClicks / links.length) : 0;
+        
         return `
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 24px;">
-                <div>
-                    <div class="card" style="margin-bottom: 24px;">
-                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-                            <div style="display: flex; align-items: center; gap: 12px;">
-                                <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></div>
-                                <div>
-                                    <h3 class="card-title">Your Biolinks (${links.length})</h3>
-                                    <p class="card-description">Manage your collection of links</p>
-                                </div>
+            <div style="display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 24px;">
+                <div class="card">
+                    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 17"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div>
+                            <div>
+                                <h3 class="card-title">Realtime Analytics</h3>
+                                <p class="card-description">Track clicks, views, and engagement metrics across your biolinks</p>
                             </div>
-                            <button class="btn btn-primary" id="addLinkBtn">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                                Add Link
-                            </button>
                         </div>
                     </div>
-                    
-                    ${links.length === 0 ? `
-                        <div class="card" style="text-align: center; padding: 48px 20px;">
-                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" style="margin: 0 auto 16px;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                            <h3 style="margin-bottom: 8px;">No links yet</h3>
-                            <p style="color: var(--text-muted); margin-bottom: 16px;">Create your first biolink to get started</p>
-                            <button class="btn btn-primary" onclick="dashboard.showAddLinkModal()">Add Link</button>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+                    <div class="card" style="padding: 20px;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                            <div style="width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: var(--accent-glow);">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-muted); font-size: 12px;">Total Links</p>
+                                <p style="font-size: 28px; font-weight: 700;">${links.length}</p>
+                            </div>
                         </div>
-                    ` : `
-                        <div style="display: flex; flex-direction: column; gap: 12px;" id="linksList">
-                            ${links.map(link => `
-                                <div class="card link-card" style="display: flex; justify-content: space-between; align-items: center; padding: 16px;">
-                                    <div style="flex: 1; min-width: 0;">
-                                        <p style="font-weight: 600; margin-bottom: 4px; word-break: break-word;">${link.title}</p>
-                                        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 4px; word-break: break-all;">${link.url}</p>
-                                        <p style="color: var(--text-muted); font-size: 12px;">Clicks: ${link.click_count || 0}</p>
-                                    </div>
-                                    <div style="display: flex; gap: 8px; margin-left: 16px;">
-                                        <button class="btn btn-secondary" onclick="dashboard.editLink('${link.id}')" title="Edit" style="padding: 8px 12px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>
-                                        <button class="btn btn-secondary" onclick="dashboard.deleteLink('${link.id}')" title="Delete" style="padding: 8px 12px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
-                                    </div>
-                                </div>
-                            `).join('')}
+                    </div>
+
+                    <div class="card" style="padding: 20px;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                            <div style="width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: var(--accent-glow);">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-muted); font-size: 12px;">Total Clicks</p>
+                                <p style="font-size: 28px; font-weight: 700;">${totalClicks}</p>
+                            </div>
                         </div>
-                    `}
+                    </div>
+
+                    <div class="card" style="padding: 20px;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                            <div style="width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: var(--accent-glow);">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-muted); font-size: 12px;">Avg Clicks/Link</p>
+                                <p style="font-size: 28px; font-weight: 700;">${avgClicks}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding: 20px;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                            <div style="width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: var(--accent-glow);">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"></path></svg>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-muted); font-size: 12px;">Engagement Rate</p>
+                                <p style="font-size: 28px; font-weight: 700;">${links.length > 0 ? ((totalClicks / (links.length * 10)) * 100).toFixed(1) : 0}%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 20px;">
+                    <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 7h3a5 5 0 0 1 0 10h-3"></path><path d="M9 17H6a5 5 0 0 1 0-10h3"></path><path d="M8 12h8"></path></svg>
+                        Share Your Biolink
+                    </h3>
+                    <div style="background: var(--bg-tertiary); border-radius: 10px; padding: 16px; display: flex; align-items: center; gap: 12px;">
+                        <code style="flex: 1; font-size: 14px; color: var(--accent-secondary); word-break: break-all;">${siteHost}/@${this.user?.username}</code>
+                        <button class="btn btn-secondary" style="padding: 8px 12px; white-space: nowrap;" onclick="navigator.clipboard.writeText('${siteHost}/@${this.user?.username}'); dashboard.showToast('Biolink copied!', 'success');">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3>Your Biolinks (${links.length})</h3>
+                    <button class="btn btn-primary" id="addLinkBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Add Link
+                    </button>
                 </div>
                 
-                <div>
-                    <div class="card" style="padding: 20px;">
-                        <h3 style="margin-bottom: 16px;">Quick Stats</h3>
-                        <div style="display: flex; flex-direction: column; gap: 12px;">
-                            <div style="padding: 12px; background: var(--bg-tertiary); border-radius: 8px;">
-                                <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 4px;">Total Links</p>
-                                <p style="font-size: 24px; font-weight: 600;">${links.length}</p>
-                            </div>
-                            <div style="padding: 12px; background: var(--bg-tertiary); border-radius: 8px;">
-                                <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 4px;">Total Clicks</p>
-                                <p style="font-size: 24px; font-weight: 600;">${links.reduce((sum, l) => sum + (l.click_count || 0), 0)}</p>
-                            </div>
-                            <div style="padding: 12px; background: var(--bg-tertiary); border-radius: 8px;">
-                                <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 4px;">Share Your Bio</p>
-                                <code style="font-size: 11px; word-break: break-all;">glowi.es/@${this.user?.username}</code>
-                            </div>
-                        </div>
+                ${links.length === 0 ? `
+                    <div class="card" style="text-align: center; padding: 48px 20px;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5" style="margin: 0 auto 16px;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                        <h3 style="margin-bottom: 8px;">No links yet</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 16px;">Create your first biolink to get started</p>
+                        <button class="btn btn-primary" onclick="dashboard.showAddLinkModal()">Add Link</button>
                     </div>
-                </div>
+                ` : `
+                    <div style="display: flex; flex-direction: column; gap: 12px;" id="linksList">
+                        ${links.map(link => `
+                            <div class="card link-card" style="display: flex; justify-content: space-between; align-items: center; padding: 16px;">
+                                <div style="flex: 1; min-width: 0;">
+                                    <p style="font-weight: 600; margin-bottom: 4px; word-break: break-word;">${link.title}</p>
+                                    <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 4px; word-break: break-all;">${link.url}</p>
+                                    <p style="color: var(--text-muted); font-size: 12px;">Clicks: ${link.click_count || 0}</p>
+                                </div>
+                                <div style="display: flex; gap: 8px; margin-left: 16px;">
+                                    <button class="btn btn-secondary" onclick="dashboard.editLink('${link.id}')" title="Edit" style="padding: 8px 12px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>
+                                    <button class="btn btn-secondary" onclick="dashboard.deleteLink('${link.id}')" title="Delete" style="padding: 8px 12px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `}
             </div>`;
     }
 
@@ -1735,8 +1784,8 @@ class Dashboard {
         ];
 
         return `
-            <div class="customize-container" style="margin-top: 24px;">
-                <div class="customize-subtabs">
+            <div class="customize-container" style="margin-top: 24px; display: flex; gap: 24px;">
+                <div class="customize-subtabs-sidebar">
                     ${subTabs.map(tab => `
                         <button class="customize-subtab ${this.biolinksCustomizeSubTab === tab.id ? 'active' : ''}" 
                                 data-tab="${tab.id}" 
@@ -1747,7 +1796,7 @@ class Dashboard {
                     `).join('')}
                 </div>
                 
-                <div id="customizeContent" class="customize-content">
+                <div id="customizeContent" class="customize-content" style="flex: 1; overflow-y: auto; max-height: calc(100vh - 250px);">
                     ${this.getCustomizeSubTabContent(this.biolinksCustomizeSubTab)}
                 </div>
             </div>`;
