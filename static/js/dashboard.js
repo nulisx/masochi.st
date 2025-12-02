@@ -236,7 +236,9 @@ class Dashboard {
             { title: 'Connections', description: 'Connect external accounts', page: 'connections', keywords: ['connection', 'social', 'account', 'linked', 'integration'] },
             { title: 'Settings', description: 'Configure your preferences', page: 'settings', keywords: ['setting', 'settings', 'config', 'preference', 'customize'] },
             { title: 'Privacy', description: 'Control your privacy settings', page: 'privacy', keywords: ['privacy', 'visibility', 'private', 'public', 'profile'] },
-            { title: 'Terms of Service', description: 'View terms and conditions', page: 'tos', keywords: ['terms', 'tos', 'service', 'agreement'] }
+            { title: 'Terms of Service', description: 'View terms and conditions', page: 'tos', keywords: ['terms', 'tos', 'service', 'agreement'] },
+            { title: 'Admin Panel', description: 'Manage users and roles', page: 'admin', keywords: ['admin', 'panel', 'manage', 'users', 'roles', 'staff'] },
+            { title: 'Mod Panel', description: 'Review and manage file reports', page: 'mod', keywords: ['mod', 'panel', 'reports', 'files', 'moderation'] }
         ];
 
         let searchTimeout;
@@ -366,6 +368,12 @@ class Dashboard {
                             break;
                         case 'api':
                             await this.renderAPI();
+                            break;
+                        case 'admin':
+                            await this.renderAdmin();
+                            break;
+                        case 'mod':
+                            await this.renderMod();
                             break;
                         default:
                             await this.renderOverview();
@@ -4288,6 +4296,271 @@ class Dashboard {
         } catch (error) {
             console.error('Failed to fetch connections:', error);
             return [];
+        }
+    }
+
+    canManageRole(targetRole) {
+        const userRole = this.user?.role || 'user';
+        const roleHierarchy = { user: 0, mod: 1, admin: 2, manager: 3, owner: 4 };
+        const userLevel = roleHierarchy[userRole] || 0;
+        const targetLevel = roleHierarchy[targetRole] || 0;
+        return userLevel > targetLevel;
+    }
+
+    async renderAdmin() {
+        const userRole = this.user?.role || 'user';
+        const contentArea = document.getElementById('contentArea');
+        
+        if (!['owner', 'manager', 'admin'].includes(userRole)) {
+            contentArea.innerHTML = `<div class="empty-state"><h3>Access Denied</h3><p>You don't have permission to access the Admin Panel.</p></div>`;
+            return;
+        }
+
+        try {
+            const usersRes = await fetch('/api/admin/users', { credentials: 'include' }).then(r => r.ok ? r.json() : { users: [] });
+            const users = usersRes.users || [];
+
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Admin Panel</h1>
+                        <p class="page-subtitle">Manage users, roles, and platform settings (Role: ${userRole.toUpperCase()})</p>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px;">
+                    <div class="card" style="padding: 20px;">
+                        <h3 style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Total Users</h3>
+                        <div style="font-size: 32px; font-weight: bold; color: #a855f7;">${users.length}</div>
+                    </div>
+                    <div class="card" style="padding: 20px;">
+                        <h3 style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Staff Members</h3>
+                        <div style="font-size: 32px; font-weight: bold; color: #a855f7;">${users.filter(u => ['owner', 'manager', 'admin', 'mod'].includes(u.role)).length}</div>
+                    </div>
+                    <div class="card" style="padding: 20px;">
+                        <h3 style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Banned Users</h3>
+                        <div style="font-size: 32px; font-weight: bold; color: #e11d48;">${users.filter(u => u.is_banned).length}</div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom: 24px;">
+                    <div class="card-header">
+                        <h3 class="card-title">User Management</h3>
+                    </div>
+                    <div style="padding: 20px;">
+                        <div style="display: grid; gap: 12px; max-height: 500px; overflow-y: auto;">
+                            ${users.map(user => `
+                                <div style="background: var(--bg-tertiary); padding: 16px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div style="font-weight: 600; color: var(--text-primary);">${user.username}</div>
+                                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Role: <span style="background: ${this.getRoleColor(user.role)}; padding: 2px 8px; border-radius: 4px; color: white;">${user.role.toUpperCase()}</span> ${user.is_banned ? '<span style="background: #e11d48; color: white; padding: 2px 8px; border-radius: 4px; margin-left: 4px;">BANNED</span>' : ''}</div>
+                                    </div>
+                                    <div style="display: flex; gap: 8px;">
+                                        ${['owner', 'manager', 'admin'].includes(userRole) ? `
+                                            <select onchange="dashboard.changeUserRole('${user.id}', this.value)" style="padding: 8px; border-radius: 6px; background: var(--bg-secondary); color: var(--text-primary); border: 1px solid rgba(168,85,247,0.2); font-size: 12px;">
+                                                <option value="">Change Role</option>
+                                                ${this.canManageRole('user') ? `<option value="user">User</option>` : ''}
+                                                ${this.canManageRole('mod') ? `<option value="mod">Moderator</option>` : ''}
+                                                ${this.canManageRole('admin') && userRole === 'manager' ? `<option value="admin">Admin</option>` : ''}
+                                                ${userRole === 'owner' ? `<option value="admin">Admin</option><option value="manager">Manager</option><option value="owner">Owner</option>` : ''}
+                                            </select>
+                                        ` : ''}
+                                        <button onclick="dashboard.toggleBanUser('${user.id}', '${user.username}', ${user.is_banned})" style="padding: 8px 12px; border-radius: 6px; background: ${user.is_banned ? '#10b981' : '#e11d48'}; color: white; border: none; cursor: pointer; font-size: 12px;">${user.is_banned ? 'Unban' : 'Ban'}</button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Set Membership Expiry</h3>
+                    </div>
+                    <div style="padding: 20px;">
+                        <div style="display: grid; gap: 12px;">
+                            <div>
+                                <label style="display: block; color: var(--text-muted); font-size: 12px; margin-bottom: 6px;">Username</label>
+                                <input type="text" id="membershipUsername" placeholder="Enter username" style="width: 100%; padding: 10px; border-radius: 6px; background: var(--bg-secondary); border: 1px solid rgba(168,85,247,0.2); color: var(--text-primary);">
+                            </div>
+                            <div>
+                                <label style="display: block; color: var(--text-muted); font-size: 12px; margin-bottom: 6px;">Expiry Date</label>
+                                <input type="date" id="membershipDate" style="width: 100%; padding: 10px; border-radius: 6px; background: var(--bg-secondary); border: 1px solid rgba(168,85,247,0.2); color: var(--text-primary);">
+                            </div>
+                            <button onclick="dashboard.setMembership()" style="padding: 12px; border-radius: 6px; background: #a855f7; color: white; border: none; cursor: pointer; font-weight: 600;">Set Membership</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } catch (error) {
+            contentArea.innerHTML = `<div class="empty-state"><h3>Error</h3><p>${error.message}</p></div>`;
+        }
+    }
+
+    async renderMod() {
+        const userRole = this.user?.role || 'user';
+        const contentArea = document.getElementById('contentArea');
+        
+        if (!['owner', 'manager', 'admin', 'mod'].includes(userRole)) {
+            contentArea.innerHTML = `<div class="empty-state"><h3>Access Denied</h3><p>You don't have permission to access the Mod Panel.</p></div>`;
+            return;
+        }
+
+        try {
+            const reportsRes = await fetch('/api/admin/file-reports/awaiting', { credentials: 'include' }).then(r => r.ok ? r.json() : { reports: [] });
+            const reports = reportsRes.reports || [];
+
+            const approvedRes = await fetch('/api/admin/file-reports/approved', { credentials: 'include' }).then(r => r.ok ? r.json() : { reports: [] });
+            const approved = approvedRes.reports || [];
+
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Mod Panel</h1>
+                        <p class="page-subtitle">Review and manage file reports (Role: ${userRole.toUpperCase()})</p>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+                    <div class="card" style="padding: 20px;">
+                        <h3 style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Awaiting Review</h3>
+                        <div style="font-size: 32px; font-weight: bold; color: #f59e0b;">${reports.length}</div>
+                    </div>
+                    <div class="card" style="padding: 20px;">
+                        <h3 style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Approved</h3>
+                        <div style="font-size: 32px; font-weight: bold; color: #10b981;">${approved.length}</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">File Reports Awaiting Review</h3>
+                    </div>
+                    <div style="padding: 20px;">
+                        ${reports.length === 0 ? `
+                            <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 16px; opacity: 0.5;">
+                                    <path d="M9 12l2 2 4-4m7 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <p>No reports awaiting review</p>
+                            </div>
+                        ` : `
+                            <div style="display: grid; gap: 12px; max-height: 600px; overflow-y: auto;">
+                                ${reports.map(report => `
+                                    <div style="background: var(--bg-tertiary); padding: 16px; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                                            <div>
+                                                <div style="font-weight: 600; color: var(--text-primary);">File ID: ${report.file_id}</div>
+                                                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Reported by: ${report.reported_by || 'Anonymous'}</div>
+                                                <div style="font-size: 12px; color: var(--text-muted);">Reason: ${report.reason || 'No reason provided'}</div>
+                                            </div>
+                                            <div style="display: flex; gap: 8px;">
+                                                <button onclick="dashboard.approveReport('${report.id}')" style="padding: 8px 12px; border-radius: 6px; background: #10b981; color: white; border: none; cursor: pointer; font-size: 12px;">Approve</button>
+                                                <button onclick="dashboard.declineReport('${report.id}')" style="padding: 8px 12px; border-radius: 6px; background: #e11d48; color: white; border: none; cursor: pointer; font-size: 12px;">Decline</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `;
+        } catch (error) {
+            contentArea.innerHTML = `<div class="empty-state"><h3>Error</h3><p>${error.message}</p></div>`;
+        }
+    }
+
+    getRoleColor(role) {
+        const colors = { owner: '#8b5cf6', manager: '#a855f7', admin: '#d946ef', mod: '#ec4899', user: '#64748b' };
+        return colors[role] || '#64748b';
+    }
+
+    async changeUserRole(userId, newRole) {
+        if (!newRole) return;
+        try {
+            const res = await fetch(`/api/admin/users/${userId}/role`, {
+                method: 'PATCH',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ role: newRole })
+            });
+            if (res.ok) {
+                this.renderAdmin();
+            }
+        } catch (error) {
+            console.error('Error changing role:', error);
+        }
+    }
+
+    async toggleBanUser(userId, username, isBanned) {
+        const reason = isBanned ? '' : prompt(`Enter ban reason for ${username}:`);
+        if (isBanned || reason) {
+            try {
+                const res = await fetch(`/api/admin/users/${userId}/ban`, {
+                    method: isBanned ? 'DELETE' : 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ reason })
+                });
+                if (res.ok) {
+                    this.renderAdmin();
+                }
+            } catch (error) {
+                console.error('Error toggling ban:', error);
+            }
+        }
+    }
+
+    async setMembership() {
+        const username = document.getElementById('membershipUsername')?.value;
+        const date = document.getElementById('membershipDate')?.value;
+        if (!username || !date) {
+            alert('Please fill in all fields');
+            return;
+        }
+        try {
+            const res = await fetch('/api/admin/membership', {
+                method: 'PATCH',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, expiry: new Date(date).toISOString() })
+            });
+            if (res.ok) {
+                alert('Membership updated');
+                document.getElementById('membershipUsername').value = '';
+                document.getElementById('membershipDate').value = '';
+            }
+        } catch (error) {
+            console.error('Error setting membership:', error);
+        }
+    }
+
+    async approveReport(reportId) {
+        try {
+            const res = await fetch(`/api/admin/file-reports/approve/${reportId}`, {
+                method: 'POST',
+                credentials: 'include'
+            });
+            if (res.ok) {
+                this.renderMod();
+            }
+        } catch (error) {
+            console.error('Error approving report:', error);
+        }
+    }
+
+    async declineReport(reportId) {
+        try {
+            const res = await fetch(`/api/admin/file-reports/decline/${reportId}`, {
+                method: 'POST',
+                credentials: 'include'
+            });
+            if (res.ok) {
+                this.renderMod();
+            }
+        } catch (error) {
+            console.error('Error declining report:', error);
         }
     }
 }
