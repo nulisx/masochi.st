@@ -4266,20 +4266,34 @@ class Dashboard {
 
     showToast(message, type = 'info') {
         const toast = document.createElement('div');
+        
+        let borderColor = 'rgba(147, 51, 234, 0.6)';
+        let bgGradient = 'linear-gradient(180deg, rgba(147, 51, 234, 0.2), rgba(147, 51, 234, 0.1))';
+        
+        if (type === 'error') {
+            borderColor = 'rgba(239, 68, 68, 0.6)';
+            bgGradient = 'linear-gradient(180deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05))';
+        } else if (type === 'success') {
+            borderColor = 'rgba(34, 197, 94, 0.6)';
+            bgGradient = 'linear-gradient(180deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.05))';
+        }
+        
         toast.style.cssText = `
             position: fixed;
             bottom: 24px;
             right: 24px;
-            padding: 12px 20px;
-            background: linear-gradient(180deg, rgba(147, 51, 234, 0.2), rgba(147, 51, 234, 0.1));
-            border: 1px solid rgba(147, 51, 234, 0.3);
-            border-left: 4px solid rgba(147, 51, 234, 0.6);
+            padding: 14px 20px;
+            background: ${bgGradient};
+            border: 1px solid ${borderColor};
+            border-left: 4px solid ${borderColor};
             color: white;
             border-radius: 8px;
             font-size: 14px;
+            font-weight: 500;
             z-index: 10000;
             animation: slideIn 0.3s ease;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(147, 51, 234, 0.15);
         `;
         toast.textContent = message;
         document.body.appendChild(toast);
@@ -4635,7 +4649,7 @@ class Dashboard {
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="card" style="margin-bottom: 32px;">
                     <div class="card-header">
                         <div class="card-icon" style="background: linear-gradient(180deg, #f59e0b, #fbbf24); width: 44px; height: 44px;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M9 12h6m-6 4h6m2-13H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2z"></path></svg>
@@ -4691,7 +4705,7 @@ class Dashboard {
                         <div class="form-group">
                             <label class="form-label">Role for Invite</label>
                             <select id="inviteRole" class="form-input">
-                                <option value="mod">Moderator</option>
+                                <option value="user">User</option>
                             </select>
                         </div>
                         <button onclick="dashboard.generateInviteCode()" class="btn btn-primary" style="width: 100%;">Generate Code</button>
@@ -4790,11 +4804,18 @@ class Dashboard {
     }
 
     async setMembership() {
+        const userRole = this.user?.role || 'user';
+        if (!['owner', 'manager', 'admin'].includes(userRole)) {
+            this.showToast('Only Owners, Managers, and Admins can grant file hosting access', 'error');
+            return;
+        }
+
         const username = document.getElementById('membershipUsername')?.value;
         const date = document.getElementById('membershipDate')?.value;
         const storageLimit = document.getElementById('storageLimit')?.value || 100;
+        
         if (!username || !date) {
-            alert('Please fill in all fields');
+            this.showToast('Please fill in all fields', 'error');
             return;
         }
         try {
@@ -4805,16 +4826,16 @@ class Dashboard {
                 body: JSON.stringify({ username, expiry: new Date(date).toISOString(), storage_limit: parseInt(storageLimit) * 1024 * 1024 * 1024 })
             });
             if (res.ok) {
-                alert(`File hosting access granted to ${username} with ${storageLimit}GB storage until ${date}`);
+                this.showToast(`File hosting access granted to ${username} with ${storageLimit}GB storage until ${date}`, 'success');
                 document.getElementById('membershipUsername').value = '';
                 document.getElementById('membershipDate').value = '';
                 document.getElementById('storageLimit').value = '100';
             } else {
-                alert('Failed to grant access');
+                this.showToast('Failed to grant access', 'error');
             }
         } catch (error) {
             console.error('Error setting membership:', error);
-            alert('Error granting access');
+            this.showToast('Error granting access', 'error');
         }
     }
 
