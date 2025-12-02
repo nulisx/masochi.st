@@ -4268,14 +4268,14 @@ class Dashboard {
         const toast = document.createElement('div');
         
         let borderColor = 'rgba(147, 51, 234, 0.6)';
-        let bgGradient = 'linear-gradient(180deg, rgba(147, 51, 234, 0.2), rgba(147, 51, 234, 0.1))';
+        let bgGradient = 'linear-gradient(180deg, rgba(147, 51, 234, 0.15), rgba(147, 51, 234, 0.05))';
         
         if (type === 'error') {
-            borderColor = 'rgba(239, 68, 68, 0.6)';
-            bgGradient = 'linear-gradient(180deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05))';
+            borderColor = 'rgba(168, 85, 247, 0.6)';
+            bgGradient = 'linear-gradient(180deg, rgba(168, 85, 247, 0.15), rgba(168, 85, 247, 0.05))';
         } else if (type === 'success') {
-            borderColor = 'rgba(34, 197, 94, 0.6)';
-            bgGradient = 'linear-gradient(180deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.05))';
+            borderColor = 'rgba(147, 51, 234, 0.6)';
+            bgGradient = 'linear-gradient(180deg, rgba(147, 51, 234, 0.15), rgba(147, 51, 234, 0.05))';
         }
         
         toast.style.cssText = `
@@ -4530,7 +4530,7 @@ class Dashboard {
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="card" style="margin-bottom: 32px;">
                     <div class="card-header">
                         <div class="card-icon" style="background: linear-gradient(180deg, #3b82f6, #1d4ed8); width: 44px; height: 44px;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"></path></svg>
