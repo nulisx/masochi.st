@@ -1915,7 +1915,6 @@ class Dashboard {
                                 <label class="form-label">Favicon URL</label>
                                 <input type="text" class="form-input" id="bioFavicon" value="${s.favicon_url || ''}" placeholder="https://example.com/favicon.ico">
                             </div>
-                            <button class="btn btn-primary" onclick="dashboard.saveBioSettings('general')">Save Changes</button>
                         </div>
                     </div>`;
 
@@ -1964,7 +1963,6 @@ class Dashboard {
                                     <span class="range-value">${s.bg_opacity || 100}%</span>
                                 </div>
                             </div>
-                            <button class="btn btn-primary" onclick="dashboard.saveBioSettings('background')">Save Changes</button>
                         </div>
                     </div>`;
 
@@ -2032,7 +2030,6 @@ class Dashboard {
                                     <span class="range-value">${s.card_bg_opacity || 80}%</span>
                                 </div>
                             </div>
-                            <button class="btn btn-primary" onclick="dashboard.saveBioSettings('profile')">Save Changes</button>
                         </div>
                     </div>`;
 
@@ -2121,7 +2118,6 @@ class Dashboard {
                                     <option value="bounce" ${s.link_animation === 'bounce' ? 'selected' : ''}>Bounce</option>
                                 </select>
                             </div>
-                            <button class="btn btn-primary" onclick="dashboard.saveBioSettings('link')">Save Changes</button>
                         </div>
                     </div>`;
 
@@ -2194,7 +2190,6 @@ class Dashboard {
                                     <option value="bounce" ${s.badge_hover === 'bounce' ? 'selected' : ''}>Bounce</option>
                                 </select>
                             </div>
-                            <button class="btn btn-primary" onclick="dashboard.saveBioSettings('badge')">Save Changes</button>
                         </div>
                     </div>`;
 
@@ -4531,10 +4526,11 @@ class Dashboard {
                                             ${['owner', 'manager', 'admin'].includes(userRole) ? `
                                                 <select onchange="dashboard.changeUserRole('${user.id}', this.value)" style="padding: 8px; border-radius: 8px; background: rgba(147,51,234,0.08); color: var(--text-primary); border: 1px solid rgba(168,85,247,0.2); font-size: 12px; cursor: pointer;">
                                                     <option value="">Change Role</option>
-                                                    ${this.canManageRole('user') ? `<option value="user">User</option>` : ''}
-                                                    ${this.canManageRole('mod') ? `<option value="mod">Moderator</option>` : ''}
-                                                    ${this.canManageRole('admin') && userRole === 'manager' ? `<option value="admin">Admin</option>` : ''}
-                                                    ${userRole === 'owner' ? `<option value="admin">Admin</option><option value="manager">Manager</option><option value="owner">Owner</option>` : ''}
+                                                    <option value="user">User</option>
+                                                    ${['owner', 'manager', 'admin'].includes(userRole) ? `<option value="mod">Moderator</option>` : ''}
+                                                    ${['owner', 'manager'].includes(userRole) ? `<option value="admin">Admin</option>` : ''}
+                                                    ${userRole === 'manager' && ['owner'].includes(userRole) ? `<option value="manager">Manager</option>` : ''}
+                                                    ${userRole === 'owner' ? `<option value="manager">Manager</option><option value="owner">Owner</option>` : ''}
                                                 </select>
                                             ` : ''}
                                             <button onclick="dashboard.toggleBanUser('${user.id}', '${user.username}', ${user.is_banned})" style="padding: 8px 14px; border-radius: 8px; background: ${user.is_banned ? 'linear-gradient(90deg, #22c55e, #16a34a)' : 'linear-gradient(90deg, #ef4444, #dc2626)'}; color: white; border: none; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.2s ease;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">${user.is_banned ? 'Unban' : 'Ban'}</button>
