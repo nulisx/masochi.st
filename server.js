@@ -749,6 +749,60 @@ app.post('/generate_invite', authenticateToken, async (req, res) => {
   }
 });
 
+app.patch('/api/admin/membership', authenticateToken, async (req, res) => {
+  try {
+    const userRole = req.user?.role || 'user';
+    if (!['owner', 'manager', 'admin'].includes(userRole)) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    const { username, expiry, storage_limit } = req.body;
+    
+    if (!username || !expiry || !storage_limit) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const targetUser = await getQuery('users', 'username', username.toLowerCase());
+    if (!targetUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const expiryDate = new Date(expiry).toISOString();
+    
+    await runQuery(
+      'users',
+      {
+        id: targetUser.id,
+        username: targetUser.username,
+        email: targetUser.email,
+        password_hash: targetUser.password_hash,
+        role: targetUser.role,
+        is_banned: targetUser.is_banned || 0,
+        file_hosting_enabled: 1,
+        file_hosting_expiry: expiryDate,
+        storage_limit: storage_limit,
+        created_at: targetUser.created_at
+      },
+      'update',
+      { column: 'id', value: targetUser.id }
+    );
+
+    res.status(200).json({ 
+      success: true, 
+      message: `File hosting access granted to ${username}`,
+      user: {
+        username: targetUser.username,
+        file_hosting_enabled: true,
+        file_hosting_expiry: expiryDate,
+        storage_limit: storage_limit
+      }
+    });
+  } catch (err) {
+    console.error('Membership update error:', err);
+    res.status(500).json({ error: 'Failed to grant file hosting access', details: err.message });
+  }
+});
+
 app.post('/api/verify/browser', async (req, res) => {
   try {
     const fingerprint = req.body;
