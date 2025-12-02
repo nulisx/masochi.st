@@ -4260,10 +4260,22 @@ class Dashboard {
         if (!this.updates || !this.updates[index]) return;
         
         const update = this.updates[index];
+        const details = update.details || '';
+        
+        const formattedDetails = details.split('\n').filter(line => line.trim()).map(line => {
+            const trimmed = line.trim();
+            if (trimmed.startsWith('-')) {
+                return `<li style="margin-bottom: 10px; padding-left: 8px; color: #d1d5db;">${trimmed.substring(1).trim()}</li>`;
+            }
+            return `<li style="margin-bottom: 10px; padding-left: 8px; color: #d1d5db;">${trimmed}</li>`;
+        }).join('');
+        
         this.showModal(update.title, `
             <div>
-                <p style="color: var(--text-muted); margin-bottom: 12px;">${update.description || ''}</p>
-                <p style="color: var(--text-muted); line-height: 1.6;">${update.details || ''}</p>
+                <p style="color: #9ca3af; margin-bottom: 16px; font-size: 14px;">${update.description || ''}</p>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    ${formattedDetails || '<li style="color: #6b7280;">No details available</li>'}
+                </ul>
             </div>
         `);
     }
@@ -4313,22 +4325,22 @@ class Dashboard {
         modal.style.cssText = `
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(8px);
             animation: fadeIn 0.3s ease;
         `;
         
         modal.innerHTML = `
-            <div style="background: var(--bg-secondary); border-radius: 12px; padding: 24px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h2 style="margin: 0; font-size: 20px;">${title}</h2>
-                    <button class="modal-close" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-muted);">&times;</button>
+            <div style="background: rgba(20, 20, 30, 0.95); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 14px; padding: 28px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; box-shadow: 0 8px 32px rgba(168, 85, 247, 0.15);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(168, 85, 247, 0.1);">
+                    <h2 style="margin: 0; font-size: 20px; font-weight: 600; color: #e5e7eb;">${title}</h2>
+                    <button class="modal-close" style="background: none; border: none; font-size: 28px; cursor: pointer; color: var(--text-muted); transition: color 0.2s ease; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.color='#a855f7'" onmouseout="this.style.color='var(--text-muted)'">&times;</button>
                 </div>
-                <div style="margin-bottom: 24px;">${content}</div>
+                <div style="margin-bottom: 24px; color: #d1d5db; line-height: 1.6; font-size: 14px;">${content}</div>
                 ${callback ? `
                     <div style="display: flex; gap: 12px;">
                         <button class="btn btn-secondary" style="flex: 1;" onclick="this.closest('[style*=fixed]').remove()">Cancel</button>
