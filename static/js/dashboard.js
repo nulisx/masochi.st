@@ -414,7 +414,7 @@ class Dashboard {
                         area.style.opacity = '1';
                     }
                 }
-            }, 150);
+            }, 50);
         } catch (error) {
             console.error('❌ Error loading page:', error);
             if (contentArea) {
@@ -425,17 +425,17 @@ class Dashboard {
     }
 
     async renderOverview() {
-        
-        const [profile, links, files, statsRes, updatesRes] = await Promise.all([
-            this.fetchProfile(),
-            this.fetchLinks(),
-            this.fetchFiles(),
-            fetch('/api/profile/stats', { credentials: 'include' }).then(r => r.ok ? r.json() : { uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' }).catch(() => ({ uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' })),
-            fetch('/api/updates', { credentials: 'include' }).then(r => r.ok ? r.json() : { updates: [] }).catch(() => ({ updates: [] }))
-        ]);
-        
-        let stats = statsRes || { uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' };
-        let updates = updatesRes?.updates || [];
+        try {
+            const profilePromise = this.fetchProfile().catch(err => { console.error('Profile fetch error:', err); return null; });
+            const linksPromise = this.fetchLinks().catch(err => { console.error('Links fetch error:', err); return []; });
+            const filesPromise = this.fetchFiles().catch(err => { console.error('Files fetch error:', err); return []; });
+            const statsPromise = fetch('/api/profile/stats', { credentials: 'include' }).then(r => r.ok ? r.json() : { uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' }).catch(() => ({ uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' }));
+            const updatesPromise = fetch('/api/updates', { credentials: 'include' }).then(r => r.ok ? r.json() : { updates: [] }).catch(() => ({ updates: [] }));
+
+            const [profile, links, files, statsRes, updatesRes] = await Promise.all([profilePromise, linksPromise, filesPromise, statsPromise, updatesPromise]);
+            
+            let stats = statsRes || { uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' };
+            let updates = updatesRes?.updates || [];
         
         const storagePercent = Math.min((stats.storage_used / stats.storage_limit) * 100, 100).toFixed(1);
 
@@ -544,7 +544,13 @@ class Dashboard {
                 </div>
             </div>
         `;
-        
+        } catch (err) {
+            console.error('❌ Overview render error:', err);
+            const contentArea = document.getElementById('contentArea');
+            if (contentArea) {
+                contentArea.innerHTML = `<div class="empty-state"><h3>Error loading overview</h3><p>${err.message}</p></div>`;
+            }
+        }
     }
 
     async renderProfile() {
