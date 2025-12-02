@@ -886,7 +886,7 @@ class Dashboard {
                         <button id="changePasswordBtn" class="security-btn" style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); color: #a855f7; font-size: 12px; cursor: pointer; font-weight: 500; padding: 6px 12px; border-radius: 6px; transition: all 0.2s ease;">Change</button>
                     </div>
                     
-                    <div style="position: absolute; bottom: -50px; right: 25px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);">
+                    <div style="position: absolute; bottom: -50px; right: 25px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center; background: linear-gradient(to bottom, transparent 0%, rgba(168, 85, 247, 0.3) 100%);">
                         <svg width="120" height="120" viewBox="0 0 24 24" style="opacity: 0.08; fill: #a855f7; transform: rotate(25deg);" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12 2L4 7V12C4 18 12 22 12 22S20 18 20 12V7L12 2Z" fill="#a855f7"/>
                                 <line x1="12" y1="7" x2="12" y2="20" stroke="#0f0f11" stroke-width="1.2" stroke-linecap="round"/>
@@ -940,7 +940,7 @@ class Dashboard {
                         </svg>
                     </div>
                     
-                    <div style="position: absolute; bottom: -50px; right: -10px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);">
+                    <div style="position: absolute; bottom: -50px; right: -10px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center; background: linear-gradient(to bottom, transparent 0%, rgba(168, 85, 247, 0.3) 100%);">
                         <svg width="120" height="120" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7; transform: rotate(25deg);" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                             <circle cx="12" cy="12" r="3"></circle>
@@ -963,7 +963,7 @@ class Dashboard {
                         </div>
                     </div>
                     <span class="badge primary">● Protected</span>
-                    <div style="position: absolute; bottom: -55px; right: -10px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);">
+                    <div style="position: absolute; bottom: -55px; right: -10px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center; background: linear-gradient(to bottom, transparent 0%, rgba(168, 85, 247, 0.3) 100%);">
                         <svg width="120" height="120" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7; transform: rotate(25deg);" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10 21L7.18762 18.9912C4.55966 17.1141 3 14.0834 3 10.8538L3 5.75432C3 5.30784 3.29598 4.91546 3.72528 4.7928L9.72528 3.07852C9.90483 3.02721 10.0952 3.02721 10.2747 3.07852L16.2747 4.7928C16.704 4.91546 17 5.30784 17 5.75432V7.50002M19 15V13C19 11.8955 18.1046 11 17 11C15.8954 11 15 11.8955 15 13V15M19 15H15M19 15C20.1046 15 21 15.8955 21 17V19C21 20.1046 20.1046 21 19 21H15C13.8954 21 13 20.1046 13 19V17C13 15.8955 13.8954 15 15 15" stroke="rgba(168, 85, 247, 0.25)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <rect x="13" y="12" width="6" height="6" rx="1"></rect>
@@ -985,7 +985,7 @@ class Dashboard {
                         </div>
                     </div>
                     <span class="badge primary">● Up to date</span>
-                    <div style="position: absolute; bottom: -55px; right: -10px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);">
+                    <div style="position: absolute; bottom: -55px; right: -10px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center; background: linear-gradient(to bottom, transparent 0%, rgba(168, 85, 247, 0.3) 100%);">
                         <svg width="120" height="120" viewBox="0 0 256 256" style="opacity: 0.08; fill: #a855f7; transform: rotate(25deg);" xmlns="http://www.w3.org/2000/svg">
                             <path d="M140,80v41.072l35.56934,20.53589a12,12,0,1,1-12,20.78467L122,138.39209c-.09375-.05408-.17773-.118-.26953-.17413-.20654-.12714-.41162-.25556-.60986-.39466-.15284-.10669-.29834-.2196-.44434-.33227-.15576-.12012-.31006-.2403-.45947-.36774-.165-.14038-.32227-.28644-.478-.43439-.12061-.11468-.24023-.22937-.356-.34893-.15918-.16419-.31054-.33313-.459-.50507-.105-.12115-.208-.24292-.30811-.36823-.1372-.17272-.26806-.34887-.395-.52813-.10156-.14282-.20068-.28675-.2959-.43415q-.16113-.25075-.30859-.50842c-.09961-.1723-.1958-.34625-.28711-.5238-.07959-.15564-.15478-.31287-.22754-.47156-.09179-.2-.1792-.40161-.26025-.6073-.0586-.14893-.11231-.299-.16455-.45007-.07471-.21479-.14551-.43079-.208-.65094-.0459-.15918-.085-.31946-.124-.48041-.0503-.21008-.09864-.42059-.1377-.63483-.03515-.19116-.062-.38336-.08789-.57623-.0249-.18481-.05029-.36908-.06641-.55652-.021-.23858-.02929-.4779-.03613-.71789-.00293-.1095-.0166-.21625-.0166-.32642V80a12,12,0,0,1,24,0Zm58.71094-22.71094a100.11523,100.11523,0,0,0-141.42188,0L43.8335,70.745V59.71582a12,12,0,1,0-24,0V99.71454c0,.39581.021.79144.06005,1.18567.01709.17651.0503.34784.0752.52209.03027.21326.05518.427.09717.63867.04.20008.09472.394.14453.5904.0459.1831.08594.36718.14062.5484.0586.19281.13086.3789.19873.5675.06446.18073.124.36267.19776.54077.07324.17652.15918.34565.24023.51777.08643.18286.16748.36718.26319.54638.08886.1651.18945.322.28515.48242.105.17548.2041.35315.31836.52424.11865.17681.25.3432.37744.51318.10743.14337.207.29053.32178.43q.36621.44651.77344.856c.00781.00745.01367.01569.021.02307s.01612.01361.02344.02112q.40869.40668.85547.77313c.1416.11658.2915.218.437.327.16748.12524.33155.25512.50537.37164.17383.11633.3545.21722.53272.32349.15771.094.31152.19317.47363.28009.18213.09729.36914.17981.55469.26709.16943.07989.33594.16449.50976.23651.18116.07513.3667.13586.55079.20172.18505.06628.36767.13733.55664.19464.18652.05646.376.098.56445.14514.19092.04792.37988.10156.57422.1402.21972.04358.4414.06989.6626.10114.1665.02343.32959.05535.498.07189.39649.03913.79395.06006,1.1919.05988H71.8335a12,12,0,0,0,0-24H60.8042l13.45557-13.456a76,76,0,1,1,0,107.48046,12.0001,12.0001,0,0,0-16.97071,16.97071A100.00037,100.00037,0,0,0,198.71094,57.28906Z"/>                        </svg>
                     </div>
@@ -1004,7 +1004,7 @@ class Dashboard {
                         </div>
                     </div>
                     <span class="badge warning">● Setup Required</span>
-                    <div style="position: absolute; bottom: -50px; right: -10px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);">
+                    <div style="position: absolute; bottom: -50px; right: -10px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center; background: linear-gradient(to bottom, transparent 0%, rgba(168, 85, 247, 0.3) 100%);">
                         <svg width="120" height="120" viewBox="0 0 1200 1200" style="opacity: 0.08; fill: #a855f7; transform: rotate(25deg);" xmlns="http://www.w3.org/2000/svg">
                             <path d="M328.261,271.758C146.977,271.758,0,418.697,0,599.981c0,181.283,146.977,328.261,328.261,328.261c161.72,0,296.083-116.959,323.206-270.903c0.306,0.017,0.605,0.064,0.912,0.076h126.386v182.46h139.538v-182.46h65.796v264.068h139.538V657.414H1200V517.878H647.095c-0.322,0.026-0.63,0.048-0.95,0.076C609.721,376.371,481.219,271.758,328.261,271.758L328.261,271.758z M328.261,423.611c97.415,0,176.37,78.955,176.37,176.37c0,97.414-78.955,176.407-176.37,176.407s-176.408-78.993-176.408-176.407C151.853,502.566,230.847,423.611,328.261,423.611L328.261,423.611z"/>
                         </svg>
