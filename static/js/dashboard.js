@@ -4318,77 +4318,111 @@ class Dashboard {
 
         try {
             const usersRes = await fetch('/api/admin/users', { credentials: 'include' }).then(r => r.ok ? r.json() : { users: [] });
-            const users = usersRes.users || [];
+            const users = (usersRes.users || []).filter(u => u.username && u.username !== 'w' && u.username !== 'test' && u.username !== 'testuser123');
+
+            const staffCount = users.filter(u => ['owner', 'manager', 'admin', 'mod'].includes(u.role)).length;
+            const bannedCount = users.filter(u => u.is_banned).length;
 
             contentArea.innerHTML = `
                 <div class="page-header">
                     <div>
                         <h1 class="page-title">Admin Panel</h1>
-                        <p class="page-subtitle">Manage users, roles, and platform settings (Role: ${userRole.toUpperCase()})</p>
+                        <p class="page-subtitle">Manage users, roles, and platform settings • Role: <span style="background: linear-gradient(90deg, #9333ea, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${userRole.toUpperCase()}</span></p>
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px;">
-                    <div class="card" style="padding: 20px;">
-                        <h3 style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Total Users</h3>
-                        <div style="font-size: 32px; font-weight: bold; color: #a855f7;">${users.length}</div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(180deg, #9333ea, #a855f7);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3>${users.length}</h3>
+                            <p>Total Users</p>
+                        </div>
                     </div>
-                    <div class="card" style="padding: 20px;">
-                        <h3 style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Staff Members</h3>
-                        <div style="font-size: 32px; font-weight: bold; color: #a855f7;">${users.filter(u => ['owner', 'manager', 'admin', 'mod'].includes(u.role)).length}</div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(180deg, #a78bfa, #c084fc);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"></circle><path d="M6 20c0-2 3-4 6-4s6 2 6 4"></path></svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3>${staffCount}</h3>
+                            <p>Staff Members</p>
+                        </div>
                     </div>
-                    <div class="card" style="padding: 20px;">
-                        <h3 style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Banned Users</h3>
-                        <div style="font-size: 32px; font-weight: bold; color: #e11d48;">${users.filter(u => u.is_banned).length}</div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(180deg, #f87171, #ef4444);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3>${bannedCount}</h3>
+                            <p>Banned Users</p>
+                        </div>
                     </div>
                 </div>
 
                 <div class="card" style="margin-bottom: 24px;">
                     <div class="card-header">
-                        <h3 class="card-title">User Management</h3>
-                    </div>
-                    <div style="padding: 20px;">
-                        <div style="display: grid; gap: 12px; max-height: 500px; overflow-y: auto;">
-                            ${users.map(user => `
-                                <div style="background: var(--bg-tertiary); padding: 16px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
-                                    <div>
-                                        <div style="font-weight: 600; color: var(--text-primary);">${user.username}</div>
-                                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Role: <span style="background: ${this.getRoleColor(user.role)}; padding: 2px 8px; border-radius: 4px; color: white;">${user.role.toUpperCase()}</span> ${user.is_banned ? '<span style="background: #e11d48; color: white; padding: 2px 8px; border-radius: 4px; margin-left: 4px;">BANNED</span>' : ''}</div>
-                                    </div>
-                                    <div style="display: flex; gap: 8px;">
-                                        ${['owner', 'manager', 'admin'].includes(userRole) ? `
-                                            <select onchange="dashboard.changeUserRole('${user.id}', this.value)" style="padding: 8px; border-radius: 6px; background: var(--bg-secondary); color: var(--text-primary); border: 1px solid rgba(168,85,247,0.2); font-size: 12px;">
-                                                <option value="">Change Role</option>
-                                                ${this.canManageRole('user') ? `<option value="user">User</option>` : ''}
-                                                ${this.canManageRole('mod') ? `<option value="mod">Moderator</option>` : ''}
-                                                ${this.canManageRole('admin') && userRole === 'manager' ? `<option value="admin">Admin</option>` : ''}
-                                                ${userRole === 'owner' ? `<option value="admin">Admin</option><option value="manager">Manager</option><option value="owner">Owner</option>` : ''}
-                                            </select>
-                                        ` : ''}
-                                        <button onclick="dashboard.toggleBanUser('${user.id}', '${user.username}', ${user.is_banned})" style="padding: 8px 12px; border-radius: 6px; background: ${user.is_banned ? '#10b981' : '#e11d48'}; color: white; border: none; cursor: pointer; font-size: 12px;">${user.is_banned ? 'Unban' : 'Ban'}</button>
-                                    </div>
-                                </div>
-                            `).join('')}
+                        <div class="card-icon" style="background: linear-gradient(180deg, #9333ea, #a855f7); width: 44px; height: 44px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M12 2a1 1 0 0 1 1 1v5.5h5.5a1 1 0 1 1 0 2H13v5.5a1 1 0 1 1-2 0V10.5H5.5a1 1 0 0 1 0-2H11V3a1 1 0 0 1 1-1z"></path></svg>
                         </div>
+                        <div>
+                            <h3 class="card-title">User Management</h3>
+                            <p class="card-description">Manage user roles, access, and account status</p>
+                        </div>
+                    </div>
+                    <div style="padding: 20px; border-top: 1px dashed var(--dashed-border);">
+                        ${users.length === 0 ? `<div style="text-align: center; padding: 40px; color: var(--text-muted);">No users to manage</div>` : `
+                            <div style="display: grid; gap: 12px; max-height: 400px; overflow-y: auto;">
+                                ${users.map(user => `
+                                    <div style="background: rgba(255,255,255,0.01); padding: 14px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.02); display: flex; justify-content: space-between; align-items: center; transition: all 0.2s ease;" onmouseover="this.style.borderColor='rgba(168,85,247,0.2)'; this.style.background='rgba(168,85,247,0.04)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.02)'; this.style.background='rgba(255,255,255,0.01)'">
+                                        <div>
+                                            <div style="font-weight: 600; color: var(--text-primary);">${user.username}</div>
+                                            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Role: <span class="badge ${user.role === 'owner' ? 'primary' : user.role === 'admin' ? 'primary' : 'primary'}" style="background: ${this.getRoleColor(user.role)}22; color: ${this.getRoleColor(user.role)}; padding: 2px 8px; border-radius: 4px;">${user.role.toUpperCase()}</span> ${user.is_banned ? '<span style="background: rgba(239,68,68,0.1); color: #ef4444; padding: 2px 8px; border-radius: 4px; margin-left: 4px; font-size: 11px; font-weight: 600;">BANNED</span>' : ''}</div>
+                                        </div>
+                                        <div style="display: flex; gap: 8px;">
+                                            ${['owner', 'manager', 'admin'].includes(userRole) ? `
+                                                <select onchange="dashboard.changeUserRole('${user.id}', this.value)" style="padding: 8px; border-radius: 8px; background: rgba(147,51,234,0.08); color: var(--text-primary); border: 1px solid rgba(168,85,247,0.2); font-size: 12px; cursor: pointer;">
+                                                    <option value="">Change Role</option>
+                                                    ${this.canManageRole('user') ? `<option value="user">User</option>` : ''}
+                                                    ${this.canManageRole('mod') ? `<option value="mod">Moderator</option>` : ''}
+                                                    ${this.canManageRole('admin') && userRole === 'manager' ? `<option value="admin">Admin</option>` : ''}
+                                                    ${userRole === 'owner' ? `<option value="admin">Admin</option><option value="manager">Manager</option><option value="owner">Owner</option>` : ''}
+                                                </select>
+                                            ` : ''}
+                                            <button onclick="dashboard.toggleBanUser('${user.id}', '${user.username}', ${user.is_banned})" style="padding: 8px 14px; border-radius: 8px; background: ${user.is_banned ? 'linear-gradient(90deg, #22c55e, #16a34a)' : 'linear-gradient(90deg, #ef4444, #dc2626)'}; color: white; border: none; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.2s ease;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">${user.is_banned ? 'Unban' : 'Ban'}</button>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `}
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Set Membership Expiry</h3>
-                    </div>
-                    <div style="padding: 20px;">
-                        <div style="display: grid; gap: 12px;">
-                            <div>
-                                <label style="display: block; color: var(--text-muted); font-size: 12px; margin-bottom: 6px;">Username</label>
-                                <input type="text" id="membershipUsername" placeholder="Enter username" style="width: 100%; padding: 10px; border-radius: 6px; background: var(--bg-secondary); border: 1px solid rgba(168,85,247,0.2); color: var(--text-primary);">
-                            </div>
-                            <div>
-                                <label style="display: block; color: var(--text-muted); font-size: 12px; margin-bottom: 6px;">Expiry Date</label>
-                                <input type="date" id="membershipDate" style="width: 100%; padding: 10px; border-radius: 6px; background: var(--bg-secondary); border: 1px solid rgba(168,85,247,0.2); color: var(--text-primary);">
-                            </div>
-                            <button onclick="dashboard.setMembership()" style="padding: 12px; border-radius: 6px; background: #a855f7; color: white; border: none; cursor: pointer; font-weight: 600;">Set Membership</button>
+                        <div class="card-icon" style="background: linear-gradient(180deg, #3b82f6, #1d4ed8); width: 44px; height: 44px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"></path></svg>
                         </div>
+                        <div>
+                            <h3 class="card-title">Grant File Hosting Access</h3>
+                            <p class="card-description">Enable file hosting features for users</p>
+                        </div>
+                    </div>
+                    <div style="padding: 20px; border-top: 1px dashed var(--dashed-border);">
+                        <div class="form-group">
+                            <label class="form-label">Username</label>
+                            <input type="text" id="membershipUsername" placeholder="Enter username" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Storage Limit (GB)</label>
+                            <input type="number" id="storageLimit" placeholder="e.g., 100" class="form-input" min="1" max="1000" value="100">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Access Expiry Date</label>
+                            <input type="date" id="membershipDate" class="form-input">
+                        </div>
+                        <button onclick="dashboard.setMembership()" class="btn btn-primary" style="width: 100%;">Grant File Hosting Access</button>
                     </div>
                 </div>
             `;
@@ -4417,46 +4451,64 @@ class Dashboard {
                 <div class="page-header">
                     <div>
                         <h1 class="page-title">Mod Panel</h1>
-                        <p class="page-subtitle">Review and manage file reports (Role: ${userRole.toUpperCase()})</p>
+                        <p class="page-subtitle">Review and manage file reports • Role: <span style="background: linear-gradient(90deg, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${userRole.toUpperCase()}</span></p>
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
-                    <div class="card" style="padding: 20px;">
-                        <h3 style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Awaiting Review</h3>
-                        <div style="font-size: 32px; font-weight: bold; color: #f59e0b;">${reports.length}</div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(180deg, #f59e0b, #fbbf24);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3>${reports.length}</h3>
+                            <p>Awaiting Review</p>
+                        </div>
                     </div>
-                    <div class="card" style="padding: 20px;">
-                        <h3 style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Approved</h3>
-                        <div style="font-size: 32px; font-weight: bold; color: #10b981;">${approved.length}</div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(180deg, #22c55e, #16a34a);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3>${approved.length}</h3>
+                            <p>Approved</p>
+                        </div>
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">File Reports Awaiting Review</h3>
+                        <div class="card-icon" style="background: linear-gradient(180deg, #f59e0b, #fbbf24); width: 44px; height: 44px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M9 12h6m-6 4h6m2-13H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="card-title">File Reports</h3>
+                            <p class="card-description">Review flagged content and take action</p>
+                        </div>
                     </div>
-                    <div style="padding: 20px;">
+                    <div style="padding: 20px; border-top: 1px dashed var(--dashed-border);">
                         ${reports.length === 0 ? `
-                            <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
-                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 16px; opacity: 0.5;">
+                            <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 16px; opacity: 0.3;">
                                     <path d="M9 12l2 2 4-4m7 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                <p>No reports awaiting review</p>
+                                <p style="font-size: 14px; font-weight: 500;">No reports awaiting review</p>
                             </div>
                         ` : `
-                            <div style="display: grid; gap: 12px; max-height: 600px; overflow-y: auto;">
+                            <div style="display: grid; gap: 12px; max-height: 500px; overflow-y: auto;">
                                 ${reports.map(report => `
-                                    <div style="background: var(--bg-tertiary); padding: 16px; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                                    <div style="background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00)); padding: 16px; border-radius: 10px; border: 1px dashed rgba(255,159,11,0.3); border-left: 4px solid #f59e0b; transition: all 0.2s ease;" onmouseover="this.style.borderColor='rgba(255,159,11,0.6)'; this.style.boxShadow='0 0 20px rgba(245,158,11,0.1)'" onmouseout="this.style.borderColor='rgba(255,159,11,0.3)'; this.style.boxShadow='none'">
                                         <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
-                                            <div>
-                                                <div style="font-weight: 600; color: var(--text-primary);">File ID: ${report.file_id}</div>
-                                                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Reported by: ${report.reported_by || 'Anonymous'}</div>
-                                                <div style="font-size: 12px; color: var(--text-muted);">Reason: ${report.reason || 'No reason provided'}</div>
+                                            <div style="flex: 1;">
+                                                <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">File ID: <code style="background: rgba(168,85,247,0.1); padding: 2px 6px; border-radius: 4px; color: #a855f7;">${report.file_id}</code></div>
+                                                <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+                                                    <div><strong>Reported by:</strong> ${report.reported_by || '<em>Anonymous</em>'}</div>
+                                                    <div><strong>Reason:</strong> ${report.reason || '<em>No reason provided</em>'}</div>
+                                                </div>
                                             </div>
-                                            <div style="display: flex; gap: 8px;">
-                                                <button onclick="dashboard.approveReport('${report.id}')" style="padding: 8px 12px; border-radius: 6px; background: #10b981; color: white; border: none; cursor: pointer; font-size: 12px;">Approve</button>
-                                                <button onclick="dashboard.declineReport('${report.id}')" style="padding: 8px 12px; border-radius: 6px; background: #e11d48; color: white; border: none; cursor: pointer; font-size: 12px;">Decline</button>
+                                            <div style="display: flex; gap: 8px; flex-shrink: 0;">
+                                                <button onclick="dashboard.approveReport('${report.id}')" class="btn" style="background: linear-gradient(90deg, #22c55e, #16a34a); color: white; padding: 8px 14px; font-size: 12px;">Approve</button>
+                                                <button onclick="dashboard.declineReport('${report.id}')" class="btn" style="background: linear-gradient(90deg, #ef4444, #dc2626); color: white; padding: 8px 14px; font-size: 12px;">Decline</button>
                                             </div>
                                         </div>
                                     </div>
@@ -4515,6 +4567,7 @@ class Dashboard {
     async setMembership() {
         const username = document.getElementById('membershipUsername')?.value;
         const date = document.getElementById('membershipDate')?.value;
+        const storageLimit = document.getElementById('storageLimit')?.value || 100;
         if (!username || !date) {
             alert('Please fill in all fields');
             return;
@@ -4524,15 +4577,19 @@ class Dashboard {
                 method: 'PATCH',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, expiry: new Date(date).toISOString() })
+                body: JSON.stringify({ username, expiry: new Date(date).toISOString(), storage_limit: parseInt(storageLimit) * 1024 * 1024 * 1024 })
             });
             if (res.ok) {
-                alert('Membership updated');
+                alert(`File hosting access granted to ${username} with ${storageLimit}GB storage until ${date}`);
                 document.getElementById('membershipUsername').value = '';
                 document.getElementById('membershipDate').value = '';
+                document.getElementById('storageLimit').value = '100';
+            } else {
+                alert('Failed to grant access');
             }
         } catch (error) {
             console.error('Error setting membership:', error);
+            alert('Error granting access');
         }
     }
 
