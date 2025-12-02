@@ -24,25 +24,25 @@ If anything in `fixfiles` conflicts with the image references (izZ9i.png) or the
 
 ### fixfiles — files to use as source of truth (apply changes across these files)
 
-AdminView-C0yKbKFB.js
-AdminView-Cp2iAC4B.css
 DashView-C8yWi0pB.css
 DashView-seS7qg5J.js
 LoginSelectView-CFUMygy4.js
 LoginSelectView-D9EZ9g1N.css
-ModView-BzSxuPqo.css
-ModView-C6qIWXEj.js
 OrderView-Bc9mZ9Pi.js
 ResellerView-DDi9GE4f.js
 SocialModal-BB7wGrv5.js
 SocialModal-Br-7vJco.css
-admin-DGMd25hE.js
 core-DvUGffn3.css
 flag-icon-DrnuLiSg.css
 flatpickr-CfPf6HP5.css
 iconfont-CuKXsvG8.css
 reseller-DZkdzc5d.js
 style-CnoABsKM.css
+AdminView-C0yKbKFB.js
+AdminView-Cp2iAC4B.css
+admin-DGMd25hE.js
+ModView-BzSxuPqo.css
+ModView-C6qIWXEj.js
 
 ---
 
