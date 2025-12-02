@@ -56,31 +56,3 @@ good now fix everything from being mock data to actual data w the backend you sa
 good now go through the entire source code and everything make sure there isnt any comments remove all of the comments
 
 good now i want you to go through the entire source code again and make sure there isnt any errors fix up all errors that you find fix everything make this the best entirely
-
-good now finally make an admin (admin/AdminView-C0yKbKFB.js
-admin/AdminView-Cp2iAC4B.css
-admin/admin-DGMd25hE.js
- files) and mod (ModView-BzSxuPqo.css
-ModView-C6qIWXEj.js
-files) panel with the Admin (admin/AdminView-C0yKbKFB.js
-admin/AdminView-Cp2iAC4B.css
-admin/admin-DGMd25hE.js) files and also an admin (admin/AdminView-C0yKbKFB.js
-admin/AdminView-Cp2iAC4B.css
-admin/admin-DGMd25hE.js
-files) and Mod (ModView-BzSxuPqo.css
-ModView-C6qIWXEj.js
-files) Dash like make a new Category called Staff Panels in the dash after the Assets category and analyze the entire files in the admin (admin/AdminView-C0yKbKFB.js
-admin/AdminView-Cp2iAC4B.css
-admin/admin-DGMd25hE.js
- files) folder and the mod (ModView-BzSxuPqo.css
-ModView-C6qIWXEj.js
-files) folder with the admin/AdminView-C0yKbKFB.js
-admin/AdminView-Cp2iAC4B.css
-admin/admin-DGMd25hE.js
- files
-
- and the ModView-BzSxuPqo.css
-ModView-C6qIWXEj.js
-files
-
-analyze them entirely and make the Admin Panel/Admin Dash (for owners (only default owner account can make others owners and managers and admins and mods), managers (only managers can make admins and mods) and admins (only admins can make mods)) and make the Mod Panel/Mod Dash yk what i mean

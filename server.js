@@ -69,6 +69,7 @@ app.get('/api/cdn/images', (req, res) => {
 
 app.post(
   '/api/auth/register',
+  rateLimit({ windowMs: 15 * 60 * 1000, maxAttempts: 3 }),
   [
     body('username').isLength({ min: 1, max: 20 }).matches(/^[a-zA-Z0-9!@$%&*]+$/),
     body('email').optional({ checkFalsy: true }).isEmail(),
@@ -169,7 +170,7 @@ function parseUserAgent(ua) {
   return { device, browser, os };
 }
 
-app.post('/api/auth/login', async (req, res) => {
+app.post('/api/auth/login', rateLimit({ windowMs: 15 * 60 * 1000, maxAttempts: 5 }), async (req, res) => {
   const { username, identifier, password } = req.body;
   try {
     const input = (username || identifier || '').toLowerCase().trim();
@@ -493,6 +494,17 @@ app.post('/api/verify/browser', async (req, res) => {
   } catch (err) {
     console.error('Verification error:', err);
     res.status(500).json({ error: 'Verification failed' });
+  }
+});
+
+app.get('/api/profile/view-count', authenticateToken, rateLimit({ windowMs: 5 * 60 * 1000, maxAttempts: 20 }), async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const profile = await getQuery('profiles', 'user_id', userId);
+    res.json({ view_count: profile?.view_count || 0, timestamp: new Date().toISOString() });
+  } catch (err) {
+    console.error('View count fetch error:', err);
+    res.status(500).json({ error: 'Failed to fetch view count' });
   }
 });
 

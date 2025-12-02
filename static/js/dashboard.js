@@ -50,6 +50,7 @@ class Dashboard {
             try {
                 this.setupUI();
                 this.loadPage('overview');
+                this.startRealtimeProfileViews();
                 console.log('✅ Dashboard fully loaded');
             } catch (uiError) {
                 console.error('❌ UI setup error:', uiError);
@@ -63,6 +64,25 @@ class Dashboard {
                 window.location.replace('/login');
             }
         }
+    }
+
+    startRealtimeProfileViews() {
+        setInterval(async () => {
+            try {
+                const res = await fetch('/api/profile/view-count', { credentials: 'include' });
+                if (res.ok) {
+                    const data = await res.json();
+                    const statsElement = document.querySelector('.stats-grid [data-stat="views"] h3');
+                    if (statsElement) {
+                        statsElement.textContent = data.view_count;
+                        statsElement.style.animation = 'pulse 0.5s ease-in-out';
+                        setTimeout(() => statsElement.style.animation = '', 500);
+                    }
+                }
+            } catch (err) {
+                console.debug('View count polling skipped');
+            }
+        }, 3000);
     }
 
     setupUI() {
@@ -449,7 +469,7 @@ class Dashboard {
                         <p style="color: var(--text-muted); font-size: 13px;">User ID</p>
                     </div>
                 </div>
-                <div class="stat-card" style="display: flex; align-items: center; gap: 16px; padding: 20px;">
+                <div class="stat-card" style="display: flex; align-items: center; gap: 16px; padding: 20px;" data-stat="views">
                     <div class="stat-icon" style="width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--bg-tertiary);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -457,7 +477,7 @@ class Dashboard {
                         </svg>
                     </div>
                     <div class="stat-info">
-                        <h3 style="font-size: 24px; margin-bottom: 4px;">${stats.profile_views || 0}</h3>
+                        <h3 style="font-size: 24px; margin-bottom: 4px;" id="profileViewsCount">${stats.profile_views || 0}</h3>
                         <p style="color: var(--text-muted); font-size: 13px;">Profile Views</p>
                     </div>
                 </div>
