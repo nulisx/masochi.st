@@ -893,7 +893,7 @@ class Dashboard {
                                 <line x1="6" y1="13" x2="18" y2="13" stroke="#0f0f11" stroke-width="1.2" stroke-linecap="round"/>
                             </svg>
                     </div>
-                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent 0%, rgba(168, 85, 247, 0.3) 100%); pointer-events: none;"></div>
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 50px; background: linear-gradient(to bottom, transparent 0%, rgba(168, 85, 247, 0.3) 100%); pointer-events: none;"></div>
                 </div>
                 
                 <div class="card" style="border: 1px dashed rgba(128, 128, 128, 0.35); position: relative; overflow: hidden;">
@@ -946,7 +946,7 @@ class Dashboard {
                             <circle cx="12" cy="12" r="3"></circle>
                         </svg>
                     </div>
-                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent 0%, rgba(168, 85, 247, 0.3) 100%); pointer-events: none;"></div>
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 50px; background: linear-gradient(to bottom, transparent 0%, rgba(168, 85, 247, 0.3) 100%); pointer-events: none;"></div>
                 </div>
             </div>
             
