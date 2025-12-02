@@ -349,8 +349,15 @@ class Dashboard {
         }
 
         try {
-            contentArea.style.opacity = '0';
-            contentArea.style.transition = 'opacity 0.3s ease';
+            const isInitialLoad = contentArea.innerHTML.trim() === '';
+            
+            if (!isInitialLoad) {
+                contentArea.style.opacity = '0';
+                contentArea.style.transition = 'opacity 0.3s ease';
+            } else {
+                contentArea.style.opacity = '1';
+                contentArea.style.transition = 'none';
+            }
             
             try {
                 switch(page) {
@@ -398,10 +405,14 @@ class Dashboard {
                         await this.renderOverview();
                 }
                 
-                
                 const area = document.getElementById('contentArea');
                 if (area && area.innerHTML.trim()) {
-                    area.style.opacity = '1';
+                    if (!isInitialLoad) {
+                        area.style.transition = 'opacity 0.3s ease';
+                        setTimeout(() => area.style.opacity = '1', 50);
+                    } else {
+                        area.style.opacity = '1';
+                    }
                 } else {
                     console.error('❌ Content not rendered properly');
                 }
