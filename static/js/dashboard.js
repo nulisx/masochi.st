@@ -1481,12 +1481,13 @@ class Dashboard {
         const generateNormalConfigBtn = document.getElementById('generateNormalConfigBtn');
         if (generateNormalConfigBtn) {
             generateNormalConfigBtn.addEventListener('click', () => {
+                const domain = window.location.hostname === 'localhost' ? 'http://localhost:5000' : `https://${window.location.hostname}`;
                 const config = {
                     Version: "18.0.1",
                     Name: "Glowi.es",
                     DestinationType: "ImageUploader, FileUploader",
                     RequestMethod: "POST",
-                    RequestURL: "${DOMAIN}/api/upload",
+                    RequestURL: `${domain}/api/upload`,
                     FileFormName: "file",
                     Arguments: `{
                         "token": "${this.user?.id}"
