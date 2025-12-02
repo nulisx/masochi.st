@@ -772,16 +772,9 @@ app.patch('/api/admin/membership', authenticateToken, async (req, res) => {
     await runQuery(
       'users',
       {
-        id: targetUser.id,
-        username: targetUser.username,
-        email: targetUser.email,
-        password_hash: targetUser.password_hash,
-        role: targetUser.role,
-        is_banned: targetUser.is_banned || 0,
         file_hosting_enabled: 1,
         file_hosting_expiry: expiryDate,
-        storage_limit: storage_limit,
-        created_at: targetUser.created_at
+        storage_limit: storage_limit
       },
       'update',
       { column: 'id', value: targetUser.id }
