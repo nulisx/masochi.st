@@ -1287,7 +1287,12 @@ class Dashboard {
 
     async renderSettings() {
         const contentArea = document.getElementById('contentArea');
-        contentArea.innerHTML = `
+        
+        try {
+            const sessionRes = await fetch('/api/auth/sessions', { credentials: 'include' });
+            const sessionData = sessionRes.ok ? await sessionRes.json() : { count: 0 };
+            
+            contentArea.innerHTML = `
             <div class="page-header">
                 <button class="page-back" onclick="dashboard.loadPage('overview')">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -1296,9 +1301,10 @@ class Dashboard {
                 </button>
                 <div>
                     <h1 class="page-title">Settings</h1>
-                    <p class="page-subtitle">Account security and configuration</p>
+                    <p class="page-subtitle">Account security and configuration • ${sessionData.count || 0} active sessions</p>
                 </div>
             </div>
+            
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
                 <!-- Change Password Card -->

@@ -902,6 +902,168 @@ app.delete('/api/bio/settings', authenticateToken, async (req, res) => {
   }
 });
 
+// File Report Endpoints
+app.get('/api/admin/file-reports/awaiting', authenticateToken, async (req, res) => {
+  try {
+    const user = await getQuery('users', 'id', req.user.id);
+    if (!user || !['owner', 'manager', 'admin', 'mod'].includes(user.role)) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    const { customQuery } = await import('./lib/db.js');
+    const reports = await customQuery(`
+      SELECT * FROM file_reports 
+      WHERE status = 'pending' 
+      ORDER BY created_at DESC 
+      LIMIT 50
+    `).catch(() => []);
+
+    res.status(200).json({ reports: reports || [] });
+  } catch (err) {
+    console.error('Get pending reports error:', err);
+    res.status(200).json({ reports: [] });
+  }
+});
+
+app.get('/api/admin/file-reports/approved', authenticateToken, async (req, res) => {
+  try {
+    const user = await getQuery('users', 'id', req.user.id);
+    if (!user || !['owner', 'manager', 'admin', 'mod'].includes(user.role)) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    const { customQuery } = await import('./lib/db.js');
+    const reports = await customQuery(`
+      SELECT * FROM file_reports 
+      WHERE status = 'approved' 
+      ORDER BY updated_at DESC 
+      LIMIT 50
+    `).catch(() => []);
+
+    res.status(200).json({ reports: reports || [] });
+  } catch (err) {
+    console.error('Get approved reports error:', err);
+    res.status(200).json({ reports: [] });
+  }
+});
+
+app.post('/api/admin/file-reports/approve/:id', authenticateToken, async (req, res) => {
+  try {
+    const user = await getQuery('users', 'id', req.user.id);
+    if (!user || !['owner', 'manager', 'admin', 'mod'].includes(user.role)) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    const { customQuery } = await import('./lib/db.js');
+    
+    await customQuery(`
+      UPDATE file_reports 
+      SET status = 'approved', updated_at = NOW(), reviewed_by = ? 
+      WHERE id = ?
+    `, [req.user.id, req.params.id]).catch(() => null);
+
+    res.status(200).json({ success: true, message: 'Report approved' });
+  } catch (err) {
+    console.error('Approve report error:', err);
+    res.status(500).json({ error: 'Failed to approve report' });
+  }
+});
+
+app.post('/api/admin/file-reports/decline/:id', authenticateToken, async (req, res) => {
+  try {
+    const user = await getQuery('users', 'id', req.user.id);
+    if (!user || !['owner', 'manager', 'admin', 'mod'].includes(user.role)) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    const { customQuery } = await import('./lib/db.js');
+    
+    await customQuery(`
+      UPDATE file_reports 
+      SET status = 'declined', updated_at = NOW(), reviewed_by = ? 
+      WHERE id = ?
+    `, [req.user.id, req.params.id]).catch(() => null);
+
+    res.status(200).json({ success: true, message: 'Report declined' });
+  } catch (err) {
+    console.error('Decline report error:', err);
+    res.status(500).json({ error: 'Failed to decline report' });
+  }
+});
+
+app.patch('/api/admin/users/:id/role', authenticateToken, async (req, res) => {
+  try {
+    const user = await getQuery('users', 'id', req.user.id);
+    if (!user || !['owner', 'manager', 'admin'].includes(user.role)) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    const { role } = req.body;
+    const roleHierarchy = { user: 0, mod: 1, admin: 2, manager: 3, owner: 4 };
+    const userLevel = roleHierarchy[user.role] || 0;
+    const targetLevel = roleHierarchy[role] || 0;
+
+    if (userLevel <= targetLevel) {
+      return res.status(403).json({ error: 'Cannot change role to equal or higher level' });
+    }
+
+    await runQuery(
+      'users',
+      { id: req.params.id, role },
+      'update',
+      { column: 'id', value: req.params.id }
+    );
+
+    res.status(200).json({ success: true, message: `Role changed to ${role}` });
+  } catch (err) {
+    console.error('Change role error:', err);
+    res.status(500).json({ error: 'Failed to change role' });
+  }
+});
+
+app.post('/api/admin/users/:id/ban', authenticateToken, async (req, res) => {
+  try {
+    const user = await getQuery('users', 'id', req.user.id);
+    if (!user || !['owner', 'manager', 'admin'].includes(user.role)) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    const { reason } = req.body;
+    await runQuery(
+      'users',
+      { id: req.params.id, is_banned: 1, ban_reason: reason },
+      'update',
+      { column: 'id', value: req.params.id }
+    );
+
+    res.status(200).json({ success: true, message: 'User banned' });
+  } catch (err) {
+    console.error('Ban user error:', err);
+    res.status(500).json({ error: 'Failed to ban user' });
+  }
+});
+
+app.delete('/api/admin/users/:id/ban', authenticateToken, async (req, res) => {
+  try {
+    const user = await getQuery('users', 'id', req.user.id);
+    if (!user || !['owner', 'manager', 'admin'].includes(user.role)) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    await runQuery(
+      'users',
+      { id: req.params.id, is_banned: 0, ban_reason: null },
+      'update',
+      { column: 'id', value: req.params.id }
+    );
+
+    res.status(200).json({ success: true, message: 'User unbanned' });
+  } catch (err) {
+    console.error('Unban user error:', err);
+    res.status(500).json({ error: 'Failed to unban user' });
+  }
+});
+
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.get('/about', (req, res) => res.sendFile(path.join(__dirname, 'about', 'index.html')));
 app.get('/pricing', (req, res) => res.sendFile(path.join(__dirname, 'pricing', 'index.html')));
