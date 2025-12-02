@@ -1646,8 +1646,8 @@ class Dashboard {
                     </button>
                 </div>
                 ${this.biolinksActiveTab === 'customize' ? `
-                    <button class="btn btn-primary" onclick="dashboard.saveBioSettings('${this.biolinksCustomizeSubTab}')" style="padding: 10px 20px; font-size: 14px; white-space: nowrap;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                    <button onclick="dashboard.saveBioSettings('${this.biolinksCustomizeSubTab}')" style="padding: 10px 20px; font-size: 14px; white-space: nowrap; background: rgba(147,51,234,0.08); border: 2px dashed rgba(107,114,128,0.4); border-radius: 10px; color: #a855f7; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px;" onmouseover="this.style.borderColor='#a855f7'; this.style.background='rgba(147,51,234,0.12)'; this.style.boxShadow='0 0 16px rgba(168,85,247,0.2)'" onmouseout="this.style.borderColor='rgba(107,114,128,0.4)'; this.style.background='rgba(147,51,234,0.08)'; this.style.boxShadow='none'">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                         Save Changes
                     </button>
                 ` : ''}
