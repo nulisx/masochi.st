@@ -35,7 +35,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(verificationMiddleware);
 
-// CORS headers for production
 app.use((req, res, next) => {
   const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:5000', 'http://localhost:3000'];
   const origin = req.headers.origin;

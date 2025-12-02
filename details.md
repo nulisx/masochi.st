@@ -21,9 +21,4 @@ LoginSelectView-D9EZ9g1N.css
 
 ---
 
-good now i want you to go through the entire source code again and make sure there isnt any errors fix up all errors that you find fix everything make this the best entirely include: making sure all discovered bugs fixed and a short summary report listing what changed and why.
-Like actually go through every file, test locally (build/bundle), run full QA: authentication, role-based access, URL generation, and cross-browser checks. Provide a short report of fixes and any decisions where you favored `every` directions.
-Make it the best possible implementation — flawless, polished, and professional, because of this entirely.
-Make sure everything is good to go for me to upload to vercel.com deployment
-
 good now go through the entire source code and everything make sure there isnt any comments remove all of the comments.
