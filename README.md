@@ -1,4 +1,4 @@
-## Masochi.st - Remake - [Og.Email](https://og.email)
+## Masochi.st - Remake - [Og.Email](https://glowi.es)
 
 # this is a remake of masochi.st but better and also due to the fact that masochi.st itself is no longer online at all
 # due to evie trying to dx shaun/flights
