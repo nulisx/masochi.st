@@ -348,7 +348,6 @@ class Dashboard {
             return;
         }
 
-        // Update active navigation item
         document.querySelectorAll('.nav-item[data-page]').forEach(i => i.classList.remove('active'));
         const activeNav = document.querySelector(`.nav-item[data-page="${page}"]`);
         if (activeNav) activeNav.classList.add('active');
@@ -1752,7 +1751,6 @@ class Dashboard {
         try {
             const links = await this.fetchLinks();
             
-            // Fetch fresh user data to get updated biolink_clicks
             const meRes = await fetch('/api/auth/me', { credentials: 'include' });
             const meData = meRes.ok ? await meRes.json() : {};
             const biolinksClicks = meData?.profile?.biolink_clicks || 0;
@@ -2696,14 +2694,12 @@ class Dashboard {
         }
     }
 
-    // Legacy biolinks customization methods - deprecated for link management CRUD
     setupBiolinksInterface(settings) {
         const tabButtons = document.querySelectorAll('.biolinks-tab-btn');
         const tabContents = document.querySelectorAll('.biolinks-tab-content');
         const form = document.getElementById('biolinksForm');
         const saveBtn = document.getElementById('saveBiolinksBtn');
         
-        // Generate embed code
         this.generateEmbedCode(settings);
         
         tabButtons.forEach(btn => {
@@ -3560,7 +3556,6 @@ class Dashboard {
         modal.id = 'connectionModal';
         modal.className = 'connection-modal-overlay';
         
-        // Special handling for Discord with two inputs
         const isDiscord = platformName === 'Discord';
         let bodyHTML = '';
         
@@ -3643,7 +3638,6 @@ class Dashboard {
     }
 
     async saveConnection(platformName, prefix = '', hidePrefix = false, connectionId = null) {
-        // Special handling for Discord
         if (platformName === 'Discord') {
             const userIdInput = document.querySelector('#connDiscordUserId');
             const usernameInput = document.querySelector('#connDiscordUsername');
@@ -3655,13 +3649,11 @@ class Dashboard {
                 return;
             }
             
-            // Validate Discord User ID if provided
             if (userId && !/^\d+$/.test(userId)) {
                 this.showToast(`Discord update failed: Invalid User ID format - must contain only numbers`, 'error');
                 return;
             }
             
-            // Save the User ID and username
             const profileUrl = userId ? `https://discord.com/users/${userId}` : `discord://${username}`;
             const displayName = username || userId;
             
@@ -3682,7 +3674,6 @@ class Dashboard {
                 
                 if (response.ok) {
                     const action = connectionId ? 'updated' : 'connected';
-                    // Format display text based on profile URL
                     let displayText = profileUrl;
                     if (profileUrl.startsWith('https://discord.com/users/')) {
                         displayText = `/users/${profileUrl.split('/').pop()}`;
@@ -3703,7 +3694,6 @@ class Dashboard {
             return;
         }
         
-        // Standard handling for other platforms
         const input = document.querySelector('#connUsername');
         const username = input?.value.trim();
         
@@ -3734,17 +3724,14 @@ class Dashboard {
             
             if (response.ok) {
                 const action = connectionId ? 'updated' : 'connected';
-                // Format display text based on profile URL
                 let displayText = profileUrl;
                 try {
                     const url = new URL(profileUrl);
                     const pathname = url.pathname + url.search;
                     displayText = pathname.startsWith('/') ? pathname : '/' + pathname;
                 } catch (e) {
-                    // If not a valid URL, use as-is
                     displayText = profileUrl;
                 }
-                // Remove leading slash and add prefix if it looks like a path
                 if (displayText.startsWith('/')) {
                     displayText = displayText.substring(1);
                 }
@@ -3768,7 +3755,6 @@ class Dashboard {
         const hidePrefix = platform?.hidePrefix || false;
         const modalTitle = platform?.modalTitle || `${platformName} Username`;
         
-        // For Discord, extract User ID from profile URL
         let discordUserId = '';
         if (platformName === 'Discord' && profileUrl) {
             const match = profileUrl.match(/https:\/\/discord\.com\/users\/(\d+)/);
@@ -3854,14 +3840,12 @@ class Dashboard {
         const hasUsername = username && username.trim().length > 0;
         const hasUserId = profileUrl && profileUrl.includes('discord.com/users');
         
-        // Extract user ID from URL if it exists
         let userId = '';
         if (hasUserId) {
             const match = profileUrl.match(/https:\/\/discord\.com\/users\/(\d+)/);
             if (match) userId = match[1];
         }
         
-        // If only username: copy to clipboard
         if (hasUsername && !userId) {
             navigator.clipboard.writeText(username).then(() => {
                 this.showNotificationModal(`Copied "${username}" to clipboard`, 'success');
@@ -3869,13 +3853,11 @@ class Dashboard {
             return;
         }
         
-        // If only user ID: open Discord profile directly
         if (userId && !hasUsername) {
             window.open(`https://discord.com/users/${userId}`, '_blank');
             return;
         }
         
-        // If both: show menu with options
         if (hasUsername && userId) {
             const menuHTML = `
                 <div class="discord-menu" style="position: fixed; background: linear-gradient(135deg, rgba(147, 51, 234, 0.1), rgba(168, 85, 247, 0.05)); border: 1px solid rgba(147, 51, 234, 0.3); border-radius: 12px; padding: 8px; z-index: 10000; box-shadow: 0 4px 20px rgba(147, 51, 234, 0.4), inset 0 1px 0 rgba(255,255,255,0.1); backdrop-filter: blur(8px);">
@@ -3909,12 +3891,10 @@ class Dashboard {
             const menu = menuEl.querySelector('.discord-menu');
             document.body.appendChild(menu);
             
-            // Position menu near cursor
             const event = window.lastClickEvent || {};
             menu.style.top = (event.clientY || 100) + 'px';
             menu.style.left = (event.clientX || 100) + 'px';
             
-            // Close menu on outside click
             setTimeout(() => {
                 document.addEventListener('click', (e) => {
                     if (e.target !== menu && !menu.contains(e.target)) {
