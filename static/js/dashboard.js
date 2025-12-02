@@ -939,6 +939,13 @@ class Dashboard {
                             <polyline points="9 18 15 12 9 6"></polyline>
                         </svg>
                     </div>
+                    
+                    <div style="position: absolute; bottom: -50px; right: -10px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center;">
+                        <svg width="120" height="120" viewBox="0 0 24 24" style="opacity: 0.08; stroke: #a855f7; transform: rotate(25deg);" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </div>
                 </div>
             </div>
             
@@ -998,7 +1005,7 @@ class Dashboard {
                     </div>
                     <span class="badge warning">● Setup Required</span>
                     <div style="position: absolute; bottom: -50px; right: -10px; width: 150px; height: 150px; pointer-events: none; display: flex; align-items: center; justify-content: center;">
-                        <svg width="120" height="120" viewBox="0 0 1200 1200" style="opacity: 0.08; transform: rotate(25deg);" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="120" height="120" viewBox="0 0 1200 1200" style="opacity: 0.08; fill: #a855f7; transform: rotate(25deg);" xmlns="http://www.w3.org/2000/svg">
                             <path d="M328.261,271.758C146.977,271.758,0,418.697,0,599.981c0,181.283,146.977,328.261,328.261,328.261c161.72,0,296.083-116.959,323.206-270.903c0.306,0.017,0.605,0.064,0.912,0.076h126.386v182.46h139.538v-182.46h65.796v264.068h139.538V657.414H1200V517.878H647.095c-0.322,0.026-0.63,0.048-0.95,0.076C609.721,376.371,481.219,271.758,328.261,271.758L328.261,271.758z M328.261,423.611c97.415,0,176.37,78.955,176.37,176.37c0,97.414-78.955,176.407-176.37,176.407s-176.408-78.993-176.408-176.407C151.853,502.566,230.847,423.611,328.261,423.611L328.261,423.611z"/>
                         </svg>
                     </div>
