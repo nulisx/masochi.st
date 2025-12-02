@@ -348,6 +348,11 @@ class Dashboard {
             return;
         }
 
+        // Update active navigation item
+        document.querySelectorAll('.nav-item[data-page]').forEach(i => i.classList.remove('active'));
+        const activeNav = document.querySelector(`.nav-item[data-page="${page}"]`);
+        if (activeNav) activeNav.classList.add('active');
+
         try {
             const isInitialLoad = contentArea.innerHTML.trim() === '';
             

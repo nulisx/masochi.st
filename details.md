@@ -6,7 +6,7 @@ If you discover the default owner account isn't working, here are the credential
 
 Please ensure this default owner account can log in and that login behaves correctly.
 
-* Make `DashView-*` / `dash` files in `fixfiles` drive the dashboard homepage. The homepage should behave exactly as the dash files intend (layout, widgets, ordering, responsive behavior).
+* Make `LoginSelectView-*` / `loginselect` files in `loginselect` drive the Login Selector with login or register. The homepage should behave exactly as the loginselect files intend (layout, widgets, ordering, responsive behavior).
 
 Deliverables I expect after implementing the above:
 
@@ -14,10 +14,8 @@ Deliverables I expect after implementing the above:
 
 ---
 
-### fixfiles — files to use as source of truth (apply changes across these files)
+### loginselect — files to use as source of truth (apply changes across these files)
 
-DashView-C8yWi0pB.css
-DashView-seS7qg5J.js
 LoginSelectView-CFUMygy4.js
 LoginSelectView-D9EZ9g1N.css
 
