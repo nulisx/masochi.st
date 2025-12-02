@@ -423,29 +423,22 @@ class Dashboard {
     }
 
     async renderOverview() {
-        try {
-            const contentArea = document.getElementById('contentArea');
-            if (!contentArea) return;
-            
-            contentArea.innerHTML = `<div class="page-header"><h1 class="page-title" style="opacity:0.5">Loading overview...</h1></div>`;
-            
-            const statsPromise = fetch('/api/profile/stats', { credentials: 'include' }).then(r => r.ok ? r.json() : { uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' }).catch(() => ({ uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' }));
-            const updatesPromise = fetch('/api/updates', { credentials: 'include' }).then(r => r.ok ? r.json() : { updates: [] }).catch(() => ({ updates: [] }));
-
-            const [statsRes, updatesRes] = await Promise.all([statsPromise, updatesPromise]);
-            
-            let stats = statsRes || { uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' };
-            let updates = updatesRes?.updates || [];
+        const contentArea = document.getElementById('contentArea');
         
-        const storagePercent = Math.min((stats.storage_used / stats.storage_limit) * 100, 100).toFixed(1);
+        const statsPromise = fetch('/api/profile/stats', { credentials: 'include' }).then(r => r.ok ? r.json() : { uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' }).catch(() => ({ uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' }));
+        const updatesPromise = fetch('/api/updates', { credentials: 'include' }).then(r => r.ok ? r.json() : { updates: [] }).catch(() => ({ updates: [] }));
 
+        const [statsRes, updatesRes] = await Promise.all([statsPromise, updatesPromise]);
+        
+        let stats = statsRes || { uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' };
+        let updates = updatesRes?.updates || [];
+        
         const formatUpdateDate = (dateStr) => {
             const date = new Date(dateStr);
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
         };
         
-        const contentArea = document.getElementById('contentArea');
         contentArea.innerHTML = `
             <div class="page-header">
                 <div>
@@ -544,13 +537,6 @@ class Dashboard {
                 </div>
             </div>
         `;
-        } catch (err) {
-            console.error('❌ Overview render error:', err);
-            const contentArea = document.getElementById('contentArea');
-            if (contentArea) {
-                contentArea.innerHTML = `<div class="empty-state"><h3>Error loading overview</h3><p>${err.message}</p></div>`;
-            }
-        }
     }
 
     async renderProfile() {
