@@ -352,69 +352,67 @@ class Dashboard {
             contentArea.style.opacity = '0';
             contentArea.style.transition = 'opacity 0.3s ease';
             
-            setTimeout(async () => {
-                try {
-                    switch(page) {
-                        case 'overview':
-                            await this.renderOverview();
-                            break;
-                        case 'biolinks':
-                            await this.renderBiolinks();
-                            break;
-                        case 'images':
-                        case 'files':
-                            await this.renderFiles();
-                            break;
-                        case 'profile':
-                            await this.renderProfile();
-                            break;
-                        case 'security':
-                            await this.renderSecurity();
-                            break;
-                        case 'connections':
-                            await this.renderConnections();
-                            break;
-                        case 'settings':
-                            await this.renderSettings();
-                            break;
-                        case 'privacy':
-                            await this.renderPrivacy();
-                            break;
-                        case 'litterbox':
-                            await this.renderLitterBox();
-                            break;
-                        case 'tos':
-                            await this.renderToS();
-                            break;
-                        case 'api':
-                            await this.renderAPI();
-                            break;
-                        case 'admin':
-                            await this.renderAdmin();
-                            break;
-                        case 'mod':
-                            await this.renderMod();
-                            break;
-                        default:
-                            await this.renderOverview();
-                    }
-                    
-                    
-                    const area = document.getElementById('contentArea');
-                    if (area && area.innerHTML.trim()) {
-                        area.style.opacity = '1';
-                    } else {
-                        console.error('❌ Content not rendered properly');
-                    }
-                } catch (renderError) {
-                    console.error('❌ Render error:', renderError);
-                    const area = document.getElementById('contentArea');
-                    if (area) {
-                        area.innerHTML = `<div class="empty-state"><h3>Error loading page</h3><p>${renderError.message}</p></div>`;
-                        area.style.opacity = '1';
-                    }
+            try {
+                switch(page) {
+                    case 'overview':
+                        await this.renderOverview();
+                        break;
+                    case 'biolinks':
+                        await this.renderBiolinks();
+                        break;
+                    case 'images':
+                    case 'files':
+                        await this.renderFiles();
+                        break;
+                    case 'profile':
+                        await this.renderProfile();
+                        break;
+                    case 'security':
+                        await this.renderSecurity();
+                        break;
+                    case 'connections':
+                        await this.renderConnections();
+                        break;
+                    case 'settings':
+                        await this.renderSettings();
+                        break;
+                    case 'privacy':
+                        await this.renderPrivacy();
+                        break;
+                    case 'litterbox':
+                        await this.renderLitterBox();
+                        break;
+                    case 'tos':
+                        await this.renderToS();
+                        break;
+                    case 'api':
+                        await this.renderAPI();
+                        break;
+                    case 'admin':
+                        await this.renderAdmin();
+                        break;
+                    case 'mod':
+                        await this.renderMod();
+                        break;
+                    default:
+                        await this.renderOverview();
                 }
-            }, 50);
+                
+                
+                const area = document.getElementById('contentArea');
+                if (area && area.innerHTML.trim()) {
+                    area.style.opacity = '1';
+                } else {
+                    console.error('❌ Content not rendered properly');
+                }
+            } catch (renderError) {
+                console.error('❌ Render error:', renderError);
+                const area = document.getElementById('contentArea');
+                if (area) {
+                    area.innerHTML = `<div class="empty-state"><h3>Error loading page</h3><p>${renderError.message}</p></div>`;
+                    area.style.opacity = '1';
+                }
+            }
         } catch (error) {
             console.error('❌ Error loading page:', error);
             if (contentArea) {
@@ -426,13 +424,15 @@ class Dashboard {
 
     async renderOverview() {
         try {
-            const profilePromise = this.fetchProfile().catch(err => { console.error('Profile fetch error:', err); return null; });
-            const linksPromise = this.fetchLinks().catch(err => { console.error('Links fetch error:', err); return []; });
-            const filesPromise = this.fetchFiles().catch(err => { console.error('Files fetch error:', err); return []; });
+            const contentArea = document.getElementById('contentArea');
+            if (!contentArea) return;
+            
+            contentArea.innerHTML = `<div class="page-header"><h1 class="page-title" style="opacity:0.5">Loading overview...</h1></div>`;
+            
             const statsPromise = fetch('/api/profile/stats', { credentials: 'include' }).then(r => r.ok ? r.json() : { uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' }).catch(() => ({ uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' }));
             const updatesPromise = fetch('/api/updates', { credentials: 'include' }).then(r => r.ok ? r.json() : { updates: [] }).catch(() => ({ updates: [] }));
 
-            const [profile, links, files, statsRes, updatesRes] = await Promise.all([profilePromise, linksPromise, filesPromise, statsPromise, updatesPromise]);
+            const [statsRes, updatesRes] = await Promise.all([statsPromise, updatesPromise]);
             
             let stats = statsRes || { uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' };
             let updates = updatesRes?.updates || [];
