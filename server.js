@@ -508,6 +508,56 @@ app.get('/api/profile/view-count', authenticateToken, rateLimit({ windowMs: 5 * 
   }
 });
 
+app.post('/api/links/track-click/:linkId', async (req, res) => {
+  try {
+    const { linkId } = req.params;
+    const link = await getQuery('links', 'id', parseInt(linkId));
+    
+    if (!link) {
+      return res.status(404).json({ error: 'Link not found' });
+    }
+
+    const currentClicks = link.click_count || 0;
+    await runQuery(
+      'links',
+      { id: link.id, user_id: link.user_id, title: link.title, url: link.url, click_count: currentClicks + 1, description: link.description },
+      'update',
+      { column: 'id', value: linkId }
+    );
+
+    res.json({ success: true, click_count: currentClicks + 1 });
+  } catch (err) {
+    console.error('Click tracking error:', err);
+    res.status(500).json({ error: 'Failed to track click' });
+  }
+});
+
+app.post('/api/biolink/track-click/:username', async (req, res) => {
+  try {
+    const { username } = req.params;
+    const user = await getQuery('users', 'username', username.toLowerCase());
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const profile = await getQuery('profiles', 'user_id', user.id);
+    const currentClicks = profile?.biolink_clicks || 0;
+    
+    await runQuery(
+      'profiles',
+      { ...profile, biolink_clicks: currentClicks + 1 },
+      'update',
+      { column: 'user_id', value: user.id }
+    );
+
+    res.json({ success: true, biolink_clicks: currentClicks + 1 });
+  } catch (err) {
+    console.error('Biolink click tracking error:', err);
+    res.status(500).json({ error: 'Failed to track biolink click' });
+  }
+});
+
 app.use('/api/links', linksHandler);
 app.use('/api/profile', profileHandler);
 app.use('/api/invites', invitesHandler);

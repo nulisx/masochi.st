@@ -1709,9 +1709,14 @@ class Dashboard {
     async refreshBiolinksAnalytics() {
         try {
             const links = await this.fetchLinks();
-            if (!links || links.length === 0) return;
+            if (!links) return;
 
-            const totalClicks = links.reduce((sum, link) => sum + (link.click_count || 0), 0);
+            const biolinksClicksRes = await fetch('/api/auth/me', { credentials: 'include' });
+            const userData = biolinksClicksRes.ok ? await biolinksClicksRes.json() : {};
+            const biolinksClicks = userData?.profile?.biolink_clicks || 0;
+
+            const directLinkClicks = links.length > 0 ? links.reduce((sum, link) => sum + (link.click_count || 0), 0) : 0;
+            const totalClicks = biolinksClicks + directLinkClicks;
             const activeLinks = links.length;
             const avgClicks = activeLinks > 0 ? Math.round(totalClicks / activeLinks) : 0;
 

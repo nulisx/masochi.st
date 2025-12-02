@@ -314,6 +314,14 @@
             }
         }
         
+        function trackLinkClick(linkId, event) {
+            fetch(`/api/links/track-click/${linkId}`, { method: 'POST' }).catch(() => {});
+        }
+
+        function trackConnectionClick(url, event) {
+            fetch(`/api/biolink/track-click/${username}`, { method: 'POST' }).catch(() => {});
+        }
+
         function renderProfile(data) {
             const { user, profile, links, connections } = data;
             
@@ -335,7 +343,7 @@
                         `;
                     } else {
                         connectionsHtml += `
-                            <a href="${url}" target="_blank" rel="noopener" class="connection-icon" title="${conn.platform}">
+                            <a href="${url}" target="_blank" rel="noopener" class="connection-icon" title="${conn.platform}" onclick="trackConnectionClick('${url}', event)">
                                 <img src="${iconPath}" alt="${conn.platform}" onerror="this.style.display='none'">
                             </a>
                         `;
@@ -349,7 +357,7 @@
                 linksHtml = '<div class="links-container">';
                 links.forEach(link => {
                     linksHtml += `
-                        <a href="${link.url}" target="_blank" rel="noopener" class="link-item">
+                        <a href="${link.url}" target="_blank" rel="noopener" class="link-item" onclick="trackLinkClick(${link.id}, event)">
                             ${link.title}
                         </a>
                     `;
