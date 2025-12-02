@@ -4556,20 +4556,24 @@ class Dashboard {
                             <p class="card-description">Enable file hosting features for users</p>
                         </div>
                     </div>
-                    <div style="padding: 20px; border-top: 1px dashed var(--dashed-border);">
-                        <div class="form-group">
-                            <label class="form-label">Username</label>
-                            <input type="text" id="membershipUsername" placeholder="Enter username" class="form-input">
+                    <div style="padding: 24px; border-top: 1px dashed var(--dashed-border);">
+                        <div style="display: grid; gap: 20px;">
+                            <div class="form-group">
+                                <label class="form-label" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> Username</label>
+                                <input type="text" id="membershipUsername" placeholder="Enter username" class="form-input" style="background: rgba(147,51,234,0.05); border: 1px solid rgba(168,85,247,0.2); padding: 12px 16px; border-radius: 10px; transition: all 0.2s ease;" onfocus="this.style.borderColor='rgba(168,85,247,0.5)'; this.style.background='rgba(147,51,234,0.08)'" onblur="this.style.borderColor='rgba(168,85,247,0.2)'; this.style.background='rgba(147,51,234,0.05)'">
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                <div class="form-group">
+                                    <label class="form-label" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20V8H2z"></path><path d="M4 12h16"></path><path d="M2 8h3V6a3 3 0 0 1 6 0v2h2V6a3 3 0 0 1 6 0v2h3"></path></svg> Storage (GB)</label>
+                                    <input type="number" id="storageLimit" placeholder="100" class="form-input" min="1" max="1000" value="100" style="background: rgba(147,51,234,0.05); border: 1px solid rgba(168,85,247,0.2); padding: 12px 16px; border-radius: 10px; transition: all 0.2s ease;" onfocus="this.style.borderColor='rgba(168,85,247,0.5)'; this.style.background='rgba(147,51,234,0.08)'" onblur="this.style.borderColor='rgba(168,85,247,0.2)'; this.style.background='rgba(147,51,234,0.05)'">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4"></path><path d="M8 2v4"></path><path d="M3 10h18"></path></svg> Expiry Date</label>
+                                    <input type="date" id="membershipDate" class="form-input" style="background: rgba(147,51,234,0.05); border: 1px solid rgba(168,85,247,0.2); padding: 12px 16px; border-radius: 10px; transition: all 0.2s ease;" onfocus="this.style.borderColor='rgba(168,85,247,0.5)'; this.style.background='rgba(147,51,234,0.08)'" onblur="this.style.borderColor='rgba(168,85,247,0.2)'; this.style.background='rgba(147,51,234,0.05)'">
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Storage Limit (GB)</label>
-                            <input type="number" id="storageLimit" placeholder="e.g., 100" class="form-input" min="1" max="1000" value="100">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Access Expiry Date</label>
-                            <input type="date" id="membershipDate" class="form-input">
-                        </div>
-                        <button onclick="dashboard.setMembership()" class="btn btn-primary" style="width: 100%;">Grant File Hosting Access</button>
+                        <button onclick="dashboard.setMembership()" class="btn btn-primary" style="width: 100%; margin-top: 20px; padding: 14px 20px; background: linear-gradient(90deg, #9333ea, #a855f7); border: 1px solid rgba(168,85,247,0.3); border-radius: 10px; color: white; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 0 20px rgba(168,85,247,0.4)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='none'; this.style.transform='translateY(0)'">Grant File Hosting Access</button>
                     </div>
                 </div>
 
@@ -4583,33 +4587,31 @@ class Dashboard {
                             <p class="card-description">Create invitation codes for new staff members (Format: GlowXXXX)</p>
                         </div>
                     </div>
-                    <div style="padding: 20px; border-top: 1px dashed var(--dashed-border);">
-                        <div class="form-group">
-                            <label class="form-label">Role for Invite</label>
-                            <select id="inviteRole" class="form-input">
+                    <div style="padding: 24px; border-top: 1px dashed var(--dashed-border);">
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label class="form-label" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"></path><path d="M15 9H9v6h6V9z"></path></svg> Select Role</label>
+                            <select id="inviteRole" class="form-input" style="background: rgba(147,51,234,0.05); border: 1px solid rgba(168,85,247,0.2); padding: 12px 16px; border-radius: 10px; transition: all 0.2s ease; cursor: pointer; color: white; font-size: 14px;" onfocus="this.style.borderColor='rgba(168,85,247,0.5)'; this.style.background='rgba(147,51,234,0.08)'" onblur="this.style.borderColor='rgba(168,85,247,0.2)'; this.style.background='rgba(147,51,234,0.05)'">
                                 ${userRole === 'owner' ? `
-                                    <option value="owner">Owner</option>
-                                    <option value="manager">Manager</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="mod">Moderator</option>
+                                    <option value="owner" style="background: #1a1a2e; color: white;">👑 Owner</option>
+                                    <option value="manager" style="background: #1a1a2e; color: white;">🎯 Manager</option>
+                                    <option value="admin" style="background: #1a1a2e; color: white;">⚙️ Admin</option>
+                                    <option value="mod" style="background: #1a1a2e; color: white;">🛡️ Moderator</option>
                                 ` : userRole === 'manager' ? `
-                                    <option value="admin">Admin</option>
-                                    <option value="mod">Moderator</option>
+                                    <option value="admin" style="background: #1a1a2e; color: white;">⚙️ Admin</option>
+                                    <option value="mod" style="background: #1a1a2e; color: white;">🛡️ Moderator</option>
                                 ` : `
-                                    <option value="mod">Moderator</option>
+                                    <option value="mod" style="background: #1a1a2e; color: white;">🛡️ Moderator</option>
                                 `}
                             </select>
                         </div>
-                        <button onclick="dashboard.generateInviteCode()" class="btn btn-primary" style="width: 100%;">Generate Code</button>
-                        <div id="generatedInviteCode" style="margin-top: 16px; display: none;">
-                            <div style="background: rgba(147, 51, 234, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 8px; padding: 16px;">
-                                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Generated Code:</div>
-                                <div style="display: flex; gap: 8px; align-items: center;">
-                                    <div id="inviteCodeDisplay" style="font-family: monospace; font-size: 18px; font-weight: 600; color: #a855f7; flex: 1;"></div>
-                                    <button onclick="dashboard.copyInviteCode()" class="btn btn-secondary" style="padding: 8px 12px;">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                                    </button>
-                                </div>
+                        <button onclick="dashboard.generateInviteCode()" class="btn btn-primary" style="width: 100%; padding: 14px 20px; background: linear-gradient(90deg, #9333ea, #a855f7); border: 1px solid rgba(168,85,247,0.3); border-radius: 10px; color: white; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 0 20px rgba(168,85,247,0.4)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='none'; this.style.transform='translateY(0)'">Generate Code</button>
+                        <div id="generatedInviteCode" style="margin-top: 20px; display: none; background: linear-gradient(135deg, rgba(147,51,234,0.15), rgba(147,51,234,0.05)); border: 1px solid rgba(168,85,247,0.3); border-radius: 12px; padding: 20px;">
+                            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Generated Code</div>
+                            <div style="display: flex; gap: 12px; align-items: center; background: rgba(0,0,0,0.2); padding: 16px; border-radius: 10px;">
+                                <div id="inviteCodeDisplay" style="font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: #a855f7; flex: 1; letter-spacing: 2px;"></div>
+                                <button onclick="dashboard.copyInviteCode()" class="btn btn-secondary" style="padding: 10px 16px; background: linear-gradient(90deg, rgba(168,85,247,0.2), rgba(168,85,247,0.1)); border: 1px solid rgba(168,85,247,0.3); border-radius: 8px; color: #a855f7; cursor: pointer; transition: all 0.2s ease; font-weight: 600;" onmouseover="this.style.background='linear-gradient(90deg, rgba(168,85,247,0.3), rgba(168,85,247,0.2))'; this.style.boxShadow='0 0 15px rgba(168,85,247,0.2)'" onmouseout="this.style.background='linear-gradient(90deg, rgba(168,85,247,0.2), rgba(168,85,247,0.1))'; this.style.boxShadow='none'">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -4717,23 +4719,21 @@ class Dashboard {
                             <p class="card-description">Create invitation codes for new staff members (Format: GlowXXXX)</p>
                         </div>
                     </div>
-                    <div style="padding: 20px; border-top: 1px dashed var(--dashed-border);">
-                        <div class="form-group">
-                            <label class="form-label">Role for Invite</label>
-                            <select id="inviteRole" class="form-input">
-                                <option value="user">User</option>
+                    <div style="padding: 24px; border-top: 1px dashed var(--dashed-border);">
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label class="form-label" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"></path><path d="M15 9H9v6h6V9z"></path></svg> Invite Role</label>
+                            <select id="inviteRole" class="form-input" style="background: rgba(147,51,234,0.05); border: 1px solid rgba(168,85,247,0.2); padding: 12px 16px; border-radius: 10px; transition: all 0.2s ease; cursor: pointer; color: white; font-size: 14px;" onfocus="this.style.borderColor='rgba(168,85,247,0.5)'; this.style.background='rgba(147,51,234,0.08)'" onblur="this.style.borderColor='rgba(168,85,247,0.2)'; this.style.background='rgba(147,51,234,0.05)'">
+                                <option value="user" style="background: #1a1a2e; color: white;">👤 User</option>
                             </select>
                         </div>
-                        <button onclick="dashboard.generateInviteCode()" class="btn btn-primary" style="width: 100%;">Generate Code</button>
-                        <div id="generatedInviteCode" style="margin-top: 16px; display: none;">
-                            <div style="background: rgba(147, 51, 234, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 8px; padding: 16px;">
-                                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Generated Code:</div>
-                                <div style="display: flex; gap: 8px; align-items: center;">
-                                    <div id="inviteCodeDisplay" style="font-family: monospace; font-size: 18px; font-weight: 600; color: #a855f7; flex: 1;"></div>
-                                    <button onclick="dashboard.copyInviteCode()" class="btn btn-secondary" style="padding: 8px 12px;">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                                    </button>
-                                </div>
+                        <button onclick="dashboard.generateInviteCode()" class="btn btn-primary" style="width: 100%; padding: 14px 20px; background: linear-gradient(90deg, #9333ea, #a855f7); border: 1px solid rgba(168,85,247,0.3); border-radius: 10px; color: white; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 0 20px rgba(168,85,247,0.4)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='none'; this.style.transform='translateY(0)'">Generate Code</button>
+                        <div id="generatedInviteCode" style="margin-top: 20px; display: none; background: linear-gradient(135deg, rgba(147,51,234,0.15), rgba(147,51,234,0.05)); border: 1px solid rgba(168,85,247,0.3); border-radius: 12px; padding: 20px;">
+                            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Generated Code</div>
+                            <div style="display: flex; gap: 12px; align-items: center; background: rgba(0,0,0,0.2); padding: 16px; border-radius: 10px;">
+                                <div id="inviteCodeDisplay" style="font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: #a855f7; flex: 1; letter-spacing: 2px;"></div>
+                                <button onclick="dashboard.copyInviteCode()" class="btn btn-secondary" style="padding: 10px 16px; background: linear-gradient(90deg, rgba(168,85,247,0.2), rgba(168,85,247,0.1)); border: 1px solid rgba(168,85,247,0.3); border-radius: 8px; color: #a855f7; cursor: pointer; transition: all 0.2s ease; font-weight: 600;" onmouseover="this.style.background='linear-gradient(90deg, rgba(168,85,247,0.3), rgba(168,85,247,0.2))'; this.style.boxShadow='0 0 15px rgba(168,85,247,0.2)'" onmouseout="this.style.background='linear-gradient(90deg, rgba(168,85,247,0.2), rgba(168,85,247,0.1))'; this.style.boxShadow='none'">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                </button>
                             </div>
                         </div>
                     </div>
