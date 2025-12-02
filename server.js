@@ -915,7 +915,6 @@ app.delete('/api/bio/settings', authenticateToken, async (req, res) => {
   }
 });
 
-// File Report Endpoints
 app.get('/api/admin/file-reports/awaiting', authenticateToken, async (req, res) => {
   try {
     const user = await getQuery('users', 'id', req.user.id);

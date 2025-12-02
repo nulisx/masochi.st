@@ -20,5 +20,3 @@ LoginSelectView-CFUMygy4.js
 LoginSelectView-D9EZ9g1N.css
 
 ---
-
-good now go through the entire source code and everything make sure there isnt any comments remove all of the comments.
