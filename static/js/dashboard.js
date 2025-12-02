@@ -1693,6 +1693,10 @@ class Dashboard {
         }
     }
 
+    trackBiolinkClick(username) {
+        fetch(`/api/biolink/track-click/${username}`, { method: 'POST' }).catch(() => {});
+    }
+
     onRefreshClick(event) {
         const btn = event.currentTarget;
         btn.classList.add('spinning');
@@ -1709,15 +1713,15 @@ class Dashboard {
     async refreshBiolinksAnalytics() {
         try {
             const links = await this.fetchLinks();
-            if (!links) return;
+            
+            // Fetch fresh user data to get updated biolink_clicks
+            const meRes = await fetch('/api/auth/me', { credentials: 'include' });
+            const meData = meRes.ok ? await meRes.json() : {};
+            const biolinksClicks = meData?.profile?.biolink_clicks || 0;
 
-            const biolinksClicksRes = await fetch('/api/auth/me', { credentials: 'include' });
-            const userData = biolinksClicksRes.ok ? await biolinksClicksRes.json() : {};
-            const biolinksClicks = userData?.profile?.biolink_clicks || 0;
-
-            const directLinkClicks = links.length > 0 ? links.reduce((sum, link) => sum + (link.click_count || 0), 0) : 0;
+            const directLinkClicks = links && links.length > 0 ? links.reduce((sum, link) => sum + (link.click_count || 0), 0) : 0;
             const totalClicks = biolinksClicks + directLinkClicks;
-            const activeLinks = links.length;
+            const activeLinks = links ? links.length : 0;
             const avgClicks = activeLinks > 0 ? Math.round(totalClicks / activeLinks) : 0;
 
             const totalClicksEl = document.getElementById('totalClicksValue');
@@ -1786,7 +1790,7 @@ class Dashboard {
                             <button class="btn btn-secondary" style="padding: 8px 12px; white-space: nowrap; background: linear-gradient(90deg, rgba(147,51,234,0.1), rgba(168,85,247,0.1)); border: 1px solid rgba(168,85,247,0.3); transition: all 0.2s ease;" onclick="dashboard.onRefreshClick(event);" title="Refresh analytics" id="refreshAnalyticsBtn">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2-8.83"></path></svg>
                             </button>
-                            <button class="btn btn-secondary" style="padding: 8px 12px; white-space: nowrap;" onclick="window.open('https://${bioUrl}', '_blank');" title="Open link">
+                            <button class="btn btn-secondary" style="padding: 8px 12px; white-space: nowrap;" onclick="dashboard.trackBiolinkClick('${this.user?.username}'); window.open('https://${bioUrl}', '_blank');" title="Open link">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                             </button>
                             <button class="btn btn-secondary" style="padding: 8px 12px; white-space: nowrap;" onclick="navigator.clipboard.writeText('https://${bioUrl}'); dashboard.showToast('Biolink copied!', 'success');" title="Copy link">

@@ -190,6 +190,10 @@
                 }
                 
                 const data = await response.json();
+                
+                // Track biolink visit/click
+                fetch(`/api/biolink/track-click/${username}`, { method: 'POST' }).catch(() => {});
+                
                 renderProfile(data);
             } catch (error) {
                 document.getElementById('profileContainer').innerHTML = `
