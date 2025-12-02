@@ -1693,6 +1693,19 @@ class Dashboard {
         }
     }
 
+    onRefreshClick(event) {
+        const btn = event.currentTarget;
+        btn.classList.add('spinning');
+        btn.disabled = true;
+        
+        setTimeout(() => {
+            btn.classList.remove('spinning');
+            btn.disabled = false;
+        }, 600);
+        
+        this.refreshBiolinksAnalytics();
+    }
+
     async refreshBiolinksAnalytics() {
         try {
             const links = await this.fetchLinks();
@@ -1765,7 +1778,7 @@ class Dashboard {
                     <div style="background: var(--bg-tertiary); border-radius: 10px; padding: 16px; display: flex; align-items: center; gap: 12px; justify-content: space-between;">
                         <a href="https://${bioUrl}" target="_blank" style="display: inline-block; font-size: 14px; color: var(--accent-secondary); word-break: break-word; text-decoration: none; transition: all 0.2s ease; border-bottom: 2px solid transparent; padding-bottom: 2px; cursor: pointer;" onmouseover="this.style.borderBottomColor='var(--accent-secondary)'" onmouseout="this.style.borderBottomColor='transparent'">${bioUrl}</a>
                         <div style="display: flex; gap: 8px; flex-shrink: 0;">
-                            <button class="btn btn-secondary" style="padding: 8px 12px; white-space: nowrap; background: linear-gradient(90deg, rgba(147,51,234,0.1), rgba(168,85,247,0.1)); border: 1px solid rgba(168,85,247,0.3); transition: all 0.2s ease;" onclick="dashboard.refreshBiolinksAnalytics();" title="Refresh analytics" id="refreshAnalyticsBtn">
+                            <button class="btn btn-secondary" style="padding: 8px 12px; white-space: nowrap; background: linear-gradient(90deg, rgba(147,51,234,0.1), rgba(168,85,247,0.1)); border: 1px solid rgba(168,85,247,0.3); transition: all 0.2s ease;" onclick="dashboard.onRefreshClick(event);" title="Refresh analytics" id="refreshAnalyticsBtn">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2-8.83"></path></svg>
                             </button>
                             <button class="btn btn-secondary" style="padding: 8px 12px; white-space: nowrap;" onclick="window.open('https://${bioUrl}', '_blank');" title="Open link">
