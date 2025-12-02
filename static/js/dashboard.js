@@ -847,7 +847,7 @@ class Dashboard {
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
-                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative; overflow: hidden;">
+                <div class="card" style="border: 1px dashed rgba(128, 128, 128, 0.35); position: relative; overflow: hidden;">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24">
@@ -896,7 +896,7 @@ class Dashboard {
                     <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent 0%, rgba(168, 85, 247, 0.3) 100%); pointer-events: none;"></div>
                 </div>
                 
-                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative; overflow: hidden;">
+                <div class="card" style="border: 1px dashed rgba(128, 128, 128, 0.35); position: relative; overflow: hidden;">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -951,7 +951,7 @@ class Dashboard {
             </div>
             
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
-                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative; overflow: hidden;">
+                <div class="card" style="border: 1px dashed rgba(128, 128, 128, 0.35); position: relative; overflow: hidden;">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
@@ -974,7 +974,7 @@ class Dashboard {
                     <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent 0%, rgba(168, 85, 247, 0.3) 100%); pointer-events: none;"></div>
                 </div>
                 
-                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative; overflow: hidden;">
+                <div class="card" style="border: 1px dashed rgba(128, 128, 128, 0.35); position: relative; overflow: hidden;">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 256 256" fill="#a855f7" xmlns="http://www.w3.org/2000/svg">
@@ -994,7 +994,7 @@ class Dashboard {
                     <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent 0%, rgba(168, 85, 247, 0.3) 100%); pointer-events: none;"></div>
                 </div>
                 
-                <div class="card" style="border: 1px dashed rgba(168, 85, 247, 0.35); position: relative; overflow: hidden;">
+                <div class="card" style="border: 1px dashed rgba(128, 128, 128, 0.35); position: relative; overflow: hidden;">
                     <div class="card-header">
                         <div class="card-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">
                             <svg width="20" height="20" viewBox="0 0 1200 1200" fill="#a855f7" xmlns="http://www.w3.org/2000/svg">
