@@ -4542,6 +4542,48 @@ class Dashboard {
                         <button onclick="dashboard.setMembership()" class="btn btn-primary" style="width: 100%;">Grant File Hosting Access</button>
                     </div>
                 </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: linear-gradient(180deg, #8b5cf6, #a855f7); width: 44px; height: 44px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M12 2a10 10 0 1 1-10 10A10 10 0 0 1 12 2m0 7h6m-6 4h6M8 9h6m-6 4h2"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Generate Invite Codes</h3>
+                            <p class="card-description">Create invitation codes for new staff members (Format: GlowXXXX)</p>
+                        </div>
+                    </div>
+                    <div style="padding: 20px; border-top: 1px dashed var(--dashed-border);">
+                        <div class="form-group">
+                            <label class="form-label">Role for Invite</label>
+                            <select id="inviteRole" class="form-input">
+                                ${userRole === 'owner' ? `
+                                    <option value="owner">Owner</option>
+                                    <option value="manager">Manager</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="mod">Moderator</option>
+                                ` : userRole === 'manager' ? `
+                                    <option value="admin">Admin</option>
+                                    <option value="mod">Moderator</option>
+                                ` : `
+                                    <option value="mod">Moderator</option>
+                                `}
+                            </select>
+                        </div>
+                        <button onclick="dashboard.generateInviteCode()" class="btn btn-primary" style="width: 100%;">Generate Code</button>
+                        <div id="generatedInviteCode" style="margin-top: 16px; display: none;">
+                            <div style="background: rgba(147, 51, 234, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 8px; padding: 16px;">
+                                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Generated Code:</div>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <div id="inviteCodeDisplay" style="font-family: monospace; font-size: 18px; font-weight: 600; color: #a855f7; flex: 1;"></div>
+                                    <button onclick="dashboard.copyInviteCode()" class="btn btn-secondary" style="padding: 8px 12px;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             `;
         } catch (error) {
             contentArea.innerHTML = `<div class="empty-state"><h3>Error</h3><p>${error.message}</p></div>`;
@@ -4634,6 +4676,38 @@ class Dashboard {
                         `}
                     </div>
                 </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: linear-gradient(180deg, #8b5cf6, #a855f7); width: 44px; height: 44px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M12 2a10 10 0 1 1-10 10A10 10 0 0 1 12 2m0 7h6m-6 4h6M8 9h6m-6 4h2"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Generate Invite Codes</h3>
+                            <p class="card-description">Create invitation codes for new staff members (Format: GlowXXXX)</p>
+                        </div>
+                    </div>
+                    <div style="padding: 20px; border-top: 1px dashed var(--dashed-border);">
+                        <div class="form-group">
+                            <label class="form-label">Role for Invite</label>
+                            <select id="inviteRole" class="form-input">
+                                <option value="mod">Moderator</option>
+                            </select>
+                        </div>
+                        <button onclick="dashboard.generateInviteCode()" class="btn btn-primary" style="width: 100%;">Generate Code</button>
+                        <div id="generatedInviteCode" style="margin-top: 16px; display: none;">
+                            <div style="background: rgba(147, 51, 234, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 8px; padding: 16px;">
+                                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Generated Code:</div>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <div id="inviteCodeDisplay" style="font-family: monospace; font-size: 18px; font-weight: 600; color: #a855f7; flex: 1;"></div>
+                                    <button onclick="dashboard.copyInviteCode()" class="btn btn-secondary" style="padding: 8px 12px;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             `;
         } catch (error) {
             contentArea.innerHTML = `<div class="empty-state"><h3>Error</h3><p>${error.message}</p></div>`;
@@ -4659,6 +4733,40 @@ class Dashboard {
             }
         } catch (error) {
             console.error('Error changing role:', error);
+        }
+    }
+
+    async generateInviteCode() {
+        try {
+            const role = document.getElementById('inviteRole')?.value || 'mod';
+            const res = await fetch('/api/invites/generate', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ role })
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                this.currentInviteCode = data.invite.code;
+                document.getElementById('inviteCodeDisplay').textContent = data.invite.code;
+                document.getElementById('generatedInviteCode').style.display = 'block';
+                this.showToast('Invite code generated!', 'success');
+            } else {
+                const error = await res.json();
+                this.showToast(error.error || 'Failed to generate invite', 'error');
+            }
+        } catch (err) {
+            console.error('Error generating invite:', err);
+            this.showToast('Error generating invite code', 'error');
+        }
+    }
+
+    copyInviteCode() {
+        if (this.currentInviteCode) {
+            navigator.clipboard.writeText(this.currentInviteCode).then(() => {
+                this.showToast('Invite code copied!', 'success');
+            });
         }
     }
 
