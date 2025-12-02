@@ -1646,6 +1646,9 @@ class Dashboard {
             </div>`;
             
             this.setupBiolinksEventListeners();
+            if (this.biolinksActiveTab === 'overview') {
+                this.startBiolinkAnalyticsPolling();
+            }
         } catch (error) {
             console.error('Error loading biolinks:', error);
             contentArea.innerHTML = `<div class="empty-state"><p>Error loading biolinks</p></div>`;
@@ -1667,6 +1670,72 @@ class Dashboard {
     switchBiolinksTab(tab) {
         this.biolinksActiveTab = tab;
         this.renderBiolinks();
+        if (tab === 'overview') {
+            this.startBiolinkAnalyticsPolling();
+        } else {
+            this.stopBiolinkAnalyticsPolling();
+        }
+    }
+
+    biolinksAnalyticsInterval = null;
+
+    startBiolinkAnalyticsPolling() {
+        if (this.biolinksAnalyticsInterval) clearInterval(this.biolinksAnalyticsInterval);
+        this.biolinksAnalyticsInterval = setInterval(() => {
+            this.refreshBiolinksAnalytics();
+        }, 2000);
+    }
+
+    stopBiolinkAnalyticsPolling() {
+        if (this.biolinksAnalyticsInterval) {
+            clearInterval(this.biolinksAnalyticsInterval);
+            this.biolinksAnalyticsInterval = null;
+        }
+    }
+
+    async refreshBiolinksAnalytics() {
+        try {
+            const links = await this.fetchLinks();
+            if (!links || links.length === 0) return;
+
+            const totalClicks = links.reduce((sum, link) => sum + (link.click_count || 0), 0);
+            const activeLinks = links.length;
+            const avgClicks = activeLinks > 0 ? Math.round(totalClicks / activeLinks) : 0;
+
+            const totalClicksEl = document.getElementById('totalClicksValue');
+            const activeLinksEl = document.getElementById('activeLinksValue');
+            const avgClicksEl = document.getElementById('avgClicksValue');
+
+            if (totalClicksEl) {
+                const oldVal = parseInt(totalClicksEl.textContent);
+                totalClicksEl.textContent = totalClicks;
+                if (oldVal !== totalClicks) {
+                    totalClicksEl.style.animation = 'none';
+                    setTimeout(() => { totalClicksEl.style.animation = 'pulse 0.4s ease-in-out'; }, 10);
+                }
+            }
+
+            if (activeLinksEl) {
+                activeLinksEl.textContent = activeLinks;
+            }
+
+            if (avgClicksEl) {
+                const oldVal = parseInt(avgClicksEl.textContent);
+                avgClicksEl.textContent = avgClicks;
+                if (oldVal !== avgClicks) {
+                    avgClicksEl.style.animation = 'none';
+                    setTimeout(() => { avgClicksEl.style.animation = 'pulse 0.4s ease-in-out'; }, 10);
+                }
+            }
+
+            const refreshBtn = document.getElementById('refreshAnalyticsBtn');
+            if (refreshBtn) {
+                refreshBtn.style.opacity = '1';
+                refreshBtn.style.transform = 'rotate(0deg)';
+            }
+        } catch (err) {
+            console.debug('Analytics refresh skipped');
+        }
     }
 
     switchCustomizeSubTab(subTab) {
@@ -1696,6 +1765,9 @@ class Dashboard {
                     <div style="background: var(--bg-tertiary); border-radius: 10px; padding: 16px; display: flex; align-items: center; gap: 12px; justify-content: space-between;">
                         <a href="https://${bioUrl}" target="_blank" style="display: inline-block; font-size: 14px; color: var(--accent-secondary); word-break: break-word; text-decoration: none; transition: all 0.2s ease; border-bottom: 2px solid transparent; padding-bottom: 2px; cursor: pointer;" onmouseover="this.style.borderBottomColor='var(--accent-secondary)'" onmouseout="this.style.borderBottomColor='transparent'">${bioUrl}</a>
                         <div style="display: flex; gap: 8px; flex-shrink: 0;">
+                            <button class="btn btn-secondary" style="padding: 8px 12px; white-space: nowrap; background: linear-gradient(90deg, rgba(147,51,234,0.1), rgba(168,85,247,0.1)); border: 1px solid rgba(168,85,247,0.3); transition: all 0.2s ease;" onclick="dashboard.refreshBiolinksAnalytics();" title="Refresh analytics" id="refreshAnalyticsBtn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2-8.83"></path></svg>
+                            </button>
                             <button class="btn btn-secondary" style="padding: 8px 12px; white-space: nowrap;" onclick="window.open('https://${bioUrl}', '_blank');" title="Open link">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                             </button>
@@ -1707,23 +1779,26 @@ class Dashboard {
                 </div>
 
                 <div class="card" style="padding: 20px;">
-                    <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 17"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-                        Realtime Analytics
-                    </h3>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                        <h3 style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 17"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                            Realtime Analytics
+                        </h3>
+                        <span style="font-size: 11px; color: var(--text-muted); background: rgba(34,197,94,0.1); padding: 4px 8px; border-radius: 4px;">● Live</span>
+                    </div>
                     <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">Track clicks, views, and engagement metrics across the biolinks with detailed statistics and insights</p>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px;">
-                        <div style="background: var(--bg-tertiary); border-radius: 10px; padding: 16px; text-align: center;">
+                        <div style="background: var(--bg-tertiary); border-radius: 10px; padding: 16px; text-align: center; border: 1px solid rgba(255,255,255,0.02); transition: all 0.3s ease;" id="totalClicksCard">
                             <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 8px;">Total Clicks</p>
-                            <p style="font-size: 24px; font-weight: 700; color: var(--accent-secondary);">${links.reduce((sum, link) => sum + (link.click_count || 0), 0)}</p>
+                            <p style="font-size: 24px; font-weight: 700; color: var(--accent-secondary);" id="totalClicksValue">${links.reduce((sum, link) => sum + (link.click_count || 0), 0)}</p>
                         </div>
-                        <div style="background: var(--bg-tertiary); border-radius: 10px; padding: 16px; text-align: center;">
+                        <div style="background: var(--bg-tertiary); border-radius: 10px; padding: 16px; text-align: center; border: 1px solid rgba(255,255,255,0.02); transition: all 0.3s ease;" id="activeLinksCard">
                             <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 8px;">Active Links</p>
-                            <p style="font-size: 24px; font-weight: 700; color: var(--accent-secondary);">${links.length}</p>
+                            <p style="font-size: 24px; font-weight: 700; color: var(--accent-secondary);" id="activeLinksValue">${links.length}</p>
                         </div>
-                        <div style="background: var(--bg-tertiary); border-radius: 10px; padding: 16px; text-align: center;">
+                        <div style="background: var(--bg-tertiary); border-radius: 10px; padding: 16px; text-align: center; border: 1px solid rgba(255,255,255,0.02); transition: all 0.3s ease;" id="avgClicksCard">
                             <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 8px;">Avg Clicks</p>
-                            <p style="font-size: 24px; font-weight: 700; color: var(--accent-secondary);">${links.length > 0 ? Math.round(links.reduce((sum, link) => sum + (link.click_count || 0), 0) / links.length) : 0}</p>
+                            <p style="font-size: 24px; font-weight: 700; color: var(--accent-secondary);" id="avgClicksValue">${links.length > 0 ? Math.round(links.reduce((sum, link) => sum + (link.click_count || 0), 0) / links.length) : 0}</p>
                         </div>
                     </div>
                 </div>
