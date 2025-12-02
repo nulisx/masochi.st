@@ -2312,7 +2312,6 @@ class Dashboard {
                                     <input type="text" class="form-input" id="gradientEndText" value="${s.gradient_end || '#ec4899'}">
                                 </div>
                             </div>
-                            <button class="btn btn-primary" onclick="dashboard.saveBioSettings('effects')">Save Changes</button>
                         </div>
                     </div>`;
 
@@ -2356,7 +2355,6 @@ class Dashboard {
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn btn-primary" onclick="dashboard.saveBioSettings('embed')">Save Changes</button>
                         </div>
                     </div>`;
 
