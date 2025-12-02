@@ -4773,10 +4773,15 @@ class Dashboard {
                 body: JSON.stringify({ role: newRole })
             });
             if (res.ok) {
+                this.showToast(`User role changed to ${newRole}`, 'success');
                 this.renderAdmin();
+            } else {
+                const error = await res.json();
+                this.showToast(error.error || 'Failed to change role', 'error');
             }
         } catch (error) {
             console.error('Error changing role:', error);
+            this.showToast('Error changing user role', 'error');
         }
     }
 
@@ -4825,10 +4830,15 @@ class Dashboard {
                     body: JSON.stringify({ reason })
                 });
                 if (res.ok) {
+                    this.showToast(isBanned ? `${username} has been unbanned` : `${username} has been banned`, 'success');
                     this.renderAdmin();
+                } else {
+                    const error = await res.json();
+                    this.showToast(error.error || 'Failed to update ban status', 'error');
                 }
             } catch (error) {
                 console.error('Error toggling ban:', error);
+                this.showToast('Error updating ban status', 'error');
             }
         }
     }
@@ -4876,10 +4886,15 @@ class Dashboard {
                 credentials: 'include'
             });
             if (res.ok) {
-                this.renderMod();
+                this.showToast('Report approved', 'success');
+                await this.renderMod();
+            } else {
+                const error = await res.json();
+                this.showToast(error.error || 'Failed to approve report', 'error');
             }
         } catch (error) {
             console.error('Error approving report:', error);
+            this.showToast('Error approving report', 'error');
         }
     }
 
@@ -4890,10 +4905,15 @@ class Dashboard {
                 credentials: 'include'
             });
             if (res.ok) {
-                this.renderMod();
+                this.showToast('Report declined', 'success');
+                await this.renderMod();
+            } else {
+                const error = await res.json();
+                this.showToast(error.error || 'Failed to decline report', 'error');
             }
         } catch (error) {
             console.error('Error declining report:', error);
+            this.showToast('Error declining report', 'error');
         }
     }
 }

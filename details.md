@@ -21,8 +21,6 @@ LoginSelectView-D9EZ9g1N.css
 
 ---
 
-good now fix everything from being mock data to actual data w the backend you said u made make everything actually work because some stuff doesnt work as you will see in the dashboard if u analyze everything fix it up entirely along with that make it all actually have a use and be useful yk what i mean fix everything entirely up i want this to be the best no mock data nothing fix everything to not be mock data and actual data and everything fix it all up entirely and make everything entirely like the best you know as i said and everything as i said fix this up to be entirely the best but not only that but the greatest entirely and while ur doing that analyze the entire thing to do all of this continue and everything
-
 good now i want you to go through the entire source code again and make sure there isnt any errors fix up all errors that you find fix everything make this the best entirely include: making sure all discovered bugs fixed and a short summary report listing what changed and why.
 Like actually go through every file, test locally (build/bundle), run full QA: authentication, role-based access, URL generation, and cross-browser checks. Provide a short report of fixes and any decisions where you favored `every` directions.
 Make it the best possible implementation — flawless, polished, and professional, because of this entirely.
