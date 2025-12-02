@@ -443,6 +443,7 @@ class Dashboard {
         
         let stats = statsRes || { uid: this.user?.id || 0, storage_used: 0, storage_limit: 1073741824, license_status: 'Inactive' };
         let updates = updatesRes?.updates || [];
+        this.updates = updates;
         
         const formatUpdateDate = (dateStr) => {
             const date = new Date(dateStr);
