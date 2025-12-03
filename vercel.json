@@ -3,28 +3,40 @@
   "builds": [
     {
       "src": "server.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "static/**/*",
+          "fonts/**/*",
+          "dashboard/**/*",
+          "dash-app/**/*",
+          "login/**/*",
+          "register/**/*",
+          "file/**/*",
+          "uploads/**/*",
+          "lib/**/*",
+          "api/**/*",
+          "about/**/*",
+          "assets/**/*",
+          "ic/**/*",
+          "pricing/**/*",
+          "privacy/**/*",
+          "profile/**/*",
+          "public/**/*",
+          "verify/**/*",
+          "404.html",
+          "index.html"
+        ]
+      }
     }
   ],
   "routes": [
-    {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
-    },
-    {
-      "src": "/fonts/(.*)",
-      "dest": "/fonts/$1"
-    },
     {
       "src": "/(.*)",
       "dest": "/server.js"
     }
   ],
   "env": {
-    "NODE_ENV": "production"
+    "ALLOWED_ORIGINS": "https://og.email,https://marit.al,https://www.og.email,https://www.marit.al"
   }
 }
