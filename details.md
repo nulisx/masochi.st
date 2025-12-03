@@ -20,3 +20,7 @@ LoginSelectView-CFUMygy4.js
 LoginSelectView-D9EZ9g1N.css
 
 ---
+
+great now look at the first image i messed up the thing i accidentally made my default owner as a user in the dash fix it also with this i want you to update the recovery thing so instead of it just doing this in the 2nd image it would instead have a thing in the Dash Overview page also change it in the Dash overview page from saying Dashboard on the sidebar to saying Overview and look at the 3rd image i want you to make it have that in the Overview page in the dash yk what i mean
+
+and along with all of this i want you to also add Web Analytics and Speed Insights:
