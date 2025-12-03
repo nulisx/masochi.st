@@ -34,7 +34,7 @@ VALUES (USER_ID, 'Platform Owner', '', 'default', NOW());
 ## Credentials
 
 - **Username**: `r`
-- **Email**: `yuriget@egirl.help`
+- **Email**: `qq@fbi.one`
 - **Password**: `ACK071675$!`
 - **Role**: `owner`
 
