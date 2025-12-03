@@ -1,0 +1,359 @@
+Skip to content
+nulisx's projects
+nulisx's projects
+
+Hobby
+
+masochist
+
+
+Find…
+F
+
+Filters
+
+Timeline
+
+Combobox Menu
+Last 30 minutes
+
+Contains Console Level
+
+​
+Warning
+0
+
+​
+Error
+0
+
+​
+Fatal
+0
+
+
+Resource
+
+
+
+
+
+Environment
+
+
+
+
+Route
+
+
+
+Request Path
+
+
+
+Status Code
+
+
+
+Request Type
+
+
+
+
+
+
+
+
+Host
+
+
+
+Request Method
+
+
+
+Cache
+
+
+
+Branch
+
+
+
+Deployment ID
+
+
+Search Logs
+Search logs…
+19:04:10
+19:24:10
+19:43:10
+20:04:10
+Time
+Status
+Host
+Request
+Messages
+Dec 02 20:02:19.26
+GET
+200
+og.email
+/
+Dec 02 20:01:44.35
+GET
+200
+og.email
+/
+Dec 02 20:01:32.19
+GET
+304
+og.email
+/static/fonts/bold.woff2
+Dec 02 20:01:32.19
+GET
+304
+og.email
+/static/fonts/regular.woff2
+Dec 02 20:01:32.03
+GET
+304
+og.email
+/static/css/global.css
+Dec 02 20:01:32.03
+GET
+304
+og.email
+/static/css/auth.css
+Dec 02 20:01:31.87
+GET
+304
+og.email
+/login
+Dec 02 20:01:29.13
+GET
+304
+og.email
+/assets/fonts/regular.woff2
+Dec 02 20:01:29.12
+GET
+304
+og.email
+/assets/fonts/bold.woff2
+Dec 02 20:01:28.85
+GET
+200
+og.email
+/static/js/verification-modal.js
+5
+✅ JWT secret loaded from environment variable
+Dec 02 20:01:28.85
+GET
+304
+og.email
+/static/css/verification-modal.css
+Dec 02 20:01:28.67
+GET
+404
+og.email
+/admin.php
+Dec 02 20:00:28.73
+GET
+304
+og.email
+/static/fonts/regular.woff2
+Dec 02 20:00:28.70
+GET
+304
+og.email
+/static/fonts/bold.woff2
+Dec 02 20:00:28.56
+GET
+304
+og.email
+/static/css/auth.css
+Dec 02 20:00:28.56
+GET
+304
+og.email
+/static/css/global.css
+Dec 02 20:00:26.73
+GET
+304
+og.email
+/login
+5
+✅ JWT secret loaded from environment variable
+Dec 02 19:58:31.49
+GET
+200
+og.email
+/
+Dec 02 19:58:19.39
+GET
+200
+og.email
+/
+Dec 02 19:49:53.87
+GET
+200
+masochist.vercel.app
+/
+5
+✅ JWT secret loaded from environment variable
+Dec 02 19:49:53.81
+GET
+200
+masochist.vercel.app
+/
+5
+✅ JWT secret loaded from environment variable
+Dec 02 19:35:47.67
+GET
+404
+og.email
+/new.php
+Dec 02 19:35:47.47
+GET
+404
+og.email
+/edit.php
+Dec 02 19:35:47.29
+GET
+404
+og.email
+/cong.php
+Dec 02 19:35:46.91
+GET
+404
+og.email
+/classwithtostring.php
+Dec 02 19:35:46.73
+GET
+404
+og.email
+/chosen.php
+Dec 02 19:35:46.55
+GET
+404
+og.email
+/cgi-bin/file.php
+Dec 02 19:35:46.37
+GET
+404
+og.email
+/cgi-bin/
+Dec 02 19:35:46.18
+GET
+404
+og.email
+/autoload_classmap/function.php
+Dec 02 19:35:45.98
+GET
+401
+og.email
+/api.php
+Dec 02 19:35:45.80
+GET
+404
+og.email
+/xmlrpc.php
+Dec 02 19:35:45.58
+GET
+404
+og.email
+/xmrlpc.php
+Dec 02 19:35:45.18
+GET
+404
+og.email
+/akcc.php
+Dec 02 19:35:44.98
+GET
+404
+og.email
+/admin.php
+Dec 02 19:35:43.26
+GET
+404
+og.email
+/abcd.php
+5
+✅ JWT secret loaded from environment variable
+Dec 02 19:32:28.23
+GET
+404
+og.email
+/robots.txt
+Dec 02 19:25:01.39
+GET
+200
+og.email
+/static/cdn/avatars/avatar_1_0de3289ec15bf5a6.png
+Dec 02 19:20:09.43
+GET
+304
+og.email
+/static/css/global.css
+Dec 02 19:20:09.43
+GET
+304
+og.email
+/static/css/auth.css
+Dec 02 19:20:09.26
+GET
+304
+og.email
+/login
+Dec 02 19:20:03.98
+GET
+304
+og.email
+/static/fonts/regular.woff2
+Dec 02 19:20:03.98
+GET
+304
+og.email
+/static/fonts/bold.woff2
+Dec 02 19:20:03.80
+GET
+304
+og.email
+/static/css/global.css
+5
+✅ JWT secret loaded from environment variable
+Dec 02 19:20:03.80
+GET
+304
+og.email
+/static/css/auth.css
+Dec 02 19:20:03.62
+GET
+304
+og.email
+/login
+Dec 02 19:18:37.19
+GET
+304
+og.email
+/static/cdn/avatars/avatar_1_0de3289ec15bf5a6.png
+Dec 02 19:13:29.24
+GET
+200
+masochist.vercel.app
+/
+Dec 02 19:13:29.19
+GET
+200
+masochist.vercel.app
+/
+Live Mode
+Dec 02 19:09:52.44
+GET
+200
+og.email
+/
+5
+✅ JWT secret loaded from environment variable
+No more logs to show within selected timeline
+
+20:04:10

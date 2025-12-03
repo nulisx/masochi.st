@@ -13,3 +13,6 @@ build/
 .vercel/
 NeonDB.env
 NeonDB.json
+.jwt-secret
+*.secret
+*.key
