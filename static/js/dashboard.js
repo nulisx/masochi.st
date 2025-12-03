@@ -1487,6 +1487,17 @@ class Dashboard {
         `;
 
         this.setupSettingsHandlers();
+        } catch (error) {
+            console.error('Error rendering settings:', error);
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <h1 class="page-title">Settings</h1>
+                </div>
+                <div class="card" style="padding: 24px; text-align: center;">
+                    <p style="color: var(--text-muted);">Failed to load settings. Please try again.</p>
+                </div>
+            `;
+        }
     }
 
     setupSettingsHandlers() {
