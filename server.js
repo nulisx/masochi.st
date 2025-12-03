@@ -1085,12 +1085,34 @@ app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'login', 'inde
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'register', 'index.html')));
 app.get('/login/reset', (req, res) => res.sendFile(path.join(__dirname, 'login', 'reset', 'index.html')));
 app.get('/login/loading', (req, res) => res.sendFile(path.join(__dirname, 'login', 'loading.html')));
-app.get('/dash', authenticateToken, (req, res) => {
+const authenticateOrRedirect = (req, res, next) => {
+  let token = req.cookies.token;
+  if (!token && req.headers.authorization) {
+    const parts = req.headers.authorization.split(' ');
+    if (parts.length === 2 && parts[0] === 'Bearer') {
+      token = parts[1];
+    }
+  }
+  
+  if (!token) {
+    return res.redirect('/login');
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    return res.redirect('/login');
+  }
+};
+
+app.get('/dash', authenticateOrRedirect, (req, res) => {
   console.log('✅ /dash accessed by authenticated user:', req.user.username);
   res.sendFile(path.join(__dirname, 'dashboard', 'index.html'));
 });
 
-app.get('/dashboard', authenticateToken, (req, res) => {
+app.get('/dashboard', authenticateOrRedirect, (req, res) => {
   console.log('✅ /dashboard accessed by authenticated user:', req.user.username);
   res.sendFile(path.join(__dirname, 'dashboard', 'index.html'));
 });
