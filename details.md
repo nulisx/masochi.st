@@ -21,6 +21,16 @@ LoginSelectView-D9EZ9g1N.css
 
 ---
 
-ok so i tested it once again and my account/user info still isnt loading in the dash or anything yk what i mean fix that entirely then fix everything else to be fixed w the new updates and sutff yk what i mean i cant even go to another section in the dash or anything so fix it all up
+ok so i tested it once again and my account/user info finally started loading in/up in the dash or anything yk what i mean fix that entirely
 
-so make sure this is right as well fix it up it isnt loading anything at all in the dash
+so i see you did make sure this is right as well
+
+but im still also wondering did you even finish ur tasks it says 2/5:
+In progress tasks
+2 / 5
+Fix code error in settings display
+Remove secret information files
+Check user dashboard loads correctly
+Check navigation for all sections
+Final check and cleanup
+
