@@ -352,6 +352,61 @@ class Dashboard {
         });
     }
 
+    setupModalStyles() {
+        if (document.getElementById('dashboard-modal-styles')) return;
+        
+        const style = document.createElement('style');
+        style.id = 'dashboard-modal-styles';
+        style.textContent = `
+            .modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+                backdrop-filter: blur(4px);
+            }
+            .modal-content {
+                background: var(--bg-secondary, #1a1a1c);
+                border: 1px solid rgba(168, 85, 247, 0.2);
+                border-radius: 16px;
+                padding: 24px;
+                max-width: 500px;
+                width: 90%;
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+            .modal-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 16px;
+            }
+            .modal-title {
+                color: #a855f7;
+                font-size: 18px;
+                font-weight: 600;
+            }
+            .modal-close {
+                background: none;
+                border: none;
+                color: var(--text-muted, #666);
+                cursor: pointer;
+                font-size: 24px;
+                line-height: 1;
+            }
+            .modal-close:hover {
+                color: #a855f7;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
     displaySearchResults(results, container) {
         if (results.length === 0) {
             container.innerHTML = '<div style="padding: 16px; text-align: center; color: var(--text-muted);">No results found</div>';
