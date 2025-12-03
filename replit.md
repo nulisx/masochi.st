@@ -88,7 +88,14 @@ Dashboard Pages:
 - `DELETE /api/updates/:id` - Delete update (admin only)
 
 ### Recent Changes (December 2025)
-- **Biolinks Customize Tab (Dec 1 - Latest)**:
+- **Dashboard Loading Fix (Dec 3 - Latest)**:
+  - Fixed duplicate dashboard initialization that caused blank content area after login
+  - Added initialization guards to prevent race conditions
+  - Improved error handling with segmented try/catch blocks for UI, page loading, and realtime updates
+  - Fixed CORS middleware bug (`!process.env.NODE_ENV === 'production'` → `process.env.NODE_ENV !== 'production'`)
+  - Added `authenticateOrRedirect` middleware for /dash and /dashboard routes to redirect to /login instead of showing JSON error
+  - Added detailed console logging for debugging authentication and page loading issues
+- **Biolinks Customize Tab (Dec 1)**:
   - Complete 9-tab customization system for bio pages
   - Sub-tabs: General, Background, Profile, Link, Badge, Layout, Effects, Embed, Config
   - General: Username, Nickname, Title, Description, Audio URL, Page Title, Favicon
