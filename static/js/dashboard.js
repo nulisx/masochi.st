@@ -6,7 +6,6 @@ class Dashboard {
     }
 
     async init() {
-        
         if (window.__dashboardInitialized || window.__dashboardInitStarted) {
             console.log('Dashboard already initializing/initialized');
             return;
@@ -15,7 +14,6 @@ class Dashboard {
         
         try {
             console.log('📊 Dashboard init starting...');
-            
             
             const response = await fetch('/api/auth/me', { 
                 method: 'GET',
@@ -32,10 +30,11 @@ class Dashboard {
             }
             
             const data = await response.json();
+            console.log('📡 /api/auth/me response data:', data);
             this.user = data.user || data;
             
             if (!this.user || !this.user.id) {
-                console.error('❌ Invalid user data');
+                console.error('❌ Invalid user data:', this.user);
                 window.location.replace('/login');
                 return;
             }
@@ -44,24 +43,63 @@ class Dashboard {
             sessionStorage.setItem('user', JSON.stringify(this.user));
             localStorage.setItem('user', JSON.stringify(this.user));
             
-            
             window.__dashboardInitialized = true;
             
             try {
+                console.log('📊 Setting up UI...');
                 this.setupUI();
-                this.loadPage('overview');
-                this.startRealtimeProfileViews();
-                console.log('✅ Dashboard fully loaded');
+                console.log('✅ UI setup complete');
             } catch (uiError) {
                 console.error('❌ UI setup error:', uiError);
-                
             }
+            
+            try {
+                console.log('📊 Loading overview page...');
+                await this.loadPage('overview');
+                console.log('✅ Overview page loaded');
+            } catch (pageError) {
+                console.error('❌ Page load error:', pageError);
+                const contentArea = document.getElementById('contentArea');
+                if (contentArea) {
+                    contentArea.innerHTML = `
+                        <div class="page-header">
+                            <div>
+                                <h1 class="page-title">Dashboard</h1>
+                                <p class="page-subtitle">Welcome back, @${this.user?.display_name || this.user?.username || 'User'}</p>
+                            </div>
+                        </div>
+                        <div class="card" style="padding: 24px; text-align: center;">
+                            <p style="color: var(--text-muted);">Unable to load dashboard content. Please refresh the page.</p>
+                            <button onclick="window.location.reload()" class="btn btn-primary" style="margin-top: 16px;">Refresh</button>
+                        </div>
+                    `;
+                }
+            }
+            
+            try {
+                this.startRealtimeProfileViews();
+            } catch (realtimeError) {
+                console.error('❌ Realtime views error:', realtimeError);
+            }
+            
+            console.log('✅ Dashboard fully loaded');
             
         } catch (error) {
             console.error('❌ Dashboard init error:', error);
             
             if (!window.__dashboardInitialized) {
-                window.location.replace('/login');
+                const contentArea = document.getElementById('contentArea');
+                if (contentArea) {
+                    contentArea.innerHTML = `
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 300px; text-align: center;">
+                            <h2 style="color: #a855f7; margin-bottom: 16px;">Authentication Error</h2>
+                            <p style="color: #666; margin-bottom: 24px;">Please log in again to access the dashboard.</p>
+                            <a href="/login" style="background: #a855f7; color: white; border: none; padding: 12px 24px; border-radius: 8px; text-decoration: none;">Go to Login</a>
+                        </div>
+                    `;
+                } else {
+                    window.location.replace('/login');
+                }
             }
         }
     }
@@ -4904,6 +4942,3 @@ class Dashboard {
         }
     }
 }
-
-const dashboard = new Dashboard();
-dashboard.init();
