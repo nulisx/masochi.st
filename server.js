@@ -494,6 +494,48 @@ app.post(
   }
 );
 
+app.get('/api/auth/recovery-key', authenticateToken, async (req, res) => {
+  try {
+    const recoveryRecord = await getQuery('recovery_codes', 'user_id', req.user.id);
+    
+    if (!recoveryRecord || recoveryRecord.consumed_at) {
+      return res.status(404).json({ error: 'No recovery key found' });
+    }
+    
+    res.json({ recoveryCode: '••••••••••••••••••••••••••••••••' });
+  } catch (err) {
+    console.error('Get recovery key error:', err);
+    res.status(500).json({ error: 'Failed to get recovery key' });
+  }
+});
+
+app.post('/api/auth/recovery-key/regenerate', authenticateToken, async (req, res) => {
+  try {
+    const recoveryCode = generateRecoveryCode();
+    const recoveryCodeHash = await bcrypt.hash(recoveryCode, 12);
+    
+    const existingRecord = await getQuery('recovery_codes', 'user_id', req.user.id);
+    
+    if (existingRecord) {
+      await runQuery(
+        'recovery_codes',
+        { code_hash: recoveryCodeHash, attempts: 0, consumed_at: null },
+        'update',
+        { column: 'user_id', value: req.user.id }
+      );
+    } else {
+      await runQuery('recovery_codes', {
+        user_id: req.user.id,
+        code_hash: recoveryCodeHash
+      });
+    }
+    
+    res.json({ recoveryCode, message: 'Recovery key regenerated successfully' });
+  } catch (err) {
+    console.error('Regenerate recovery key error:', err);
+    res.status(500).json({ error: 'Failed to regenerate recovery key' });
+  }
+});
 
 app.post('/api/verify/browser', async (req, res) => {
   try {

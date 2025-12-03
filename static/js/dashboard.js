@@ -551,7 +551,7 @@ class Dashboard {
         contentArea.innerHTML = `
             <div class="page-header">
                 <div>
-                    <h1 class="page-title">Dashboard</h1>
+                    <h1 class="page-title">Overview</h1>
                     <p class="page-subtitle">Welcome back, @${this.user?.display_name || this.user?.username}</p>
                 </div>
             </div>
@@ -645,7 +645,132 @@ class Dashboard {
                     </div>
                 </div>
             </div>
+            
+            <div class="recovery-section" style="margin-bottom: 24px;">
+                <div class="card">
+                    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div class="card-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="card-title">Recovery Key</h3>
+                                <p class="card-description">Your recovery key can be used to reset your password if you forget it. Keep it safe and secure.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recovery-content" style="padding: 16px 20px;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <span style="color: var(--text-muted); font-size: 13px;">Your Recovery Key</span>
+                            <button onclick="dashboard.regenerateRecoveryKey()" class="btn-secondary" style="padding: 6px 12px; font-size: 12px; display: flex; align-items: center; gap: 6px;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 4v6h6M23 20v-6h-6"></path>
+                                    <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+                                </svg>
+                                Regenerate Key
+                            </button>
+                            <button onclick="dashboard.copyRecoveryKey()" class="btn-secondary" style="padding: 6px 12px; font-size: 12px; display: flex; align-items: center; gap: 6px;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copy
+                            </button>
+                            <button onclick="dashboard.downloadRecoveryKey()" class="btn-secondary" style="padding: 6px 12px; font-size: 12px; display: flex; align-items: center; gap: 6px;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                Download
+                            </button>
+                        </div>
+                        <div class="recovery-key-display" style="background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; position: relative;">
+                            <code id="recoveryKeyCode" style="color: var(--text-muted); font-size: 14px; filter: blur(5px); transition: filter 0.3s; cursor: pointer; user-select: none;">Hover to reveal recovery key</code>
+                        </div>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 12px; text-align: center;">Hover to reveal recovery key</p>
+                    </div>
+                </div>
+            </div>
         `;
+        
+        this.loadRecoveryKey();
+    }
+    
+    async loadRecoveryKey() {
+        try {
+            const response = await fetch('/api/auth/recovery-key', { credentials: 'include' });
+            if (response.ok) {
+                const data = await response.json();
+                const codeEl = document.getElementById('recoveryKeyCode');
+                if (codeEl && data.recoveryCode) {
+                    codeEl.textContent = data.recoveryCode;
+                    codeEl.dataset.key = data.recoveryCode;
+                    
+                    const container = codeEl.parentElement;
+                    container.addEventListener('mouseenter', () => {
+                        codeEl.style.filter = 'blur(0)';
+                        codeEl.style.userSelect = 'text';
+                    });
+                    container.addEventListener('mouseleave', () => {
+                        codeEl.style.filter = 'blur(5px)';
+                        codeEl.style.userSelect = 'none';
+                    });
+                }
+            }
+        } catch (err) {
+            console.error('Failed to load recovery key:', err);
+        }
+    }
+    
+    async regenerateRecoveryKey() {
+        if (!confirm('Are you sure you want to regenerate your recovery key? Your old key will no longer work.')) return;
+        
+        try {
+            const response = await fetch('/api/auth/recovery-key/regenerate', {
+                method: 'POST',
+                credentials: 'include'
+            });
+            if (response.ok) {
+                const data = await response.json();
+                const codeEl = document.getElementById('recoveryKeyCode');
+                if (codeEl) {
+                    codeEl.textContent = data.recoveryCode;
+                    codeEl.dataset.key = data.recoveryCode;
+                }
+                this.showNotification('success', 'Recovery key regenerated successfully');
+            } else {
+                this.showNotification('error', 'Failed to regenerate recovery key');
+            }
+        } catch (err) {
+            console.error('Failed to regenerate recovery key:', err);
+            this.showNotification('error', 'Failed to regenerate recovery key');
+        }
+    }
+    
+    copyRecoveryKey() {
+        const codeEl = document.getElementById('recoveryKeyCode');
+        if (codeEl && codeEl.dataset.key) {
+            navigator.clipboard.writeText(codeEl.dataset.key).then(() => {
+                this.showNotification('success', 'Recovery key copied to clipboard');
+            });
+        }
+    }
+    
+    downloadRecoveryKey() {
+        const codeEl = document.getElementById('recoveryKeyCode');
+        if (codeEl && codeEl.dataset.key) {
+            const blob = new Blob([`Glowi.es Recovery Key\n\nYour recovery key: ${codeEl.dataset.key}\n\nKeep this file safe. You will need this key to reset your password.`], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'glowies-recovery-key.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+            this.showNotification('success', 'Recovery key downloaded');
+        }
     }
 
     async renderProfile() {
