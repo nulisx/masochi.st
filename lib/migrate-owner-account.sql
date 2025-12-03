@@ -2,7 +2,7 @@
 -- 
 -- This script creates the default owner user account and profile.
 -- Username: r
--- Email: yuriget@egirl.help
+-- Email: qq@fbi.one
 -- Password: ACK071675$!
 --
 -- Run this in your database console if the seed script cannot run
